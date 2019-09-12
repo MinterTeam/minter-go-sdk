@@ -1,6 +1,8 @@
 package transaction
 
 import (
+	"encoding/hex"
+	"errors"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
@@ -61,17 +63,49 @@ const (
 	TestNetChainID
 )
 
+type Builder struct {
+	ChainID ChainID
+}
+
+func NewBuilder(chainID ChainID) *Builder {
+	return &Builder{ChainID: chainID}
+}
+
+func (b *Builder) NewTransaction(data Data) (Interface, error) {
+	dataBytes, err := data.encode()
+	if err != nil {
+		return nil, err
+	}
+
+	transaction := &Transaction{
+		ChainID:       b.ChainID,
+		SignatureType: signatureTypeSingle,
+		Data:          dataBytes,
+	}
+
+	switch data.(type) {
+	case *SendData:
+		return transaction.setType(typeSend), nil
+
+	default:
+		return nil, errors.New("") //todo
+	}
+}
+
 type Data interface {
 	encode() ([]byte, error)
 }
 
+type SignedTransaction interface {
+	Encode() ([]byte, error)
+}
+
 type Interface interface {
-	SetNonce(nonce uint64)
-	SetChainID(chain ChainID)
-	SetGasCoin(name string)
-	SetGasPrice(price *big.Int)
-	SetData(data Data)
-	Sign(privateKey []byte) error
+	setType(t Type) Interface
+	SetNonce(nonce uint64) Interface
+	SetGasCoin(name string) Interface
+	SetGasPrice(price uint8) Interface
+	Sign(prKey []byte) (SignedTransaction, error)
 }
 
 type Transaction struct {
@@ -84,7 +118,7 @@ type Transaction struct {
 	Payload       []byte
 	ServiceData   []byte
 	SignatureType SignatureType
-	SignatureData *Signature
+	SignatureData []byte
 }
 
 type Signature struct {
@@ -93,46 +127,69 @@ type Signature struct {
 	S *big.Int
 }
 
-func (tx *Transaction) SetNonce(nonce uint64) {
+func (tx *Transaction) setType(t Type) Interface {
+	tx.Type = t
+	return tx
+}
+func (tx *Transaction) SetNonce(nonce uint64) Interface {
 	tx.Nonce = nonce
+	return tx
 }
 
-func (tx *Transaction) SetChainID(chain ChainID) {
-	tx.ChainID = chain
-}
-
-func (tx *Transaction) SetGasCoin(name string) {
+func (tx *Transaction) SetGasCoin(name string) Interface {
 	copy(tx.GasCoin[:], name)
+	return tx
 }
 
-func (tx *Transaction) SetGasPrice(price uint8) {
+func (tx *Transaction) SetGasPrice(price uint8) Interface {
 	tx.GasPrice = price
+	return tx
 }
 
-func (tx *Transaction) Sign(privateKey []byte) error {
-	hw := sha3.NewLegacyKeccak256()
-	err := rlp.Encode(hw, tx) //todo не все поля?
+func (tx *Transaction) Encode() ([]byte, error) {
+	src, err := rlp.EncodeToBytes(tx)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
+	dst := make([]byte, hex.EncodedLen(len(src)))
+	hex.Encode(dst, src)
+	return dst, err
+}
+
+func (tx *Transaction) Sign(privateKey []byte) (SignedTransaction, error) {
+	hw := sha3.NewLegacyKeccak256()
+	err := rlp.Encode(hw, []interface{}{
+		tx.Nonce,
+		tx.ChainID,
+		tx.GasPrice,
+		tx.GasCoin,
+		tx.Type,
+		tx.Data,
+		tx.Payload,
+		tx.ServiceData,
+		tx.SignatureType,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	hw.Sum(nil)
 	h := make([]byte, 32)
 	hw.Write(h)
+
 	sig, err := secp256k1.Sign(h, privateKey)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	tx.SignatureData = &Signature{
+	tx.SignatureData, err = rlp.EncodeToBytes(&Signature{
 		R: new(big.Int).SetBytes(sig[:32]),
 		S: new(big.Int).SetBytes(sig[32:64]),
 		V: new(big.Int).SetBytes([]byte{sig[64] + 27}),
-	}
-
-	tx.Payload, err = rlp.EncodeToBytes(tx.SignatureData)
+	})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return tx, nil
 }

@@ -5,35 +5,43 @@ import (
 	"math/big"
 )
 
-type SendTransaction struct {
-	*Transaction
-}
-
-func NewSendTransaction() *SendTransaction {
-	return &SendTransaction{Transaction: &Transaction{SignatureType: signatureTypeSingle, ChainID: TestNetChainID}}
-}
-
 type SendData struct {
-	Coin  [10]byte //todo
+	Coin  [10]byte
 	To    [20]byte
 	Value *big.Int
 }
 
-func NewSendData(coin string, to string, value *big.Int) *SendData {
-	data := &SendData{Value: value}
-	copy(data.Coin[:], coin)
-	copy(data.To[:], to)
-	return data
+func NewSendData() *SendData {
+	return &SendData{}
+}
+
+func (d *SendData) SetCoin(symbol string) *SendData {
+	copy(d.Coin[:], symbol)
+	return d
+}
+
+func (d *SendData) SetTo(address string) error {
+	bytes, err := AddressToHex(address)
+	if err != nil {
+		return err
+	}
+	copy(d.To[:], bytes)
+	return nil
+}
+
+func (d *SendData) MustSetTo(address string) *SendData {
+	err := d.SetTo(address)
+	if err != nil {
+		panic(err)
+	}
+	return d
+}
+
+func (d *SendData) SetValue(value *big.Int) *SendData {
+	d.Value = value
+	return d
 }
 
 func (d *SendData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
-}
-
-func (tx *SendTransaction) SetData(data Data) {
-	_, ok := data.(*SendData)
-	if !ok {
-		panic("") //todo
-	}
-	tx.Data, _ = data.encode()
 }

@@ -1,16 +1,10 @@
 package transaction
 
 import (
-	//"github.com/edwardstock/bip39go"
-	//"github.com/tyler-smith/go-bip39"
-	"strconv"
+	"encoding/hex"
+	"errors"
 	"strings"
 )
-
-//
-//type TransactionInterface interface {
-//	Sign(privateKey []byte) (SignedTransaction, error)
-//}
 
 func MnemonicToSeed(mnemonic string) []byte {
 	return nil
@@ -34,15 +28,16 @@ func PrivateToPublicKey(publicKey []byte) string {
 	return ""
 }
 
-func ValidateAddress(address string) bool {
+func AddressToHex(address string) ([]byte, error) {
 	if len(address) != 42 {
-		return false
+		return nil, errors.New("len < 42") //todo
 	}
 	if !strings.HasPrefix(address, "Mx") {
-		return false
+		return nil, errors.New("don't has prefix 'Mx'") //todo
 	}
-	if _, err := strconv.ParseUint(address[:2], 16, 64); err != nil {
-		return false
+	bytes, err := hex.DecodeString(address[2:])
+	if err != nil {
+		return nil, err
 	}
-	return true
+	return bytes, nil
 }
