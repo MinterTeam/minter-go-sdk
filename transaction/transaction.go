@@ -151,8 +151,9 @@ func (tx *Transaction) Encode() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	dst := make([]byte, hex.EncodedLen(len(src)))
-	hex.Encode(dst, src)
+	dst := make([]byte, hex.EncodedLen(len(src))+2)
+	dst[0], dst[1] = '0', 'x'
+	hex.Encode(dst[2:], src)
 	return dst, err
 }
 

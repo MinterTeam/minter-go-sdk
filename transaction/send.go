@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"encoding/hex"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -43,5 +44,11 @@ func (d *SendData) SetValue(value *big.Int) *SendData {
 }
 
 func (d *SendData) encode() ([]byte, error) {
-	return rlp.EncodeToBytes(d)
+	src, err := rlp.EncodeToBytes(d)
+	if err != nil {
+		return nil, err
+	}
+	dst := make([]byte, hex.EncodedLen(len(src)))
+	hex.Encode(dst, src)
+	return dst, err
 }
