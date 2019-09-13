@@ -1,7 +1,11 @@
 package transaction
 
 import (
+	"crypto/ecdsa"
 	"encoding/hex"
+	"errors"
+	"fmt"
+	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"math/big"
 	"strings"
 	"testing"
@@ -61,7 +65,12 @@ func TestTransaction_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = transaction.Sign(privateKey)
+	key, err := toECDSA(privateKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = transaction.Sign(key)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -70,4 +79,29 @@ func TestTransaction_Sign(t *testing.T) {
 	if string(transaction.SignatureData) == validSignature {
 		t.Errorf("encode get %s, want %s", string(transaction.SignatureData), validSignature)
 	}
+}
+
+func toECDSA(d []byte) (*ecdsa.PrivateKey, error) {
+	priv := new(ecdsa.PrivateKey)
+	priv.PublicKey.Curve = secp256k1.S256()
+	if 8*len(d) != priv.Params().BitSize {
+		return nil, fmt.Errorf("invalid length, need %d bits", priv.Params().BitSize)
+	}
+	priv.D = new(big.Int).SetBytes(d)
+
+	// The priv.D must < N
+	secp256k1N, _ := new(big.Int).SetString("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", 16)
+	if priv.D.Cmp(secp256k1N) >= 0 {
+		return nil, fmt.Errorf("invalid private key, >=N")
+	}
+	// The priv.D must not be zero or negative.
+	if priv.D.Sign() <= 0 {
+		return nil, fmt.Errorf("invalid private key, zero or negative")
+	}
+
+	priv.PublicKey.X, priv.PublicKey.Y = priv.PublicKey.Curve.ScalarBaseMult(d)
+	if priv.PublicKey.X == nil {
+		return nil, errors.New("invalid private key")
+	}
+	return priv, nil
 }

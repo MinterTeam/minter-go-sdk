@@ -1,8 +1,10 @@
 package transaction
 
 import (
+	"crypto/ecdsa"
 	"encoding/hex"
 	"errors"
+	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
@@ -110,7 +112,7 @@ type Interface interface {
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
-	Sign(prKey []byte) (SignedTransaction, error)
+	Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, error)
 }
 
 type Transaction struct {
@@ -162,7 +164,7 @@ func (tx *Transaction) Encode() ([]byte, error) {
 	return dst, err
 }
 
-func (tx *Transaction) Sign(privateKey []byte) (SignedTransaction, error) {
+func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, error) {
 	hw := sha3.NewLegacyKeccak256()
 	err := rlp.Encode(hw, []interface{}{
 		tx.Nonce,
@@ -178,16 +180,15 @@ func (tx *Transaction) Sign(privateKey []byte) (SignedTransaction, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	hw.Sum(nil)
 	h := make([]byte, 32)
-	hw.Write(h)
+	hw.Sum(h)
 
-	sig, err := secp256k1.Sign(h, privateKey)
+	seckey := math.PaddedBigBytes(privateKey.D, privateKey.Params().BitSize/8)
+
+	sig, err := secp256k1.Sign(h, seckey)
 	if err != nil {
 		return nil, err
 	}
-
 	tx.SignatureData, err = rlp.EncodeToBytes(&Signature{
 		R: new(big.Int).SetBytes(sig[:32]),
 		S: new(big.Int).SetBytes(sig[32:64]),
