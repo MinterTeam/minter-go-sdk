@@ -43,9 +43,5 @@ func (d *SendData) SetValue(value *big.Int) *SendData {
 }
 
 func (d *SendData) encode() ([]byte, error) {
-	src, err := rlp.EncodeToBytes(d)
-	if err != nil {
-		return nil, err
-	}
-	return src, nil
+	return rlp.EncodeToBytes(d)
 }

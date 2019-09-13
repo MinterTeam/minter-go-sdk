@@ -3,12 +3,13 @@ package transaction
 import (
 	"encoding/hex"
 	"math/big"
+	"strings"
 	"testing"
 )
 
 func TestTransaction_Sign(t *testing.T) {
 	value := big.NewInt(1)
-	pipValue := value.String() + "000000000000000000"
+	pipValue := value.String() + strings.Repeat("0", 18)
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
 	symbolMNT := "MNT"
 	data := NewSendData().
@@ -69,5 +70,4 @@ func TestTransaction_Sign(t *testing.T) {
 	if string(transaction.SignatureData) == validSignature {
 		t.Errorf("encode get %s, want %s", string(transaction.SignatureData), validSignature)
 	}
-
 }
