@@ -47,6 +47,9 @@ func TestApi_Send(t *testing.T) {
 
 	api := NewApi("https://minter-node-1.testnet.minter.network:8841")
 	nonce, err := api.GetAddressNonce([]byte("Mxeeee1973381ab793719fff497b9a516719fcd5a2"))
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	key, err := transaction.ToECDSA(wallet.GetKey().Private.Serialize())
 	if err != nil {
