@@ -71,12 +71,19 @@ func TestTransaction_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = transaction.Sign(key)
+	signedTx, err := transaction.Sign(key)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	//todo validSignature := "0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a"
+	validSignature := "0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a"
+	bytes, err := signedTx.Encode()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(bytes) != validSignature {
+		t.Errorf("EncodeTx got %s, want %s", string(bytes), validSignature)
+	}
 }
 
 func toECDSA(d []byte) (*ecdsa.PrivateKey, error) {

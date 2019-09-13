@@ -18,8 +18,7 @@ var (
 type Type byte
 
 const (
-	_ Type = iota
-	typeSend
+	typeSend Type = iota + 1
 	typeSellCoin
 	typeSellAllCoin
 	typeBuyCoin
@@ -65,8 +64,7 @@ const (
 type ChainID byte
 
 const (
-	_ ChainID = iota
-	MainNetChainID
+	MainNetChainID ChainID = iota + 1
 	TestNetChainID
 )
 
@@ -177,38 +175,17 @@ func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, er
 		tx.SignatureType,
 	}
 
-	//hw := sha3.NewLegacyKeccak256()
-	//
-	//err := rlp.Encode(hw, x)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//sum := hw.Sum(nil)
-	//h := make([]byte, 32)
-	//hw.Write(h)
-	//buf := bytes.NewReader(sum)
-	//
-	//r, s, err := ecdsa.Sign(buf, privateKey, h)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//tx.SignatureData, err = rlp.EncodeToBytes(&Signature{
-	//	R: r,
-	//	S: s,
-	//	V: new(big.Int).SetBytes([]byte{27}), //todo
-	//})
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	h := rlpHash(x)
+	var h [32]byte
+	hw := sha3.NewLegacyKeccak256()
+	err := rlp.Encode(hw, x)
+	if err != nil {
+		panic(err)
+	}
+	hw.Sum(h[:0])
 
 	seckey := math.PaddedBigBytes(privateKey.D, privateKey.Params().BitSize/8)
 
 	sig, err := secp256k1.Sign(h[:], seckey)
-	zeroBytes(seckey)
 	if err != nil {
 		return nil, err
 	}
@@ -222,20 +199,4 @@ func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, er
 	}
 
 	return tx, nil
-}
-
-func rlpHash(x interface{}) (h [32]byte) {
-	hw := sha3.NewLegacyKeccak256()
-	err := rlp.Encode(hw, x)
-	if err != nil {
-		panic(err)
-	}
-	hw.Sum(h[:0])
-	return h
-}
-
-func zeroBytes(bytes []byte) {
-	for i := range bytes {
-		bytes[i] = 0
-	}
 }

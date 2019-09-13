@@ -12,7 +12,7 @@ func (a *Api) Send(transaction transaction.SignedTransaction) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	resp, err := http.Get(fmt.Sprintf(a.hostUrl+"/send_transaction?tx=%s", bytes))
+	resp, err := http.Get(fmt.Sprintf("%s/send_transaction?tx=%s", a.hostUrl, bytes))
 	if err != nil {
 		return nil, err
 	}
