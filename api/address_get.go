@@ -7,11 +7,8 @@ import (
 
 type AddressResponse struct {
 	Result struct {
-		Balance struct {
-			MNT       string `json:"MNT"`
-			KLM0VCOIN string `json:"KLM0VCOIN"`
-		} `json:"balance"`
-		TransactionCount string `json:"transaction_count"`
+		Balance          map[string]string `json:"balance"`
+		TransactionCount string            `json:"transaction_count"`
 	} `json:"result"`
 }
 
