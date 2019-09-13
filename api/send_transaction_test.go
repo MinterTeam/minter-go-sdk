@@ -45,7 +45,8 @@ func TestApi_Send(t *testing.T) {
 		t.Fatalf("privateKey get %s, want %s", wallet.GetKey().PrivateHex(), wantedPrKey)
 	}
 
-	var nonce uint64 = 33
+	api := NewApi("https://minter-node-1.testnet.minter.network:8841")
+	nonce, err := api.GetAddressNonce([]byte("Mxeeee1973381ab793719fff497b9a516719fcd5a2"))
 
 	key, err := transaction.ToECDSA(wallet.GetKey().Private.Serialize())
 	if err != nil {
@@ -61,7 +62,7 @@ func TestApi_Send(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	bytes, err := NewApi("https://minter-node-1.testnet.minter.network:8841").Send(signedTransaction)
+	bytes, err := api.Send(signedTransaction)
 	if err != nil {
 		t.Fatal(err)
 	}

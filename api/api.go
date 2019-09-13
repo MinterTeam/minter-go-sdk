@@ -1,13 +1,13 @@
 package api
 
 import (
-	"strings"
+	"github.com/go-resty/resty/v2"
 )
 
 type Api struct {
-	hostUrl string
+	client *resty.Client
 }
 
 func NewApi(hostUrl string) *Api {
-	return &Api{hostUrl: strings.TrimRight(hostUrl, "/")}
+	return &Api{client: resty.New().SetHostURL(hostUrl)}
 }
