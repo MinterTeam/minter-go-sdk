@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"encoding/hex"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -39,7 +38,7 @@ func (d *SendData) MustSetTo(address string) *SendData {
 }
 
 func (d *SendData) SetValue(value *big.Int) *SendData {
-	d.Value = value
+	d.Value = big.NewInt(0).Mul(value, expPip)
 	return d
 }
 
@@ -48,7 +47,5 @@ func (d *SendData) encode() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	dst := make([]byte, hex.EncodedLen(len(src)))
-	hex.Encode(dst, src)
-	return dst, err
+	return src, nil
 }
