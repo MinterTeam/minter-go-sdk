@@ -1,3 +1,5 @@
+// +build integration
+
 package api
 
 import (
@@ -65,9 +67,9 @@ func TestApi_Send(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	bytes, err := api.Send(signedTransaction)
+	res, err := api.Send(signedTransaction)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%s", bytes)
+	t.Logf("%#v", res)
 }

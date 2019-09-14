@@ -21,7 +21,7 @@ func (a *Api) GetAddress(address []byte) (*AddressResponse, error) {
 	return result, nil
 }
 
-func (a *Api) GetAddressNonce(address []byte) (uint64, error) { //todo: change receiving address to privateKey
+func (a *Api) GetAddressNonce(address []byte) (uint64, error) {
 	response, err := a.GetAddress(address)
 	if err != nil {
 		return 0, err
