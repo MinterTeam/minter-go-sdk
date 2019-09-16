@@ -12,23 +12,27 @@ type AddressResponse struct {
 	} `json:"result"`
 }
 
-func (a *Api) GetAddress(address []byte) (*AddressResponse, error) {
+func (a *Api) Address(address []byte) (*AddressResponse, error) {
 	result := new(AddressResponse)
+
 	_, err := a.client.R().SetResult(result).Get(fmt.Sprintf("/address?address=%s", address))
 	if err != nil {
 		return nil, err
 	}
+
 	return result, nil
 }
 
-func (a *Api) GetAddressNonce(address []byte) (uint64, error) {
-	response, err := a.GetAddress(address)
+func (a *Api) Nonce(address []byte) (uint64, error) {
+	response, err := a.Address(address)
 	if err != nil {
 		return 0, err
 	}
+
 	nonce, err := strconv.ParseUint(response.Result.TransactionCount, 10, 64)
 	if err != nil {
 		return 0, err
 	}
+
 	return nonce + 1, nil
 }
