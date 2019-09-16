@@ -19,7 +19,7 @@ func TestTransactionSetCandidateOn_Sign(t *testing.T) {
 
 	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT")
 
-	privateKey, err := hex.DecodeString("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+	privateKey, err := hex.DecodeString("05ddcd4e6f7d248ed1388f0091fe345bf9bf4fc2390384e26005e7675c98b3c1")
 	if err != nil {
 		t.Fatal(err)
 	}
