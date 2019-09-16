@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"encoding/hex"
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
@@ -14,8 +15,19 @@ func NewEditCandidateData() *EditCandidateData {
 	return &EditCandidateData{}
 }
 
-func (d *EditCandidateData) SetPubKey(key string) *EditCandidateData {
-	d.PubKey = []byte(key)
+func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
+	var err error
+	d.PubKey, err = hex.DecodeString(key[2:])
+	if err != nil {
+		return d, err
+	}
+	return d, err
+}
+func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
+	_, err := d.SetPubKey(key)
+	if err != nil {
+		panic(err)
+	}
 	return d
 }
 

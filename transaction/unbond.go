@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"encoding/hex"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -15,8 +16,20 @@ func NewUnbondData() *UnbondData {
 	return &UnbondData{}
 }
 
-func (d *UnbondData) SetPubKey(key string) *UnbondData {
-	d.PubKey = []byte(key)
+func (d *UnbondData) SetPubKey(key string) (*UnbondData, error) {
+	var err error
+	d.PubKey, err = hex.DecodeString(key[2:])
+	if err != nil {
+		return d, err
+	}
+	return d, err
+}
+
+func (d *UnbondData) MustSetPubKey(key string) *UnbondData {
+	_, err := d.SetPubKey(key)
+	if err != nil {
+		panic(err)
+	}
 	return d
 }
 

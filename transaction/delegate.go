@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"encoding/hex"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -15,8 +16,20 @@ func NewDelegateData() *DelegateData {
 	return &DelegateData{}
 }
 
-func (d *DelegateData) SetPubKey(symbol string) *DelegateData {
-	d.PubKey = []byte(symbol)
+func (d *DelegateData) SetPubKey(key string) (*DelegateData, error) {
+	var err error
+	d.PubKey, err = hex.DecodeString(key[2:])
+	if err != nil {
+		return d, err
+	}
+	return d, err
+}
+
+func (d *DelegateData) MustSetPubKey(key string) *DelegateData {
+	_, err := d.SetPubKey(key)
+	if err != nil {
+		panic(err)
+	}
 	return d
 }
 

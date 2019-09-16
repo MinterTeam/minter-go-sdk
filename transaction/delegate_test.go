@@ -8,7 +8,7 @@ import (
 
 func TestTransactionDelegate_Sign(t *testing.T) {
 	data := NewDelegateData().
-		SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
+		MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
 		SetCoin("MNT").
 		SetStake(big.NewInt(10))
 

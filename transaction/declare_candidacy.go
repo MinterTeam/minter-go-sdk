@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"encoding/hex"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -34,8 +35,20 @@ func (d *DeclareCandidacyData) MustSetAddress(address string) *DeclareCandidacyD
 	return d
 }
 
-func (d *DeclareCandidacyData) SetPubKey(key string) *DeclareCandidacyData {
-	d.PubKey = []byte(key)
+func (d *DeclareCandidacyData) SetPubKey(key string) (*DeclareCandidacyData, error) {
+	var err error
+	d.PubKey, err = hex.DecodeString(key[2:])
+	if err != nil {
+		return d, err
+	}
+	return d, err
+}
+
+func (d *DeclareCandidacyData) MustSetPubKey(key string) *DeclareCandidacyData {
+	_, err := d.SetPubKey(key)
+	if err != nil {
+		panic(err)
+	}
 	return d
 }
 
