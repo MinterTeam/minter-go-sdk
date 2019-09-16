@@ -28,16 +28,17 @@ func (a *Api) Send(transaction transaction.SignedTransaction) (*SendResponse, er
 	if err != nil {
 		return nil, err
 	}
-	response := new(SendResponse)
-	res, err := a.client.R().SetResult(response).Get(fmt.Sprintf("/send_transaction?tx=%s", bytes))
+
+	res, err := a.client.R().Get(fmt.Sprintf("/send_transaction?tx=%s", bytes))
 	if err != nil {
 		return nil, err
 	}
-	if res.IsError() {
-		err = json.Unmarshal(res.Body(), response) //todo edit response from server
-		if err != nil {
-			return nil, err
-		}
+
+	response := new(SendResponse)
+	err = json.Unmarshal(res.Body(), response)
+	if err != nil {
+		return nil, err
 	}
+
 	return response, nil
 }

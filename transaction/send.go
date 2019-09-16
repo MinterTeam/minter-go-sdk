@@ -20,17 +20,17 @@ func (d *SendData) SetCoin(symbol string) *SendData {
 	return d
 }
 
-func (d *SendData) SetTo(address string) error {
+func (d *SendData) SetTo(address string) (*SendData, error) {
 	bytes, err := AddressToHex(address)
 	if err != nil {
-		return err
+		return d, err
 	}
 	copy(d.To[:], bytes)
-	return nil
+	return d, nil
 }
 
 func (d *SendData) MustSetTo(address string) *SendData {
-	err := d.SetTo(address)
+	_, err := d.SetTo(address)
 	if err != nil {
 		panic(err)
 	}

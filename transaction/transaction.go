@@ -76,7 +76,7 @@ func NewBuilder(chainID ChainID) *Builder {
 	return &Builder{ChainID: chainID}
 }
 
-func (b *Builder) NewTransaction(data Data) (Interface, error) {
+func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 	dataBytes, err := data.encode()
 	if err != nil {
 		return nil, err
@@ -91,13 +91,36 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 	switch data.(type) {
 	case *SendData:
 		return transaction.setType(typeSend), nil
+	case *SellCoinData:
+		return transaction.setType(typeSellCoin), nil
+	case *SellAllCoinData:
+		return transaction.setType(typeSellAllCoin), nil
+	case *BuyCoinData:
+		return transaction.setType(typeBuyCoin), nil
+	case *CreateCoinData:
+		return transaction.setType(typeCreateCoin), nil
+	case *DeclareCandidacyData:
+		return transaction.setType(typeDeclareCandidacy), nil
+	case *DelegateData:
+		return transaction.setType(typeDelegate), nil
+	case *UnbondData:
+		return transaction.setType(typeUnbond), nil
+	case *RedeemCheckData:
+		return transaction.setType(typeRedeemCheck), nil
+	case *SetCandidateOnData:
+		return transaction.setType(typeSetCandidateOnline), nil
+	case *SetCandidateOffData:
+		return transaction.setType(typeSetCandidateOffline), nil
+
+	case *EditCandidateData:
+		return transaction.setType(typeEditCandidate), nil
 
 	default:
 		return nil, errors.New("") //todo
 	}
 }
 
-type Data interface {
+type DataInterface interface {
 	encode() ([]byte, error)
 }
 

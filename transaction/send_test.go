@@ -7,15 +7,18 @@ import (
 	"testing"
 )
 
-func TestTransaction_Sign(t *testing.T) {
+func TestTransactionSend_Sign(t *testing.T) {
 	value := big.NewInt(1)
 	pipValue := value.String() + strings.Repeat("0", 18)
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
 	symbolMNT := "MNT"
-	data := NewSendData().
+	data, err := NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(value).
-		MustSetTo(address)
+		SetTo(address)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if string(data.Coin[:3]) != symbolMNT {
 		t.Errorf("SendData.Coin got %s, want %s", data.Coin, symbolMNT)
