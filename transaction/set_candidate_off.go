@@ -19,7 +19,7 @@ func (d *SetCandidateOffData) SetPubKey(key string) (*SetCandidateOffData, error
 	if err != nil {
 		return d, err
 	}
-	return d, err
+	return d, nil
 }
 
 func (d *SetCandidateOffData) MustSetPubKey(key string) *SetCandidateOffData {

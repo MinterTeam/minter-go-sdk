@@ -41,7 +41,7 @@ func (d *DeclareCandidacyData) SetPubKey(key string) (*DeclareCandidacyData, err
 	if err != nil {
 		return d, err
 	}
-	return d, err
+	return d, nil
 }
 
 func (d *DeclareCandidacyData) MustSetPubKey(key string) *DeclareCandidacyData {

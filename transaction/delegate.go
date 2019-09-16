@@ -22,7 +22,7 @@ func (d *DelegateData) SetPubKey(key string) (*DelegateData, error) {
 	if err != nil {
 		return d, err
 	}
-	return d, err
+	return d, nil
 }
 
 func (d *DelegateData) MustSetPubKey(key string) *DelegateData {

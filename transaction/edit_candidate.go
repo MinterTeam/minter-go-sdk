@@ -21,7 +21,7 @@ func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
 	if err != nil {
 		return d, err
 	}
-	return d, err
+	return d, nil
 }
 func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
 	_, err := d.SetPubKey(key)

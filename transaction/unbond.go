@@ -22,7 +22,7 @@ func (d *UnbondData) SetPubKey(key string) (*UnbondData, error) {
 	if err != nil {
 		return d, err
 	}
-	return d, err
+	return d, nil
 }
 
 func (d *UnbondData) MustSetPubKey(key string) *UnbondData {
