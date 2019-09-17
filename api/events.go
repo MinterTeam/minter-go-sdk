@@ -10,6 +10,7 @@ type EventsResponse struct {
 	ID      string `json:"id"`
 	Result  struct {
 		Events []struct {
+			//todo
 		} `json:"events"`
 	} `json:"result"`
 	Error struct {

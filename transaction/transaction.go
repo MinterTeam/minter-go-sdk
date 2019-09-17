@@ -4,11 +4,13 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
 	"math/big"
+	"strings"
 )
 
 var (
@@ -133,7 +135,7 @@ type Interface interface {
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
-	Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, error)
+	Sign(prKey []byte) (SignedTransaction, error)
 }
 
 type Transaction struct {
@@ -185,7 +187,12 @@ func (tx *Transaction) Encode() ([]byte, error) {
 	return dst, err
 }
 
-func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, error) {
+func (tx *Transaction) Sign(prKey []byte) (SignedTransaction, error) {
+	privateKey, err := toECDSA(prKey)
+	if err != nil {
+		return nil, err
+	}
+
 	x := []interface{}{
 		tx.Nonce,
 		tx.ChainID,
@@ -200,9 +207,9 @@ func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, er
 
 	var h [32]byte
 	hw := sha3.NewLegacyKeccak256()
-	err := rlp.Encode(hw, x)
+	err = rlp.Encode(hw, x)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	hw.Sum(h[:0])
 
@@ -222,4 +229,43 @@ func (tx *Transaction) Sign(privateKey *ecdsa.PrivateKey) (SignedTransaction, er
 	}
 
 	return tx, nil
+}
+
+func AddressToHex(address string) ([]byte, error) {
+	if len(address) != 42 {
+		return nil, errors.New("len < 42")
+	}
+	if !strings.HasPrefix(address, "Mx") {
+		return nil, errors.New("don't has prefix 'Mx'")
+	}
+	bytes, err := hex.DecodeString(address[2:])
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
+}
+
+func toECDSA(d []byte) (*ecdsa.PrivateKey, error) {
+	priv := new(ecdsa.PrivateKey)
+	priv.PublicKey.Curve = secp256k1.S256()
+	if 8*len(d) != priv.Params().BitSize {
+		return nil, fmt.Errorf("invalid length, need %d bits", priv.Params().BitSize)
+	}
+	priv.D = new(big.Int).SetBytes(d)
+
+	// The priv.D must < N
+	secp256k1N, _ := new(big.Int).SetString("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", 16)
+	if priv.D.Cmp(secp256k1N) >= 0 {
+		return nil, fmt.Errorf("invalid private key, >=N")
+	}
+	// The priv.D must not be zero or negative.
+	if priv.D.Sign() <= 0 {
+		return nil, fmt.Errorf("invalid private key, zero or negative")
+	}
+
+	priv.PublicKey.X, priv.PublicKey.Y = priv.PublicKey.Curve.ScalarBaseMult(d)
+	if priv.PublicKey.X == nil {
+		return nil, errors.New("invalid private key")
+	}
+	return priv, nil
 }

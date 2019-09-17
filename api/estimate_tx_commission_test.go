@@ -53,16 +53,11 @@ func TestApi_EstimateTxCommission(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	key, err := transaction.ToECDSA(wallet.GetKey().Private.Serialize())
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	signedTransaction, err := newTransaction.
 		SetNonce(nonce).
 		SetGasCoin("MNT").
 		SetGasPrice(1).
-		Sign(key)
+		Sign(wallet.GetKey().Private.Serialize())
 	if err != nil {
 		t.Fatal(err)
 	}

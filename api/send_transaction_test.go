@@ -47,13 +47,7 @@ func TestApi_Send(t *testing.T) {
 		t.Fatalf("privateKey get %s, want %s", wallet.GetKey().PrivateHex(), wantedPrKey)
 	}
 
-	api := testApi
-	nonce, err := api.Nonce([]byte("Mxeeee1973381ab793719fff497b9a516719fcd5a2"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	key, err := transaction.ToECDSA(wallet.GetKey().Private.Serialize())
+	nonce, err := testApi.Nonce([]byte("Mxeeee1973381ab793719fff497b9a516719fcd5a2"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,12 +56,12 @@ func TestApi_Send(t *testing.T) {
 		SetNonce(nonce).
 		SetGasCoin("MNT").
 		SetGasPrice(1).
-		Sign(key)
+		Sign(wallet.GetKey().Private.Serialize())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	res, err := api.Send(signedTransaction)
+	res, err := testApi.Send(signedTransaction)
 	if err != nil {
 		t.Fatal(err)
 	}

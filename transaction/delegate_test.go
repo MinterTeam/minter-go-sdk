@@ -27,12 +27,7 @@ func TestTransactionDelegate_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	key, err := ToECDSA(privateKey)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTx, err := transaction.Sign(key)
+	signedTx, err := transaction.Sign(privateKey)
 	if err != nil {
 		t.Fatal(err)
 	}
