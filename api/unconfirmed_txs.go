@@ -5,12 +5,14 @@ import (
 	"strconv"
 )
 
-type EventsResponse struct {
+type UnconfirmedTxsResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  struct {
-		Events []struct {
-		} `json:"events"`
+		NTxs       string   `json:"n_txs"`
+		Total      string   `json:"total"`
+		TotalBytes string   `json:"total_bytes"`
+		Txs        []string `json:"txs"`
 	} `json:"result"`
 	Error struct {
 		Code    int    `json:"code"`
@@ -19,19 +21,19 @@ type EventsResponse struct {
 	} `json:"error"`
 }
 
-func (a *Api) Events(height int) (*EventsResponse, error) {
+func (a *Api) UnconfirmedTxs(limit int) (*UnconfirmedTxsResponse, error) {
 
 	params := make(map[string]string)
-	if height > 0 {
-		params["height"] = strconv.Itoa(height)
+	if limit > 0 {
+		params["limit"] = strconv.Itoa(limit)
 	}
 
-	res, err := a.client.R().SetQueryParams(params).Get("/events")
+	res, err := a.client.R().SetQueryParams(params).Get("/unconfirmed_txs")
 	if err != nil {
 		return nil, err
 	}
 
-	result := new(EventsResponse)
+	result := new(UnconfirmedTxsResponse)
 	err = json.Unmarshal(res.Body(), result)
 	if err != nil {
 		return nil, err

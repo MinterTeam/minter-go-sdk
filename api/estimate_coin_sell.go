@@ -5,12 +5,12 @@ import (
 	"strconv"
 )
 
-type ValidatorsResponse struct {
+type EstimateCoinSellResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
-	Result  []struct {
-		PubKey      string `json:"pub_key"`
-		VotingPower string `json:"voting_power"`
+	Result  struct {
+		WillGet    string `json:"will_get"`
+		Commission string `json:"commission"`
 	} `json:"result"`
 	Error struct {
 		Code    int    `json:"code"`
@@ -19,19 +19,22 @@ type ValidatorsResponse struct {
 	} `json:"error"`
 }
 
-func (a *Api) Validators(height int) (*ValidatorsResponse, error) {
+func (a *Api) EstimateCoinSell(coinToSell string, valueToSell string, coinToBuy string, height int) (*EstimateCoinSellResponse, error) {
 
 	params := make(map[string]string)
+	params["coin_to_sell"] = coinToSell
+	params["value_to_sell"] = valueToSell
+	params["coin_to_buy"] = coinToBuy
 	if height > 0 {
 		params["height"] = strconv.Itoa(height)
 	}
 
-	res, err := a.client.R().SetQueryParams(params).Get("/validators")
+	res, err := a.client.R().SetQueryParams(params).Get("/estimate_coin_sell")
 	if err != nil {
 		return nil, err
 	}
 
-	result := new(ValidatorsResponse)
+	result := new(EstimateCoinSellResponse)
 	err = json.Unmarshal(res.Body(), result)
 	if err != nil {
 		return nil, err

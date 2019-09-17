@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestApi_Send(t *testing.T) {
+func TestApi_EstimateTxCommission(t *testing.T) {
 	data := transaction.NewSendData().
 		SetCoin("MNT").
 		SetValue(big.NewInt(1)).
@@ -67,7 +67,7 @@ func TestApi_Send(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	res, err := api.Send(signedTransaction)
+	res, err := api.EstimateTxCommission(signedTransaction)
 	if err != nil {
 		t.Fatal(err)
 	}

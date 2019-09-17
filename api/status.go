@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -49,12 +50,22 @@ type StatusResponse struct {
 			} `json:"validator_info"`
 		} `json:"tm_status"`
 	} `json:"result"`
+	Error struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+		Data    string `json:"data"`
+	} `json:"error"`
 }
 
 func (a *Api) Status() (*StatusResponse, error) {
-	result := new(StatusResponse)
 
-	_, err := a.client.R().SetResult(result).Get("/status")
+	res, err := a.client.R().Get("/status")
+	if err != nil {
+		return nil, err
+	}
+
+	result := new(StatusResponse)
+	err = json.Unmarshal(res.Body(), result)
 	if err != nil {
 		return nil, err
 	}

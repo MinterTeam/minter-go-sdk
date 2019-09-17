@@ -1,12 +1,36 @@
 package api
 
-import "strconv"
+import (
+	"encoding/json"
+	"strconv"
+)
 
 type CandidatesResponse struct {
+	Jsonrpc string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  []struct {
+		RewardAddress string `json:"reward_address"`
+		OwnerAddress  string `json:"owner_address"`
+		TotalStake    string `json:"total_stake"`
+		PubKey        string `json:"pub_key"`
+		Commission    string `json:"commission"`
+		Stakes        []struct {
+			Owner    string `json:"owner"`
+			Coin     string `json:"coin"`
+			Value    string `json:"value"`
+			BipValue string `json:"bip_value"`
+		} `json:"stakes"`
+		CreatedAtBlock string `json:"created_at_block"`
+		Status         int    `json:"status"`
+	} `json:"result"`
+	Error struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+		Data    string `json:"data"`
+	} `json:"error"`
 }
 
-func (a *Api) Candidates(height int, includeStakes bool) (*CandidateResponse, error) {
-	result := new(CandidateResponse)
+func (a *Api) Candidates(height int, includeStakes bool) (*CandidatesResponse, error) {
 
 	params := make(map[string]string)
 	if includeStakes {
@@ -16,7 +40,13 @@ func (a *Api) Candidates(height int, includeStakes bool) (*CandidateResponse, er
 		params["height"] = strconv.Itoa(height)
 	}
 
-	_, err := a.client.R().SetResult(result).SetQueryParams(params).Get("/candidates")
+	res, err := a.client.R().SetQueryParams(params).Get("/candidates")
+	if err != nil {
+		return nil, err
+	}
+
+	result := new(CandidatesResponse)
+	err = json.Unmarshal(res.Body(), result)
 	if err != nil {
 		return nil, err
 	}

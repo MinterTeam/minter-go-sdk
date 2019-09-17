@@ -5,12 +5,12 @@ import (
 	"strconv"
 )
 
-type ValidatorsResponse struct {
+type MissedBlocksResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  []struct {
-		PubKey      string `json:"pub_key"`
-		VotingPower string `json:"voting_power"`
+		MissedBlocks      string `json:"missed_blocks"`
+		MissedBlocksCount string `json:"missed_blocks_count"`
 	} `json:"result"`
 	Error struct {
 		Code    int    `json:"code"`
@@ -19,19 +19,20 @@ type ValidatorsResponse struct {
 	} `json:"error"`
 }
 
-func (a *Api) Validators(height int) (*ValidatorsResponse, error) {
+func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResponse, error) {
 
 	params := make(map[string]string)
+	params["pub_key"] = pubKey
 	if height > 0 {
 		params["height"] = strconv.Itoa(height)
 	}
 
-	res, err := a.client.R().SetQueryParams(params).Get("/validators")
+	res, err := a.client.R().SetQueryParams(params).Get("/missed_blocks")
 	if err != nil {
 		return nil, err
 	}
 
-	result := new(ValidatorsResponse)
+	result := new(MissedBlocksResponse)
 	err = json.Unmarshal(res.Body(), result)
 	if err != nil {
 		return nil, err

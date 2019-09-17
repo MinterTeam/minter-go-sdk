@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestApi_Status(t *testing.T) {
-	response, err := testApi.Status()
+func TestApi_MaxGas(t *testing.T) {
+	response, err := testApi.MaxGas()
 	if err != nil {
 		t.Fatal(err)
 	}

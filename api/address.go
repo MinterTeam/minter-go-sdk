@@ -1,21 +1,34 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 )
 
 type AddressResponse struct {
-	Result struct {
+	Jsonrpc string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  struct {
 		Balance          map[string]string `json:"balance"`
 		TransactionCount string            `json:"transaction_count"`
 	} `json:"result"`
+	Error struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+		Data    string `json:"data"`
+	} `json:"error"`
 }
 
 func (a *Api) Address(address []byte) (*AddressResponse, error) {
-	result := new(AddressResponse)
 
-	_, err := a.client.R().SetResult(result).Get(fmt.Sprintf("/address?address=%s", address))
+	res, err := a.client.R().Get(fmt.Sprintf("/address?address=%s", address))
+	if err != nil {
+		return nil, err
+	}
+
+	result := new(AddressResponse)
+	err = json.Unmarshal(res.Body(), result)
 	if err != nil {
 		return nil, err
 	}

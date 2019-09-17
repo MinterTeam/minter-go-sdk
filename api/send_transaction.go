@@ -7,7 +7,9 @@ import (
 )
 
 type SendResponse struct {
-	Result struct {
+	Jsonrpc string `json:"jsonrpc"`
+	ID      string `json:"id"`
+	Result  struct {
 		Code int    `json:"code"`
 		Data string `json:"data"`
 		Log  string `json:"log"`
@@ -16,6 +18,7 @@ type SendResponse struct {
 	Error struct {
 		Code     int    `json:"code"`
 		Message  string `json:"message"`
+		Data     string `json:"data"`
 		TxResult struct {
 			Code int    `json:"code"`
 			Log  string `json:"log"`

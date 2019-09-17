@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestApi_Status(t *testing.T) {
-	response, err := testApi.Status()
+func TestApi_UnconfirmedTxs(t *testing.T) {
+	response, err := testApi.UnconfirmedTxs(0)
 	if err != nil {
 		t.Fatal(err)
 	}

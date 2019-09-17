@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestApi_Status(t *testing.T) {
-	response, err := testApi.Status()
+func TestApi_MissedBlocks(t *testing.T) {
+	response, err := testApi.MissedBlocks("", 0)
 	if err != nil {
 		t.Fatal(err)
 	}
