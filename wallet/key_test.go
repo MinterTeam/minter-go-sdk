@@ -24,7 +24,7 @@ func TestSeed(t *testing.T) {
 	}
 }
 
-func TestPrivateKey(t *testing.T) {
+func TestWallet_PrivateKey(t *testing.T) {
 	bytes, err := hex.DecodeString(validSeed)
 	if err != nil {
 		t.Fatal(err)
@@ -40,7 +40,23 @@ func TestPrivateKey(t *testing.T) {
 	}
 }
 
-func TestAddress(t *testing.T) {
+func TestWallet_PublicKey(t *testing.T) {
+	bytes, err := hex.DecodeString(validSeed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wallet, err := NewWallet(bytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	publicKey := wallet.PublicKey()
+	if publicKey != validPublicKey {
+		t.Fatalf("publicKey got %s, want %s", publicKey, validPublicKey)
+	}
+}
+
+func TestWallet_Address(t *testing.T) {
 	bytes, err := hex.DecodeString(validSeed)
 	if err != nil {
 		t.Fatal(err)
