@@ -4,9 +4,8 @@ import (
 	"crypto/ecdsa"
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/foxnut/go-hdwallet"
 	"github.com/tyler-smith/go-bip39"
 	"strings"
@@ -54,20 +53,17 @@ func (w *Wallet) PublicKey() string {
 }
 
 func AddressByPublicKey(publicKey string) (string, error) {
-	decodeString, err := hex.DecodeString(publicKey)
+	bytes, err := hex.DecodeString(publicKey[2:])
 	if err != nil {
 		return "", err
 	}
-	key, err := btcec.ParsePubKey(decodeString, btcec.S256())
-	if err != nil {
-		return "", err
-	}
-	return strings.Replace(strings.ToLower(crypto.PubkeyToAddress(*key.ToECDSA()).Hex()), "0x", "Mx", 1), nil
+	return strings.Replace(strings.ToLower(common.BytesToAddress(crypto.Keccak256(bytes)[12:]).String()), "0x", "Mx", 1), nil
 }
+
 func PublicKeyByPrivateKey(privateKey string) (string, error) {
-	key, err := ethcrypto.HexToECDSA(privateKey)
+	key, err := crypto.HexToECDSA(privateKey)
 	if err != nil {
 		return "", err
 	}
-	return strings.Replace(strings.ToLower(hex.EncodeToString(ethcrypto.FromECDSAPub(key.Public().(*ecdsa.PublicKey)))), "04", "Mp", 1), nil
+	return strings.Replace(strings.ToLower(hex.EncodeToString(crypto.FromECDSAPub(key.Public().(*ecdsa.PublicKey)))), "04", "Mp", 1), nil
 }

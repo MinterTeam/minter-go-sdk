@@ -71,5 +71,11 @@ func TestPublicKeyByPrivateKey(t *testing.T) {
 }
 
 func TestAddressByPublicKey(t *testing.T) {
-
+	address, err := AddressByPublicKey(validPublicKey2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if address != validAddress2 {
+		t.Fatalf("Address got %s, want %s", address, validAddress2)
+	}
 }
