@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"encoding/hex"
 	"testing"
 )
 
@@ -21,12 +20,7 @@ func TestTransactionEditCandidate_Sign(t *testing.T) {
 
 	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT")
 
-	privateKey, err := hex.DecodeString("a3fb55450f53dbbf4f2494280188f7f0cd51a7b51ec27ed49ed364d920e326ba")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTx, err := transaction.Sign(privateKey)
+	signedTx, err := transaction.Sign("a3fb55450f53dbbf4f2494280188f7f0cd51a7b51ec27ed49ed364d920e326ba")
 	if err != nil {
 		t.Fatal(err)
 	}

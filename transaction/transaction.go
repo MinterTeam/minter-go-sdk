@@ -1,11 +1,11 @@
 package transaction
 
 import (
-	"crypto/ecdsa"
 	"encoding/hex"
 	"errors"
-	"fmt"
+	//"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/common/math"
+	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
@@ -20,20 +20,20 @@ var (
 type Type byte
 
 const (
-	typeSend Type = iota + 1
-	typeSellCoin
-	typeSellAllCoin
-	typeBuyCoin
-	typeCreateCoin
-	typeDeclareCandidacy
-	typeDelegate
-	typeUnbond
-	typeRedeemCheck
-	typeSetCandidateOnline
-	typeSetCandidateOffline
-	typeCreateMultisig
-	typeMultisend
-	typeEditCandidate
+	TypeSend Type = iota + 1
+	TypeSellCoin
+	TypeSellAllCoin
+	TypeBuyCoin
+	TypeCreateCoin
+	TypeDeclareCandidacy
+	TypeDelegate
+	TypeUnbond
+	TypeRedeemCheck
+	TypeSetCandidateOnline
+	TypeSetCandidateOffline
+	TypeCreateMultisig
+	TypeMultisend
+	TypeEditCandidate
 )
 
 type Fee uint
@@ -92,30 +92,30 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 
 	switch data.(type) {
 	case *SendData:
-		return transaction.setType(typeSend), nil
+		return transaction.setType(TypeSend), nil
 	case *SellCoinData:
-		return transaction.setType(typeSellCoin), nil
+		return transaction.setType(TypeSellCoin), nil
 	case *SellAllCoinData:
-		return transaction.setType(typeSellAllCoin), nil
+		return transaction.setType(TypeSellAllCoin), nil
 	case *BuyCoinData:
-		return transaction.setType(typeBuyCoin), nil
+		return transaction.setType(TypeBuyCoin), nil
 	case *CreateCoinData:
-		return transaction.setType(typeCreateCoin), nil
+		return transaction.setType(TypeCreateCoin), nil
 	case *DeclareCandidacyData:
-		return transaction.setType(typeDeclareCandidacy), nil
+		return transaction.setType(TypeDeclareCandidacy), nil
 	case *DelegateData:
-		return transaction.setType(typeDelegate), nil
+		return transaction.setType(TypeDelegate), nil
 	case *UnbondData:
-		return transaction.setType(typeUnbond), nil
+		return transaction.setType(TypeUnbond), nil
 	case *RedeemCheckData:
-		return transaction.setType(typeRedeemCheck), nil
+		return transaction.setType(TypeRedeemCheck), nil
 	case *SetCandidateOnData:
-		return transaction.setType(typeSetCandidateOnline), nil
+		return transaction.setType(TypeSetCandidateOnline), nil
 	case *SetCandidateOffData:
-		return transaction.setType(typeSetCandidateOffline), nil
+		return transaction.setType(TypeSetCandidateOffline), nil
 
 	case *EditCandidateData:
-		return transaction.setType(typeEditCandidate), nil
+		return transaction.setType(TypeEditCandidate), nil
 
 	default:
 		return nil, errors.New("") //todo
@@ -135,7 +135,7 @@ type Interface interface {
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
-	Sign(prKey []byte) (SignedTransaction, error)
+	Sign(prKey string) (SignedTransaction, error)
 }
 
 type Transaction struct {
@@ -187,8 +187,8 @@ func (tx *Transaction) Encode() ([]byte, error) {
 	return dst, err
 }
 
-func (tx *Transaction) Sign(prKey []byte) (SignedTransaction, error) {
-	privateKey, err := toECDSA(prKey)
+func (tx *Transaction) Sign(prKey string) (SignedTransaction, error) {
+	privateKey, err := ethcrypto.HexToECDSA(prKey)
 	if err != nil {
 		return nil, err
 	}
@@ -243,29 +243,4 @@ func AddressToHex(address string) ([]byte, error) {
 		return nil, err
 	}
 	return bytes, nil
-}
-
-func toECDSA(d []byte) (*ecdsa.PrivateKey, error) {
-	priv := new(ecdsa.PrivateKey)
-	priv.PublicKey.Curve = secp256k1.S256()
-	if 8*len(d) != priv.Params().BitSize {
-		return nil, fmt.Errorf("invalid length, need %d bits", priv.Params().BitSize)
-	}
-	priv.D = new(big.Int).SetBytes(d)
-
-	// The priv.D must < N
-	secp256k1N, _ := new(big.Int).SetString("fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141", 16)
-	if priv.D.Cmp(secp256k1N) >= 0 {
-		return nil, fmt.Errorf("invalid private key, >=N")
-	}
-	// The priv.D must not be zero or negative.
-	if priv.D.Sign() <= 0 {
-		return nil, fmt.Errorf("invalid private key, zero or negative")
-	}
-
-	priv.PublicKey.X, priv.PublicKey.Y = priv.PublicKey.Curve.ScalarBaseMult(d)
-	if priv.PublicKey.X == nil {
-		return nil, errors.New("invalid private key")
-	}
-	return priv, nil
 }
