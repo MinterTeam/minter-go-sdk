@@ -11,5 +11,5 @@ func TestApi_CoinInfo(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%#v", response)
+	t.Logf("%+v", response)
 }

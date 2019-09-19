@@ -5,9 +5,9 @@ package api
 import "testing"
 
 func TestApi_Transactions(t *testing.T) {
-	response, err := testApi.Transactions("", 0, 0)
+	response, err := testApi.Transactions("tags.tx.coin='ZERO'", 0, 0)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%#v", response)
+	t.Logf("%+v", response)
 }

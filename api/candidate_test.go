@@ -20,5 +20,5 @@ func TestApi_Candidate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%#v", response)
+	t.Logf("%+v", response)
 }

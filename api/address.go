@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 )
 
@@ -20,9 +19,8 @@ type AddressResponse struct {
 	} `json:"error,omitempty"`
 }
 
-func (a *Api) Address(address []byte) (*AddressResponse, error) {
-
-	res, err := a.client.R().Get(fmt.Sprintf("/address?address=%s", address))
+func (a *Api) Address(address string) (*AddressResponse, error) {
+	res, err := a.client.R().SetQueryParam("address", address).Get("/address")
 	if err != nil {
 		return nil, err
 	}
@@ -35,8 +33,16 @@ func (a *Api) Address(address []byte) (*AddressResponse, error) {
 
 	return result, nil
 }
+func (a *Api) Balance(address string) (map[string]string, error) {
+	response, err := a.Address(address)
+	if err != nil {
+		return nil, err
+	}
 
-func (a *Api) Nonce(address []byte) (uint64, error) {
+	return response.Result.Balance, nil
+}
+
+func (a *Api) Nonce(address string) (uint64, error) {
 	response, err := a.Address(address)
 	if err != nil {
 		return 0, err

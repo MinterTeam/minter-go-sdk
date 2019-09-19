@@ -4,9 +4,8 @@ package api
 
 import (
 	"github.com/MinterTeam/minter-go-sdk/transaction"
-	"github.com/foxnut/go-hdwallet"
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"math/big"
-	"strings"
 	"testing"
 )
 
@@ -22,33 +21,28 @@ func TestApi_EstimateTxCommission(t *testing.T) {
 	}
 
 	mnemonic := "perfect bid satoshi giant cigar judge tonight possible harbor render else food"
-	master, err := hdwallet.NewKey(hdwallet.Mnemonic(mnemonic))
+	seed, err := wallet.Seed(mnemonic)
+	if err != nil {
+		t.Fatal(err)
+	}
+	mntWallet, err := wallet.NewWallet(seed)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	wallet, err := master.GetWallet(hdwallet.CoinType(hdwallet.ETH))
-	if err != nil {
-		t.Fatal(err)
-	}
-	address, err := wallet.GetAddress()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	addr := strings.Replace(strings.ToLower(address), "0x", "Mx", 1)
+	addr := mntWallet.Address()
 	wantAddress := "Mxeeee1973381ab793719fff497b9a516719fcd5a2"
 	if wantAddress != addr {
-		t.Fatalf("wallet address get %s, want %s", addr, wantAddress)
+		t.Fatalf("mntWallet address get %s, want %s", addr, wantAddress)
 	}
 
 	wantedPrKey := "ecc067573863f893f2195d550ff0d703d31e5a1255791e410ca7ff7cf5f0a7aa"
-	if wallet.GetKey().PrivateHex() != wantedPrKey {
-		t.Fatalf("privateKey get %s, want %s", wallet.GetKey().PrivateHex(), wantedPrKey)
+	if mntWallet.PrivateKey() != wantedPrKey {
+		t.Fatalf("privateKey get %s, want %s", mntWallet.PrivateKey(), wantedPrKey)
 	}
 
 	api := testApi
-	nonce, err := api.Nonce([]byte("Mxeeee1973381ab793719fff497b9a516719fcd5a2"))
+	nonce, err := api.Nonce("Mxeeee1973381ab793719fff497b9a516719fcd5a2")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,7 +51,7 @@ func TestApi_EstimateTxCommission(t *testing.T) {
 		SetNonce(nonce).
 		SetGasCoin("MNT").
 		SetGasPrice(1).
-		Sign(wallet.GetKey().Private.Serialize())
+		Sign(mntWallet.PrivateKey())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,5 +60,5 @@ func TestApi_EstimateTxCommission(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%#v", res)
+	t.Logf("%+v", res)
 }

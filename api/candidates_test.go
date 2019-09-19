@@ -9,5 +9,5 @@ func TestApi_Candidates(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%#v", response)
+	t.Logf("%+v", response)
 }

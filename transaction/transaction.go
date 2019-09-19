@@ -113,7 +113,10 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 		return transaction.setType(TypeSetCandidateOnline), nil
 	case *SetCandidateOffData:
 		return transaction.setType(TypeSetCandidateOffline), nil
-
+	//case *CreateMultisigData:
+	//	return transaction.setType(TypeCreateMultisig), nil
+	case *MultiMultisendDataItem:
+		return transaction.setType(TypeMultisend), nil
 	case *EditCandidateData:
 		return transaction.setType(TypeEditCandidate), nil
 

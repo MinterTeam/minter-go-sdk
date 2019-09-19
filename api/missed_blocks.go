@@ -8,7 +8,7 @@ import (
 type MissedBlocksResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
-	Result  []struct {
+	Result  struct {
 		MissedBlocks      string `json:"missed_blocks"`
 		MissedBlocksCount string `json:"missed_blocks_count"`
 	} `json:"result,omitempty"`

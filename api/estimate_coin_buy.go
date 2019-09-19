@@ -9,7 +9,7 @@ type EstimateCoinBuyResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  struct {
-		WillGet    string `json:"will_get"`
+		WillPay    string `json:"will_pay"`
 		Commission string `json:"commission"`
 	} `json:"result,omitempty"`
 	Error struct {

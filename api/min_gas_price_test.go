@@ -11,5 +11,5 @@ func TestApi_MinGasPrice(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%#v", response)
+	t.Logf("%+v", response)
 }
