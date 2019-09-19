@@ -3,13 +3,11 @@ package transaction
 import (
 	"encoding/hex"
 	"math/big"
-	"strings"
 	"testing"
 )
 
 func TestTransactionSend_Sign(t *testing.T) {
-	value := big.NewInt(1)
-	pipValue := value.String() + strings.Repeat("0", 18)
+	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
 	symbolMNT := "MNT"
 	data, err := NewSendData().
@@ -29,8 +27,8 @@ func TestTransactionSend_Sign(t *testing.T) {
 		t.Errorf("SendData.To got %s, want %s", string(data.To[:]), string(addressBytes))
 	}
 
-	if data.Value.String() != pipValue {
-		t.Errorf("SendData.Value got %s, want %s", data.Value.String(), pipValue)
+	if data.Value.String() != value.String() {
+		t.Errorf("SendData.Value got %s, want %s", data.Value.String(), value.String())
 	}
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {

@@ -42,7 +42,7 @@ func (d *MultisendDataItem) MustSetTo(address string) *MultisendDataItem {
 }
 
 func (d *MultisendDataItem) SetValue(value *big.Int) *MultisendDataItem {
-	d.Value = big.NewInt(0).Mul(value, expPip)
+	d.Value = value
 	return d
 }
 

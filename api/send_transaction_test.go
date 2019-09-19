@@ -12,7 +12,7 @@ import (
 func TestApi_Send(t *testing.T) {
 	data := transaction.NewSendData().
 		SetCoin("MNT").
-		SetValue(big.NewInt(1)).
+		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 		MustSetTo("Mxee81347211c72524338f9680072af90744333146")
 
 	newTransaction, err := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)

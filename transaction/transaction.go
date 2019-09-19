@@ -13,10 +13,6 @@ import (
 	"strings"
 )
 
-var (
-	expPip = big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)
-)
-
 type Type byte
 
 const (

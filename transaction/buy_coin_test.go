@@ -8,9 +8,9 @@ import (
 func TestTransactionBuyCoin_Sign(t *testing.T) {
 	data := NewBuyCoinData().
 		SetCoinToBuy("TEST").
-		SetValueToBuy(big.NewInt(1)).
+		SetValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 		SetCoinToSell("MNT").
-		SetMaximumValueToSell(big.NewInt(1))
+		SetMaximumValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
 
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {

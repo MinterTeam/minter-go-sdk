@@ -9,7 +9,7 @@ func TestTransactionSellAllCoin_Sign(t *testing.T) {
 	data := NewSellAllCoinData().
 		SetCoinToSell("MNT").
 		SetCoinToBuy("TEST").
-		SetMinimumValueToBuy(big.NewInt(1))
+		SetMinimumValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
 
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {

@@ -38,7 +38,7 @@ func (d *SendData) MustSetTo(address string) *SendData {
 }
 
 func (d *SendData) SetValue(value *big.Int) *SendData {
-	d.Value = big.NewInt(0).Mul(value, expPip)
+	d.Value = value
 	return d
 }
 

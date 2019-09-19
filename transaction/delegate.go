@@ -39,7 +39,7 @@ func (d *DelegateData) SetCoin(symbol string) *DelegateData {
 }
 
 func (d *DelegateData) SetStake(value *big.Int) *DelegateData {
-	d.Stake = big.NewInt(0).Mul(value, expPip)
+	d.Stake = value
 	return d
 }
 

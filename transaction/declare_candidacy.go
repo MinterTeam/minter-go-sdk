@@ -63,7 +63,7 @@ func (d *DeclareCandidacyData) SetCoin(symbol string) *DeclareCandidacyData {
 }
 
 func (d *DeclareCandidacyData) SetStake(value *big.Int) *DeclareCandidacyData {
-	d.Stake = big.NewInt(0).Mul(value, expPip)
+	d.Stake = value
 	return d
 }
 

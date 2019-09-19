@@ -39,7 +39,7 @@ func (d *UnbondData) SetCoin(symbol string) *UnbondData {
 }
 
 func (d *UnbondData) SetValue(value *big.Int) *UnbondData {
-	d.Value = big.NewInt(0).Mul(value, expPip)
+	d.Value = value
 	return d
 }
 

@@ -26,7 +26,7 @@ func (d *SellAllCoinData) SetCoinToBuy(symbol string) *SellAllCoinData {
 }
 
 func (d *SellAllCoinData) SetMinimumValueToBuy(value *big.Int) *SellAllCoinData {
-	d.MinimumValueToBuy = big.NewInt(0).Mul(value, expPip)
+	d.MinimumValueToBuy = value
 	return d
 }
 

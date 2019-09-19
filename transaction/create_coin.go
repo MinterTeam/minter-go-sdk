@@ -28,12 +28,12 @@ func (d *CreateCoinData) SetSymbol(symbol string) *CreateCoinData {
 }
 
 func (d *CreateCoinData) SetInitialReserve(value *big.Int) *CreateCoinData {
-	d.InitialReserve = big.NewInt(0).Mul(value, expPip)
+	d.InitialReserve = value
 	return d
 }
 
 func (d *CreateCoinData) SetInitialAmount(value *big.Int) *CreateCoinData {
-	d.InitialAmount = big.NewInt(0).Mul(value, expPip)
+	d.InitialAmount = value
 	return d
 }
 
