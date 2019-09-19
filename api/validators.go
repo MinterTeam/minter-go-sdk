@@ -11,12 +11,12 @@ type ValidatorsResponse struct {
 	Result  []struct {
 		PubKey      string `json:"pub_key"`
 		VotingPower string `json:"voting_power"`
-	} `json:"result"`
+	} `json:"result,omitempty"`
 	Error struct {
-		Code    int    `json:"code"`
+		Code    int    `json:"code,omitempty"`
 		Message string `json:"message"`
 		Data    string `json:"data"`
-	} `json:"error"`
+	} `json:"error,omitempty"`
 }
 
 func (a *Api) Validators(height int) (*ValidatorsResponse, error) {

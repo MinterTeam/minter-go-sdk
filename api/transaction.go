@@ -8,12 +8,12 @@ import (
 type TransactionResponse struct {
 	Jsonrpc string      `json:"jsonrpc"`
 	ID      string      `json:"id"`
-	Result  Transaction `json:"result"`
+	Result  Transaction `json:"result,omitempty"`
 	Error   struct {
-		Code    int    `json:"code"`
+		Code    int    `json:"code,omitempty"`
 		Message string `json:"message"`
 		Data    string `json:"data"`
-	} `json:"error"`
+	} `json:"error,omitempty"`
 }
 
 type Transaction struct {

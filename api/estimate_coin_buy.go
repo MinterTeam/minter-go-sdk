@@ -11,12 +11,12 @@ type EstimateCoinBuyResponse struct {
 	Result  struct {
 		WillGet    string `json:"will_get"`
 		Commission string `json:"commission"`
-	} `json:"result"`
+	} `json:"result,omitempty"`
 	Error struct {
-		Code    int    `json:"code"`
+		Code    int    `json:"code,omitempty"`
 		Message string `json:"message"`
 		Data    string `json:"data"`
-	} `json:"error"`
+	} `json:"error,omitempty"`
 }
 
 func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResponse, error) {

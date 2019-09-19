@@ -12,12 +12,12 @@ type EventsResponse struct {
 		Events []struct {
 			//todo
 		} `json:"events"`
-	} `json:"result"`
+	} `json:"result,omitempty"`
 	Error struct {
-		Code    int    `json:"code"`
+		Code    int    `json:"code,omitempty"`
 		Message string `json:"message"`
 		Data    string `json:"data"`
-	} `json:"error"`
+	} `json:"error,omitempty"`
 }
 
 func (a *Api) Events(height int) (*EventsResponse, error) {

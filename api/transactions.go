@@ -6,6 +6,7 @@ import (
 )
 
 type TransactionsResponse struct {
+	//todo
 }
 
 func (a *Api) Transactions(query string, page int, perPage int) (*TransactionsResponse, error) {

@@ -14,16 +14,16 @@ type SendResponse struct {
 		Data string `json:"data"`
 		Log  string `json:"log"`
 		Hash string `json:"hash"`
-	} `json:"result"`
+	} `json:"result,omitempty"`
 	Error struct {
-		Code     int    `json:"code"`
+		Code     int    `json:"code,omitempty"`
 		Message  string `json:"message"`
 		Data     string `json:"data"`
 		TxResult struct {
 			Code int    `json:"code"`
 			Log  string `json:"log"`
 		} `json:"tx_result"`
-	} `json:"error"`
+	} `json:"error,omitempty"`
 }
 
 func (a *Api) Send(transaction transaction.SignedTransaction) (*SendResponse, error) {

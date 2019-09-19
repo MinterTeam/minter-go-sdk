@@ -11,12 +11,12 @@ type EstimateTxCommissionResponse struct {
 	ID      string `json:"id"`
 	Result  struct {
 		Commission string `json:"commission"`
-	} `json:"result"`
+	} `json:"result,omitempty"`
 	Error struct {
-		Code    int    `json:"code"`
+		Code    int    `json:"code,omitempty"`
 		Message string `json:"message"`
 		Data    string `json:"data"`
-	} `json:"error"`
+	} `json:"error,omitempty"`
 }
 
 func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*EstimateTxCommissionResponse, error) {
