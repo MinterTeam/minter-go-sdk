@@ -41,7 +41,7 @@ func NewWallet(seed []byte) (*Wallet, error) {
 }
 
 func (w *Wallet) Address() string {
-	return addressToLowerPrefix04toMx(crypto.PubkeyToAddress(*w.wallet.GetKey().PublicECDSA).Hex())
+	return addressToLowerPrefix0xToMx(crypto.PubkeyToAddress(*w.wallet.GetKey().PublicECDSA).Hex())
 }
 
 func (w *Wallet) PrivateKey() string {
@@ -49,7 +49,7 @@ func (w *Wallet) PrivateKey() string {
 }
 
 func (w *Wallet) PublicKey() string {
-	return pubPrefix04toMp(w.wallet.GetKey().PublicHex(false))
+	return pubPrefix04ToMp(w.wallet.GetKey().PublicHex(false))
 }
 
 func AddressByPublicKey(publicKey string) (string, error) {
@@ -57,7 +57,7 @@ func AddressByPublicKey(publicKey string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return addressToLowerPrefix04toMx(common.BytesToAddress(crypto.Keccak256(bytes)[12:]).String()), nil
+	return addressToLowerPrefix0xToMx(common.BytesToAddress(crypto.Keccak256(bytes)[12:]).String()), nil
 }
 
 func PublicKeyByPrivateKey(privateKey string) (string, error) {
@@ -65,13 +65,13 @@ func PublicKeyByPrivateKey(privateKey string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return pubPrefix04toMp(hex.EncodeToString(crypto.FromECDSAPub(key.Public().(*ecdsa.PublicKey)))), nil
+	return pubPrefix04ToMp(hex.EncodeToString(crypto.FromECDSAPub(key.Public().(*ecdsa.PublicKey)))), nil
 }
 
-func addressToLowerPrefix04toMx(key string) string {
+func addressToLowerPrefix0xToMx(key string) string {
 	return strings.Replace(strings.ToLower(key), "0x", "Mx", 1)
 }
 
-func pubPrefix04toMp(key string) string {
+func pubPrefix04ToMp(key string) string {
 	return strings.Replace(key, "04", "Mp", 1)
 }
