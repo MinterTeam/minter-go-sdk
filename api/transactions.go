@@ -6,7 +6,14 @@ import (
 )
 
 type TransactionsResponse struct {
-	//todo
+	Jsonrpc string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  []Transaction `json:"result,omitempty"`
+	Error   struct {
+		Code    int    `json:"code,omitempty"`
+		Message string `json:"message"`
+		Data    string `json:"data"`
+	} `json:"error,omitempty"`
 }
 
 func (a *Api) Transactions(query string, page int, perPage int) (*TransactionsResponse, error) {

@@ -10,7 +10,13 @@ type EventsResponse struct {
 	ID      string `json:"id"`
 	Result  struct {
 		Events []struct {
-			//todo
+			Type  string `json:"type"`
+			Value struct {
+				Role            string `json:"role"`
+				Address         string `json:"address"`
+				Amount          string `json:"amount"`
+				ValidatorPubKey string `json:"validator_pub_key"`
+			} `json:"value"`
 		} `json:"events"`
 	} `json:"result,omitempty"`
 	Error struct {
@@ -23,9 +29,7 @@ type EventsResponse struct {
 func (a *Api) Events(height int) (*EventsResponse, error) {
 
 	params := make(map[string]string)
-	if height > 0 {
-		params["height"] = strconv.Itoa(height)
-	}
+	params["height"] = strconv.Itoa(height)
 
 	res, err := a.client.R().SetQueryParams(params).Get("/events")
 	if err != nil {
