@@ -27,23 +27,23 @@ This is a pure Go SDK for working with **Minter** blockchain
 	    - [Validators](#validators)
 * [Minter SDK]()
 	- [Sign transaction]()
-		- [Send]()
-		- [SellCoin]()
-        - [SellAllCoin]()
-        - [BuyCoin]()
-        - [CreateCoin]()
-        - [DeclareCandidacy]()
-        - [Delegate]()
-        - [SetCandidateOn]()
-        - [SetCandidateOff]()
-        - [RedeemCheck]()
-        - [Unbond]()
-        - [MultiSend]()
-        - [EditCandidate]()
+		- [Send](#send-transaction)
+		- [SellCoin](#sell-coin-transaction)
+        - [SellAllCoin](#sell-all-coin-transaction)
+        - [BuyCoin](#buy-coin-transaction)
+        - [CreateCoin](#create-coin-transaction)
+        - [DeclareCandidacy](#declare-candidacy-transaction)
+        - [Delegate](#delegate-transaction)
+        - [SetCandidateOn](#set-candidate-online-transaction)
+        - [SetCandidateOff](#set-candidate-offline-transaction)
+        - [RedeemCheck](#redeemCheck-transaction)
+        - [Unbond](#unbond-transaction)
+        - [Multisend](#multisend-transaction)
+        - [EditCandidate](#edit-candidate-transaction)
 	- [Get fee of transaction]()
 	- [Get hash of transaction]()
 	- [Decode Transaction]()
-	- [Minter Check]()
+	- [Minter Check](#minter-check)
 	- [Minter Wallet]()		
 * [Tests](#tests)
 
@@ -376,6 +376,233 @@ response, err := testApi.Validators(0)
 
 // &{Jsonrpc:2.0 ID: Result:{NTxs:1 Total:1 TotalBytes:127 Txs:[+H2CBCsBAYpCSVAAAAAAAAAAAqHgikVMRU1FTlRFQU2I/UJtUgpTg9qKQklQAAAAAAAAAICAgAG4RfhDHKDsD5xZshsnkggx3wKDVwiqUp/nDXnDhmSGfQh0NzrPwKBRipVy1aoAsyL96eRNhJv2Xaar7sihdLkaBu4e0XJx/w==]} Error:{Code:0 Message: Data:}}
 ```
+
+## Using MinterSDK
+
+### Sign transaction
+
+Returns a signed tx.
+
+##### Example
+
+```
+var data DataInterface
+// data = ...
+tx, _ := NewBuilder(TestNetChainID).NewTransaction(data)
+tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
+signedTx, _ := tx.Sign(privatKey)
+api.Send(signedTx)
+```
+
+#### Send transaction
+
+Transaction for sending arbitrary coin.
+
+Coin - Symbol of a coin. To - Recipient address in Minter Network. Value - Amount of Coin to send.
+
+##### Example
+
+```
+value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)) // 1000000000000000000
+address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
+symbolMNT := "MNT"
+data, _ := NewSendData().SetCoin(symbolMNT).SetValue(value).SetTo(address)
+```
+
+#### Sell coin transaction
+
+Transaction for selling one coin (owned by sender) in favour of another coin in a system.
+
+CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give. CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get.
+
+##### Example
+
+```
+data := NewSellCoinData().
+	SetCoinToSell("MNT").
+	SetValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+	SetCoinToBuy("TEST").
+	SetMinimumValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```
+
+#### Sell all coin transaction
+
+Transaction for selling one coin (owned by sender) in favour of another coin in a system.
+
+CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give. CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get
+
+##### Example
+
+```
+data := NewSellAllCoinData().
+	SetCoinToSell("MNT").
+	SetCoinToBuy("TEST").
+	SetMinimumValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```
+
+#### Buy coin transaction
+
+Transaction for buy a coin paying another coin (owned by sender).
+
+CoinToBuy - Symbol of a coin to get. ValueToBuy - Amount of CoinToBuy to get. CoinToSell - Symbol of a coin to give. MaximumValueToSell - Maximum value of coins to sell.
+
+##### Example
+
+```
+data := NewBuyCoinData().
+	SetCoinToBuy("TEST").
+	SetValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+	SetCoinToSell("MNT").
+	SetMaximumValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```
+
+#### Create coin transaction
+
+Transaction for creating new coin in a system.
+
+Name - Name of a coin. Arbitrary string up to 64 letters length. Symbol - Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length. InitialAmount - Amount of coins to issue. Issued coins will be available to sender account. InitialReserve - Initial reserve in BIP's. ConstantReserveRatio - CRR, uint, should be from 10 to 100.
+
+##### Example
+
+```
+data := NewCreateCoinData().
+	SetName("SUPER TEST").
+	SetSymbol("SPRTEST").
+	SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+	SetInitialReserve(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+	SetConstantReserveRatio(10)
+```
+
+#### Declare candidacy transaction
+
+Transaction for declaring new validator candidacy.
+
+Address - Address of candidate in Minter Network. This address would be able to control candidate. Also all rewards will be sent to this address. PubKey - Public key of a validator. Commission - Commission (from 0 to 100) from rewards which delegators will pay to validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+
+##### Example
+
+```
+data, _ := NewDeclareCandidacyData().
+	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
+	SetCommission(10).
+	SetCoin("MNT").
+	SetStake(big.NewInt(0).Mul(big.NewInt(5), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+	SetAddress("Mx9f7fd953c2c69044b901426831ed03ee0bd0597a")
+```
+
+#### Delegate transaction
+
+Transaction for delegating funds to validator.
+
+PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+
+##### Example
+
+```
+data := NewDelegateData().
+	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
+	SetCoin("MNT").
+	SetStake(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```
+
+#### Unbond transaction
+
+Transaction for unbonding funds from validator's stake.
+
+PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+
+##### Example
+
+```
+data := NewUnbondData().
+	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
+	SetCoin("MNT").
+	SetValue(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```
+
+#### Redeem check transaction
+
+Transaction for redeeming a check.
+
+RawCheck - Raw check received from sender. Proof - Proof of owning a check.
+
+Note that maximum GasPrice is limited to 1 to prevent fraud, because GasPrice is set by redeem tx sender but commission is charded from check issuer.
+
+##### Example
+
+```
+data := NewRedeemCheckData().
+	MustSetProof("da021d4f84728e0d3d312a18ec84c21768e0caa12a53cb0a1452771f72b0d1a91770ae139fd6c23bcf8cec50f5f2e733eabb8482cf29ee540e56c6639aac469600").
+	MustSetRawCheck("Mcf89b01830f423f8a4d4e5400000000000000843b9aca00b8419b3beac2c6ad88a8bd54d24912754bb820e58345731cb1b9bc0885ee74f9e50a58a80aa990a29c98b05541b266af99d3825bb1e5ed4e540c6e2f7c9b40af9ecc011ca00f7ba6d0aa47d74274b960fba02be03158d0374b978dcaa5f56fc7cf1754f821a019a829a3b7bba2fc290f5c96e469851a3876376d6a6a4df937327b3a5e9e8297")
+```
+
+#### Set candidate online transaction
+
+Transaction for turning candidate on. This transaction should be sent from address which is set in the "Declare candidacy transaction".
+
+PubKey - Public key of a validator.
+
+##### Example
+
+```
+data, _ := NewSetCandidateOnData().
+	SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
+```
+
+#### Set candidate offline transaction
+
+Transaction for turning candidate off. This transaction should be sent from address which is set in the "Declare candidacy transaction".
+
+PubKey - Public key of a validator.
+
+##### Example
+
+```
+data, _ := NewSetCandidateOffData().
+	SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
+```
+
+#### Create multisig address
+
+Transaction for creating multisignature address.
+
+#### Multisend transaction
+
+Transaction for sending coins to multiple addresses.
+
+##### Example
+
+```
+symbolMNT := "MNT"
+data := NewMultiMultisendDataItem().AddItem(
+	*NewMultisendDataItem().
+		SetCoin(symbolMNT).
+		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
+		MustSetTo("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"),
+).AddItem(*NewMultisendDataItem().
+	SetCoin(symbolMNT).
+	SetValue(big.NewInt(0).Mul(big.NewInt(2), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
+	MustSetTo("Mxddab6281766ad86497741ff91b6b48fe85012e3c"),
+)
+```
+
+#### Edit candidate transaction
+
+Transaction for editing existing candidate
+
+##### Example
+
+```
+data := NewEditCandidateData().
+		MustSetPubKey("Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8").
+		MustSetOwnerAddress("Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0").
+		MustSetRewardAddress("Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47")
+```
+
+### Minter Check
+
+Minter Check is like an ordinary bank check. Each user of network can issue check with any amount of coins and pass it to another person. Receiver will be able to cash a check from arbitrary account.
+
 
 ## Tests
 
