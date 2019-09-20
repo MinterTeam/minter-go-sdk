@@ -39,3 +39,7 @@ func (d *BuyCoinData) SetMaximumValueToSell(value *big.Int) *BuyCoinData {
 func (d *BuyCoinData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *BuyCoinData) fee() Fee {
+	return feeTypeBuyCoin
+}

@@ -54,3 +54,6 @@ func (d *MultiMultisendDataItem) AddItem(item MultisendDataItem) *MultiMultisend
 func (d *MultiMultisendDataItem) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+func (d *MultiMultisendDataItem) fee() Fee {
+	return Fee(10 + (len(d.List)-1)*5)
+}

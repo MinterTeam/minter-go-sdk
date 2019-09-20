@@ -45,3 +45,7 @@ func (d *SendData) SetValue(value *big.Int) *SendData {
 func (d *SendData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *SendData) fee() Fee {
+	return feeTypeSend
+}

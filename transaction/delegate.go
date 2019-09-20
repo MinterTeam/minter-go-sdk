@@ -46,3 +46,7 @@ func (d *DelegateData) SetStake(value *big.Int) *DelegateData {
 func (d *DelegateData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *DelegateData) fee() Fee {
+	return feeTypeDelegate
+}

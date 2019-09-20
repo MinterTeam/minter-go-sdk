@@ -46,3 +46,7 @@ func (d *UnbondData) SetValue(value *big.Int) *UnbondData {
 func (d *UnbondData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *UnbondData) fee() Fee {
+	return feeTypeUnbond
+}

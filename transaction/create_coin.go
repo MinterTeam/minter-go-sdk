@@ -45,3 +45,7 @@ func (d *CreateCoinData) SetConstantReserveRatio(ratio uint) *CreateCoinData {
 func (d *CreateCoinData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *CreateCoinData) fee() Fee {
+	return feeTypeCreateCoin
+}

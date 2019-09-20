@@ -68,3 +68,7 @@ func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData,
 func (d *EditCandidateData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *EditCandidateData) fee() Fee {
+	return feeTypeEditCandidate
+}

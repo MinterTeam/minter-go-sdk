@@ -32,3 +32,6 @@ func (d *SetCandidateOnData) MustSetPubKey(key string) *SetCandidateOnData {
 func (d *SetCandidateOnData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+func (d *SetCandidateOnData) fee() Fee {
+	return feeTypeSetCandidateOnline
+}

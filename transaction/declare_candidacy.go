@@ -70,3 +70,7 @@ func (d *DeclareCandidacyData) SetStake(value *big.Int) *DeclareCandidacyData {
 func (d *DeclareCandidacyData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *DeclareCandidacyData) fee() Fee {
+	return feeTypeDeclareCandidacy
+}

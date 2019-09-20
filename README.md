@@ -40,11 +40,11 @@ This is a pure Go SDK for working with **Minter** blockchain
         - [Unbond](#unbond-transaction)
         - [Multisend](#multisend-transaction)
         - [EditCandidate](#edit-candidate-transaction)
-	- [Get fee of transaction]()
-	- [Get hash of transaction]()
-	- [Decode Transaction]()
+	- [Get fee of transaction](#get-fee-of-transaction)
+	- [Get hash of transaction](#get-hash-of-transaction)
+	- [Decode Transaction](#decode-transaction)
 	- [Minter Check](#minter-check)
-	- [Minter Wallet]()		
+	- [Minter Wallet](#minter-wallet)		
 * [Tests](#tests)
 
 ## Installing
@@ -599,9 +599,31 @@ data := NewEditCandidateData().
 		MustSetRewardAddress("Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47")
 ```
 
+### Get fee of transaction
+
+```
+signedTransaction, _ := transaction.Sign(privateKey)
+fee := signedTransaction.Fee()
+```
+
+### Get hash of transaction
+
+```
+
+```
+
+### Decode Transaction
+
+```
+
+```
+
 ### Minter Check
 
 Minter Check is like an ordinary bank check. Each user of network can issue check with any amount of coins and pass it to another person. Receiver will be able to cash a check from arbitrary account.
+
+### Minter Wallet
+
 
 
 ## Tests

@@ -86,35 +86,40 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 		Data:          dataBytes,
 	}
 
+	object := object{
+		Transaction: transaction,
+		fee:         uint(data.fee()),
+	}
+
 	switch data.(type) {
 	case *SendData:
-		return transaction.setType(TypeSend), nil
+		return object.setType(TypeSend), nil
 	case *SellCoinData:
-		return transaction.setType(TypeSellCoin), nil
+		return object.setType(TypeSellCoin), nil
 	case *SellAllCoinData:
-		return transaction.setType(TypeSellAllCoin), nil
+		return object.setType(TypeSellAllCoin), nil
 	case *BuyCoinData:
-		return transaction.setType(TypeBuyCoin), nil
+		return object.setType(TypeBuyCoin), nil
 	case *CreateCoinData:
-		return transaction.setType(TypeCreateCoin), nil
+		return object.setType(TypeCreateCoin), nil
 	case *DeclareCandidacyData:
-		return transaction.setType(TypeDeclareCandidacy), nil
+		return object.setType(TypeDeclareCandidacy), nil
 	case *DelegateData:
-		return transaction.setType(TypeDelegate), nil
+		return object.setType(TypeDelegate), nil
 	case *UnbondData:
-		return transaction.setType(TypeUnbond), nil
+		return object.setType(TypeUnbond), nil
 	case *RedeemCheckData:
-		return transaction.setType(TypeRedeemCheck), nil
+		return object.setType(TypeRedeemCheck), nil
 	case *SetCandidateOnData:
-		return transaction.setType(TypeSetCandidateOnline), nil
+		return object.setType(TypeSetCandidateOnline), nil
 	case *SetCandidateOffData:
-		return transaction.setType(TypeSetCandidateOffline), nil
+		return object.setType(TypeSetCandidateOffline), nil
 	//case *CreateMultisigData:
 	//	return transaction.setType(TypeCreateMultisig), nil
 	case *MultiMultisendDataItem:
-		return transaction.setType(TypeMultisend), nil
+		return object.setType(TypeMultisend), nil
 	case *EditCandidateData:
-		return transaction.setType(TypeEditCandidate), nil
+		return object.setType(TypeEditCandidate), nil
 
 	default:
 		return nil, errors.New("") //todo
@@ -123,18 +128,37 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 
 type DataInterface interface {
 	encode() ([]byte, error)
+	fee() Fee
 }
 
 type SignedTransaction interface {
 	Encode() ([]byte, error)
+	Fee() *big.Int
 }
 
 type Interface interface {
 	setType(t Type) Interface
+	setFee(commission Fee) Interface
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
 	Sign(prKey string) (SignedTransaction, error)
+}
+
+type object struct {
+	*Transaction
+	fee uint
+}
+
+func (o *object) Fee() *big.Int {
+	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.fee)), big.NewInt(1000000000000000))
+	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
+	//todo: testing
+	return big.NewInt(0).Mul(gasPrice, commission)
+}
+
+func (o *object) setFee(commission Fee) Interface {
+	return o
 }
 
 type Transaction struct {
@@ -156,23 +180,23 @@ type Signature struct {
 	S *big.Int
 }
 
-func (tx *Transaction) setType(t Type) Interface {
-	tx.Type = t
-	return tx
+func (o *object) setType(t Type) Interface {
+	o.Type = t
+	return o
 }
-func (tx *Transaction) SetNonce(nonce uint64) Interface {
-	tx.Nonce = nonce
-	return tx
-}
-
-func (tx *Transaction) SetGasCoin(name string) Interface {
-	copy(tx.GasCoin[:], name)
-	return tx
+func (o *object) SetNonce(nonce uint64) Interface {
+	o.Nonce = nonce
+	return o
 }
 
-func (tx *Transaction) SetGasPrice(price uint8) Interface {
-	tx.GasPrice = price
-	return tx
+func (o *object) SetGasCoin(name string) Interface {
+	copy(o.GasCoin[:], name)
+	return o
+}
+
+func (o *object) SetGasPrice(price uint8) Interface {
+	o.GasPrice = price
+	return o
 }
 
 func (tx *Transaction) Encode() ([]byte, error) {
@@ -186,22 +210,22 @@ func (tx *Transaction) Encode() ([]byte, error) {
 	return dst, err
 }
 
-func (tx *Transaction) Sign(prKey string) (SignedTransaction, error) {
+func (o *object) Sign(prKey string) (SignedTransaction, error) {
 	privateKey, err := ethcrypto.HexToECDSA(prKey)
 	if err != nil {
 		return nil, err
 	}
 
 	x := []interface{}{
-		tx.Nonce,
-		tx.ChainID,
-		tx.GasPrice,
-		tx.GasCoin,
-		tx.Type,
-		tx.Data,
-		tx.Payload,
-		tx.ServiceData,
-		tx.SignatureType,
+		o.Transaction.Nonce,
+		o.Transaction.ChainID,
+		o.Transaction.GasPrice,
+		o.Transaction.GasCoin,
+		o.Transaction.Type,
+		o.Transaction.Data,
+		o.Transaction.Payload,
+		o.Transaction.ServiceData,
+		o.Transaction.SignatureType,
 	}
 
 	var h [32]byte
@@ -218,7 +242,7 @@ func (tx *Transaction) Sign(prKey string) (SignedTransaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	tx.SignatureData, err = rlp.EncodeToBytes(&Signature{
+	o.Transaction.SignatureData, err = rlp.EncodeToBytes(&Signature{
 		R: new(big.Int).SetBytes(sig[:32]),
 		S: new(big.Int).SetBytes(sig[32:64]),
 		V: new(big.Int).SetBytes([]byte{sig[64] + 27}),
@@ -227,7 +251,7 @@ func (tx *Transaction) Sign(prKey string) (SignedTransaction, error) {
 		return nil, err
 	}
 
-	return tx, nil
+	return o, nil
 }
 
 func AddressToHex(address string) ([]byte, error) {
