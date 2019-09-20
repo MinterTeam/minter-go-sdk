@@ -19,8 +19,15 @@ type AddressResponse struct {
 	} `json:"error,omitempty"`
 }
 
-func (a *Api) Address(address string) (*AddressResponse, error) {
-	res, err := a.client.R().SetQueryParam("address", address).Get("/address")
+func (a *Api) Address(address string, height int) (*AddressResponse, error) {
+
+	params := make(map[string]string)
+	params["address"] = address
+	if height > 0 {
+		params["height"] = strconv.Itoa(height)
+	}
+
+	res, err := a.client.R().SetQueryParams(params).Get("/address")
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +40,9 @@ func (a *Api) Address(address string) (*AddressResponse, error) {
 
 	return result, nil
 }
-func (a *Api) Balance(address string) (map[string]string, error) {
-	response, err := a.Address(address)
+
+func (a *Api) Balance(address string, height int) (map[string]string, error) {
+	response, err := a.Address(address, height)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +51,7 @@ func (a *Api) Balance(address string) (map[string]string, error) {
 }
 
 func (a *Api) Nonce(address string) (uint64, error) {
-	response, err := a.Address(address)
+	response, err := a.Address(address, 0)
 	if err != nil {
 		return 0, err
 	}
