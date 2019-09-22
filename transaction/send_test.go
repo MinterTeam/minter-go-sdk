@@ -39,7 +39,7 @@ func TestTransactionSend_Sign(t *testing.T) {
 	gasPrice := uint8(1)
 
 	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
-	transaction := tx.(*Transaction)
+	transaction := tx.(*object)
 
 	if transaction.Nonce != nonce {
 		t.Errorf("Nonce got %d, want %d", transaction.Nonce, nonce)
