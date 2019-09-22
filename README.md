@@ -624,7 +624,41 @@ Minter Check is like an ordinary bank check. Each user of network can issue chec
 
 ### Minter Wallet
 
+* Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
 
+```
+walletData, _ = wallet.Create();
+```
+
+* Generate mnemonic.
+
+```
+mnemonic, _ = wallet.NewMnemonic()
+```
+
+* Get seed from mnemonic.
+
+```
+seed, _ := wallet.Seed(mnemonic)
+```
+
+* Get private key from seed.
+
+```
+
+```
+
+* Get public key from private key.
+
+```
+pubKey, _ := wallet.PublicKeyByPrivateKey(validPrivateKey)
+```
+
+* Get Minter address from public key.
+
+```
+address, _ := wallet.AddressByPublicKey(validPublicKey)
+```
 
 ## Tests
 

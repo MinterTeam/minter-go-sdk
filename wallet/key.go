@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/foxnut/go-hdwallet"
 	"github.com/tyler-smith/go-bip39"
 	"strings"
 )
@@ -22,34 +21,6 @@ func NewMnemonic() (string, error) {
 
 func Seed(mnemonic string) ([]byte, error) {
 	return bip39.NewSeedWithErrorChecking(mnemonic, "")
-}
-
-type Wallet struct {
-	wallet hdwallet.Wallet
-}
-
-func NewWallet(seed []byte) (*Wallet, error) {
-	masterKey, err := hdwallet.NewKey(hdwallet.Seed(seed))
-	if err != nil {
-		return nil, err
-	}
-	wallet, err := masterKey.GetWallet(hdwallet.CoinType(hdwallet.ETH))
-	if err != nil {
-		return nil, err
-	}
-	return &Wallet{wallet: wallet}, nil
-}
-
-func (w *Wallet) Address() string {
-	return addressToLowerPrefix0xToMx(crypto.PubkeyToAddress(*w.wallet.GetKey().PublicECDSA).Hex())
-}
-
-func (w *Wallet) PrivateKey() string {
-	return w.wallet.GetKey().PrivateHex()
-}
-
-func (w *Wallet) PublicKey() string {
-	return pubPrefix04ToMp(w.wallet.GetKey().PublicHex(false))
 }
 
 func AddressByPublicKey(publicKey string) (string, error) {
