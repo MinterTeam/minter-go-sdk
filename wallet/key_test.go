@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestSeed(t *testing.T) {
+func TestMnemonicBySeed(t *testing.T) {
 	mnemonic := "suffer draft bacon typical start retire air sniff large biology mail diagram"
 	seed, err := Seed(mnemonic)
 	if err != nil {
@@ -14,6 +14,24 @@ func TestSeed(t *testing.T) {
 
 	if hex.EncodeToString(seed) != validSeed {
 		t.Fatalf("seed got %s, want %s", hex.EncodeToString(seed), validSeed)
+	}
+}
+
+func TestPrivateKeyBySeed(t *testing.T) {
+	bytes, err := hex.DecodeString(validSeed)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	seed := bytes
+
+	prKey, err := PrivateKeyBySeed(seed)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if prKey != validPrivateKey {
+		t.Fatalf("PublicKey got %s, want %s", prKey, validPrivateKey)
 	}
 }
 

@@ -25,6 +25,16 @@ func Seed(mnemonic string) ([]byte, error) {
 	return bip39.NewSeedWithErrorChecking(mnemonic, "")
 }
 
+// Get private key from seed.
+func PrivateKeyBySeed(seed []byte) (string, error) {
+	wallet, err := NewWallet(seed)
+	if err != nil {
+		return "", err
+	}
+	return wallet.PrivateKey(), nil
+}
+
+// Get Minter address from public key.
 func AddressByPublicKey(publicKey string) (string, error) {
 	bytes, err := hex.DecodeString(publicKey[2:])
 	if err != nil {

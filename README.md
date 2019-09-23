@@ -624,6 +624,10 @@ Minter Check is like an ordinary bank check. Each user of network can issue chec
 
 ### Minter Wallet
 
+```
+import "github.com/MinterTeam/minter-go-sdk/wallet"
+```
+
 * Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
 
 ```
@@ -645,7 +649,7 @@ seed, _ := wallet.Seed(mnemonic)
 * Get private key from seed.
 
 ```
-
+prKey, _ := wallet.PrivateKeyBySeed(seed)
 ```
 
 * Get public key from private key.
