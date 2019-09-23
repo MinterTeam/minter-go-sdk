@@ -609,7 +609,7 @@ fee := signedTransaction.Fee()
 ### Get hash of transaction
 
 ```
-
+hash, _ := signedTransaction.Hash()
 ```
 
 ### Decode Transaction

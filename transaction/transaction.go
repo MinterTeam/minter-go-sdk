@@ -1,11 +1,11 @@
 package transaction
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	//"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/common/math"
-	ethcrypto "github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
@@ -134,6 +134,7 @@ type DataInterface interface {
 type SignedTransaction interface {
 	Encode() ([]byte, error)
 	Fee() *big.Int
+	Hash() (string, error)
 }
 
 type Interface interface {
@@ -142,6 +143,7 @@ type Interface interface {
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
+	//todo Decode(string) Interface
 	Sign(prKey string) (SignedTransaction, error)
 }
 
@@ -210,8 +212,23 @@ func (tx *Transaction) Encode() ([]byte, error) {
 	return dst, err
 }
 
+func (o *object) Hash() (string, error) {
+	encode, err := o.Transaction.Encode()
+	if err != nil {
+		return "", err
+	}
+	bytes := make([]byte, hex.DecodedLen(len(encode)-2))
+	_, err = hex.Decode(bytes, encode[2:])
+	if err != nil {
+		return "", err
+	}
+	hash := sha256.Sum256(bytes)
+
+	return "Mt" + hex.EncodeToString(hash[:])[:40], nil
+}
+
 func (o *object) Sign(prKey string) (SignedTransaction, error) {
-	privateKey, err := ethcrypto.HexToECDSA(prKey)
+	privateKey, err := crypto.HexToECDSA(prKey)
 	if err != nil {
 		return nil, err
 	}
