@@ -55,7 +55,7 @@ go get github.com/MinterTeam/minter-go-sdk
 
 ## Using MinterAPI
 
-You can get all valid responses and full documentation at [Minter Node Api](https://minter-go-node.readthedocs.io/en/latest/api.html)
+You can get all valid responses and full documentation at [Minter Node Api](https://docs.minter.network)
 
 Create MinterAPI instance
 
