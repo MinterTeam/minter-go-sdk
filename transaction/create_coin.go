@@ -5,6 +5,11 @@ import (
 	"math/big"
 )
 
+// Transaction for creating new coin in a system.
+// Name - Name of a coin. Arbitrary string up to 64 letters length.
+// Symbol - Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.
+// InitialAmount - Amount of coins to issue. Issued coins will be available to sender account.
+// InitialReserve - Initial reserve in BIP's. ConstantReserveRatio - CRR, uint, should be from 10 to 100.
 type CreateCoinData struct {
 	Name                 string
 	Symbol               [10]byte

@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// Generate mnemonic.
 func NewMnemonic() (string, error) {
 	entropy := make([]byte, 16)
 	_, err := rand.Read(entropy)
@@ -19,6 +20,7 @@ func NewMnemonic() (string, error) {
 	return bip39.NewMnemonic(entropy)
 }
 
+// Get seed from mnemonic.
 func Seed(mnemonic string) ([]byte, error) {
 	return bip39.NewSeedWithErrorChecking(mnemonic, "")
 }
@@ -31,6 +33,7 @@ func AddressByPublicKey(publicKey string) (string, error) {
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(crypto.Keccak256(bytes)[12:]).String()), nil
 }
 
+// Get public key from private key.
 func PublicKeyByPrivateKey(privateKey string) (string, error) {
 	key, err := crypto.HexToECDSA(privateKey)
 	if err != nil {

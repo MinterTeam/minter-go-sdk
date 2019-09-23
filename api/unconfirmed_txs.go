@@ -21,6 +21,7 @@ type UnconfirmedTxsResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns unconfirmed transactions.
 func (a *Api) UnconfirmedTxs(limit int) (*UnconfirmedTxsResponse, error) {
 
 	params := make(map[string]string)

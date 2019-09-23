@@ -19,6 +19,7 @@ type EstimateCoinBuyResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Return estimate of buy coin transaction.
 func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResponse, error) {
 
 	params := make(map[string]string)

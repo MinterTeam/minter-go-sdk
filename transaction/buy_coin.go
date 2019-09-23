@@ -5,6 +5,10 @@ import (
 	"math/big"
 )
 
+// Transaction for buy a coin paying another coin (owned by sender).
+// CoinToBuy - Symbol of a coin to get. ValueToBuy - Amount of CoinToBuy to get.
+// CoinToSell - Symbol of a coin to give.
+// MaximumValueToSell - Maximum value of coins to sell.
 type BuyCoinData struct {
 	CoinToBuy          [10]byte
 	ValueToBuy         *big.Int

@@ -30,6 +30,7 @@ type CandidateResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
 func (a *Api) Candidate(pubKey string, height int) (*CandidateResponse, error) {
 
 	params := make(map[string]string)

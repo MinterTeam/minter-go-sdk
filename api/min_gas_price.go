@@ -15,6 +15,7 @@ type MinGasPriceResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns current min gas price.
 func (a *Api) MinGasPrice() (*MinGasPriceResponse, error) {
 
 	res, err := a.client.R().Get("/min_gas_price")

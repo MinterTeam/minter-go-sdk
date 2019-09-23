@@ -5,6 +5,7 @@ import (
 	"math/big"
 )
 
+// Transaction for sending coins to multiple addresses.
 type MultiMultisendDataItem struct {
 	List []MultisendDataItem
 }

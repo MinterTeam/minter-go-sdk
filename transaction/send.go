@@ -5,6 +5,8 @@ import (
 	"math/big"
 )
 
+// Transaction for sending arbitrary coin.
+// Coin - Symbol of a coin. To - Recipient address in Minter Network. Value - Amount of Coin to send.
 type SendData struct {
 	Coin  [10]byte
 	To    [20]byte

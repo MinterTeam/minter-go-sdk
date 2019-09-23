@@ -5,6 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// Transaction for editing existing candidate.
 type EditCandidateData struct {
 	PubKey        []byte
 	RewardAddress [20]byte

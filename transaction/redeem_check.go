@@ -5,6 +5,10 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// Transaction for redeeming a check.
+// RawCheck - Raw check received from sender. Proof - Proof of owning a check.
+// Note that maximum GasPrice is limited to 1 to prevent fraud,
+// because GasPrice is set by redeem tx sender but commission is charded from check issuer.
 type RedeemCheckData struct {
 	RawCheck []byte
 	Proof    [65]byte

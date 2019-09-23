@@ -19,6 +19,7 @@ type MissedBlocksResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns missed blocks by validator public key.
 func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResponse, error) {
 
 	params := make(map[string]string)

@@ -6,6 +6,11 @@ import (
 	"math/big"
 )
 
+// Transaction for declaring new validator candidacy.
+// Address - Address of candidate in Minter Network. This address would be able to control candidate.
+// Also all rewards will be sent to this address. PubKey - Public key of a validator.
+// Commission - Commission (from 0 to 100) from rewards which delegators will pay to validator.
+// Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
 type DeclareCandidacyData struct {
 	Address    [20]byte
 	PubKey     []byte

@@ -6,6 +6,8 @@ import (
 	"math/big"
 )
 
+// Transaction for delegating funds to validator.
+// PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
 type DelegateData struct {
 	PubKey []byte
 	Coin   [10]byte

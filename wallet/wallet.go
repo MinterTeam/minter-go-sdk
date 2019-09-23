@@ -18,6 +18,7 @@ type Data struct {
 	Address    string
 }
 
+// Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
 func Create() (*Data, error) {
 	mnemonic, err := NewMnemonic()
 	if err != nil {

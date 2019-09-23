@@ -39,6 +39,7 @@ type Transaction struct {
 	} `json:"tags,omitempty"`
 }
 
+// Converting transaction map data to the structure interface regarding transaction type
 func (t *Transaction) DataStruct() (interface{}, error) {
 	bytes, err := json.Marshal(t.Data)
 	if err != nil {
@@ -172,6 +173,7 @@ type MultisendData struct {
 
 type MultisendDataItem SendData
 
+// Returns transaction info.
 func (a *Api) Transaction(hash string) (*TransactionResponse, error) {
 
 	params := make(map[string]string)

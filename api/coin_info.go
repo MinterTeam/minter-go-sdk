@@ -22,6 +22,7 @@ type CoinInfoResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns information about coin. Note: this method does not return information about base coins (MNT and BIP).
 func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResponse, error) {
 
 	params := make(map[string]string)

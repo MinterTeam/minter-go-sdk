@@ -57,6 +57,7 @@ type StatusResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns node status info.
 func (a *Api) Status() (*StatusResponse, error) {
 
 	res, err := a.client.R().Get("/status")

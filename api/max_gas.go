@@ -15,6 +15,7 @@ type MaxGasResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns current max gas.
 func (a *Api) MaxGas() (*MaxGasResponse, error) {
 
 	res, err := a.client.R().Get("/max_gas")

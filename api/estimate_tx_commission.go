@@ -19,6 +19,7 @@ type EstimateTxCommissionResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Return estimate of transaction.
 func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*EstimateTxCommissionResponse, error) {
 	bytes, err := transaction.Encode()
 	if err != nil {

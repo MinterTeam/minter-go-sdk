@@ -248,7 +248,7 @@ response, err := api.MaxGas()
 // &{Jsonrpc:2.0 ID: Result:100000 Error:{Code:0 Message: Data:}}
 ```
 
-### MaxGas
+### MinGasPrice
 
 Returns current min gas price.
 
@@ -429,7 +429,7 @@ data := NewSellCoinData().
 
 Transaction for selling one coin (owned by sender) in favour of another coin in a system.
 
-CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give. CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get
+CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give. CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get.
 
 ##### Example
 
@@ -588,7 +588,7 @@ data := NewMultiMultisendDataItem().AddItem(
 
 #### Edit candidate transaction
 
-Transaction for editing existing candidate
+Transaction for editing existing candidate.
 
 ##### Example
 

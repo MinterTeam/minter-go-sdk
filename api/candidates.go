@@ -30,6 +30,7 @@ type CandidatesResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns list of candidates.
 func (a *Api) Candidates(height int, includeStakes bool) (*CandidatesResponse, error) {
 
 	params := make(map[string]string)

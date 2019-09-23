@@ -5,6 +5,8 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// Transaction for turning candidate on. This transaction should be sent from address which is set in the "Declare candidacy transaction".
+// PubKey - Public key of a validator.
 type SetCandidateOnData struct {
 	PubKey []byte
 }

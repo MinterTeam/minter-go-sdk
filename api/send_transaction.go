@@ -26,6 +26,7 @@ type SendResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns the result of sending signed tx.
 func (a *Api) Send(transaction transaction.SignedTransaction) (*SendResponse, error) {
 	bytes, err := transaction.Encode()
 	if err != nil {

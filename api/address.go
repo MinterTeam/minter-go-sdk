@@ -19,6 +19,7 @@ type AddressResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns coins list, balance and transaction count (for nonce) of an address.
 func (a *Api) Address(address string, height int) (*AddressResponse, error) {
 
 	params := make(map[string]string)
@@ -41,6 +42,7 @@ func (a *Api) Address(address string, height int) (*AddressResponse, error) {
 	return result, nil
 }
 
+// Returns balance of an address.
 func (a *Api) Balance(address string, height int) (map[string]string, error) {
 	response, err := a.Address(address, height)
 	if err != nil {
@@ -50,6 +52,7 @@ func (a *Api) Balance(address string, height int) (map[string]string, error) {
 	return response.Result.Balance, nil
 }
 
+// Returns next transaction number (nonce) of an address.
 func (a *Api) Nonce(address string) (uint64, error) {
 	response, err := a.Address(address, 0)
 	if err != nil {

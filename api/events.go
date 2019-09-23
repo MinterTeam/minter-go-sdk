@@ -26,6 +26,7 @@ type EventsResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns events at given height.
 func (a *Api) Events(height int) (*EventsResponse, error) {
 
 	params := make(map[string]string)

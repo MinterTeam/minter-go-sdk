@@ -31,6 +31,7 @@ type BlockResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns block data at given height.
 func (a *Api) Block(height int) (*BlockResponse, error) {
 
 	params := make(map[string]string)

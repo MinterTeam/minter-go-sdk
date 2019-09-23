@@ -19,6 +19,7 @@ type ValidatorsResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Returns list of active validators.
 func (a *Api) Validators(height int) (*ValidatorsResponse, error) {
 
 	params := make(map[string]string)

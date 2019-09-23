@@ -5,6 +5,9 @@ import (
 	"math/big"
 )
 
+// Transaction for selling one coin (owned by sender) in favour of another coin in a system.
+// CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give.
+// CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get.
 type SellAllCoinData struct {
 	CoinToSell        [10]byte
 	CoinToBuy         [10]byte

@@ -16,6 +16,7 @@ type TransactionsResponse struct {
 	} `json:"error,omitempty"`
 }
 
+// Return transactions by query.
 func (a *Api) Transactions(query string, page int, perPage int) (*TransactionsResponse, error) {
 
 	params := make(map[string]string)
