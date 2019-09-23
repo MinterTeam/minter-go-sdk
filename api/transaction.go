@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
@@ -77,7 +78,7 @@ func (t *Transaction) DataStruct() (interface{}, error) {
 	case transaction.TypeEditCandidate:
 		data = &EditCandidateData{}
 	default:
-		return nil, err
+		return nil, errors.New("unknown transaction type")
 	}
 
 	err = json.Unmarshal(bytes, data)

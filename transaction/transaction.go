@@ -88,7 +88,7 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 
 	object := object{
 		Transaction: transaction,
-		fee:         uint(data.fee()),
+		data:        data,
 	}
 
 	switch data.(type) {
@@ -116,13 +116,13 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 		return object.setType(TypeSetCandidateOffline), nil
 	//case *CreateMultisigData:
 	//	return transaction.setType(TypeCreateMultisig), nil
-	case *MultiMultisendDataItem:
+	case *MultisendData:
 		return object.setType(TypeMultisend), nil
 	case *EditCandidateData:
 		return object.setType(TypeEditCandidate), nil
 
 	default:
-		return nil, errors.New("") //todo
+		return nil, errors.New("unknown transaction type")
 	}
 }
 
@@ -135,6 +135,8 @@ type SignedTransaction interface {
 	Encode() ([]byte, error)
 	Fee() *big.Int
 	Hash() (string, error)
+	Data() DataInterface
+	Signature() (*Signature, error)
 }
 
 type Interface interface {
@@ -143,20 +145,88 @@ type Interface interface {
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
-	//todo Decode(string) Interface
 	Sign(prKey string) (SignedTransaction, error)
 }
 
 type object struct {
 	*Transaction
-	fee uint
+	data DataInterface
 }
 
 func (o *object) Fee() *big.Int {
-	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.fee)), big.NewInt(1000000000000000))
+	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.fee())), big.NewInt(1000000000000000))
 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
 	//todo: testing
 	return big.NewInt(0).Mul(gasPrice, commission)
+}
+func (o *object) Data() DataInterface {
+	return o.data
+}
+func (o *object) Signature() (*Signature, error) {
+	signature := new(Signature)
+	err := rlp.DecodeBytes(o.SignatureData, signature)
+	if err != nil {
+		return nil, err
+	}
+	return signature, nil
+}
+
+func Decode(tx string) (SignedTransaction, error) {
+	decodeString, err := hex.DecodeString(tx[2:])
+	if err != nil {
+		return nil, err
+	}
+
+	transaction := new(Transaction)
+	err = rlp.DecodeBytes(decodeString, transaction)
+	if err != nil {
+		return nil, err
+	}
+
+	var data interface{}
+	switch transaction.Type {
+	case TypeSend:
+		data = &SendData{}
+	case TypeSellCoin:
+		data = &SellCoinData{}
+	case TypeSellAllCoin:
+		data = &SellAllCoinData{}
+	case TypeBuyCoin:
+		data = &SellCoinData{}
+	case TypeCreateCoin:
+		data = &BuyCoinData{}
+	case TypeDeclareCandidacy:
+		data = &DeclareCandidacyData{}
+	case TypeDelegate:
+		data = &DelegateData{}
+	case TypeUnbond:
+		data = &UnbondData{}
+	case TypeRedeemCheck:
+		data = &RedeemCheckData{}
+	case TypeSetCandidateOnline:
+		data = &SetCandidateOnData{}
+	case TypeSetCandidateOffline:
+		data = &SetCandidateOffData{}
+	case TypeCreateMultisig:
+		data = &CreateMultisigData{}
+	case TypeMultisend:
+		data = &MultisendData{}
+	case TypeEditCandidate:
+		data = &EditCandidateData{}
+	default:
+		return nil, errors.New("unknown transaction type")
+	}
+
+	err = rlp.DecodeBytes(transaction.Data, data)
+	if err != nil {
+		return nil, err
+	}
+
+	result := &object{
+		Transaction: transaction,
+		data:        data.(DataInterface),
+	}
+	return result, nil
 }
 
 func (o *object) setFee(commission Fee) Interface {

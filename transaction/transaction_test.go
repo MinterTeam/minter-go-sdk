@@ -34,3 +34,32 @@ func TestTransaction_Hash(t *testing.T) {
 		t.Errorf("Hash got %s, want %s", hash, validHash)
 	}
 }
+
+func TestTransaction_Encode(t *testing.T) {
+	transaction, err := Decode("0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	objectTransaction, ok := transaction.(*object)
+	if !ok {
+		t.Fatal("error ")
+	}
+
+	if objectTransaction.ChainID != TestNetChainID {
+		t.Errorf("ChainID got %d, want %d", objectTransaction.ChainID, TestNetChainID)
+	}
+
+	if objectTransaction.Type != TypeSend {
+		t.Errorf("Type got %d, want %d", objectTransaction.Type, TypeSend)
+	}
+
+	signature, err := objectTransaction.Signature()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if signature.V.String() != big.NewInt(28).String() {
+		t.Errorf("signature get %+v, want signature.V %d", signature, 28)
+	}
+
+}

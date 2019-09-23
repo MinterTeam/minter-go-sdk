@@ -6,14 +6,14 @@ import (
 )
 
 // Transaction for sending coins to multiple addresses.
-type MultiMultisendDataItem struct {
+type MultisendData struct {
 	List []MultisendDataItem
 }
 
 type MultisendDataItem SendData
 
-func NewMultiMultisendDataItem() *MultiMultisendDataItem {
-	return &MultiMultisendDataItem{}
+func NewMultiMultisendDataItem() *MultisendData {
+	return &MultisendData{}
 }
 
 func NewMultisendDataItem() *MultisendDataItem {
@@ -47,14 +47,14 @@ func (d *MultisendDataItem) SetValue(value *big.Int) *MultisendDataItem {
 	return d
 }
 
-func (d *MultiMultisendDataItem) AddItem(item MultisendDataItem) *MultiMultisendDataItem {
+func (d *MultisendData) AddItem(item MultisendDataItem) *MultisendData {
 	d.List = append(d.List, item)
 	return d
 }
 
-func (d *MultiMultisendDataItem) encode() ([]byte, error) {
+func (d *MultisendData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
-func (d *MultiMultisendDataItem) fee() Fee {
+func (d *MultisendData) fee() Fee {
 	return Fee(10 + (len(d.List)-1)*5)
 }
