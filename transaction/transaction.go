@@ -341,7 +341,7 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 	return o, nil
 }
 
-func AddressToHex(address string) ([]byte, error) {
+func addressToHex(address string) ([]byte, error) {
 	if len(address) != 42 {
 		return nil, errors.New("len < 42")
 	}

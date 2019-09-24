@@ -24,7 +24,7 @@ func NewDeclareCandidacyData() *DeclareCandidacyData {
 }
 
 func (d *DeclareCandidacyData) SetAddress(address string) (*DeclareCandidacyData, error) {
-	bytes, err := AddressToHex(address)
+	bytes, err := addressToHex(address)
 	if err != nil {
 		return d, err
 	}

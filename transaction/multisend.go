@@ -26,7 +26,7 @@ func (d *MultisendDataItem) SetCoin(symbol string) *MultisendDataItem {
 }
 
 func (d *MultisendDataItem) SetTo(address string) (*MultisendDataItem, error) {
-	bytes, err := AddressToHex(address)
+	bytes, err := addressToHex(address)
 	if err != nil {
 		return d, err
 	}

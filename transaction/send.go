@@ -23,7 +23,7 @@ func (d *SendData) SetCoin(symbol string) *SendData {
 }
 
 func (d *SendData) SetTo(address string) (*SendData, error) {
-	bytes, err := AddressToHex(address)
+	bytes, err := addressToHex(address)
 	if err != nil {
 		return d, err
 	}

@@ -41,7 +41,7 @@ func (d *EditCandidateData) MustSetRewardAddress(address string) *EditCandidateD
 }
 
 func (d *EditCandidateData) SetRewardAddress(address string) (*EditCandidateData, error) {
-	bytes, err := AddressToHex(address)
+	bytes, err := addressToHex(address)
 	if err != nil {
 		return d, err
 	}
@@ -58,7 +58,7 @@ func (d *EditCandidateData) MustSetOwnerAddress(address string) *EditCandidateDa
 }
 
 func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData, error) {
-	bytes, err := AddressToHex(address)
+	bytes, err := addressToHex(address)
 	if err != nil {
 		return d, err
 	}
