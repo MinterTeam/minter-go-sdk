@@ -303,7 +303,7 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 		return nil, err
 	}
 
-	x := []interface{}{
+	h, err := rlpHash([]interface{}{
 		o.Transaction.Nonce,
 		o.Transaction.ChainID,
 		o.Transaction.GasPrice,
@@ -313,15 +313,10 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 		o.Transaction.Payload,
 		o.Transaction.ServiceData,
 		o.Transaction.SignatureType,
-	}
-
-	var h [32]byte
-	hw := sha3.NewLegacyKeccak256()
-	err = rlp.Encode(hw, x)
+	})
 	if err != nil {
 		return nil, err
 	}
-	hw.Sum(h[:0])
 
 	seckey := math.PaddedBigBytes(privateKey.D, privateKey.Params().BitSize/8)
 
@@ -329,6 +324,7 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	o.Transaction.SignatureData, err = rlp.EncodeToBytes(&Signature{
 		R: new(big.Int).SetBytes(sig[:32]),
 		S: new(big.Int).SetBytes(sig[32:64]),
@@ -339,6 +335,16 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 	}
 
 	return o, nil
+}
+
+func rlpHash(x interface{}) (h []byte, err error) {
+	hw := sha3.NewLegacyKeccak256()
+	err = rlp.Encode(hw, x)
+	if err != nil {
+		return nil, err
+	}
+	hw.Sum(h[:0])
+	return h, nil
 }
 
 func addressToHex(address string) ([]byte, error) {
