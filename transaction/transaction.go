@@ -4,9 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
 	"math/big"
@@ -318,9 +316,7 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 		return nil, err
 	}
 
-	seckey := math.PaddedBigBytes(privateKey.D, privateKey.Params().BitSize/8)
-
-	sig, err := secp256k1.Sign(h[:], seckey)
+	sig, err := crypto.Sign(h[:], privateKey)
 	if err != nil {
 		return nil, err
 	}
@@ -337,11 +333,11 @@ func (o *object) Sign(prKey string) (SignedTransaction, error) {
 	return o, nil
 }
 
-func rlpHash(x interface{}) (h []byte, err error) {
+func rlpHash(x interface{}) (h [32]byte, err error) {
 	hw := sha3.NewLegacyKeccak256()
 	err = rlp.Encode(hw, x)
 	if err != nil {
-		return nil, err
+		return h, err
 	}
 	hw.Sum(h[:0])
 	return h, nil
