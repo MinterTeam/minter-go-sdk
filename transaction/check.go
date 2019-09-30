@@ -66,7 +66,7 @@ func (check *Check) Encode() ([]byte, error) {
 
 // todo
 func (check *Check) Sign(prKey string) (SignedCheck, error) {
-	h, err := rlpHash([]interface{}{
+	msgHash, err := rlpHash([]interface{}{
 		check.Nonce,
 		check.ChainID,
 		check.DueBlock,
@@ -79,14 +79,14 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 
 	passphraseSum256 := sha256.Sum256([]byte(check.passphrase))
 
-	lock, err := secp256k1.Sign(h[:], passphraseSum256[:])
+	lock, err := secp256k1.Sign(msgHash[:], passphraseSum256[:])
 	if err != nil {
 		return nil, err
 	}
 
 	check.Lock = big.NewInt(0).SetBytes(lock)
 
-	h, err = rlpHash([]interface{}{
+	msgHashWithLock, err := rlpHash([]interface{}{
 		check.Nonce,
 		check.ChainID,
 		check.DueBlock,
@@ -103,7 +103,7 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 		return nil, err
 	}
 
-	sig, err := crypto.Sign(h[:], privateKey)
+	sig, err := crypto.Sign(msgHashWithLock[:], privateKey)
 	if err != nil {
 		return nil, err
 	}
