@@ -112,14 +112,5 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 	check.S = new(big.Int).SetBytes(sig[32:64])
 	check.V = new(big.Int).SetBytes([]byte{sig[64] + 27})
 
-	//r, s, err := ecdsa.Sign(rand.Reader, privateKey, h[:])
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//check.R = r
-	//check.S = s
-	//check.V = big.NewInt(0).SetBytes([]byte{27})
-
 	return check, nil
 }
