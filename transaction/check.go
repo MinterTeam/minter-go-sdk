@@ -1,8 +1,6 @@
 package transaction
 
 import (
-	"bytes"
-	"crypto/ecdsa"
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -79,11 +77,6 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 		return nil, err
 	}
 
-	privateKey, err := crypto.HexToECDSA(prKey)
-	if err != nil {
-		return nil, err
-	}
-
 	passphraseSum256 := sha256.Sum256([]byte(check.passphrase))
 
 	lock, err := secp256k1.Sign(h[:], passphraseSum256[:])
@@ -105,15 +98,28 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 		return nil, err
 	}
 
-	byteBuffer := bytes.NewBuffer(h[:])
-	r, s, err := ecdsa.Sign(byteBuffer, privateKey, h[:])
+	privateKey, err := crypto.HexToECDSA(prKey)
 	if err != nil {
 		return nil, err
 	}
 
-	check.R = r
-	check.S = s
-	check.V = big.NewInt(0).SetBytes([]byte{27})
+	sig, err := crypto.Sign(h[:], privateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	check.R = new(big.Int).SetBytes(sig[:32])
+	check.S = new(big.Int).SetBytes(sig[32:64])
+	check.V = new(big.Int).SetBytes([]byte{sig[64] + 27})
+
+	//r, s, err := ecdsa.Sign(rand.Reader, privateKey, h[:])
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//check.R = r
+	//check.S = s
+	//check.V = big.NewInt(0).SetBytes([]byte{27})
 
 	return check, nil
 }
