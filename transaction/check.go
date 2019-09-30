@@ -52,6 +52,24 @@ func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, 
 	return check
 }
 
+// Prepare check string and convert еto struct
+func DecodeIssueCheck(check string) (*IssueCheckData, error) {
+	src := []byte(check)[2:]
+	dst := make([]byte, hex.DecodedLen(len(src)))
+	_, err := hex.Decode(dst, src)
+	if err != nil {
+		return nil, err
+	}
+
+	res := new(IssueCheckData)
+	err = rlp.DecodeBytes(dst, res)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 // Set secret phrase which you will pass to receiver of the check
 func (check *IssueCheck) SetPassphrase(passphrase string) IssueCheckInterface {
 	check.passphrase = passphrase
