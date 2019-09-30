@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-type CheckData struct {
+type IssueCheckData struct {
 	Nonce    []byte
 	ChainID  ChainID
 	DueBlock uint64
@@ -22,23 +22,26 @@ type CheckData struct {
 	S        *big.Int
 }
 
-type SignedCheck interface {
-	Encode() ([]byte, error)
+type Signed interface {
+	Encode() (string, error)
 }
 
-type CheckTODO interface {
-	SetPassphrase(passphrase string) CheckTODO
-	Sign(prKey string) (SignedCheck, error)
+type IssueCheckInterface interface {
+	SetPassphrase(passphrase string) IssueCheckInterface
+	Sign(prKey string) (Signed, error)
 }
 
-type Check struct {
-	*CheckData
+type IssueCheck struct {
+	*IssueCheckData
 	passphrase string
 }
 
-func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int) CheckTODO {
-	check := &Check{
-		CheckData: &CheckData{
+// Create Issue Check
+// Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins.
+// Due Block - defines last block height in which the check can be used.
+func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int) IssueCheckInterface {
+	check := &IssueCheck{
+		IssueCheckData: &IssueCheckData{
 			Nonce:    []byte(strconv.Itoa(int(nonce))),
 			ChainID:  chainID,
 			DueBlock: dueBlock,
@@ -49,23 +52,24 @@ func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value
 	return check
 }
 
-func (check *Check) SetPassphrase(passphrase string) CheckTODO {
+// Set secret phrase which you will pass to receiver of the check
+func (check *IssueCheck) SetPassphrase(passphrase string) IssueCheckInterface {
 	check.passphrase = passphrase
 	return check
 }
 
-func (check *Check) Encode() ([]byte, error) {
-	src, err := rlp.EncodeToBytes(check.CheckData)
+//
+func (check *IssueCheck) Encode() (string, error) {
+	src, err := rlp.EncodeToBytes(check.IssueCheckData)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	dst := make([]byte, hex.EncodedLen(len(src))+2)
-	dst[0], dst[1] = 'M', 'c'
-	hex.Encode(dst[2:], src)
-	return dst, err
+
+	return "Mc" + hex.EncodeToString(src), err
 }
 
-func (check *Check) Sign(prKey string) (SignedCheck, error) {
+// Sign Issue Check
+func (check *IssueCheck) Sign(prKey string) (Signed, error) {
 	msgHash, err := rlpHash([]interface{}{
 		check.Nonce,
 		check.ChainID,
@@ -113,4 +117,41 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 	check.V = new(big.Int).SetBytes([]byte{sig[64] + 27})
 
 	return check, nil
+}
+
+type CheckAddress struct {
+	address    [20]byte
+	passphrase string
+}
+
+func NewCheckAddress(address string, passphrase string) (*CheckAddress, error) {
+	bytes, err := addressToHex(address)
+	if err != nil {
+		return nil, err
+	}
+
+	check := &CheckAddress{passphrase: passphrase}
+	copy(check.address[:], bytes)
+
+	return check, nil
+}
+
+// Proof Check
+func (check *CheckAddress) Proof() (string, error) {
+
+	passphraseSum256 := sha256.Sum256([]byte(check.passphrase))
+
+	addressHash, err := rlpHash([]interface{}{
+		check.address[:],
+	})
+	if err != nil {
+		return "", err
+	}
+
+	lock, err := secp256k1.Sign(addressHash[:], passphraseSum256[:])
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(lock), nil
 }

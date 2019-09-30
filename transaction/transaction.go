@@ -130,7 +130,7 @@ type DataInterface interface {
 }
 
 type SignedTransaction interface {
-	Encode() ([]byte, error)
+	Encode() (string, error)
 	Fee() *big.Int
 	Hash() (string, error)
 	Data() DataInterface
@@ -269,15 +269,13 @@ func (o *object) SetGasPrice(price uint8) Interface {
 	return o
 }
 
-func (tx *Transaction) Encode() ([]byte, error) {
+func (tx *Transaction) Encode() (string, error) {
 	src, err := rlp.EncodeToBytes(tx)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	dst := make([]byte, hex.EncodedLen(len(src))+2)
-	dst[0], dst[1] = '0', 'x'
-	hex.Encode(dst[2:], src)
-	return dst, err
+
+	return "0x" + hex.EncodeToString(src), err
 }
 
 func (o *object) Hash() (string, error) {
@@ -286,7 +284,7 @@ func (o *object) Hash() (string, error) {
 		return "", err
 	}
 	bytes := make([]byte, hex.DecodedLen(len(encode)-2))
-	_, err = hex.Decode(bytes, encode[2:])
+	_, err = hex.Decode(bytes, []byte(encode)[2:])
 	if err != nil {
 		return "", err
 	}

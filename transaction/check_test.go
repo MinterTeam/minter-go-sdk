@@ -6,7 +6,7 @@ import (
 )
 
 func TestCheck_Sign(t *testing.T) {
-	check := NewCheck(
+	check := NewIssueCheck(
 		480,
 		TestNetChainID,
 		999999,
@@ -31,7 +31,7 @@ func TestCheck_Sign(t *testing.T) {
 }
 
 func TestCheck_Sign1(t *testing.T) {
-	check := NewCheck(
+	check := NewIssueCheck(
 		1,
 		MainNetChainID,
 		999999,
@@ -44,14 +44,30 @@ func TestCheck_Sign1(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	encode, err := sign.Encode()
+	checkString, err := sign.Encode()
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	validCheck := "Mcf8a03101830f423f8a4d4e5400000000000000888ac7230489e80000b84149eba2361855724bbd3d20eb97a54ea15ad7dc28c1111b8dcf3bb15db26f874f095803cad9f8fc88b2b4eec9ba706325a7929be31b6ccfef01260791a844cb55011ba06c63ad17bfe07b82be8a0144fd4daf8b4144281fdf88f313205ceacf37fd877fa03c243ad79cab6205f4b753bd402c4cfa5d570888659090b2f923071ac52bdf75"
-	checkString := string(encode)
 	if checkString != validCheck {
 		t.Errorf("check want %s,\ngot %s", validCheck, checkString)
+	}
+}
+
+func TestCheckAddress_Proof(t *testing.T) {
+	check, err := NewCheckAddress("Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47", "pass")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	proofString, err := check.Proof()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	validProof := "da021d4f84728e0d3d312a18ec84c21768e0caa12a53cb0a1452771f72b0d1a91770ae139fd6c23bcf8cec50f5f2e733eabb8482cf29ee540e56c6639aac469600"
+	if proofString != validProof {
+		t.Errorf("check want %s,\ngot %s", validProof, proofString)
 	}
 }
