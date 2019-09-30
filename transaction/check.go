@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -84,18 +85,13 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 	}
 
 	passphraseSum256 := sha256.Sum256([]byte(check.passphrase))
-	byteBuffer := bytes.NewBuffer(passphraseSum256[:])
 
-	r, s, err := ecdsa.Sign(byteBuffer, privateKey, h[:])
+	lock, err := secp256k1.Sign(h[:], passphraseSum256[:])
 	if err != nil {
 		return nil, err
 	}
 
-	sigBytes := make([]byte, 65)
-	copy(sigBytes[:32], r.Bytes())
-	copy(sigBytes[32:64], s.Bytes())
-	sigBytes[64] = 27
-	check.Lock = big.NewInt(0).SetBytes(sigBytes)
+	check.Lock = big.NewInt(0).SetBytes(lock)
 
 	h, err = rlpHash([]interface{}{
 		check.Nonce,
@@ -109,14 +105,15 @@ func (check *Check) Sign(prKey string) (SignedCheck, error) {
 		return nil, err
 	}
 
-	sig, err := crypto.Sign(h[:], privateKey)
+	byteBuffer := bytes.NewBuffer(h[:])
+	r, s, err := ecdsa.Sign(byteBuffer, privateKey, h[:])
 	if err != nil {
 		return nil, err
 	}
 
-	check.R = new(big.Int).SetBytes(sig[:32])
-	check.S = new(big.Int).SetBytes(sig[32:64])
-	check.V = new(big.Int).SetBytes([]byte{sig[64] + 27})
+	check.R = r
+	check.S = s
+	check.V = big.NewInt(0).SetBytes([]byte{27})
 
 	return check, nil
 }
