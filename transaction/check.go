@@ -7,10 +7,11 @@ import (
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+	"strconv"
 )
 
 type CheckData struct {
-	Nonce    uint
+	Nonce    []byte
 	ChainID  ChainID
 	DueBlock uint64
 	Coin     [10]byte
@@ -35,10 +36,10 @@ type Check struct {
 	passphrase string
 }
 
-func NewCheck(nonce uint, chainID ChainID, dueBlock uint64, coin string, value *big.Int) CheckTODO {
+func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int) CheckTODO {
 	check := &Check{
 		CheckData: &CheckData{
-			Nonce:    nonce,
+			Nonce:    []byte(strconv.Itoa(int(nonce))),
 			ChainID:  chainID,
 			DueBlock: dueBlock,
 			Value:    value,
@@ -64,7 +65,6 @@ func (check *Check) Encode() ([]byte, error) {
 	return dst, err
 }
 
-// todo
 func (check *Check) Sign(prKey string) (SignedCheck, error) {
 	msgHash, err := rlpHash([]interface{}{
 		check.Nonce,
