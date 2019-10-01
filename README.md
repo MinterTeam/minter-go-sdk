@@ -1,3 +1,5 @@
+![Minter Logo](minter-logo.svg)
+
 ## About
 
 This is a pure Go SDK for working with **Minter** blockchain
