@@ -390,7 +390,7 @@ Returns a signed tx.
 ```
 var data DataInterface
 // data = ...
-tx, _ := NewBuilder(TestNetChainID).NewTransaction(data)
+tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
 tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
 signedTx, _ := tx.Sign(privatKey)
 api.Send(signedTx)
@@ -408,7 +408,7 @@ Coin - Symbol of a coin. To - Recipient address in Minter Network. Value - Amoun
 value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)) // 1000000000000000000
 address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
 symbolMNT := "MNT"
-data, _ := NewSendData().SetCoin(symbolMNT).SetValue(value).SetTo(address)
+data, _ := transaction.NewSendData().SetCoin(symbolMNT).SetValue(value).SetTo(address)
 ```
 
 #### Sell coin transaction
@@ -420,7 +420,7 @@ CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to giv
 ##### Example
 
 ```
-data := NewSellCoinData().
+data := transaction.NewSellCoinData().
 	SetCoinToSell("MNT").
 	SetValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 	SetCoinToBuy("TEST").
@@ -436,7 +436,7 @@ CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to giv
 ##### Example
 
 ```
-data := NewSellAllCoinData().
+data := transaction.NewSellAllCoinData().
 	SetCoinToSell("MNT").
 	SetCoinToBuy("TEST").
 	SetMinimumValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
@@ -451,7 +451,7 @@ CoinToBuy - Symbol of a coin to get. ValueToBuy - Amount of CoinToBuy to get. Co
 ##### Example
 
 ```
-data := NewBuyCoinData().
+data := transaction.NewBuyCoinData().
 	SetCoinToBuy("TEST").
 	SetValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 	SetCoinToSell("MNT").
@@ -467,7 +467,7 @@ Name - Name of a coin. Arbitrary string up to 64 letters length. Symbol - Symbol
 ##### Example
 
 ```
-data := NewCreateCoinData().
+data := transaction.NewCreateCoinData().
 	SetName("SUPER TEST").
 	SetSymbol("SPRTEST").
 	SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -484,7 +484,7 @@ Address - Address of candidate in Minter Network. This address would be able to 
 ##### Example
 
 ```
-data, _ := NewDeclareCandidacyData().
+data, _ := transaction.NewDeclareCandidacyData().
 	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
 	SetCommission(10).
 	SetCoin("MNT").
@@ -501,7 +501,7 @@ PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amou
 ##### Example
 
 ```
-data := NewDelegateData().
+data := transaction.NewDelegateData().
 	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
 	SetCoin("MNT").
 	SetStake(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
@@ -516,7 +516,7 @@ PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amou
 ##### Example
 
 ```
-data := NewUnbondData().
+data := transaction.NewUnbondData().
 	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
 	SetCoin("MNT").
 	SetValue(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
@@ -533,7 +533,7 @@ Note that maximum GasPrice is limited to 1 to prevent fraud, because GasPrice is
 ##### Example
 
 ```
-data := NewRedeemCheckData().
+data := transaction.NewRedeemCheckData().
 	MustSetProof("da021d4f84728e0d3d312a18ec84c21768e0caa12a53cb0a1452771f72b0d1a91770ae139fd6c23bcf8cec50f5f2e733eabb8482cf29ee540e56c6639aac469600").
 	MustSetRawCheck("Mcf89b01830f423f8a4d4e5400000000000000843b9aca00b8419b3beac2c6ad88a8bd54d24912754bb820e58345731cb1b9bc0885ee74f9e50a58a80aa990a29c98b05541b266af99d3825bb1e5ed4e540c6e2f7c9b40af9ecc011ca00f7ba6d0aa47d74274b960fba02be03158d0374b978dcaa5f56fc7cf1754f821a019a829a3b7bba2fc290f5c96e469851a3876376d6a6a4df937327b3a5e9e8297")
 ```
@@ -547,7 +547,7 @@ PubKey - Public key of a validator.
 ##### Example
 
 ```
-data, _ := NewSetCandidateOnData().
+data, _ := transaction.NewSetCandidateOnData().
 	SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
 ```
 
@@ -560,7 +560,7 @@ PubKey - Public key of a validator.
 ##### Example
 
 ```
-data, _ := NewSetCandidateOffData().
+data, _ := transaction.NewSetCandidateOffData().
 	SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
 ```
 
@@ -576,12 +576,12 @@ Transaction for sending coins to multiple addresses.
 
 ```
 symbolMNT := "MNT"
-data := NewMultiMultisendDataItem().AddItem(
-	*NewMultisendDataItem().
+data := transaction.NewMultisendData().AddItem(
+	*transaction.NewMultisendDataItem().
 		SetCoin(symbolMNT).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
 		MustSetTo("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"),
-).AddItem(*NewMultisendDataItem().
+).AddItem(*transaction.NewMultisendDataItem().
 	SetCoin(symbolMNT).
 	SetValue(big.NewInt(0).Mul(big.NewInt(2), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
 	MustSetTo("Mxddab6281766ad86497741ff91b6b48fe85012e3c"),
@@ -595,7 +595,7 @@ Transaction for editing existing candidate.
 ##### Example
 
 ```
-data := NewEditCandidateData().
+data := transaction.NewEditCandidateData().
 		MustSetPubKey("Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8").
 		MustSetOwnerAddress("Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0").
 		MustSetRewardAddress("Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47")

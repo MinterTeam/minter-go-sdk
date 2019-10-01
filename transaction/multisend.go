@@ -12,7 +12,7 @@ type MultisendData struct {
 
 type MultisendDataItem SendData
 
-func NewMultiMultisendDataItem() *MultisendData {
+func NewMultisendData() *MultisendData {
 	return &MultisendData{}
 }
 
