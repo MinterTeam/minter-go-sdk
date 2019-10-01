@@ -153,6 +153,7 @@ type object struct {
 	data DataInterface
 }
 
+// Get fee of transaction in PIP
 func (o *object) Fee() *big.Int {
 	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.fee())), big.NewInt(1000000000000000))
 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
@@ -173,6 +174,7 @@ func (o *object) Signature() (*Signature, error) {
 	return signature, nil
 }
 
+// Decode transaction
 func Decode(tx string) (SignedTransaction, error) {
 	decodeString, err := hex.DecodeString(tx[2:])
 	if err != nil {
@@ -231,6 +233,7 @@ func Decode(tx string) (SignedTransaction, error) {
 	return result, nil
 }
 
+// Get sender address
 func (o *object) SenderAddress() (string, error) {
 	publicKey, err := o.PublicKey()
 	if err != nil {
@@ -245,6 +248,7 @@ func (o *object) SenderAddress() (string, error) {
 	return address, nil
 }
 
+// Recover public key
 func (o *object) PublicKey() (string, error) {
 	hash, err := rlpHash([]interface{}{
 		o.Transaction.Nonce,
@@ -327,6 +331,7 @@ func (tx *Transaction) Encode() (string, error) {
 	return "0x" + hex.EncodeToString(src), err
 }
 
+// Get hash of transaction
 func (o *object) Hash() (string, error) {
 	encode, err := o.Transaction.Encode()
 	if err != nil {
@@ -342,6 +347,7 @@ func (o *object) Hash() (string, error) {
 	return "Mt" + hex.EncodeToString(hash[:])[:40], nil
 }
 
+// Sign transaction
 func (o *object) Sign(prKey string) (SignedTransaction, error) {
 	privateKey, err := crypto.HexToECDSA(prKey)
 	if err != nil {
