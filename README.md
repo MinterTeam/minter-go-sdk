@@ -36,7 +36,7 @@ This is a pure Go SDK for working with **Minter** blockchain
         - [Delegate](#delegate-transaction)
         - [SetCandidateOn](#set-candidate-online-transaction)
         - [SetCandidateOff](#set-candidate-offline-transaction)
-        - [RedeemCheck](#redeemCheck-transaction)
+        - [RedeemCheck](#redeem-check-transaction)
         - [Unbond](#unbond-transaction)
         - [Multisend](#multisend-transaction)
         - [EditCandidate](#edit-candidate-transaction)

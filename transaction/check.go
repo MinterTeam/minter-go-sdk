@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+// Issue a check that will later be redeemed by the person of your choice.
 type IssueCheckData struct {
 	Nonce    []byte
 	ChainID  ChainID
@@ -52,7 +53,7 @@ func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, 
 	return check
 }
 
-// Prepare check string and convert еto struct
+// Prepare check string and convert to data
 func DecodeIssueCheck(check string) (*IssueCheckData, error) {
 	src := []byte(check)[2:]
 	dst := make([]byte, hex.DecodedLen(len(src)))
