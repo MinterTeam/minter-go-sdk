@@ -159,8 +159,7 @@ type object struct {
 func (o *object) Fee() *big.Int {
 	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.fee())), big.NewInt(1000000000000000))
 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
-	// todo: testing
-	return big.NewInt(0).Mul(gasPrice, commission)
+	return big.NewInt(0).Add(gasPrice, commission)
 }
 
 func (o *object) Data() DataInterface {

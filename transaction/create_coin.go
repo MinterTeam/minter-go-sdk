@@ -3,6 +3,7 @@ package transaction
 import (
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+	"strings"
 )
 
 // Transaction for creating new coin in a system.
@@ -52,5 +53,18 @@ func (d *CreateCoinData) encode() ([]byte, error) {
 }
 
 func (d *CreateCoinData) fee() Fee {
-	return feeTypeCreateCoin
+	switch strings.Index(string(d.Symbol[:]), "\x00") {
+	case 3:
+		return 1000000 * feeTypeCreateCoin
+	case 4:
+		return 100000 * feeTypeCreateCoin
+	case 5:
+		return 10000 * feeTypeCreateCoin
+	case 6:
+		return 1000 * feeTypeCreateCoin
+	case 7, 8, 9, 10:
+		return 100 * feeTypeCreateCoin
+	default:
+		return feeTypeCreateCoin
+	}
 }

@@ -95,3 +95,67 @@ func TestObject_SenderAddress(t *testing.T) {
 		t.Errorf("SenderAddress want %s,\ngot %s", "Mx31e61a05adbd13c6b625262704bc305bf7725026", senderAddress)
 	}
 }
+
+func TestObject_Fee1(t *testing.T) {
+	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signedTransaction, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if signedTransaction.Fee().String() != "10000000000000000" {
+		t.Errorf("Fee want %s, got %s", "10000000000000000", signedTransaction.Fee().String())
+	}
+}
+
+func TestObject_Fee2(t *testing.T) {
+	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signedTransaction, err := transaction.SetPayload([]byte("asd")).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if signedTransaction.Fee().String() != "16000000000000000" {
+		t.Errorf("Fee want %s, got %s", "16000000000000000", signedTransaction.Fee().String())
+	}
+}
+
+func TestObject_Fee3(t *testing.T) {
+	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signedTransaction, err := transaction.SetPayload([]byte("asé")).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if signedTransaction.Fee().String() != "18000000000000000" {
+		t.Errorf("Fee want %s, got %s", "18000000000000000", signedTransaction.Fee().String())
+	}
+}
+
+func TestObject_Fee4(t *testing.T) {
+	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewCreateCoinData().SetSymbol("ABC"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signedTransaction, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if signedTransaction.Fee().String() != "1000000000000000000000000" {
+		t.Errorf("Fee want %s, got %s", "1000000000000000000000000", signedTransaction.Fee().String())
+	}
+}
