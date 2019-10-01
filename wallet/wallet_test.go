@@ -2,6 +2,7 @@ package wallet
 
 import (
 	"encoding/hex"
+	"strings"
 	"testing"
 )
 
@@ -57,5 +58,29 @@ func TestWallet_Address(t *testing.T) {
 	address := wallet.Address()
 	if address != validAddress {
 		t.Fatalf("address got %s, want %s", address, validAddress)
+	}
+}
+
+func TestCreate(t *testing.T) {
+	data, err := Create()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(strings.Fields(data.Mnemonic)) != 12 {
+		t.Errorf("mnemonic count got %d, want %d", len(strings.Fields(data.Mnemonic)), 12)
+	}
+	if len(data.Seed) != 128 {
+		t.Errorf("seed len got %d, want %d", len(data.Seed), 128)
+	}
+	if len(data.PrivateKey) != 64 {
+		t.Errorf("PrivateKey len got %d, want %d", len(data.PrivateKey), 64)
+	}
+	if len(data.PublicKey) != 130 {
+		t.Errorf("PublicKey len got %d, want %d", len(data.PublicKey), 130)
+	}
+	pubKeyByPrivate, err := PublicKeyByPrivateKey(data.PrivateKey)
+	if pubKeyByPrivate != data.PublicKey {
+		t.Errorf("pubKeyByPrivate len got %s, want %s", pubKeyByPrivate, data.PublicKey)
 	}
 }
