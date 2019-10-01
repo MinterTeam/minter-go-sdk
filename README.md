@@ -614,6 +614,18 @@ fee := signedTransaction.Fee()
 hash, _ := signedTransaction.Hash()
 ```
 
+### Get Public Key of transaction
+
+```
+key, _ := signedTransaction.PublicKey()
+```
+
+### Get sender address of transaction
+
+```
+key, _ := signedTransaction.SenderAddress()
+```
+
 ### Decode Transaction
 
 ```
@@ -623,6 +635,33 @@ transactionObject, _ := transaction.Decode("0xf8840102018a4d4e540000000000000001
 ### Minter Check
 
 Minter Check is like an ordinary bank check. Each user of network can issue check with any amount of coins and pass it to another person. Receiver will be able to cash a check from arbitrary account.
+
+* Create Issue Check. Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins. Due Block - defines last block height in which the check can be used.
+```
+check := transaction.NewIssueCheck(
+    480,
+    TestNetChainID,
+    999999,
+    "MNT",
+    big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+).SetPassphrase("pass")
+```
+
+* Sign Issue Check
+```
+sign, _ := check.Sign("2919c43d5c712cae66f869a524d9523999998d51157dc40ac4d8d80a7602ce02")
+```
+
+* Prepare check string and convert to data
+```
+data, _ := transaction.DecodeIssueCheck("Mcf8a38334383002830f423f8a4d4e5400000000000000888ac7230489e80000b841d184caa333fe636288fc68d99dea2c8af5f7db4569a0bb91e03214e7e238f89d2b21f4d2b730ef590fd8de72bd43eb5c6265664df5aa3610ef6c71538d9295ee001ba08bd966fc5a093024a243e62cdc8131969152d21ee9220bc0d95044f54e3dd485a033bc4e03da3ea8a2cd2bd149d16c022ee604298575380db8548b4fd6672a9195")
+``` 
+
+* Proof check
+```
+check, _ := transaction.NewCheckAddress("Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47", "pass")
+proof, _ := check.Proof()
+```
 
 ### Minter Wallet
 

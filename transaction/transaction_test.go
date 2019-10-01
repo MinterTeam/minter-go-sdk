@@ -92,6 +92,6 @@ func TestObject_SenderAddress(t *testing.T) {
 	}
 
 	if senderAddress != "Mx31e61a05adbd13c6b625262704bc305bf7725026" {
-		t.Errorf("PublicKey want %s,\ngot %s", "Mx31e61a05adbd13c6b625262704bc305bf7725026", senderAddress)
+		t.Errorf("SenderAddress want %s,\ngot %s", "Mx31e61a05adbd13c6b625262704bc305bf7725026", senderAddress)
 	}
 }
