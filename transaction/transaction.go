@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
@@ -45,7 +46,7 @@ const (
 	feeTypeSetCandidateOnline  Fee = 100
 	feeTypeSetCandidateOffline Fee = 100
 	feeTypeCreateMultisig      Fee = 100
-	//feeMultisend Fee =  10+(n-1)*5
+	// feeMultisend Fee =  10+(n-1)*5
 	feeTypeEditCandidate Fee = 100000
 )
 
@@ -54,7 +55,7 @@ type SignatureType byte
 const (
 	_ SignatureType = iota
 	signatureTypeSingle
-	//signatureTypeMulti
+	// signatureTypeMulti
 )
 
 type ChainID byte
@@ -112,7 +113,7 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 		return object.setType(TypeSetCandidateOnline), nil
 	case *SetCandidateOffData:
 		return object.setType(TypeSetCandidateOffline), nil
-	//case *CreateMultisigData:
+	// case *CreateMultisigData:
 	//	return transaction.setType(TypeCreateMultisig), nil
 	case *MultisendData:
 		return object.setType(TypeMultisend), nil
@@ -135,11 +136,12 @@ type SignedTransaction interface {
 	Hash() (string, error)
 	Data() DataInterface
 	Signature() (*Signature, error)
+	SenderAddress() (string, error)
+	PublicKey() (string, error)
 }
 
 type Interface interface {
 	setType(t Type) Interface
-	setFee(commission Fee) Interface
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
@@ -154,12 +156,14 @@ type object struct {
 func (o *object) Fee() *big.Int {
 	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.fee())), big.NewInt(1000000000000000))
 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
-	//todo: testing
+	// todo: testing
 	return big.NewInt(0).Mul(gasPrice, commission)
 }
+
 func (o *object) Data() DataInterface {
 	return o.data
 }
+
 func (o *object) Signature() (*Signature, error) {
 	signature := new(Signature)
 	err := rlp.DecodeBytes(o.SignatureData, signature)
@@ -227,8 +231,53 @@ func Decode(tx string) (SignedTransaction, error) {
 	return result, nil
 }
 
-func (o *object) setFee(commission Fee) Interface {
-	return o
+func (o *object) SenderAddress() (string, error) {
+	publicKey, err := o.PublicKey()
+	if err != nil {
+		return "", err
+	}
+
+	address, err := wallet.AddressByPublicKey(publicKey)
+	if err != nil {
+		return "", err
+	}
+
+	return address, nil
+}
+
+func (o *object) PublicKey() (string, error) {
+	hash, err := rlpHash([]interface{}{
+		o.Transaction.Nonce,
+		o.Transaction.ChainID,
+		o.Transaction.GasPrice,
+		o.Transaction.GasCoin,
+		o.Transaction.Type,
+		o.Transaction.Data,
+		o.Transaction.Payload,
+		o.Transaction.ServiceData,
+		o.Transaction.SignatureType,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	signature, err := o.Signature()
+	if err != nil {
+		return "", err
+	}
+
+	sig := make([]byte, 65)
+
+	copy(sig[:32], signature.R.Bytes())
+	copy(sig[32:64], signature.S.Bytes())
+	sig[64] = signature.V.Bytes()[0] - 27
+
+	ecrecover, err := crypto.Ecrecover(hash[:], sig)
+	if err != nil {
+		return "", err
+	}
+
+	return "Mp" + hex.EncodeToString(ecrecover)[2:], nil
 }
 
 type Transaction struct {
