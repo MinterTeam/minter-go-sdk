@@ -145,6 +145,8 @@ type Interface interface {
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
+	SetPayload(payload []byte) Interface
+	SetServiceData(serviceData []byte) Interface
 	Sign(prKey string) (SignedTransaction, error)
 }
 
@@ -319,6 +321,16 @@ func (o *object) SetGasCoin(name string) Interface {
 
 func (o *object) SetGasPrice(price uint8) Interface {
 	o.GasPrice = price
+	return o
+}
+
+func (o *object) SetPayload(payload []byte) Interface {
+	o.Payload = payload
+	return o
+}
+
+func (o *object) SetServiceData(serviceData []byte) Interface {
+	o.ServiceData = serviceData
 	return o
 }
 
