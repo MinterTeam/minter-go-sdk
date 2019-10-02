@@ -13,7 +13,7 @@ func TestApi_Block(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, v := range response.Result.Transactions {
+	for _, v := range response.Transactions {
 		t.Run(strconv.Itoa(v.Type), func(t *testing.T) {
 			data, err := v.DataStruct()
 			if err != nil {

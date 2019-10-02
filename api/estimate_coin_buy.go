@@ -6,21 +6,19 @@ import (
 )
 
 type EstimateCoinBuyResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		WillPay    string `json:"will_pay"`
-		Commission string `json:"commission"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string                 `json:"jsonrpc"`
+	ID      string                 `json:"id"`
+	Result  *EstimateCoinBuyResult `json:"result,omitempty"`
+	Error   *Error                 `json:"error,omitempty"`
+}
+
+type EstimateCoinBuyResult struct {
+	WillPay    string `json:"will_pay"`
+	Commission string `json:"commission"`
 }
 
 // Return estimate of buy coin transaction.
-func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResponse, error) {
+func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResult, error) {
 
 	params := make(map[string]string)
 	params["coin_to_sell"] = coinToSell
@@ -35,11 +33,15 @@ func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy st
 		return nil, err
 	}
 
-	result := new(EstimateCoinBuyResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(EstimateCoinBuyResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

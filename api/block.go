@@ -7,32 +7,30 @@ import (
 )
 
 type BlockResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		Hash         string        `json:"hash"`
-		Height       string        `json:"height"`
-		Time         time.Time     `json:"time"`
-		NumTxs       string        `json:"num_txs"`
-		TotalTxs     string        `json:"total_txs"`
-		Transactions []Transaction `json:"transactions"`
-		BlockReward  string        `json:"block_reward"`
-		Size         string        `json:"size"`
-		Proposer     string        `json:"proposer"`
-		Validators   []struct {
-			PubKey string `json:"pub_key"`
-			Signed bool   `json:"signed"`
-		} `json:"validators"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string       `json:"jsonrpc"`
+	ID      string       `json:"id"`
+	Result  *BlockResult `json:"result,omitempty"`
+	Error   *Error       `json:"error,omitempty"`
+}
+
+type BlockResult struct {
+	Hash         string              `json:"hash"`
+	Height       string              `json:"height"`
+	Time         time.Time           `json:"time"`
+	NumTxs       string              `json:"num_txs"`
+	TotalTxs     string              `json:"total_txs"`
+	Transactions []TransactionResult `json:"transactions"`
+	BlockReward  string              `json:"block_reward"`
+	Size         string              `json:"size"`
+	Proposer     string              `json:"proposer"`
+	Validators   []struct {
+		PubKey string `json:"pub_key"`
+		Signed bool   `json:"signed"`
+	} `json:"validators"`
 }
 
 // Returns block data at given height.
-func (a *Api) Block(height int) (*BlockResponse, error) {
+func (a *Api) Block(height int) (*BlockResult, error) {
 
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)
@@ -42,11 +40,15 @@ func (a *Api) Block(height int) (*BlockResponse, error) {
 		return nil, err
 	}
 
-	result := new(BlockResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(BlockResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

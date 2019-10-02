@@ -6,21 +6,19 @@ import (
 )
 
 type MissedBlocksResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		MissedBlocks      string `json:"missed_blocks"`
-		MissedBlocksCount string `json:"missed_blocks_count"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string              `json:"jsonrpc"`
+	ID      string              `json:"id"`
+	Result  *MissedBlocksResult `json:"result,omitempty"`
+	Error   *Error              `json:"error,omitempty"`
+}
+
+type MissedBlocksResult struct {
+	MissedBlocks      string `json:"missed_blocks"`
+	MissedBlocksCount string `json:"missed_blocks_count"`
 }
 
 // Returns missed blocks by validator public key.
-func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResponse, error) {
+func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResult, error) {
 
 	params := make(map[string]string)
 	params["pub_key"] = pubKey
@@ -33,11 +31,15 @@ func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResponse, er
 		return nil, err
 	}
 
-	result := new(MissedBlocksResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(MissedBlocksResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

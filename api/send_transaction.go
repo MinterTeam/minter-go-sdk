@@ -6,43 +6,55 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
-type SendResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
+type SendTransactionResponse struct {
+	Jsonrpc string                 `json:"jsonrpc"`
+	ID      string                 `json:"id"`
+	Result  *SendTransactionResult `json:"result,omitempty"`
+	Error   *TxError               `json:"error,omitempty"`
+}
+
+type SendTransactionResult struct {
+	Code int    `json:"code"`
+	Data string `json:"data"`
+	Log  string `json:"log"`
+	Hash string `json:"hash"`
+}
+
+type TxError struct {
+	Code     int    `json:"code,omitempty"`
+	Message  string `json:"message"`
+	Data     string `json:"data"`
+	TxResult struct {
 		Code int    `json:"code"`
-		Data string `json:"data"`
 		Log  string `json:"log"`
-		Hash string `json:"hash"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code     int    `json:"code,omitempty"`
-		Message  string `json:"message"`
-		Data     string `json:"data"`
-		TxResult struct {
-			Code int    `json:"code"`
-			Log  string `json:"log"`
-		} `json:"tx_result"`
-	} `json:"error,omitempty"`
+	} `json:"tx_result"`
+}
+
+func (e *TxError) Error() string {
+	return fmt.Sprintf("code: %d, message: %s, data: \"%s\", tx_result.code: %d, tx_result.log: \"%s\"", e.Code, e.Message, e.Message, e.TxResult.Code, e.TxResult.Log)
 }
 
 // Returns the result of sending signed tx.
-func (a *Api) Send(transaction transaction.SignedTransaction) (*SendResponse, error) {
-	bytes, err := transaction.Encode()
+func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendTransactionResult, error) {
+	tx, err := transaction.Encode()
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := a.client.R().Get(fmt.Sprintf("/send_transaction?tx=%s", bytes))
+	res, err := a.client.R().SetQueryParam("tx", tx).Get("/send_transaction")
 	if err != nil {
 		return nil, err
 	}
 
-	response := new(SendResponse)
+	response := new(SendTransactionResponse)
 	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return response, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

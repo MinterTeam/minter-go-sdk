@@ -7,7 +7,14 @@ import (
 )
 
 func TestApi_MissedBlocks(t *testing.T) {
-	response, err := testApi.MissedBlocks("Mp1ada5ac409b965623bf6a4320260190038ae27230abfb5ebc9158280cdffffff", 0)
+	responseValidators, err := testApi.Validators(0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(responseValidators) == 0 {
+		t.Fatal("no candidates")
+	}
+	response, err := testApi.MissedBlocks(responseValidators[0].PubKey, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

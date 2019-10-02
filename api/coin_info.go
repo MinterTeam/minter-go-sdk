@@ -6,24 +6,22 @@ import (
 )
 
 type CoinInfoResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		Name           string `json:"name"`
-		Symbol         string `json:"symbol"`
-		Volume         string `json:"volume"`
-		Crr            string `json:"crr"`
-		ReserveBalance string `json:"reserve_balance"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string          `json:"jsonrpc"`
+	ID      string          `json:"id"`
+	Result  *CoinInfoResult `json:"result,omitempty"`
+	Error   *Error          `json:"error,omitempty"`
+}
+
+type CoinInfoResult struct {
+	Name           string `json:"name"`
+	Symbol         string `json:"symbol"`
+	Volume         string `json:"volume"`
+	Crr            string `json:"crr"`
+	ReserveBalance string `json:"reserve_balance"`
 }
 
 // Returns information about coin. Note: this method does not return information about base coins (MNT and BIP).
-func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResponse, error) {
+func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResult, error) {
 
 	params := make(map[string]string)
 	params["symbol"] = symbol
@@ -36,11 +34,15 @@ func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResponse, error) {
 		return nil, err
 	}
 
-	result := new(CoinInfoResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(CoinInfoResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

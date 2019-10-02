@@ -12,11 +12,11 @@ func TestApi_Candidate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(responseCandidates.Result) == 0 {
+	if len(responseCandidates) == 0 {
 		t.Fatal("no candidates")
 	}
 
-	response, err := testApi.Candidate(responseCandidates.Result[0].PubKey, 0)
+	response, err := testApi.Candidate(responseCandidates[0].PubKey, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

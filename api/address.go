@@ -6,21 +6,19 @@ import (
 )
 
 type AddressResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		Balance          map[string]string `json:"balance"`
-		TransactionCount string            `json:"transaction_count"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string         `json:"jsonrpc"`
+	ID      string         `json:"id"`
+	Result  *AddressResult `json:"result,omitempty"`
+	Error   *Error         `json:"error,omitempty"`
+}
+
+type AddressResult struct {
+	Balance          map[string]string `json:"balance"`
+	TransactionCount string            `json:"transaction_count"`
 }
 
 // Returns coins list, balance and transaction count (for nonce) of an address.
-func (a *Api) Address(address string, height int) (*AddressResponse, error) {
+func (a *Api) Address(address string, height int) (*AddressResult, error) {
 
 	params := make(map[string]string)
 	params["address"] = address
@@ -33,13 +31,17 @@ func (a *Api) Address(address string, height int) (*AddressResponse, error) {
 		return nil, err
 	}
 
-	result := new(AddressResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(AddressResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }
 
 // Returns balance of an address.
@@ -49,7 +51,7 @@ func (a *Api) Balance(address string, height int) (map[string]string, error) {
 		return nil, err
 	}
 
-	return response.Result.Balance, nil
+	return response.Balance, nil
 }
 
 // Returns next transaction number (nonce) of an address.
@@ -59,7 +61,7 @@ func (a *Api) Nonce(address string) (uint64, error) {
 		return 0, err
 	}
 
-	nonce, err := strconv.ParseUint(response.Result.TransactionCount, 10, 64)
+	nonce, err := strconv.ParseUint(response.TransactionCount, 10, 64)
 	if err != nil {
 		return 0, err
 	}

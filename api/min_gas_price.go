@@ -8,26 +8,26 @@ type MinGasPriceResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  string `json:"result,omitempty"`
-	Error   struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Error   *Error `json:"error,omitempty"`
 }
 
 // Returns current min gas price.
-func (a *Api) MinGasPrice() (*MinGasPriceResponse, error) {
+func (a *Api) MinGasPrice() (string, error) {
 
 	res, err := a.client.R().Get("/min_gas_price")
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	result := new(MinGasPriceResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(MinGasPriceResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return "", response.Error
+	}
+
+	return response.Result, nil
 }

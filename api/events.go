@@ -6,28 +6,26 @@ import (
 )
 
 type EventsResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		Events []struct {
-			Type  string `json:"type"`
-			Value struct {
-				Role            string `json:"role"`
-				Address         string `json:"address"`
-				Amount          string `json:"amount"`
-				ValidatorPubKey string `json:"validator_pub_key"`
-			} `json:"value"`
-		} `json:"events"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Result  *EventsResult `json:"result,omitempty"`
+	Error   *Error        `json:"error,omitempty"`
+}
+
+type EventsResult struct {
+	Events []struct {
+		Type  string `json:"type"`
+		Value struct {
+			Role            string `json:"role"`
+			Address         string `json:"address"`
+			Amount          string `json:"amount"`
+			ValidatorPubKey string `json:"validator_pub_key"`
+		} `json:"value"`
+	} `json:"events"`
 }
 
 // Returns events at given height.
-func (a *Api) Events(height int) (*EventsResponse, error) {
+func (a *Api) Events(height int) (*EventsResult, error) {
 
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)
@@ -37,11 +35,15 @@ func (a *Api) Events(height int) (*EventsResponse, error) {
 		return nil, err
 	}
 
-	result := new(EventsResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(EventsResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

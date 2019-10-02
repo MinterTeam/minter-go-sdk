@@ -7,20 +7,18 @@ import (
 )
 
 type EstimateTxCommissionResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  struct {
-		Commission string `json:"commission"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string                      `json:"jsonrpc"`
+	ID      string                      `json:"id"`
+	Result  *EstimateTxCommissionResult `json:"result,omitempty"`
+	Error   *Error                      `json:"error,omitempty"`
+}
+
+type EstimateTxCommissionResult struct {
+	Commission string `json:"commission"`
 }
 
 // Return estimate of transaction.
-func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*EstimateTxCommissionResponse, error) {
+func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*EstimateTxCommissionResult, error) {
 	bytes, err := transaction.Encode()
 	if err != nil {
 		return nil, err
@@ -37,5 +35,9 @@ func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*
 		return nil, err
 	}
 
-	return response, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

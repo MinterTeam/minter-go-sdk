@@ -11,5 +11,7 @@ func TestApi_Validators(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%+v", response)
+	for _, v := range response {
+		t.Logf("%+v", v)
+	}
 }

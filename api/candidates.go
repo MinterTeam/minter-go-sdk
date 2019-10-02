@@ -6,32 +6,14 @@ import (
 )
 
 type CandidatesResponse struct {
-	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Result  []struct {
-		RewardAddress string `json:"reward_address"`
-		OwnerAddress  string `json:"owner_address"`
-		TotalStake    string `json:"total_stake"`
-		PubKey        string `json:"pub_key"`
-		Commission    string `json:"commission"`
-		Stakes        []struct {
-			Owner    string `json:"owner"`
-			Coin     string `json:"coin"`
-			Value    string `json:"value"`
-			BipValue string `json:"bip_value"`
-		} `json:"stakes"`
-		CreatedAtBlock string `json:"created_at_block"`
-		Status         int    `json:"status"`
-	} `json:"result,omitempty"`
-	Error struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string             `json:"jsonrpc"`
+	ID      string             `json:"id"`
+	Result  []*CandidateResult `json:"result,omitempty"`
+	Error   *Error             `json:"error,omitempty"`
 }
 
 // Returns list of candidates.
-func (a *Api) Candidates(height int, includeStakes bool) (*CandidatesResponse, error) {
+func (a *Api) Candidates(height int, includeStakes bool) ([]*CandidateResult, error) {
 
 	params := make(map[string]string)
 	if includeStakes {
@@ -46,11 +28,15 @@ func (a *Api) Candidates(height int, includeStakes bool) (*CandidatesResponse, e
 		return nil, err
 	}
 
-	result := new(CandidatesResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(CandidatesResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

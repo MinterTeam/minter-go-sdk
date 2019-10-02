@@ -53,7 +53,7 @@ func TestApi_Send(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	res, err := testApi.Send(signedTransaction)
+	res, err := testApi.SendTransaction(signedTransaction)
 	if err != nil {
 		t.Fatal(err)
 	}

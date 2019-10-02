@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -11,4 +12,14 @@ type Api struct {
 // Create MinterAPI instance.
 func NewApi(hostUrl string) *Api {
 	return &Api{client: resty.New().SetHostURL(hostUrl)}
+}
+
+type Error struct {
+	Code    int    `json:"code,omitempty"`
+	Message string `json:"message"`
+	Data    string `json:"data"`
+}
+
+func (e *Error) Error() string {
+	return fmt.Sprintf("code: %d, message: \"%s\", data: \"%s\"", e.Code, e.Message, e.Data)
 }

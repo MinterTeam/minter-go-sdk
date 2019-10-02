@@ -6,18 +6,14 @@ import (
 )
 
 type TransactionsResponse struct {
-	Jsonrpc string        `json:"jsonrpc"`
-	ID      string        `json:"id"`
-	Result  []Transaction `json:"result,omitempty"`
-	Error   struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string               `json:"jsonrpc"`
+	ID      string               `json:"id"`
+	Result  []*TransactionResult `json:"result,omitempty"`
+	Error   *Error               `json:"error,omitempty"`
 }
 
 // Return transactions by query.
-func (a *Api) Transactions(query string, page int, perPage int) (*TransactionsResponse, error) {
+func (a *Api) Transactions(query string, page int, perPage int) ([]*TransactionResult, error) {
 
 	params := make(map[string]string)
 	params["query"] = query
@@ -33,11 +29,15 @@ func (a *Api) Transactions(query string, page int, perPage int) (*TransactionsRe
 		return nil, err
 	}
 
-	result := new(TransactionsResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(TransactionsResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }

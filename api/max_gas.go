@@ -8,26 +8,26 @@ type MaxGasResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
 	ID      string `json:"id"`
 	Result  string `json:"result,omitempty"`
-	Error   struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Error   *Error `json:"error,omitempty"`
 }
 
 // Returns current max gas.
-func (a *Api) MaxGas() (*MaxGasResponse, error) {
+func (a *Api) MaxGas() (string, error) {
 
 	res, err := a.client.R().Get("/max_gas")
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	result := new(MaxGasResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(MaxGasResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return "", response.Error
+	}
+
+	return response.Result, nil
 }

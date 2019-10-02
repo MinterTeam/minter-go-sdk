@@ -7,17 +7,13 @@ import (
 )
 
 type TransactionResponse struct {
-	Jsonrpc string      `json:"jsonrpc"`
-	ID      string      `json:"id"`
-	Result  Transaction `json:"result,omitempty"`
-	Error   struct {
-		Code    int    `json:"code,omitempty"`
-		Message string `json:"message"`
-		Data    string `json:"data"`
-	} `json:"error,omitempty"`
+	Jsonrpc string             `json:"jsonrpc"`
+	ID      string             `json:"id"`
+	Result  *TransactionResult `json:"result,omitempty"`
+	Error   *Error             `json:"error,omitempty"`
 }
 
-type Transaction struct {
+type TransactionResult struct {
 	Hash     string                 `json:"hash"`
 	RawTx    string                 `json:"raw_tx"`
 	Height   string                 `json:"height"`
@@ -41,7 +37,7 @@ type Transaction struct {
 }
 
 // Converting transaction map data to the structure interface regarding transaction type
-func (t *Transaction) DataStruct() (interface{}, error) {
+func (t *TransactionResult) DataStruct() (interface{}, error) {
 	bytes, err := json.Marshal(t.Data)
 	if err != nil {
 		return nil, err
@@ -175,7 +171,7 @@ type MultisendData struct {
 type MultisendDataItem SendData
 
 // Returns transaction info.
-func (a *Api) Transaction(hash string) (*TransactionResponse, error) {
+func (a *Api) Transaction(hash string) (*TransactionResult, error) {
 
 	params := make(map[string]string)
 	params["hash"] = hash
@@ -185,11 +181,15 @@ func (a *Api) Transaction(hash string) (*TransactionResponse, error) {
 		return nil, err
 	}
 
-	result := new(TransactionResponse)
-	err = json.Unmarshal(res.Body(), result)
+	response := new(TransactionResponse)
+	err = json.Unmarshal(res.Body(), response)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	return response.Result, nil
 }
