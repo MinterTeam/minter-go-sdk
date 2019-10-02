@@ -20,7 +20,7 @@ This is a pure Go SDK for working with **Minter** blockchain
 	    - [MaxGas](#maxgas)
 	    - [MinGasPrice](#mingasprice)
 	    - [MissedBlocks](#missedblocks)
-	    - [Send](#send)
+	    - [Send](#sendtransaction)
 	    - [Status](#status)
 	    - [Validators](#validators)
 	    - [Transaction](#transaction)
@@ -164,9 +164,9 @@ func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResult, error) {...}
 ##### Example
 
 ```
-response, err := api.CoinInfo("BIP", 0)
+response, err := api.CoinInfo("CAPITAL", 0)
 
-// &{Name:BIP Symbol:BIP Volume:1732219715966925759779063 Crr:100 ReserveBalance:1732219715966925759779063}
+// &{Name:Minter Capital Symbol:CAPITAL Volume:160424270982998917252256781 Crr:80 ReserveBalance:57093621687856995327577694}
 ```
 
 ### EstimateCoinBuy
