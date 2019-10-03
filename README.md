@@ -141,7 +141,7 @@ response, err := api.Candidate(publicKey, 0)
 Returns list of candidates.
 
 ```go
-func (a *Api) Candidates(height int, includeStakes bool) (*CandidatesResult, error) {...}
+func (a *Api) Candidates(height int, includeStakes bool) ([]*CandidateResult, error) {...}
 ```
 
 ##### Example
