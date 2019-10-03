@@ -73,13 +73,13 @@ api := api.NewApi(nodeUrl)
 Returns coins list, balance and transaction count (for nonce) of an address.
 
 ```go
-func (a *Api) Address(address string) (*AddressResult, error) {...}
+func (a *Api) Address(address string, height int) (*AddressResult, error) {...}
 ````
 
 ##### Example
 
 ```go
-response, err := api.GetAddress("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99")
+response, err := api.Address("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99", 0)
 
 // &{Balance:map[CAPITAL:57010462073783319332082 KLM0VCOIN:16619033694080914686 MNT:41943252740815940564238] TransactionCount:81}
 ```
