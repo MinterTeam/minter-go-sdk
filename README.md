@@ -336,7 +336,7 @@ response, err := api.Transaction("Mt708c2019938339aba4bf6c2f771373bc43e0efa7df65
 Return transactions by query.
 
 ```go
-func (a *Api) Transaction(hash string) (*TransactionResult, error) {...}
+func (a *Api) Transactions(query string, page int, perPage int) ([]*TransactionResult, error) { {...}
 ```
 
 ##### Example
