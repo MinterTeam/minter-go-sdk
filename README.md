@@ -626,7 +626,7 @@ key, _ := signedTransaction.PublicKey()
 ### Get sender address of transaction
 
 ```go
-key, _ := signedTransaction.SenderAddress()
+address, _ := signedTransaction.SenderAddress()
 ```
 
 ### Decode Transaction
