@@ -388,7 +388,7 @@ Returns a signed tx.
 ##### Example
 
 ```go
-var data DataInterface
+var data transaction.DataInterface
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
 tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
