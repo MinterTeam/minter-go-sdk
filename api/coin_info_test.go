@@ -7,7 +7,7 @@ import (
 )
 
 func TestApi_CoinInfo(t *testing.T) {
-	response, err := testApi.CoinInfo("CAPITAL", 0)
+	response, err := testApi.CoinInfo("CAPITAL", LatestBlockHeight)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -56,7 +56,7 @@ func (a *Api) Balance(address string, height int) (map[string]string, error) {
 
 // Returns next transaction number (nonce) of an address.
 func (a *Api) Nonce(address string) (uint64, error) {
-	response, err := a.Address(address, 0)
+	response, err := a.Address(address, LatestBlockHeight)
 	if err != nil {
 		return 0, err
 	}

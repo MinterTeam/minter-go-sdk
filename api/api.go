@@ -5,6 +5,8 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
+const LatestBlockHeight = 0
+
 type Api struct {
 	client *resty.Client
 }

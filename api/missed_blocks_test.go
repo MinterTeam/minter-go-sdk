@@ -14,7 +14,7 @@ func TestApi_MissedBlocks(t *testing.T) {
 	if len(responseValidators) == 0 {
 		t.Fatal("no candidates")
 	}
-	response, err := testApi.MissedBlocks(responseValidators[0].PubKey, 0)
+	response, err := testApi.MissedBlocks(responseValidators[0].PubKey, LatestBlockHeight)
 	if err != nil {
 		t.Fatal(err)
 	}

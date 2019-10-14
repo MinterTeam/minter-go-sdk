@@ -16,7 +16,7 @@ func TestApi_Candidate(t *testing.T) {
 		t.Fatal("no candidates")
 	}
 
-	response, err := testApi.Candidate(responseCandidates[0].PubKey, 0)
+	response, err := testApi.Candidate(responseCandidates[0].PubKey, LatestBlockHeight)
 	if err != nil {
 		t.Fatal(err)
 	}
