@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"strconv"
 )
 
@@ -13,15 +14,66 @@ type EventsResponse struct {
 }
 
 type EventsResult struct {
-	Events []struct {
-		Type  string `json:"type"`
-		Value struct {
-			Role            string `json:"role"`
-			Address         string `json:"address"`
-			Amount          string `json:"amount"`
-			ValidatorPubKey string `json:"validator_pub_key"`
-		} `json:"value"`
-	} `json:"events"`
+	Events []Event `json:"events"`
+}
+
+type Event struct {
+	Type  string            `json:"type"`
+	Value map[string]string `json:"value"`
+}
+
+// Converting event map data to the structure interface regarding event type
+func (e *Event) ValueStruct() (interface{}, error) {
+	bytes, err := json.Marshal(e.Value)
+	if err != nil {
+		return nil, err
+	}
+
+	var value interface{}
+	switch e.Type {
+	case "minter/RewardEvent":
+		value = &RewardEventValue{}
+	case "minter/SlashEvent":
+		value = &SlashEventValue{}
+	case "minter/UnbondEvent":
+		value = &UnbondEventValue{}
+	case "minter/CoinLiquidationEvent":
+		value = &CoinLiquidationEventValue{}
+	default:
+		return nil, errors.New("unknown event type")
+	}
+
+	err = json.Unmarshal(bytes, value)
+	if err != nil {
+		return nil, err
+	}
+
+	return value, nil
+}
+
+type RewardEventValue struct {
+	Role            string `json:"role"`
+	Address         string `json:"address"`
+	Amount          string `json:"amount"`
+	ValidatorPubKey string `json:"validator_pub_key"`
+}
+
+type SlashEventValue struct {
+	Address         string `json:"address"`
+	Amount          string `json:"amount"`
+	Coin            string `json:"coin"`
+	ValidatorPubKey string `json:"validator_pub_key"`
+}
+
+type UnbondEventValue struct {
+	Address         string `json:"address"`
+	Amount          string `json:"amount"`
+	Coin            string `json:"coin"`
+	ValidatorPubKey string `json:"validator_pub_key"`
+}
+
+type CoinLiquidationEventValue struct {
+	Coin string `json:"coin"`
 }
 
 // Returns events at given height.
