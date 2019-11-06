@@ -37,8 +37,6 @@ func (e *Event) ValueStruct() (interface{}, error) {
 		value = &SlashEventValue{}
 	case "minter/UnbondEvent":
 		value = &UnbondEventValue{}
-	case "minter/CoinLiquidationEvent":
-		value = &CoinLiquidationEventValue{}
 	default:
 		return nil, errors.New("unknown event type")
 	}
@@ -70,10 +68,6 @@ type UnbondEventValue struct {
 	Amount          string `json:"amount"`
 	Coin            string `json:"coin"`
 	ValidatorPubKey string `json:"validator_pub_key"`
-}
-
-type CoinLiquidationEventValue struct {
-	Coin string `json:"coin"`
 }
 
 // Returns events at given height.

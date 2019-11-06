@@ -25,8 +25,6 @@ func TestApi_Events(t *testing.T) {
 				_, ok = data.(*SlashEventValue)
 			case "minter/UnbondEvent":
 				_, ok = data.(*UnbondEventValue)
-			case "minter/CoinLiquidationEvent":
-				_, ok = data.(*CoinLiquidationEventValue)
 			default:
 				t.Fatal("not found interface by type")
 			}
