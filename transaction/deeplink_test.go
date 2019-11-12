@@ -6,8 +6,7 @@ import (
 )
 
 func TestDeepLink_NewDeepLink(t *testing.T) {
-	deepLink := DeepLink{}
-	link, err := deepLink.NewDeepLink(
+	link, err := NewDeepLink(
 		NewSendData().
 			MustSetTo("Mx18467bbb64a8edf890201d526c35957d82be3d95").
 			SetCoin("BIP").

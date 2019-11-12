@@ -35,7 +35,9 @@ func (d *DeepLink) SetPayload(payload []byte) *DeepLink {
 	return d
 }
 
-func (d *DeepLink) NewDeepLink(data DataInterface) (*DeepLink, error) {
+func NewDeepLink(data DataInterface) (*DeepLink, error) {
+	d := new(DeepLink)
+
 	bytes, err := data.encode()
 	if err != nil {
 		return d, err
