@@ -45,6 +45,7 @@ This is a pure Go SDK for working with **Minter** blockchain
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
+	- [Minter Deep Links](#minter-deep-links)
 	- [Minter Check](#minter-check)
 	- [Minter Wallet](#minter-wallet)		
 * [Tests](#tests)
@@ -634,6 +635,21 @@ address, _ := signedTransaction.SenderAddress()
 ```go
 transactionObject, _ := transaction.Decode("0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a")
 ```
+
+### Minter Deep Links
+
+```go
+link, _ := NewDeepLink(
+		NewSendData().
+			MustSetTo("Mx18467bbb64a8edf890201d526c35957d82be3d95").
+			SetCoin("BIP").
+			SetValue(big.NewInt(0).Mul(big.NewInt(12345), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(14), nil))),
+	)
+link.SetPayload([]byte("Hello World"))
+encode, _ := link.Encode()
+```
+
+More info about [Minter Link Protocol](https://github.com/MinterTeam/minter-link-protocol)
 
 ### Minter Check
 
