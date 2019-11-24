@@ -7,7 +7,7 @@ import (
 
 type CandidatesResponse struct {
 	Jsonrpc string             `json:"jsonrpc"`
-	ID      string             `json:"id"`
+	ID      string             `json:"id,omitempty"`
 	Result  []*CandidateResult `json:"result,omitempty"`
 	Error   *Error             `json:"error,omitempty"`
 }

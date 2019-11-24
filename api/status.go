@@ -7,7 +7,7 @@ import (
 
 type StatusResponse struct {
 	Jsonrpc string        `json:"jsonrpc"`
-	ID      string        `json:"id"`
+	ID      string        `json:"id,omitempty"`
 	Result  *StatusResult `json:"result,omitempty"`
 	Error   *Error        `json:"error,omitempty"`
 }
@@ -26,7 +26,7 @@ type StatusResult struct {
 				Block string `json:"block"`
 				App   string `json:"app"`
 			} `json:"protocol_version"`
-			ID         string `json:"id"`
+			ID         string `json:"id,omitempty"`
 			ListenAddr string `json:"listen_addr"`
 			Network    string `json:"network"`
 			Version    string `json:"version"`

@@ -6,7 +6,7 @@ import (
 
 type MinGasPriceResponse struct {
 	Jsonrpc string `json:"jsonrpc"`
-	ID      string `json:"id"`
+	ID      string `json:"id,omitempty"`
 	Result  string `json:"result,omitempty"`
 	Error   *Error `json:"error,omitempty"`
 }

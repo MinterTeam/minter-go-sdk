@@ -8,7 +8,7 @@ import (
 
 type TransactionResponse struct {
 	Jsonrpc string             `json:"jsonrpc"`
-	ID      string             `json:"id"`
+	ID      string             `json:"id,omitempty"`
 	Result  *TransactionResult `json:"result,omitempty"`
 	Error   *Error             `json:"error,omitempty"`
 }
@@ -32,7 +32,8 @@ type TransactionResult struct {
 		TxType       string `json:"tx.type,omitempty"`
 		TxFrom       string `json:"tx.from,omitempty"`
 		TxTo         string `json:"tx.to,omitempty"`
-		TxCoin       string `json:"tx.coin"`
+		TxCoin       string `json:"tx.coin,omitempty"`
+		TxSellAmount string `json:"tx.sell_amount,omitempty"`
 	} `json:"tags,omitempty"`
 }
 

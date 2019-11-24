@@ -7,7 +7,7 @@ import (
 
 type EstimateCoinSellResponse struct {
 	Jsonrpc string                  `json:"jsonrpc"`
-	ID      string                  `json:"id"`
+	ID      string                  `json:"id,omitempty"`
 	Result  *EstimateCoinSellResult `json:"result,omitempty"`
 	Error   *Error                  `json:"error,omitempty"`
 }

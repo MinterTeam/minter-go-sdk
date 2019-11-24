@@ -8,7 +8,7 @@ import (
 
 type SendTransactionResponse struct {
 	Jsonrpc string                 `json:"jsonrpc"`
-	ID      string                 `json:"id"`
+	ID      string                 `json:"id,omitempty"`
 	Result  *SendTransactionResult `json:"result,omitempty"`
 	Error   *TxError               `json:"error,omitempty"`
 }
@@ -22,12 +22,12 @@ type SendTransactionResult struct {
 
 type TxError struct {
 	Code     int    `json:"code,omitempty"`
-	Message  string `json:"message"`
-	Data     string `json:"data"`
+	Message  string `json:"message,omitempty"`
+	Data     string `json:"data,omitempty"`
 	TxResult struct {
-		Code int    `json:"code"`
-		Log  string `json:"log"`
-	} `json:"tx_result"`
+		Code int    `json:"code,omitempty"`
+		Log  string `json:"log,omitempty"`
+	} `json:"tx_result,omitempty"`
 }
 
 func (e *TxError) Error() string {

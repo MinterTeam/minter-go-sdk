@@ -7,7 +7,7 @@ import (
 
 type AddressResponse struct {
 	Jsonrpc string         `json:"jsonrpc"`
-	ID      string         `json:"id"`
+	ID      string         `json:"id,omitempty"`
 	Result  *AddressResult `json:"result,omitempty"`
 	Error   *Error         `json:"error,omitempty"`
 }

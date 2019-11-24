@@ -7,7 +7,7 @@ import (
 
 type ValidatorsResponse struct {
 	Jsonrpc string             `json:"jsonrpc"`
-	ID      string             `json:"id"`
+	ID      string             `json:"id,omitempty"`
 	Result  []*ValidatorResult `json:"result,omitempty"`
 	Error   *Error             `json:"error,omitempty"`
 }
