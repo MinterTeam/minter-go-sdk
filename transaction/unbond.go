@@ -7,7 +7,7 @@ import (
 )
 
 // Transaction for unbonding funds from validator's stake.
-// PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+// PubKey - Public key of a validator. Coin - Symbol of coin to stake. Value - Amount of coins to stake.
 type UnbondData struct {
 	PubKey []byte
 	Coin   [10]byte

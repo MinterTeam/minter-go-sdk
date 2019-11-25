@@ -17,7 +17,7 @@ type TransactionResult struct {
 	Hash     string                 `json:"hash"`
 	RawTx    string                 `json:"raw_tx"`
 	Height   string                 `json:"height"`
-	Index    int                    `json:"index"`
+	Index    int                    `json:"index,omitempty"`
 	From     string                 `json:"from"`
 	Nonce    string                 `json:"nonce"`
 	Gas      string                 `json:"gas"`
@@ -131,7 +131,7 @@ type DeclareCandidacyData struct {
 type DelegateData struct {
 	PubKey string `json:"pub_key"`
 	Coin   string `json:"coin"`
-	Stake  string `json:"stake"`
+	Value  string `json:"value"`
 }
 
 type UnbondData struct {

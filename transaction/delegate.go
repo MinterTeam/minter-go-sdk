@@ -7,11 +7,11 @@ import (
 )
 
 // Transaction for delegating funds to validator.
-// PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+// PubKey - Public key of a validator. Coin - Symbol of coin to stake. Value - Amount of coins to stake.
 type DelegateData struct {
 	PubKey []byte
 	Coin   [10]byte
-	Stake  *big.Int
+	Value  *big.Int
 }
 
 func NewDelegateData() *DelegateData {
@@ -40,8 +40,8 @@ func (d *DelegateData) SetCoin(symbol string) *DelegateData {
 	return d
 }
 
-func (d *DelegateData) SetStake(value *big.Int) *DelegateData {
-	d.Stake = value
+func (d *DelegateData) SetValue(value *big.Int) *DelegateData {
+	d.Value = value
 	return d
 }
 
