@@ -14,17 +14,17 @@ type TransactionResponse struct {
 }
 
 type TransactionResult struct {
-	Hash     string                 `json:"hash"`
-	RawTx    string                 `json:"raw_tx"`
-	Height   string                 `json:"height"`
-	Index    int                    `json:"index,omitempty"`
-	From     string                 `json:"from"`
-	Nonce    string                 `json:"nonce"`
-	Gas      string                 `json:"gas"`
-	GasPrice int                    `json:"gas_price"`
-	GasCoin  string                 `json:"gas_coin"`
-	Type     int                    `json:"type"`
-	Data     map[string]interface{} `json:"data,omitempty"`
+	Hash     string          `json:"hash"`
+	RawTx    string          `json:"raw_tx"`
+	Height   string          `json:"height"`
+	Index    int             `json:"index,omitempty"`
+	From     string          `json:"from"`
+	Nonce    string          `json:"nonce"`
+	Gas      string          `json:"gas"`
+	GasPrice int             `json:"gas_price"`
+	GasCoin  string          `json:"gas_coin"`
+	Type     int             `json:"type"`
+	Data     dataTransaction `json:"data,omitempty"`
 	Tags     struct {
 		TxCoinToBuy  string `json:"tx.coin_to_buy,omitempty"`
 		TxCoinToSell string `json:"tx.coin_to_sell,omitempty"`
@@ -37,12 +37,24 @@ type TransactionResult struct {
 	} `json:"tags,omitempty"`
 }
 
+type dataTransaction map[string]interface{}
+
+func (dt *dataTransaction) FillStruct(data interface{}) error {
+	bytes, err := json.Marshal(dt)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(bytes, data)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Converting transaction map data to the structure interface regarding transaction type
 func (t *TransactionResult) DataStruct() (interface{}, error) {
-	bytes, err := json.Marshal(t.Data)
-	if err != nil {
-		return nil, err
-	}
 
 	var data interface{}
 	switch transaction.Type(t.Type) {
@@ -78,12 +90,7 @@ func (t *TransactionResult) DataStruct() (interface{}, error) {
 		return nil, errors.New("unknown transaction type")
 	}
 
-	err = json.Unmarshal(bytes, data)
-	if err != nil {
-		return nil, err
-	}
-
-	return data, nil
+	return data, t.Data.FillStruct(data)
 }
 
 type SendData struct {
