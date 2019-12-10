@@ -11,6 +11,7 @@ type CandidateResponse struct {
 	Result  *CandidateResult `json:"result,omitempty"`
 	Error   *Error           `json:"error,omitempty"`
 }
+
 type CandidateResult struct {
 	RewardAddress string `json:"reward_address"`
 	OwnerAddress  string `json:"owner_address"`
@@ -23,8 +24,7 @@ type CandidateResult struct {
 		Value    string `json:"value"`
 		BipValue string `json:"bip_value"`
 	} `json:"stakes"`
-	CreatedAtBlock string `json:"created_at_block"`
-	Status         int    `json:"status"`
+	Status int `json:"status"`
 }
 
 // Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.

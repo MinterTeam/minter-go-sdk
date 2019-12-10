@@ -17,6 +17,7 @@ type IssueCheckData struct {
 	DueBlock uint64
 	Coin     [10]byte
 	Value    *big.Int
+	GasCoin  [10]byte
 	Lock     *big.Int
 	V        *big.Int
 	R        *big.Int
@@ -40,7 +41,7 @@ type IssueCheck struct {
 // Create Issue Check
 // Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins.
 // Due Block - defines last block height in which the check can be used.
-func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int) IssueCheckInterface {
+func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int, gasCoin string) IssueCheckInterface {
 	check := &IssueCheck{
 		IssueCheckData: &IssueCheckData{
 			Nonce:    []byte(strconv.Itoa(int(nonce))),
@@ -50,6 +51,7 @@ func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, 
 		},
 	}
 	copy(check.Coin[:], coin)
+	copy(check.GasCoin[:], gasCoin)
 	return check
 }
 
@@ -95,6 +97,7 @@ func (check *IssueCheck) Sign(prKey string) (Signed, error) {
 		check.DueBlock,
 		check.Coin,
 		check.Value,
+		check.GasCoin,
 	})
 	if err != nil {
 		return nil, err
@@ -115,6 +118,7 @@ func (check *IssueCheck) Sign(prKey string) (Signed, error) {
 		check.DueBlock,
 		check.Coin,
 		check.Value,
+		check.GasCoin,
 		check.Lock,
 	})
 	if err != nil {

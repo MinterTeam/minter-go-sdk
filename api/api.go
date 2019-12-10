@@ -13,7 +13,7 @@ type Api struct {
 
 // Create MinterAPI instance.
 func NewApi(hostUrl string) *Api {
-	return &Api{client: resty.New().SetHostURL(hostUrl)}
+	return NewApiWithClient(hostUrl, resty.New())
 }
 
 // Create MinterAPI instance with custom client
