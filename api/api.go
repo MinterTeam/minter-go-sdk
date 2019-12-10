@@ -16,6 +16,11 @@ func NewApi(hostUrl string) *Api {
 	return &Api{client: resty.New().SetHostURL(hostUrl)}
 }
 
+// Create MinterAPI instance with custom client
+func NewApiWithClient(hostUrl string, client *resty.Client) *Api {
+	return &Api{client: client.SetHostURL(hostUrl)}
+}
+
 type Error struct {
 	Code    int    `json:"code,omitempty"`
 	Message string `json:"message"`
