@@ -55,7 +55,7 @@ type SignatureType byte
 const (
 	_ SignatureType = iota
 	signatureTypeSingle
-	// signatureTypeMulti
+	signatureTypeMulti
 )
 
 type ChainID byte
@@ -113,8 +113,8 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 		return object.setType(TypeSetCandidateOnline), nil
 	case *SetCandidateOffData:
 		return object.setType(TypeSetCandidateOffline), nil
-	// case *CreateMultisigData:
-	//	return transaction.setType(TypeCreateMultisig), nil
+	case *CreateMultisigData:
+		return object.setType(TypeCreateMultisig).setSignatureType(signatureTypeMulti), nil
 	case *MultisendData:
 		return object.setType(TypeMultisend), nil
 	case *EditCandidateData:
@@ -142,6 +142,7 @@ type SignedTransaction interface {
 
 type Interface interface {
 	setType(t Type) Interface
+	setSignatureType(signatureType SignatureType) Interface
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
@@ -308,6 +309,12 @@ func (o *object) setType(t Type) Interface {
 	o.Type = t
 	return o
 }
+
+func (o *object) setSignatureType(signatureType SignatureType) Interface {
+	o.SignatureType = signatureType
+	return o
+}
+
 func (o *object) SetNonce(nonce uint64) Interface {
 	o.Nonce = nonce
 	return o
