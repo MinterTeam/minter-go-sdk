@@ -17,13 +17,10 @@ type CreateCoinData struct {
 	InitialAmount        *big.Int
 	InitialReserve       *big.Int
 	ConstantReserveRatio uint
-	MaxSupply            *big.Int
 }
 
 func NewCreateCoinData() *CreateCoinData {
-	return &CreateCoinData{
-		InitialReserve: big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
-	}
+	return &CreateCoinData{}
 }
 
 func (d *CreateCoinData) SetName(name string) *CreateCoinData {
@@ -37,9 +34,7 @@ func (d *CreateCoinData) SetSymbol(symbol string) *CreateCoinData {
 }
 
 func (d *CreateCoinData) SetInitialReserve(value *big.Int) *CreateCoinData {
-	if big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)).Cmp(value) == -1 {
-		d.InitialReserve = value
-	}
+	d.InitialReserve = value
 	return d
 }
 
