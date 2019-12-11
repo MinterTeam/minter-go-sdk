@@ -24,7 +24,8 @@ type TransactionResult struct {
 	GasPrice int             `json:"gas_price"`
 	GasCoin  string          `json:"gas_coin"`
 	Type     int             `json:"type"`
-	Data     dataTransaction `json:"data,omitempty"`
+	Data     dataTransaction `json:"data"`
+	Payload  []byte          `json:"payload"`
 	Tags     struct {
 		TxCoinToBuy  string `json:"tx.coin_to_buy,omitempty"`
 		TxCoinToSell string `json:"tx.coin_to_sell,omitempty"`
@@ -35,6 +36,8 @@ type TransactionResult struct {
 		TxCoin       string `json:"tx.coin,omitempty"`
 		TxSellAmount string `json:"tx.sell_amount,omitempty"`
 	} `json:"tags,omitempty"`
+	Code uint32 `json:"code,omitempty"`
+	Log  string `json:"log,omitempty"`
 }
 
 type dataTransaction map[string]interface{}
@@ -51,6 +54,17 @@ func (dt *dataTransaction) FillStruct(data interface{}) error {
 	}
 
 	return nil
+}
+
+func (t *TransactionResult) IsValid() bool {
+	return t.Code == 0
+}
+
+func (t *TransactionResult) ErrorLog() error {
+	if t.IsValid() {
+		return nil
+	}
+	return errors.New(t.Log)
 }
 
 // Converting transaction map data to the structure interface regarding transaction type
