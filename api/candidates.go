@@ -13,7 +13,12 @@ type CandidatesResponse struct {
 }
 
 // Returns list of candidates.
-func (a *Api) Candidates(height int, includeStakes bool) ([]*CandidateResult, error) {
+func (a *Api) Candidates(includeStakes bool) ([]*CandidateResult, error) {
+	return a.CandidatesAtHeight(LatestBlockHeight, includeStakes)
+}
+
+// Returns list of candidates.
+func (a *Api) CandidatesAtHeight(height int, includeStakes bool) ([]*CandidateResult, error) {
 
 	params := make(map[string]string)
 	if includeStakes {

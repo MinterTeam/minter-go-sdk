@@ -29,14 +29,13 @@ type BlockResult struct {
 	} `json:"validators"`
 }
 
-//func (a *Api) Block() (*BlockResult, error) {
-//	return a.BlockAtHeight(LatestBlockHeight)
-//}
-//todo
-//func (a *Api) BlockAtHeight(height int) (*BlockResult, error) {
+// Returns block data at last height.
+func (a *Api) Block() (*BlockResult, error) {
+	return a.BlockAtHeight(LatestBlockHeight)
+}
 
 // Returns block data at given height.
-func (a *Api) Block(height int) (*BlockResult, error) {
+func (a *Api) BlockAtHeight(height int) (*BlockResult, error) {
 
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)

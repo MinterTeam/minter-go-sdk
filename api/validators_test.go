@@ -7,7 +7,7 @@ import (
 )
 
 func TestApi_Validators(t *testing.T) {
-	response, err := testApi.Validators(0)
+	response, err := testApi.ValidatorsAtHeight(0)
 	if err != nil {
 		t.Fatal(err)
 	}

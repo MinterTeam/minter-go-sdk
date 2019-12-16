@@ -7,7 +7,7 @@ import (
 )
 
 func TestApi_Events(t *testing.T) {
-	response, err := testApi.Events(12)
+	response, err := testApi.EventsAtHeight(12)
 	if err != nil {
 		t.Fatal(err)
 	}
