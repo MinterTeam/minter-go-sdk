@@ -8,7 +8,7 @@ import (
 
 func TestApi_Candidate(t *testing.T) {
 
-	responseCandidates, err := testApi.Candidates(0, true)
+	responseCandidates, err := testApi.CandidatesAtHeight(0, true)
 	if err != nil {
 		t.Fatal(err)
 	}

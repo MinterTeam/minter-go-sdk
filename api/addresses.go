@@ -19,7 +19,11 @@ type AddressesResult struct {
 	TransactionCount uint64            `json:"transaction_count"`
 }
 
-func (a *Api) Addresses(addresses []string, height int) (*AddressesResult, error) {
+func (a *Api) Addresses(addresses []string) (*AddressesResult, error) {
+	return a.AddressesAtHeight(addresses, LatestBlockHeight)
+}
+
+func (a *Api) AddressesAtHeight(addresses []string, height int) (*AddressesResult, error) {
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)
 	params["addresses"] = "[" + strings.Join(addresses, ",") + "]"

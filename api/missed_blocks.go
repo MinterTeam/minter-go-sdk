@@ -18,7 +18,12 @@ type MissedBlocksResult struct {
 }
 
 // Returns missed blocks by validator public key.
-func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResult, error) {
+func (a *Api) MissedBlocks(pubKey string) (*MissedBlocksResult, error) {
+	return a.MissedBlocksAtHeight(pubKey, LatestBlockHeight)
+}
+
+// Returns missed blocks by validator public key.
+func (a *Api) MissedBlocksAtHeight(pubKey string, height int) (*MissedBlocksResult, error) {
 
 	params := make(map[string]string)
 	params["pub_key"] = pubKey
