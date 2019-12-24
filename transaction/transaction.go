@@ -198,9 +198,9 @@ func Decode(tx string) (SignedTransaction, error) {
 	case TypeSellAllCoin:
 		data = &SellAllCoinData{}
 	case TypeBuyCoin:
-		data = &SellCoinData{}
-	case TypeCreateCoin:
 		data = &BuyCoinData{}
+	case TypeCreateCoin:
+		data = &CreateCoinData{}
 	case TypeDeclareCandidacy:
 		data = &DeclareCandidacyData{}
 	case TypeDelegate:
