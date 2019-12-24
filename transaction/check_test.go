@@ -14,6 +14,7 @@ func TestCheck_Sign(t *testing.T) {
 		999999,
 		"MNT",
 		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+		"MNT",
 	).SetPassphrase("pass")
 
 	sign, err := check.Sign("64e27afaab363f21eec05291084367f6f1297a7b280d69d672febecda94a09ea")
@@ -39,6 +40,7 @@ func TestCheck_Sign1(t *testing.T) {
 		999999,
 		"MNT",
 		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+		"MNT",
 	).SetPassphrase("pass")
 
 	sign, err := check.Sign("2919c43d5c712cae66f869a524d9523999998d51157dc40ac4d8d80a7602ce02")
