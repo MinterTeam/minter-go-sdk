@@ -65,7 +65,7 @@ Create MinterAPI instance
 ```go
 import "github.com/MinterTeam/minter-go-sdk/api"
 
-nodeUrl = "https://minter-node-1.testnet.minter.network:8841"
+nodeUrl := "https://minter-node-1.testnet.minter.network:8841"
 minterClient := api.NewApi(nodeUrl)
 ```
 
