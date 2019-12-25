@@ -53,6 +53,11 @@ func (d *CreateCoinData) SetConstantReserveRatio(ratio uint) *CreateCoinData {
 	return d
 }
 
+func (d *CreateCoinData) SetMaxSupply(maxSupply *big.Int) *CreateCoinData {
+	d.MaxSupply = maxSupply
+	return d
+}
+
 func (d *CreateCoinData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
