@@ -3,6 +3,8 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+
 	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
@@ -194,6 +196,9 @@ type MultisendDataItem SendData
 
 // Returns transaction info.
 func (a *Api) Transaction(hash string) (*TransactionResult, error) {
+	if hash[0:2] != "Mt" && hash[0:2] != "0x" {
+		hash = fmt.Sprintf("%s%s", "0x", hash)
+	}
 
 	params := make(map[string]string)
 	params["hash"] = hash
