@@ -112,13 +112,13 @@ nonce, err := minterClient.Nonce("Mxeeee1973381ab793719fff497b9a516719fcd5a2")
 Returns block data at given height.
 
 ```go
-func (a *Api) BlockAtHeight(height int) (*BlockResult, error) {...}
+func (a *Api) Block(height int) (*BlockResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.BlockAtHeight(19)
+response, err := minterClient.Block(19)
 ```
 
 ### Candidate
