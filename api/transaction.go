@@ -14,19 +14,20 @@ type TransactionResponse struct {
 }
 
 type TransactionResult struct {
-	Hash     string          `json:"hash"`
-	RawTx    string          `json:"raw_tx"`
-	Height   string          `json:"height"`
-	Index    int             `json:"index,omitempty"`
-	From     string          `json:"from"`
-	Nonce    string          `json:"nonce"`
-	Gas      string          `json:"gas"`
-	GasPrice int             `json:"gas_price"`
-	GasCoin  string          `json:"gas_coin"`
-	Type     int             `json:"type"`
-	Data     dataTransaction `json:"data"`
-	Payload  []byte          `json:"payload"`
-	Tags     struct {
+	Hash        string          `json:"hash"`
+	RawTx       string          `json:"raw_tx"`
+	Height      string          `json:"height"`
+	Index       int             `json:"index,omitempty"`
+	From        string          `json:"from"`
+	Nonce       string          `json:"nonce"`
+	Gas         string          `json:"gas"`
+	GasPrice    int             `json:"gas_price"`
+	GasCoin     string          `json:"gas_coin"`
+	Type        int             `json:"type"`
+	Data        dataTransaction `json:"data"`
+	Payload     []byte          `json:"payload"`
+	ServiceData []byte          `json:"service_data"`
+	Tags        struct {
 		TxCoinToBuy  string `json:"tx.coin_to_buy,omitempty"`
 		TxCoinToSell string `json:"tx.coin_to_sell,omitempty"`
 		TxReturn     string `json:"tx.return,omitempty"`

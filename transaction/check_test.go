@@ -107,4 +107,14 @@ func TestDecodeIssueCheck(t *testing.T) {
 	if hex.EncodeToString(data.S.Bytes()) != "33bc4e03da3ea8a2cd2bd149d16c022ee604298575380db8548b4fd6672a9195" {
 		t.Errorf("S want %s, got %s", hex.EncodeToString(data.S.Bytes()), "33bc4e03da3ea8a2cd2bd149d16c022ee604298575380db8548b4fd6672a9195")
 	}
+
+	sender, err := data.Sender()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	address := "Mxce931863b9c94a526d94acd8090c1c5955a6eb4b"
+	if sender != address {
+		t.Errorf("Sender want %s, got %s", address, sender)
+	}
 }
