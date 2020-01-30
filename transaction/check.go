@@ -77,7 +77,7 @@ func (check *IssueCheckData) PublicKey() (string, error) {
 		return "", err
 	}
 
-	pub, err := crypto.Ecrecover(hash[:], sig)
+	pub, err := secp256k1.RecoverPubkey(hash[:], sig)
 	if err != nil {
 		return "", err
 	}
