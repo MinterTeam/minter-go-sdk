@@ -86,7 +86,7 @@ func (check *IssueCheckData) PublicKey() (string, error) {
 		return "", errors.New("invalid public key")
 	}
 
-	return hex.EncodeToString(pub), nil
+	return wallet.PubPrefix04ToMp(hex.EncodeToString(pub)), nil
 }
 
 type Signed interface {

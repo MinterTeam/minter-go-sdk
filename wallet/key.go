@@ -49,13 +49,13 @@ func PublicKeyByPrivateKey(privateKey string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return pubPrefix04ToMp(hex.EncodeToString(crypto.FromECDSAPub(key.Public().(*ecdsa.PublicKey)))), nil
+	return PubPrefix04ToMp(hex.EncodeToString(crypto.FromECDSAPub(key.Public().(*ecdsa.PublicKey)))), nil
 }
 
 func addressToLowerPrefix0xToMx(key string) string {
 	return strings.Replace(strings.ToLower(key), "0x", "Mx", 1)
 }
 
-func pubPrefix04ToMp(key string) string {
+func PubPrefix04ToMp(key string) string {
 	return strings.Replace(key, "04", "Mp", 1)
 }
