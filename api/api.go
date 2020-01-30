@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
+	"time"
 )
 
 const LatestBlockHeight = 0
@@ -13,7 +14,7 @@ type Api struct {
 
 // Create MinterAPI instance.
 func NewApi(hostUrl string) *Api {
-	return NewApiWithClient(hostUrl, resty.New())
+	return NewApiWithClient(hostUrl, resty.New().SetTimeout(time.Minute))
 }
 
 // Create MinterAPI instance with custom client
