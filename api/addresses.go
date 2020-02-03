@@ -7,10 +7,10 @@ import (
 )
 
 type AddressesResponse struct {
-	Jsonrpc string           `json:"jsonrpc"`
-	ID      string           `json:"id,omitempty"`
-	Result  *AddressesResult `json:"result,omitempty"`
-	Error   *Error           `json:"error,omitempty"`
+	Jsonrpc string             `json:"jsonrpc"`
+	ID      string             `json:"id,omitempty"`
+	Result  []*AddressesResult `json:"result,omitempty"`
+	Error   *Error             `json:"error,omitempty"`
 }
 
 type AddressesResult struct {
@@ -19,7 +19,7 @@ type AddressesResult struct {
 	TransactionCount uint64            `json:"transaction_count"`
 }
 
-func (a *Api) Addresses(addresses []string, height int) (*AddressesResult, error) {
+func (a *Api) Addresses(addresses []string, height int) ([]*AddressesResult, error) {
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)
 	params["addresses"] = "[" + strings.Join(addresses, ",") + "]"
