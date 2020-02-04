@@ -59,7 +59,7 @@ type StatusResult struct {
 func (a *Api) Status() (*StatusResult, error) {
 
 	res, err := a.client.R().Get("/status")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

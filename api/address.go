@@ -27,7 +27,7 @@ func (a *Api) Address(address string, height int) (*AddressResult, error) {
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/address")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

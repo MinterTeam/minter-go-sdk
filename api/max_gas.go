@@ -15,7 +15,7 @@ type MaxGasResponse struct {
 func (a *Api) MaxGas() (string, error) {
 
 	res, err := a.client.R().Get("/max_gas")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return "", err
 	}
 

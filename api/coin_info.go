@@ -30,7 +30,7 @@ func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResult, error) {
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/coin_info")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

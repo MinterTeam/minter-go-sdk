@@ -42,7 +42,7 @@ func (a *Api) Block(height int) (*BlockResult, error) {
 	params["height"] = strconv.Itoa(height)
 
 	res, err := a.client.R().SetQueryParams(params).Get("/block")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

@@ -200,7 +200,7 @@ func (a *Api) Transaction(hash string) (*TransactionResult, error) {
 	params["hash"] = hash
 
 	res, err := a.client.R().SetQueryParams(params).Get("/transaction")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

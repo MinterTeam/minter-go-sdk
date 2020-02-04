@@ -42,7 +42,7 @@ func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendT
 	}
 
 	res, err := a.client.R().SetQueryParam("tx", tx).Get("/send_transaction")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

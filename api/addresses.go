@@ -25,7 +25,7 @@ func (a *Api) Addresses(addresses []string, height int) ([]*AddressesResult, err
 	params["addresses"] = "[" + strings.Join(addresses, ",") + "]"
 
 	res, err := a.client.R().SetQueryParams(params).Get("/addresses")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

@@ -26,7 +26,7 @@ func (a *Api) Validators(height int) ([]*ValidatorResult, error) {
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/validators")
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 

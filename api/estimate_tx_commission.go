@@ -25,7 +25,7 @@ func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*
 	}
 
 	res, err := a.client.R().Get(fmt.Sprintf("/estimate_tx_commission?tx=%s", bytes))
-	if err != nil {
+	if err := hasError(res, err); err != nil {
 		return nil, err
 	}
 
