@@ -46,6 +46,7 @@ func hasError(res *resty.Response, err error) error {
 		fmt.Sprintln("Status     :", res.Status()) +
 		fmt.Sprintln("Time       :", res.Time()) +
 		fmt.Sprintln("Received At:", res.ReceivedAt()) +
+		fmt.Sprintln("Headers    :", res.Header()) +
 		fmt.Sprintln("Body       :\n", res) +
 		fmt.Sprintln() +
 		fmt.Sprintln("Request Trace Info:") +
