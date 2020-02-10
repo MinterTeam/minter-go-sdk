@@ -80,9 +80,9 @@ func (t *TransactionResult) DataStruct() (interface{}, error) {
 	case transaction.TypeSellAllCoin:
 		data = &SellAllCoinData{}
 	case transaction.TypeBuyCoin:
-		data = &SellCoinData{}
-	case transaction.TypeCreateCoin:
 		data = &BuyCoinData{}
+	case transaction.TypeCreateCoin:
+		data = &CreateCoinData{}
 	case transaction.TypeDeclareCandidacy:
 		data = &DeclareCandidacyData{}
 	case transaction.TypeDelegate:
