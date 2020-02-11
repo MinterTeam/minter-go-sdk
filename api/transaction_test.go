@@ -5,9 +5,15 @@ package api
 import "testing"
 
 func TestApi_Transaction(t *testing.T) {
-	response, err := testApi.Transaction("Mt708c2019938339aba4bf6c2f771373bc43e0efa7df65c187950964321734cd82")
+	response, err := testApi.Transaction("Mtdecf9373bf68b0052fddee003509b591897c9539f4ee9cc6a32f4ab05c3629cc")
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("%+v", response)
+
+	dataStruct, err := response.DataStruct()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("%+v", dataStruct)
 }

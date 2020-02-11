@@ -36,6 +36,9 @@ func (a *Api) EstimateCoinSellAtHeight(coinToSell string, valueToSell string, co
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(EstimateCoinSellResponse)
 	err = json.Unmarshal(res.Body(), response)

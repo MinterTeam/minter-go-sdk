@@ -45,6 +45,9 @@ func (a *Api) CandidateAtHeight(pubKey string, height int) (*CandidateResult, er
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(CandidateResponse)
 	err = json.Unmarshal(res.Body(), response)

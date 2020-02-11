@@ -34,6 +34,9 @@ func (a *Api) ValidatorsAtHeight(height int) ([]*ValidatorResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(ValidatorsResponse)
 	err = json.Unmarshal(res.Body(), response)

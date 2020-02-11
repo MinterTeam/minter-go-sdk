@@ -39,6 +39,9 @@ func (a *Api) Block(height int) (*BlockResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(BlockResponse)
 	err = json.Unmarshal(res.Body(), response)

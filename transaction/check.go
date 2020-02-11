@@ -1,8 +1,12 @@
 package transaction
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
+	"fmt"
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
@@ -22,6 +26,68 @@ type IssueCheckData struct {
 	V        *big.Int
 	R        *big.Int
 	S        *big.Int
+}
+
+func (check *IssueCheckData) Sender() (string, error) {
+	pub, err := check.PublicKey()
+	if err != nil {
+		return "", err
+	}
+
+	return wallet.AddressByPublicKey(pub)
+}
+
+func (check *IssueCheckData) String() string {
+	sender, err := check.Sender()
+	if err != nil {
+		panic(err)
+	}
+
+	return fmt.Sprintf("Check sender: %s nonce: %x, dueBlock: %d, value: %s %s", sender, check.Nonce,
+		check.DueBlock, check.Value.String(), string(bytes.Trim(check.Coin[:], "\x00")))
+}
+
+func (check *IssueCheckData) PublicKey() (string, error) {
+
+	if check.V.BitLen() > 8 {
+		return "", errors.New("invalid transaction v, r, s values")
+	}
+
+	v := byte(check.V.Uint64() - 27)
+	if !crypto.ValidateSignatureValues(v, check.R, check.S, true) {
+		return "", errors.New("invalid transaction v, r, s values")
+	}
+
+	r := check.R.Bytes()
+	s := check.S.Bytes()
+
+	sig := make([]byte, 65)
+	copy(sig[32-len(r):32], r)
+	copy(sig[64-len(s):64], s)
+	sig[64] = v
+
+	hash, err := rlpHash([]interface{}{
+		check.Nonce,
+		check.ChainID,
+		check.DueBlock,
+		check.Coin,
+		check.Value,
+		check.Lock,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	pub, err := secp256k1.RecoverPubkey(hash[:], sig)
+	if err != nil {
+		return "", err
+	}
+
+	if len(pub) == 0 || pub[0] != 4 {
+		return "", errors.New("invalid public key")
+	}
+
+	return wallet.PubPrefix04ToMp(hex.EncodeToString(pub)), nil
 }
 
 type Signed interface {
@@ -148,13 +214,13 @@ type CheckAddress struct {
 }
 
 func NewCheckAddress(address string, passphrase string) (*CheckAddress, error) {
-	bytes, err := addressToHex(address)
+	toHex, err := addressToHex(address)
 	if err != nil {
 		return nil, err
 	}
 
 	check := &CheckAddress{passphrase: passphrase}
-	copy(check.address[:], bytes)
+	copy(check.address[:], toHex)
 
 	return check, nil
 }

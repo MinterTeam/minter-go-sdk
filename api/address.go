@@ -35,6 +35,9 @@ func (a *Api) AddressAtHeight(address string, height int) (*AddressResult, error
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(AddressResponse)
 	err = json.Unmarshal(res.Body(), response)

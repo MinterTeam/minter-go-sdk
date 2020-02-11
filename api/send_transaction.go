@@ -45,6 +45,9 @@ func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendT
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(SendTransactionResponse)
 	err = json.Unmarshal(res.Body(), response)
