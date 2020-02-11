@@ -15,7 +15,10 @@ type MinGasPriceResponse struct {
 func (a *Api) MinGasPrice() (string, error) {
 
 	res, err := a.client.R().Get("/min_gas_price")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return "", err
+	}
+	if err := hasError(res); err != nil {
 		return "", err
 	}
 

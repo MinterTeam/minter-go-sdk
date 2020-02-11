@@ -29,7 +29,10 @@ func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy st
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/estimate_coin_buy")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

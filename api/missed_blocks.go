@@ -27,7 +27,10 @@ func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResult, erro
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/missed_blocks")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

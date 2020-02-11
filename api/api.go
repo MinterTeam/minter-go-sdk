@@ -33,32 +33,19 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("code: %d, message: \"%s\", data: \"%s\"", e.Code, e.Message, e.Data)
 }
 
-func hasError(res *resty.Response, err error) error {
-	if res.IsSuccess() && err == nil {
+func hasError(res *resty.Response) error {
+	if res.IsSuccess() {
 		return nil
 	}
 
 	var detailError string
-	ti := res.Request.TraceInfo()
 	detailError = fmt.Sprintln("Response Info:") +
-		fmt.Sprintln("Error      :", err) +
 		fmt.Sprintln("Status Code:", res.StatusCode()) +
 		fmt.Sprintln("Status     :", res.Status()) +
 		fmt.Sprintln("Time       :", res.Time()) +
 		fmt.Sprintln("Received At:", res.ReceivedAt()) +
 		fmt.Sprintln("Headers    :", res.Header()) +
-		fmt.Sprintln("Body       :\n", res) +
-		fmt.Sprintln() +
-		fmt.Sprintln("Request Trace Info:") +
-		fmt.Sprintln("DNSLookup    :", ti.DNSLookup) +
-		fmt.Sprintln("ConnTime     :", ti.ConnTime) +
-		fmt.Sprintln("TLSHandshake :", ti.TLSHandshake) +
-		fmt.Sprintln("ServerTime   :", ti.ServerTime) +
-		fmt.Sprintln("ResponseTime :", ti.ResponseTime) +
-		fmt.Sprintln("TotalTime    :", ti.TotalTime) +
-		fmt.Sprintln("IsConnReused :", ti.IsConnReused) +
-		fmt.Sprintln("IsConnWasIdle:", ti.IsConnWasIdle) +
-		fmt.Sprintln("ConnIdleTime :", ti.ConnIdleTime)
+		fmt.Sprintln("Body       :\n", res)
 
 	return errors.New(detailError)
 }

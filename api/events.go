@@ -77,7 +77,10 @@ func (a *Api) Events(height int) (*EventsResult, error) {
 	params["height"] = strconv.Itoa(height)
 
 	res, err := a.client.R().SetQueryParams(params).Get("/events")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

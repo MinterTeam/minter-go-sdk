@@ -25,7 +25,10 @@ func (a *Api) Transactions(query string, page int, perPage int) ([]*TransactionR
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/transactions")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

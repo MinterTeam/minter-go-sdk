@@ -37,7 +37,10 @@ func (a *Api) Candidate(pubKey string, height int) (*CandidateResult, error) {
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/candidate")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

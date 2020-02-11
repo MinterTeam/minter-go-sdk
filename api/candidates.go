@@ -24,7 +24,10 @@ func (a *Api) Candidates(height int, includeStakes bool) ([]*CandidateResult, er
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/candidates")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

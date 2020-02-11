@@ -28,7 +28,10 @@ func (a *Api) UnconfirmedTxs(limit int) (*UnconfirmedTxsResult, error) {
 	}
 
 	res, err := a.client.R().SetQueryParams(params).Get("/unconfirmed_txs")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

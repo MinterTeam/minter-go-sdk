@@ -24,7 +24,10 @@ func (a *Api) EstimateCoinSellAll(coinToSell string, coinToBuy string, valueToSe
 	params["gas_price"] = strconv.Itoa(gasPrice)
 
 	res, err := a.client.R().SetQueryParams(params).Get("/estimate_coin_sell_all")
-	if err := hasError(res, err); err != nil {
+	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 
