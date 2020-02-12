@@ -27,6 +27,9 @@ func (a *Api) Candidates(height int, includeStakes bool) ([]*CandidateResult, er
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(CandidatesResponse)
 	err = json.Unmarshal(res.Body(), response)

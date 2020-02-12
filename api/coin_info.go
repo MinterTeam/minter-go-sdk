@@ -33,6 +33,9 @@ func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(CoinInfoResponse)
 	err = json.Unmarshal(res.Body(), response)

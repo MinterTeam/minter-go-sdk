@@ -62,5 +62,5 @@ func (w *Wallet) PrivateKey() string {
 }
 
 func (w *Wallet) PublicKey() string {
-	return pubPrefix04ToMp(w.wallet.GetKey().PublicHex(false))
+	return PubPrefix04ToMp(w.wallet.GetKey().PublicHex(false))
 }

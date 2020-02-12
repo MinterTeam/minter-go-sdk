@@ -27,6 +27,9 @@ func (a *Api) EstimateCoinSellAll(coinToSell string, coinToBuy string, valueToSe
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(EstimateCoinSellAllResponse)
 	err = json.Unmarshal(res.Body(), response)

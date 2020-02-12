@@ -1,8 +1,10 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"github.com/go-resty/resty/v2"
+	"time"
 )
 
 const LatestBlockHeight = 0
@@ -13,7 +15,7 @@ type Api struct {
 
 // Create MinterAPI instance.
 func NewApi(hostUrl string) *Api {
-	return NewApiWithClient(hostUrl, resty.New())
+	return NewApiWithClient(hostUrl, resty.New().SetTimeout(time.Minute))
 }
 
 // Create MinterAPI instance with custom client
@@ -29,4 +31,21 @@ type Error struct {
 
 func (e *Error) Error() string {
 	return fmt.Sprintf("code: %d, message: \"%s\", data: \"%s\"", e.Code, e.Message, e.Data)
+}
+
+func hasError(res *resty.Response) error {
+	if res.IsSuccess() {
+		return nil
+	}
+
+	var detailError string
+	detailError = fmt.Sprintln("Response Info:") +
+		fmt.Sprintln("Status Code:", res.StatusCode()) +
+		fmt.Sprintln("Status     :", res.Status()) +
+		fmt.Sprintln("Time       :", res.Time()) +
+		fmt.Sprintln("Received At:", res.ReceivedAt()) +
+		fmt.Sprintln("Headers    :", res.Header()) +
+		fmt.Sprintln("Body       :\n", res)
+
+	return errors.New(detailError)
 }

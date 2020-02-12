@@ -31,6 +31,9 @@ func (a *Api) UnconfirmedTxs(limit int) (*UnconfirmedTxsResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(UnconfirmedTxsResponse)
 	err = json.Unmarshal(res.Body(), response)

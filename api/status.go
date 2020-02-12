@@ -62,6 +62,9 @@ func (a *Api) Status() (*StatusResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(StatusResponse)
 	err = json.Unmarshal(res.Body(), response)

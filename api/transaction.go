@@ -16,19 +16,20 @@ type TransactionResponse struct {
 }
 
 type TransactionResult struct {
-	Hash     string          `json:"hash"`
-	RawTx    string          `json:"raw_tx"`
-	Height   string          `json:"height"`
-	Index    int             `json:"index,omitempty"`
-	From     string          `json:"from"`
-	Nonce    string          `json:"nonce"`
-	Gas      string          `json:"gas"`
-	GasPrice int             `json:"gas_price"`
-	GasCoin  string          `json:"gas_coin"`
-	Type     int             `json:"type"`
-	Data     dataTransaction `json:"data"`
-	Payload  []byte          `json:"payload"`
-	Tags     struct {
+	Hash        string          `json:"hash"`
+	RawTx       string          `json:"raw_tx"`
+	Height      string          `json:"height"`
+	Index       int             `json:"index,omitempty"`
+	From        string          `json:"from"`
+	Nonce       string          `json:"nonce"`
+	Gas         string          `json:"gas"`
+	GasPrice    int             `json:"gas_price"`
+	GasCoin     string          `json:"gas_coin"`
+	Type        int             `json:"type"`
+	Data        dataTransaction `json:"data"`
+	Payload     []byte          `json:"payload"`
+	ServiceData []byte          `json:"service_data"`
+	Tags        struct {
 		TxCoinToBuy  string `json:"tx.coin_to_buy,omitempty"`
 		TxCoinToSell string `json:"tx.coin_to_sell,omitempty"`
 		TxReturn     string `json:"tx.return,omitempty"`
@@ -81,9 +82,9 @@ func (t *TransactionResult) DataStruct() (interface{}, error) {
 	case transaction.TypeSellAllCoin:
 		data = &SellAllCoinData{}
 	case transaction.TypeBuyCoin:
-		data = &SellCoinData{}
-	case transaction.TypeCreateCoin:
 		data = &BuyCoinData{}
+	case transaction.TypeCreateCoin:
+		data = &CreateCoinData{}
 	case transaction.TypeDeclareCandidacy:
 		data = &DeclareCandidacyData{}
 	case transaction.TypeDelegate:
@@ -205,6 +206,9 @@ func (a *Api) Transaction(hash string) (*TransactionResult, error) {
 
 	res, err := a.client.R().SetQueryParams(params).Get("/transaction")
 	if err != nil {
+		return nil, err
+	}
+	if err := hasError(res); err != nil {
 		return nil, err
 	}
 

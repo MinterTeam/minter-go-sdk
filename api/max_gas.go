@@ -18,6 +18,9 @@ func (a *Api) MaxGas() (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if err := hasError(res); err != nil {
+		return "", err
+	}
 
 	response := new(MaxGasResponse)
 	err = json.Unmarshal(res.Body(), response)

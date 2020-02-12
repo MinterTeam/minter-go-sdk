@@ -132,6 +132,7 @@ type DataInterface interface {
 
 type SignedTransaction interface {
 	Encode() (string, error)
+	GetTransaction() *Transaction
 	Fee() *big.Int
 	Hash() (string, error)
 	Data() DataInterface
@@ -165,6 +166,10 @@ func (o *object) Fee() *big.Int {
 
 func (o *object) Data() DataInterface {
 	return o.data
+}
+
+func (o *object) GetTransaction() *Transaction {
+	return o.Transaction
 }
 
 func (o *object) Signature() (*Signature, error) {

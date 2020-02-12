@@ -40,6 +40,9 @@ func (a *Api) Candidate(pubKey string, height int) (*CandidateResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(CandidateResponse)
 	err = json.Unmarshal(res.Body(), response)

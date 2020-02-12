@@ -28,6 +28,9 @@ func (a *Api) Transactions(query string, page int, perPage int) ([]*TransactionR
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(TransactionsResponse)
 	err = json.Unmarshal(res.Body(), response)

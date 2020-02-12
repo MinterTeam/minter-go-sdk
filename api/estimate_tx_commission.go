@@ -28,6 +28,9 @@ func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*
 	if err != nil {
 		return nil, err
 	}
+	if err := hasError(res); err != nil {
+		return nil, err
+	}
 
 	response := new(EstimateTxCommissionResponse)
 	err = json.Unmarshal(res.Body(), response)
