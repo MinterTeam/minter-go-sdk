@@ -3,6 +3,7 @@ package transaction
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -122,17 +123,14 @@ func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, 
 }
 
 // Prepare check string and convert to data
-func DecodeIssueCheck(check string) (*IssueCheckData, error) {
-	src := []byte(check)[2:]
-	dst := make([]byte, hex.DecodedLen(len(src)))
-	_, err := hex.Decode(dst, src)
+func DecodeIssueCheck(rawCheck string) (*IssueCheckData, error) {
+	decode, err := base64.StdEncoding.DecodeString(rawCheck)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	res := new(IssueCheckData)
-	err = rlp.DecodeBytes(dst, res)
-	if err != nil {
+	if err := rlp.DecodeBytes(decode, res); err != nil {
 		return nil, err
 	}
 
