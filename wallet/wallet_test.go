@@ -84,3 +84,18 @@ func TestCreate(t *testing.T) {
 		t.Errorf("pubKeyByPrivate len got %s, want %s", pubKeyByPrivate, data.PublicKey)
 	}
 }
+
+func TestWalletBugAddress(t *testing.T) {
+	seed, err := Seed("real town addict extend shoot name disagree vital turn live can tip")
+	if err != nil {
+		panic(err)
+	}
+
+	wallet, err := NewWallet(seed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if wallet.Address() != "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b" {
+		t.Fatalf("Address got %s, want %s", wallet.Address(), "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b")
+	}
+}

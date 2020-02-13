@@ -3,7 +3,8 @@ module github.com/MinterTeam/minter-go-sdk
 go 1.13
 
 require (
-	github.com/btcsuite/btcd v0.0.0-20190824003749-130ea5bddde3 // indirect
+	github.com/btcsuite/btcd v0.0.0-20190824003749-130ea5bddde3
+	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/cpacia/bchutil v0.0.0-20181003130114-b126f6a35b6c // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ethereum/go-ethereum v1.9.3
