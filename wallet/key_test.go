@@ -62,21 +62,24 @@ func TestBugAddress(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	if "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7" != hex.EncodeToString(seed) {
+	if hex.EncodeToString(seed) != "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7" {
 		t.Fatalf("Seed got %s, want %s", hex.EncodeToString(seed), "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7")
 	}
 	privateKeyBySeed, err := PrivateKeyBySeed(seed)
 	if err != nil {
 		t.Fatal(err)
 	}
-	decodeString, err := hex.DecodeString(privateKeyBySeed)
-	t.Log(decodeString)
+	if privateKeyBySeed != "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3" {
+		t.Fatalf("PrivateKey got %s, want %s", privateKeyBySeed, "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3")
+	}
 
 	publicKeyByPrivateKey, err := PublicKeyByPrivateKey(privateKeyBySeed)
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(publicKeyByPrivateKey)
+	if publicKeyByPrivateKey != "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57" {
+		t.Fatalf("PublicKey got %s, want %s", publicKeyByPrivateKey, "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57")
+	}
 
 	addressByPublicKey, err := AddressByPublicKey(publicKeyByPrivateKey)
 	if err != nil {

@@ -695,13 +695,13 @@ import "github.com/MinterTeam/minter-go-sdk/wallet"
 * Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
 
 ```go
-walletData, _ = wallet.Create()
+walletData, _ := wallet.Create()
 ```
 
 * Generate mnemonic.
 
 ```go
-mnemonic, _ = wallet.NewMnemonic()
+mnemonic, _ := wallet.NewMnemonic()
 ```
 
 * Get seed from mnemonic.
@@ -734,5 +734,5 @@ To run tests:
 
 ```shell script
 go test ./...
-go test ./... -tags=integration
+TEST_NET_CHAIN_API_HOST_URL=https://minter-node-1.testnet.minter.network:8841/ go test ./... -tags=integration 
 ```

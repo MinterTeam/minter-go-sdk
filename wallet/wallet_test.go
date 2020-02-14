@@ -95,7 +95,17 @@ func TestWalletBugAddress(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	if wallet.PrivateKey() != "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3" {
+		t.Fatalf("PrivateKey got %s, want %s", wallet.PrivateKey(), "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3")
+	}
+
+	if wallet.PublicKey() != "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57" {
+		t.Fatalf("PublicKey got %s, want %s", wallet.PublicKey(), "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57")
+	}
+
 	if wallet.Address() != "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b" {
 		t.Fatalf("Address got %s, want %s", wallet.Address(), "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b")
 	}
+
 }
