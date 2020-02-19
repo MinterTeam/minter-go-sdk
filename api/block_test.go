@@ -9,7 +9,7 @@ import (
 )
 
 func TestApi_Block(t *testing.T) {
-	response, err := testApi.BlockAtHeight(19)
+	response, err := testApi.Block(19)
 	if err != nil {
 		t.Fatal(err)
 	}

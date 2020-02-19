@@ -130,8 +130,12 @@ type DataInterface interface {
 	fee() Fee
 }
 
-type SignedTransaction interface {
+type EncodeInterface interface {
 	Encode() (string, error)
+}
+
+type SignedTransaction interface {
+	EncodeInterface
 	GetTransaction() *Transaction
 	Fee() *big.Int
 	Hash() (string, error)
@@ -142,6 +146,7 @@ type SignedTransaction interface {
 }
 
 type Interface interface {
+	EncodeInterface
 	setType(t Type) Interface
 	setSignatureType(signatureType SignatureType) Interface
 	SetNonce(nonce uint64) Interface
