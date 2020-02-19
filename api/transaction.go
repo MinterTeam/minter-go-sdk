@@ -24,7 +24,7 @@ type TransactionResult struct {
 	GasPrice    int             `json:"gas_price"`
 	GasCoin     string          `json:"gas_coin"`
 	Type        int             `json:"type"`
-	Data        dataTransaction `json:"data"`
+	Data        transactionData `json:"data"`
 	Payload     []byte          `json:"payload"`
 	ServiceData []byte          `json:"service_data"`
 	Tags        struct {
@@ -41,20 +41,15 @@ type TransactionResult struct {
 	Log  string `json:"log,omitempty"`
 }
 
-type dataTransaction map[string]interface{}
+type transactionData map[string]string
 
-func (dt *dataTransaction) FillStruct(data interface{}) error {
-	bytes, err := json.Marshal(dt)
+func (dt *transactionData) FillStruct(data tdi) error {
+	b, err := json.Marshal(dt)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(bytes, data)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return data.fill(b)
 }
 
 func (t *TransactionResult) IsValid() bool {
@@ -69,9 +64,9 @@ func (t *TransactionResult) ErrorLog() error {
 }
 
 // Converting transaction map data to the structure interface regarding transaction type
-func (t *TransactionResult) DataStruct() (interface{}, error) {
+func (t *TransactionResult) DataStruct() (tdi, error) {
 
-	var data interface{}
+	var data tdi
 	switch transaction.Type(t.Type) {
 	case transaction.TypeSend:
 		data = &SendData{}
@@ -108,10 +103,18 @@ func (t *TransactionResult) DataStruct() (interface{}, error) {
 	return data, t.Data.FillStruct(data)
 }
 
+type tdi interface {
+	fill([]byte) error
+}
+
 type SendData struct {
 	Coin  string `json:"coin"`
 	To    string `json:"to"`
 	Value string `json:"value"`
+}
+
+func (s *SendData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type SellCoinData struct {
@@ -121,10 +124,18 @@ type SellCoinData struct {
 	MinimumValueToBuy string `json:"minimum_value_to_buy"`
 }
 
+func (s *SellCoinData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type SellAllCoinData struct {
 	CoinToSell        string `json:"coin_to_sell"`
 	CoinToBuy         string `json:"coin_to_buy"`
 	MinimumValueToBuy string `json:"minimum_value_to_buy"`
+}
+
+func (s *SellAllCoinData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type BuyCoinData struct {
@@ -132,6 +143,10 @@ type BuyCoinData struct {
 	ValueToBuy         string `json:"value_to_buy"`
 	CoinToSell         string `json:"coin_to_sell"`
 	MaximumValueToSell string `json:"maximum_value_to_sell"`
+}
+
+func (s *BuyCoinData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type CreateCoinData struct {
@@ -142,6 +157,10 @@ type CreateCoinData struct {
 	ConstantReserveRatio string `json:"constant_reserve_ratio"`
 }
 
+func (s *CreateCoinData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type DeclareCandidacyData struct {
 	Address    string `json:"address"`
 	PubKey     string `json:"pub_key"`
@@ -150,10 +169,18 @@ type DeclareCandidacyData struct {
 	Stake      string `json:"stake"`
 }
 
+func (s *DeclareCandidacyData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type DelegateData struct {
 	PubKey string `json:"pub_key"`
 	Coin   string `json:"coin"`
 	Value  string `json:"value"`
+}
+
+func (s *DelegateData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type UnbondData struct {
@@ -162,17 +189,33 @@ type UnbondData struct {
 	Value  string `json:"value"`
 }
 
+func (s *UnbondData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type RedeemCheckData struct {
 	RawCheck string `json:"raw_check"`
 	Proof    string `json:"proof"`
+}
+
+func (s *RedeemCheckData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type SetCandidateOnData struct {
 	PubKey string `json:"pub_key"`
 }
 
+func (s *SetCandidateOnData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type SetCandidateOffData struct {
 	PubKey string `json:"pub_key"`
+}
+
+func (s *SetCandidateOffData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type EditCandidateData struct {
@@ -181,14 +224,26 @@ type EditCandidateData struct {
 	OwnerAddress  string `json:"owner_address"`
 }
 
+func (s *EditCandidateData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type CreateMultisigData struct {
 	Threshold uint       `json:"threshold"`
 	Weights   []uint     `json:"weights"`
 	Addresses [][20]byte `json:"addresses"`
 }
 
+func (s *CreateMultisigData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
+}
+
 type MultisendData struct {
 	List []MultisendDataItem
+}
+
+func (s *MultisendData) fill(b []byte) error {
+	return json.Unmarshal(b, s)
 }
 
 type MultisendDataItem SendData
