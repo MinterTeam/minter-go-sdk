@@ -41,7 +41,7 @@ type TransactionResult struct {
 	Log  string `json:"log,omitempty"`
 }
 
-type transactionData map[string]string
+type transactionData map[string]interface{}
 
 func (dt *transactionData) FillStruct(data tdi) error {
 	b, err := json.Marshal(dt)
