@@ -258,8 +258,8 @@ func (a *Api) Transaction(hash string) (*TransactionResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(TransactionResponse)

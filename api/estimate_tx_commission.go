@@ -28,8 +28,8 @@ func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(EstimateTxCommissionResponse)

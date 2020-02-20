@@ -31,8 +31,8 @@ func (a *Api) EstimateCoinSell(coinToSell string, valueToSell string, coinToBuy 
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(EstimateCoinSellResponse)

@@ -28,8 +28,8 @@ func (a *Api) Addresses(addresses []string, height int) ([]*AddressesResult, err
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(AddressesResponse)

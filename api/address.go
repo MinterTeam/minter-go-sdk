@@ -30,8 +30,8 @@ func (a *Api) Address(address string, height int) (*AddressResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(AddressResponse)
