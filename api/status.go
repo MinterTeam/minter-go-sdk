@@ -62,8 +62,8 @@ func (a *Api) Status() (*StatusResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(StatusResponse)

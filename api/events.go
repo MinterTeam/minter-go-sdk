@@ -85,8 +85,8 @@ func (a *Api) EventsAtHeight(height int) (*EventsResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(EventsResponse)

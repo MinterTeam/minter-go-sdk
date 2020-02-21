@@ -38,8 +38,8 @@ func (a *Api) CoinInfoAtHeight(symbol string, height int) (*CoinInfoResult, erro
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(CoinInfoResponse)

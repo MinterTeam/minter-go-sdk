@@ -1,7 +1,7 @@
 package api
 
 import (
-	"errors"
+	"encoding/json"
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"time"
@@ -33,19 +33,23 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("code: %d, message: \"%s\", data: \"%s\"", e.Code, e.Message, e.Data)
 }
 
-func hasError(res *resty.Response) error {
-	if res.IsSuccess() {
-		return nil
+type ResponseError struct {
+	*resty.Response
+}
+
+func NewResponseError(response *resty.Response) *ResponseError {
+	return &ResponseError{Response: response}
+}
+
+func (res *ResponseError) Error() string {
+	detailError := map[string]interface{}{
+		"status_code": res.StatusCode(),
+		"status":      res.Status(),
+		"time":        res.Time(),
+		"received_at": res.ReceivedAt(),
+		"headers":     res.Header(),
+		"body":        res,
 	}
-
-	var detailError string
-	detailError = fmt.Sprintln("Response Info:") +
-		fmt.Sprintln("Status Code:", res.StatusCode()) +
-		fmt.Sprintln("Status     :", res.Status()) +
-		fmt.Sprintln("Time       :", res.Time()) +
-		fmt.Sprintln("Received At:", res.ReceivedAt()) +
-		fmt.Sprintln("Headers    :", res.Header()) +
-		fmt.Sprintln("Body       :\n", res)
-
-	return errors.New(detailError)
+	marshal, _ := json.Marshal(detailError)
+	return string(marshal)
 }

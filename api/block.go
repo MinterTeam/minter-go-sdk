@@ -39,8 +39,8 @@ func (a *Api) Block(height int) (*BlockResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := hasError(res); err != nil {
-		return nil, err
+	if res.IsError() {
+		return nil, NewResponseError(res)
 	}
 
 	response := new(BlockResponse)
