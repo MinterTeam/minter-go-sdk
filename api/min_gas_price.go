@@ -18,8 +18,8 @@ func (a *Api) MinGasPrice() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if err := hasError(res); err != nil {
-		return "", err
+	if res.IsError() {
+		return "", NewResponseError(res)
 	}
 
 	response := new(MinGasPriceResponse)
