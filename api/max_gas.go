@@ -18,8 +18,8 @@ func (a *Api) MaxGas() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if err := hasError(res); err != nil {
-		return "", err
+	if res.IsError() {
+		return "", NewResponseError(res)
 	}
 
 	response := new(MaxGasResponse)
