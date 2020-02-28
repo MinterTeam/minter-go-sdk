@@ -69,8 +69,8 @@ func TestBugAddress(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if privateKeyBySeed != "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3" {
-		t.Fatalf("PrivateKey got %s, want %s", privateKeyBySeed, "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3")
+	if privateKeyBySeed != "c29cd818232f40614691a58c9afcbd5518b539cb135d73b1d9e26d5f5f5dcbbe" {
+		t.Fatalf("PrivateKey got %s, want %s", privateKeyBySeed, "c29cd818232f40614691a58c9afcbd5518b539cb135d73b1d9e26d5f5f5dcbbe")
 	}
 
 	publicKeyByPrivateKey, err := PublicKeyByPrivateKey(privateKeyBySeed)

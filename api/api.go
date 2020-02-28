@@ -42,14 +42,15 @@ func NewResponseError(response *resty.Response) *ResponseError {
 }
 
 func (res *ResponseError) Error() string {
-	detailError := map[string]interface{}{
-		"status_code": res.StatusCode(),
+	detailError := map[string]string{
+		"status_code": fmt.Sprintf("%d", res.StatusCode()),
 		"status":      res.Status(),
-		"time":        res.Time(),
-		"received_at": res.ReceivedAt(),
-		"headers":     res.Header(),
-		"body":        res,
+		"time":        fmt.Sprintf("%f seconds", res.Time().Seconds()),
+		"received_at": fmt.Sprintf("%v", res.ReceivedAt()),
+		"headers":     fmt.Sprintf("%v", res.Header()),
+		"body":        res.String(),
 	}
 	marshal, _ := json.Marshal(detailError)
+
 	return string(marshal)
 }
