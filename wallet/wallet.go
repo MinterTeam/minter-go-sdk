@@ -2,12 +2,10 @@ package wallet
 
 import (
 	"encoding/hex"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/foxnut/go-hdwallet"
 )
 
 type Wallet struct {
-	wallet hdwallet.Wallet
+	*Data
 }
 
 type Data struct {
@@ -24,43 +22,56 @@ func Create() (*Data, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	seed, err := Seed(mnemonic)
 	if err != nil {
 		return nil, err
 	}
-	wallet, err := NewWallet(seed)
+	data, err := NewWallet(seed)
 	if err != nil {
 		return nil, err
 	}
-	return &Data{
-		Mnemonic:   mnemonic,
-		Seed:       hex.EncodeToString(seed),
-		PrivateKey: wallet.PrivateKey(),
-		PublicKey:  wallet.PublicKey(),
-		Address:    wallet.Address(),
-	}, nil
+
+	data.Mnemonic = mnemonic
+
+	return data.Data, nil
 }
 
 func NewWallet(seed []byte) (*Wallet, error) {
-	masterKey, err := hdwallet.NewKey(hdwallet.Seed(seed))
+	prKey, err := PrivateKeyBySeed(seed)
 	if err != nil {
 		return nil, err
 	}
-	wallet, err := masterKey.GetWallet(hdwallet.CoinType(hdwallet.ETH))
+
+	pubKey, err := PublicKeyByPrivateKey(prKey)
 	if err != nil {
 		return nil, err
 	}
-	return &Wallet{wallet: wallet}, nil
+
+	address, err := AddressByPublicKey(pubKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Wallet{
+		Data: &Data{
+			Mnemonic:   "",
+			Seed:       hex.EncodeToString(seed),
+			PrivateKey: prKey,
+			PublicKey:  pubKey,
+			Address:    address,
+		},
+	}, nil
 }
 
 func (w *Wallet) Address() string {
-	return addressToLowerPrefix0xToMx(crypto.PubkeyToAddress(*w.wallet.GetKey().PublicECDSA).Hex())
+	return w.Data.Address
 }
 
 func (w *Wallet) PrivateKey() string {
-	return w.wallet.GetKey().PrivateHex()
+	return w.Data.PrivateKey
 }
 
 func (w *Wallet) PublicKey() string {
-	return PubPrefix04ToMp(w.wallet.GetKey().PublicHex(false))
+	return w.Data.PublicKey
 }

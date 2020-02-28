@@ -4,10 +4,9 @@ import (
 	"crypto/ecdsa"
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil/hdkeychain"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/tyler-smith/go-bip32"
 	"github.com/tyler-smith/go-bip39"
 	"strings"
 )
@@ -30,47 +29,42 @@ func Seed(mnemonic string) ([]byte, error) {
 // Get private key from seed.
 func PrivateKeyBySeed(seed []byte) (string, error) {
 	// Generate a new master node using the seed.
-	masterKey, err := hdkeychain.NewMaster(seed, &chaincfg.MainNetParams)
+	masterKey, err := bip32.NewMasterKey(seed)
 	if err != nil {
 		return "", err
 	}
 
 	// This gives the path: m/44H
-	acc44H, err := masterKey.Child(hdkeychain.HardenedKeyStart + 44)
+	acc44H, err := masterKey.NewChildKey(bip32.FirstHardenedChild + 44)
 	if err != nil {
 		return "", err
 	}
 
 	// This gives the path: m/44H/60H
-	acc44H60H, err := acc44H.Child(hdkeychain.HardenedKeyStart + 60)
+	acc44H60H, err := acc44H.NewChildKey(bip32.FirstHardenedChild + 60)
 	if err != nil {
 		return "", err
 	}
 
 	// This gives the path: m/44H/60H/0H
-	acc44H60H0H, err := acc44H60H.Child(hdkeychain.HardenedKeyStart + 0)
+	acc44H60H0H, err := acc44H60H.NewChildKey(bip32.FirstHardenedChild + 0)
 	if err != nil {
 		return "", err
 	}
 
 	// This gives the path: m/44H/60H/0H/0
-	acc44H60H0H0, err := acc44H60H0H.Child(0)
+	acc44H60H0H0, err := acc44H60H0H.NewChildKey(0)
 	if err != nil {
 		return "", err
 	}
 
 	// This gives the path: m/44H/60H/0H/0/0
-	acc44H60H0H00, err := acc44H60H0H0.Child(0)
+	acc44H60H0H00, err := acc44H60H0H0.NewChildKey(0)
 	if err != nil {
 		return "", err
 	}
 
-	btcecPrivKey, err := acc44H60H0H00.ECPrivKey()
-	if err != nil {
-		return "", err
-	}
-
-	return hex.EncodeToString(crypto.FromECDSA(btcecPrivKey.ToECDSA())), nil
+	return hex.EncodeToString(acc44H60H0H00.Key), nil
 }
 
 // Get Minter address from public key.
