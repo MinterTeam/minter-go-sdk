@@ -59,7 +59,7 @@ func TestTransaction_Encode(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if signature.V.String() != big.NewInt(28).String() {
+	if signature.(*Signature).V.String() != big.NewInt(28).String() {
 		t.Errorf("signature get %+v, want signature.V %d", signature, 28)
 	}
 }
