@@ -76,6 +76,10 @@ func AddressByPublicKey(publicKey string) (string, error) {
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(crypto.Keccak256(decodeString)[12:]).String()), nil
 }
 
+func BytesToAddress(address [20]byte) string {
+	return addressToLowerPrefix0xToMx(common.BytesToAddress(address[:]).String())
+}
+
 // Get public key from private key.
 func PublicKeyByPrivateKey(privateKey string) (string, error) {
 	key, err := crypto.HexToECDSA(privateKey)
