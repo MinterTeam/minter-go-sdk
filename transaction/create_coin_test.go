@@ -11,7 +11,8 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 		SetSymbol("SPRTEST").
 		SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 		SetInitialReserve(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-		SetConstantReserveRatio(10)
+		SetConstantReserveRatio(10).
+		SetMaxSupply(big.NewInt(0).Mul(big.NewInt(1000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
 
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {
@@ -28,12 +29,23 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf8850102018a4d4e540000000000000005abea8a535550455220544553548a5350525445535400000089056bc75e2d63100000888ac7230489e800000a808001b845f8431ca0a0b58787e19d8ef3cbd887936617af5cf069a25a568f838c3d04daf5ad2f6f8ea07660c13ab5017edb87f5b52be4574c8a33a893bac178adec9c262a1408e4f1fe"
-	bytes, err := signedTx.Encode()
+	validSignature := "0xf8910102018a4d4e540000000000000005b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a021e19e0c9bab24000000a893635c9adc5dea00000808001b845f8431ba07bf9c6916aabaac7fb34811b42350c0dbcfc6228cf2ce9b927254d01f9e0ec66a0039ea86546a950cd717544d9b19c30a5248cfeb0f93060145144b5bb511a4218"
+	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if string(bytes) != validSignature {
-		t.Errorf("EncodeTx got %s, want %s", string(bytes), validSignature)
+	if encode != validSignature {
+		t.Errorf("EncodeTx got %s, want %s", encode, validSignature)
+	}
+}
+
+func TestEncodeCreateCoinData(t *testing.T) {
+	decode, err := Decode("0xf8910102018a4d4e540000000000000005b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a021e19e0c9bab24000000a893635c9adc5dea00000808001b845f8431ba07bf9c6916aabaac7fb34811b42350c0dbcfc6228cf2ce9b927254d01f9e0ec66a0039ea86546a950cd717544d9b19c30a5248cfeb0f93060145144b5bb511a4218")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if decode.Data().(*CreateCoinData).MaxSupply.String() == "100000000000000000000" {
+		t.Errorf("MaxSupply got %s, want %s", decode.Data().(*CreateCoinData).MaxSupply.String(), "")
 	}
 }
