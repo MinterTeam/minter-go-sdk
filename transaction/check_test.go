@@ -8,7 +8,7 @@ import (
 )
 
 func TestCheck_Sign(t *testing.T) {
-	check := NewIssueCheck(
+	check := NewCheck(
 		480,
 		TestNetChainID,
 		999999,
@@ -34,7 +34,7 @@ func TestCheck_Sign(t *testing.T) {
 }
 
 func TestCheck_Sign1(t *testing.T) {
-	check := NewIssueCheck(
+	check := NewCheck(
 		1,
 		MainNetChainID,
 		999999,
@@ -76,8 +76,8 @@ func TestCheckAddress_Proof(t *testing.T) {
 	}
 }
 
-func TestDecodeIssueCheck(t *testing.T) {
-	data, err := DecodeIssueCheck("+KExAoQ7msn/ik1OVAAAAAAAAACIiscjBInoAAC4QdC/0U9568RYnGiAIaYG5iV45qdld1RJzZnwmC3zgyN+UaMwKFJtks0vkgs1Jpp7iOmXY9AIJ9JWIosQJH0463YBHKDr3OSG5S/bzeIzyR/+CaDiLt0/tX5z/inKrHUtS1wD96BHR8ryRIdVe+PEDZejvaCKkn7z4oseDtsw33Xbl8y13w==")
+func TestDecodeCheck(t *testing.T) {
+	data, err := DecodeCheck("+KExAoQ7msn/ik1OVAAAAAAAAACIiscjBInoAAC4QdC/0U9568RYnGiAIaYG5iV45qdld1RJzZnwmC3zgyN+UaMwKFJtks0vkgs1Jpp7iOmXY9AIJ9JWIosQJH0463YBHKDr3OSG5S/bzeIzyR/+CaDiLt0/tX5z/inKrHUtS1wD96BHR8ryRIdVe+PEDZejvaCKkn7z4oseDtsw33Xbl8y13w==")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -16,7 +16,7 @@ import (
 )
 
 // Issue a check that will later be redeemed by the person of your choice.
-type IssueCheckData struct {
+type CheckData struct {
 	Nonce    []byte
 	ChainID  ChainID
 	DueBlock uint64
@@ -29,7 +29,7 @@ type IssueCheckData struct {
 	S        *big.Int
 }
 
-func (check *IssueCheckData) Sender() (string, error) {
+func (check *CheckData) Sender() (string, error) {
 	pub, err := check.PublicKey()
 	if err != nil {
 		return "", err
@@ -38,7 +38,7 @@ func (check *IssueCheckData) Sender() (string, error) {
 	return wallet.AddressByPublicKey(pub)
 }
 
-func (check *IssueCheckData) String() string {
+func (check *CheckData) String() string {
 	sender, err := check.Sender()
 	if err != nil {
 		panic(err)
@@ -48,7 +48,7 @@ func (check *IssueCheckData) String() string {
 		check.DueBlock, check.Value.String(), string(bytes.Trim(check.Coin[:], "\x00")))
 }
 
-func (check *IssueCheckData) PublicKey() (string, error) {
+func (check *CheckData) PublicKey() (string, error) {
 
 	if check.V.BitLen() > 8 {
 		return "", errors.New("invalid transaction v, r, s values")
@@ -95,22 +95,22 @@ type Signed interface {
 	Encode() (string, error)
 }
 
-type IssueCheckInterface interface {
-	SetPassphrase(passphrase string) IssueCheckInterface
+type CheckInterface interface {
+	SetPassphrase(passphrase string) CheckInterface
 	Sign(prKey string) (Signed, error)
 }
 
-type IssueCheck struct {
-	*IssueCheckData
+type Check struct {
+	*CheckData
 	passphrase string
 }
 
-// Create Issue Check
+// Create Check
 // Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins.
 // Due Block - defines last block height in which the check can be used.
-func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int, gasCoin string) IssueCheckInterface {
-	check := &IssueCheck{
-		IssueCheckData: &IssueCheckData{
+func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int, gasCoin string) CheckInterface {
+	check := &Check{
+		CheckData: &CheckData{
 			Nonce:    []byte(strconv.Itoa(int(nonce))),
 			ChainID:  chainID,
 			DueBlock: dueBlock,
@@ -123,13 +123,13 @@ func NewIssueCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, 
 }
 
 // Prepare check string and convert to data
-func DecodeIssueCheck(rawCheck string) (*IssueCheckData, error) {
+func DecodeCheck(rawCheck string) (*CheckData, error) {
 	decode, err := base64.StdEncoding.DecodeString(rawCheck)
 	if err != nil {
 		panic(err)
 	}
 
-	res := new(IssueCheckData)
+	res := new(CheckData)
 	if err := rlp.DecodeBytes(decode, res); err != nil {
 		return nil, err
 	}
@@ -138,14 +138,14 @@ func DecodeIssueCheck(rawCheck string) (*IssueCheckData, error) {
 }
 
 // Set secret phrase which you will pass to receiver of the check
-func (check *IssueCheck) SetPassphrase(passphrase string) IssueCheckInterface {
+func (check *Check) SetPassphrase(passphrase string) CheckInterface {
 	check.passphrase = passphrase
 	return check
 }
 
 //
-func (check *IssueCheck) Encode() (string, error) {
-	src, err := rlp.EncodeToBytes(check.IssueCheckData)
+func (check *Check) Encode() (string, error) {
+	src, err := rlp.EncodeToBytes(check.CheckData)
 	if err != nil {
 		return "", err
 	}
@@ -153,8 +153,8 @@ func (check *IssueCheck) Encode() (string, error) {
 	return "Mc" + hex.EncodeToString(src), err
 }
 
-// Sign Issue Check
-func (check *IssueCheck) Sign(prKey string) (Signed, error) {
+// Sign Check
+func (check *Check) Sign(prKey string) (Signed, error) {
 	msgHash, err := rlpHash([]interface{}{
 		check.Nonce,
 		check.ChainID,
