@@ -408,7 +408,7 @@ minterClient.SendTransaction(signedTx)
 
 ```go
 var data transaction.DataInterface
-var dataMultisig *transaction.DataInterface
+var dataMultisig *transaction.CreateMultisigData
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
 tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType(transaction.SignatureTypeMulti)
