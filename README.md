@@ -29,6 +29,8 @@ This is a pure Go SDK for working with **Minter** blockchain
 	    - [Validators](#validators)
 * [Minter SDK](#using-mintersdk)
 	- [Sign transaction](#sign-transaction)
+	  - [Multi signature](#multi-signatures)
+	  - [Single signature](#single-signature)
 		- [Send](#send-transaction)
 		- [SellCoin](#sell-coin-transaction)
         - [SellAllCoin](#sell-all-coin-transaction)
@@ -386,16 +388,51 @@ response, err := minterClient.ValidatorsAtHeight(0)
 
 Returns a signed tx.
 
+
+#### Single signature
+
 ##### Example
 
 ```go
 var data transaction.DataInterface
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
-tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
+tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeMulti)
 signedTx, _ := tx.Sign(privatKey)
 minterClient.SendTransaction(signedTx)
 ```
+
+#### Multi signatures
+
+##### Example
+
+```go
+var data transaction.DataInterface
+var dataMultisig *transaction.DataInterface
+// data = ...
+tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
+tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType(transaction.SignatureTypeMulti)
+dataMultisig = transaction.NewCreateMultisigData().
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
+		SetThreshold(7)
+msigAddress := dataMultisig.MultisigAddressString()
+signedTx, _ := tx.Sign(msigAddress, privatKey1, privatKey2, privatKey3)
+minterClient.SendTransaction(signedTx)
+```
+You can transfer the transaction to the remaining addresses
+```go
+signedTx1, _ := tx.Sign(wallet.BytesToAddress(msigAddress, privatKey1)
+encode, _ := signedTx.Encode()
+// transfer encode transaction
+signedTx1, _ = Decode(encode)
+// and continue its signature by the remaining participants
+signedTx12, _ := decode.Sign(msigAddress, privatKey2)
+signedTx123, _ := decode.Sign(msigAddress, privatKey3)
+minterClient.SendTransaction(signedTx123)
+```
+
 
 #### Send transaction
 
@@ -569,6 +606,20 @@ data, _ := transaction.NewSetCandidateOffData().
 
 Transaction for creating multisignature address.
 
+```go
+data := transaction.NewCreateMultisigData().
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
+		SetThreshold(7)
+```
+
+Get the multisig address to use it for transaction signatures
+
+```go
+msigAddress := dataMultisig.MultisigAddressString()
+signedTx, _ := tx.Sign(msigAddress, privatKey1, privatKey2, privatKey3)
+```
 #### Multisend transaction
 
 Transaction for sending coins to multiple addresses.

@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/rlp"
 )
@@ -64,7 +65,7 @@ func (d *CreateMultisigData) fee() Fee {
 	return feeTypeCreateMultisig
 }
 
-func (d *CreateMultisigData) Address() [20]byte {
+func (d *CreateMultisigData) MultisigAddress() [20]byte {
 	b, err := rlp.EncodeToBytes(d)
 	if err != nil {
 		panic(err)
@@ -74,4 +75,8 @@ func (d *CreateMultisigData) Address() [20]byte {
 	copy(addr[:], crypto.Keccak256(b)[12:])
 
 	return addr
+}
+
+func (d *CreateMultisigData) MultisigAddressString() string {
+	return wallet.BytesToAddress(d.MultisigAddress())
 }

@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"math/big"
 	"testing"
 )
@@ -190,7 +189,7 @@ func TestMultisigSig(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(signatureTypeMulti)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(SignatureTypeMulti)
 
 	createMultisigData := NewCreateMultisigData().
 		MustAddSigData("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 1).
@@ -198,7 +197,7 @@ func TestMultisigSig(t *testing.T) {
 		MustAddSigData("Mx823bb524d5702addbe13086082f7f0310e07d176", 5).
 		SetThreshold(7)
 
-	multisigAddress := wallet.BytesToAddress(createMultisigData.Address())
+	multisigAddress := createMultisigData.MultisigAddressString()
 	validAddr := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
 	if multisigAddress != validAddr {
 		t.Fatalf("Address got %s, want %s", multisigAddress, validAddr)
@@ -242,7 +241,7 @@ func TestMultisigSig1(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(signatureTypeMulti)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(SignatureTypeMulti)
 
 	signedTx, err := tx.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2",
 		"b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9",
@@ -282,7 +281,7 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(signatureTypeMulti)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(SignatureTypeMulti)
 
 	signedTx1, err := tx.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2",
 		"b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9")
@@ -317,7 +316,7 @@ func TestDecodeMulti(t *testing.T) {
 	if senderAddress != validSenderAddress {
 		t.Errorf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
 	}
-	multisigAddress := wallet.BytesToAddress(decode.Data().(*CreateMultisigData).Address())
+	multisigAddress := decode.Data().(*CreateMultisigData).MultisigAddressString()
 	validMultisigAddress := "Mxf6f23648e8ea09535f6cd8f650d02b26d870b673"
 	if multisigAddress != validMultisigAddress {
 		t.Errorf("SenderAddress got %s, want %s", multisigAddress, validMultisigAddress)

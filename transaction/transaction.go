@@ -55,8 +55,8 @@ type SignatureType byte
 
 const (
 	_ SignatureType = iota
-	signatureTypeSingle
-	signatureTypeMulti
+	SignatureTypeSingle
+	SignatureTypeMulti
 )
 
 type ChainID byte
@@ -82,7 +82,7 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 
 	transaction := &Transaction{
 		ChainID:       b.ChainID,
-		SignatureType: signatureTypeSingle,
+		SignatureType: SignatureTypeSingle,
 		Data:          dataBytes,
 	}
 
@@ -150,6 +150,7 @@ type Interface interface {
 	EncodeInterface
 	setType(t Type) Interface
 	SetSignatureType(signatureType SignatureType) Interface
+	SetMultiSignatureType() Interface
 	setSignatureData(signature signatureInterface) (Interface, error)
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
@@ -182,9 +183,9 @@ func (o *object) GetTransaction() *Transaction {
 func (o *object) Signature() (signatureInterface, error) {
 	var signature signatureInterface
 	switch o.SignatureType {
-	case signatureTypeSingle:
+	case SignatureTypeSingle:
 		signature = &Signature{}
-	case signatureTypeMulti:
+	case SignatureTypeMulti:
 		signature = &SignatureMulti{}
 	default:
 		return nil, errors.New("not set signature type")
@@ -257,7 +258,7 @@ func Decode(tx string) (SignedTransaction, error) {
 
 // Get sender address
 func (o *object) SenderAddress() (string, error) {
-	if o.SignatureType == signatureTypeSingle {
+	if o.SignatureType == SignatureTypeSingle {
 		hash, err := rlpHash([]interface{}{
 			o.Transaction.Nonce,
 			o.Transaction.ChainID,
@@ -354,6 +355,11 @@ func (o *object) SetSignatureType(signatureType SignatureType) Interface {
 	return o
 }
 
+func (o *object) SetMultiSignatureType() Interface {
+	o.SignatureType = SignatureTypeMulti
+	return o
+}
+
 func (o *object) setSignatureData(signature signatureInterface) (Interface, error) {
 	var err error
 	o.SignatureData, err = signature.encode()
@@ -434,14 +440,14 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (SignedTransaction, 
 	var sig signatureInterface
 
 	switch o.SignatureType {
-	case signatureTypeSingle:
+	case SignatureTypeSingle:
 		signature, err := signature(key, h)
 		if err != nil {
 			return nil, err
 		}
 
 		sig = signature
-	case signatureTypeMulti:
+	case SignatureTypeMulti:
 		var multiSignature *SignatureMulti
 		if len(o.SignatureData) == 0 {
 			sig := &SignatureMulti{

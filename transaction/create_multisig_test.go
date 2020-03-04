@@ -2,7 +2,6 @@ package transaction
 
 import (
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"testing"
 )
 
@@ -21,9 +20,9 @@ func TestCreateMultisigData_Sign(t *testing.T) {
 	nonce := uint64(11)
 	gasPrice := uint8(1)
 
-	msigAddress := data.Address()
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(signatureTypeSingle).
-		SetPayload([]byte(fmt.Sprintf("%v, %v, %v, %v", "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63", "9d78895fa954b2b07fb3f29d2ae9f5eb0dc0e925a68ef8362e40c47ba4adb30c", "7e4089c7b683f1b8d1832a8e977cf79aa459bf170ff196354112747124bbd072", wallet.BytesToAddress(msigAddress))))
+	msigAddress := data.MultisigAddressString()
+	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(SignatureTypeSingle).
+		SetPayload([]byte(fmt.Sprintf("%v, %v, %v, %v", "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63", "9d78895fa954b2b07fb3f29d2ae9f5eb0dc0e925a68ef8362e40c47ba4adb30c", "7e4089c7b683f1b8d1832a8e977cf79aa459bf170ff196354112747124bbd072", msigAddress)))
 
 	signedTx, err := transaction.Sign("ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
 	if err != nil {
@@ -55,14 +54,13 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	msigAddress := data.Address()
+	msigAddress := data.MultisigAddressString()
 	addr := "Mx4fe800483f59a36eec2b6f218778f9c5fceb38c0"
-	//address := "Mx4af3c87993a55986ba144964e54f5da07238e25b"
-	if addr != wallet.BytesToAddress(msigAddress) {
-		t.Errorf("Address got %s, want %s", wallet.BytesToAddress(msigAddress), addr)
+	if addr != msigAddress {
+		t.Errorf("Address got %s, want %s", msigAddress, addr)
 	}
 
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(signatureTypeSingle)
+	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(SignatureTypeSingle)
 
 	signedTx, err := transaction.Sign("bc3503cae8c8561df5eadc4a9eda21d32c252a6c94cfae55b5310bf6085c8582")
 	if err != nil {
@@ -90,7 +88,7 @@ func TestDecodeCreateMultisig(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	address := wallet.BytesToAddress(decode.Data().(*CreateMultisigData).Address())
+	address := decode.Data().(*CreateMultisigData).MultisigAddressString()
 	validAddress := "Mxd43eef7b9406762aa031b82ed0b1082264a13934"
 	if address != validAddress {
 		t.Errorf("Address got %s, want %s", address, validAddress)
