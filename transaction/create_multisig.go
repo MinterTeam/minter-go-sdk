@@ -61,7 +61,7 @@ func (d *CreateMultisigData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *CreateMultisigData) fee() Fee {
+func (d *CreateMultisigData) fee() fee {
 	return feeTypeCreateMultisig
 }
 

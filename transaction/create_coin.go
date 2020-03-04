@@ -62,7 +62,7 @@ func (d *CreateCoinData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *CreateCoinData) fee() Fee {
+func (d *CreateCoinData) fee() fee {
 	switch strings.Index(string(d.Symbol[:]), "\x00") {
 	case 3:
 		return 1000000 * feeTypeCreateCoin

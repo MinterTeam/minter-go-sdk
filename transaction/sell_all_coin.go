@@ -36,6 +36,6 @@ func (d *SellAllCoinData) SetMinimumValueToBuy(value *big.Int) *SellAllCoinData 
 func (d *SellAllCoinData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
-func (d *SellAllCoinData) fee() Fee {
+func (d *SellAllCoinData) fee() fee {
 	return feeTypeSellAllCoin
 }

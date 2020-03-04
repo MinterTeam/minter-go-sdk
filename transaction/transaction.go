@@ -32,23 +32,23 @@ const (
 	TypeEditCandidate
 )
 
-type Fee uint
+type fee uint
 
 const (
-	feeTypeSend                Fee = 10
-	feeTypeSellCoin            Fee = 100
-	feeTypeSellAllCoin         Fee = 100
-	feeTypeBuyCoin             Fee = 100
-	feeTypeCreateCoin          Fee = 1000
-	feeTypeDeclareCandidacy    Fee = 10000
-	feeTypeDelegate            Fee = 200
-	feeTypeUnbond              Fee = 200
-	feeTypeRedeemCheck         Fee = 30
-	feeTypeSetCandidateOnline  Fee = 100
-	feeTypeSetCandidateOffline Fee = 100
-	feeTypeCreateMultisig      Fee = 100
-	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate Fee = 100000
+	feeTypeSend                fee = 10
+	feeTypeSellCoin            fee = 100
+	feeTypeSellAllCoin         fee = 100
+	feeTypeBuyCoin             fee = 100
+	feeTypeCreateCoin          fee = 1000
+	feeTypeDeclareCandidacy    fee = 10000
+	feeTypeDelegate            fee = 200
+	feeTypeUnbond              fee = 200
+	feeTypeRedeemCheck         fee = 30
+	feeTypeSetCandidateOnline  fee = 100
+	feeTypeSetCandidateOffline fee = 100
+	feeTypeCreateMultisig      fee = 100
+	// feeMultisend fee =  10+(n-1)*5
+	feeTypeEditCandidate fee = 100000
 )
 
 type SignatureType byte
@@ -62,7 +62,8 @@ const (
 type ChainID byte
 
 const (
-	MainNetChainID ChainID = iota + 1
+	_ ChainID = iota
+	MainNetChainID
 	TestNetChainID
 )
 
@@ -128,7 +129,7 @@ func (b *Builder) NewTransaction(data DataInterface) (Interface, error) {
 
 type DataInterface interface {
 	encode() ([]byte, error)
-	fee() Fee
+	fee() fee
 }
 
 type EncodeInterface interface {
@@ -142,6 +143,9 @@ type SignedTransaction interface {
 	Hash() (string, error)
 	Data() DataInterface
 	Signature() (signatureInterface, error)
+	AddSignature(signatures ...[]byte) (SignedTransaction, error)
+	SignatureData() []byte
+	SimpleSignatureData() ([]byte, error)
 	SenderAddress() (string, error)
 	Sign(prKey string, multisigPrKeys ...string) (SignedTransaction, error)
 }
@@ -151,7 +155,7 @@ type Interface interface {
 	setType(t Type) Interface
 	SetSignatureType(signatureType SignatureType) Interface
 	SetMultiSignatureType() Interface
-	setSignatureData(signature signatureInterface) (Interface, error)
+	setSignature(signature signatureInterface) (SignedTransaction, error)
 	SetNonce(nonce uint64) Interface
 	SetGasCoin(name string) Interface
 	SetGasPrice(price uint8) Interface
@@ -180,6 +184,18 @@ func (o *object) GetTransaction() *Transaction {
 	return o.Transaction
 }
 
+func (o *object) SignatureData() []byte {
+	return o.Transaction.SignatureData
+}
+
+func (o *object) SimpleSignatureData() ([]byte, error) {
+	s, err := o.Signature()
+	if err != nil {
+		return nil, err
+	}
+	return s.firstSig()
+}
+
 func (o *object) Signature() (signatureInterface, error) {
 	var signature signatureInterface
 	switch o.SignatureType {
@@ -190,10 +206,16 @@ func (o *object) Signature() (signatureInterface, error) {
 	default:
 		return nil, errors.New("not set signature type")
 	}
-	err := rlp.DecodeBytes(o.SignatureData, signature)
+
+	if len(o.SignatureData()) == 0 {
+		return signature, nil
+	}
+
+	err := rlp.DecodeBytes(o.SignatureData(), signature)
 	if err != nil {
 		return nil, err
 	}
+
 	return signature, nil
 }
 
@@ -315,6 +337,7 @@ type Transaction struct {
 
 type signatureInterface interface {
 	encode() ([]byte, error)
+	firstSig() ([]byte, error)
 }
 
 type Signature struct {
@@ -325,6 +348,19 @@ type Signature struct {
 
 func (s *Signature) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(s)
+}
+
+func (s *Signature) firstSig() ([]byte, error) {
+	return s.encode()
+}
+
+func decodeSignature(b []byte) (*Signature, error) {
+	s := &Signature{}
+	err := rlp.DecodeBytes(b, s)
+	if err != nil {
+		return nil, err
+	}
+	return s, err
 }
 
 func (s *Signature) toBytes() []byte {
@@ -345,6 +381,13 @@ func (s *SignatureMulti) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(s)
 }
 
+func (s *SignatureMulti) firstSig() ([]byte, error) {
+	if len(s.Signatures) == 0 {
+		return nil, errors.New("signature not set")
+	}
+	return s.Signatures[0].encode()
+}
+
 func (o *object) setType(t Type) Interface {
 	o.Type = t
 	return o
@@ -360,9 +403,9 @@ func (o *object) SetMultiSignatureType() Interface {
 	return o
 }
 
-func (o *object) setSignatureData(signature signatureInterface) (Interface, error) {
+func (o *object) setSignature(signature signatureInterface) (SignedTransaction, error) {
 	var err error
-	o.SignatureData, err = signature.encode()
+	o.Transaction.SignatureData, err = signature.encode()
 	if err != nil {
 		return nil, err
 	}
@@ -420,6 +463,58 @@ func (o *object) Hash() (string, error) {
 	return "Mt" + hex.EncodeToString(hash[:])[:40], nil
 }
 
+func (o *object) addSignature(signatures ...*Signature) (SignedTransaction, error) {
+	signature, err := o.Signature()
+	if err != nil {
+		return nil, err
+	}
+	if len(signatures) == 0 {
+		return nil, errors.New("number of signatures must be greater than 0")
+	}
+	if o.SignatureType == SignatureTypeSingle {
+		return o.setSignature(signatures[0])
+	}
+	if len(o.SignatureData()) == 0 {
+		return nil, errors.New("multisig address not set")
+	}
+	signatureMulti := signature.(*SignatureMulti)
+	signatureMulti.Signatures = append(signatureMulti.Signatures, signatures...)
+	return o.setSignature(signatureMulti)
+}
+
+func (o *object) AddSignature(signatures ...[]byte) (SignedTransaction, error) {
+	signature, err := o.Signature()
+	if err != nil {
+		return nil, err
+	}
+	if len(signatures) == 0 {
+		return nil, errors.New("number of signatures must be greater than 0")
+	}
+	if o.SignatureType == SignatureTypeSingle {
+		sig, err := decodeSignature(signatures[0])
+		if err != nil {
+			return nil, err
+		}
+		return o.setSignature(sig)
+	}
+	if len(o.SignatureData()) == 0 {
+		return nil, errors.New("multisig address not set")
+	}
+	signatureMulti := signature.(*SignatureMulti)
+	bytes, _ := rlp.EncodeToBytes(signatureMulti)
+	_ = bytes
+	signs := make([]*Signature, 0, len(signatures))
+	for _, signature := range signatures {
+		sig, err := decodeSignature(signature)
+		if err != nil {
+			return nil, err
+		}
+		signs = append(signs, sig)
+	}
+	signatureMulti.Signatures = append(signatureMulti.Signatures, signs...)
+	return o.setSignature(signatureMulti)
+}
+
 // sign transaction
 func (o *object) Sign(key string, multisigPrKeys ...string) (SignedTransaction, error) {
 	h, err := rlpHash([]interface{}{
@@ -437,19 +532,15 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (SignedTransaction, 
 		return nil, err
 	}
 
-	var sig signatureInterface
-
 	switch o.SignatureType {
 	case SignatureTypeSingle:
 		signature, err := signature(key, h)
 		if err != nil {
 			return nil, err
 		}
-
-		sig = signature
+		return o.addSignature(signature)
 	case SignatureTypeMulti:
-		var multiSignature *SignatureMulti
-		if len(o.SignatureData) == 0 {
+		if len(o.SignatureData()) == 0 {
 			sig := &SignatureMulti{
 				Multisig:   [20]byte{},
 				Signatures: make([]*Signature, 0, len(multisigPrKeys)),
@@ -459,40 +550,33 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (SignedTransaction, 
 				return nil, err
 			}
 			copy(sig.Multisig[:], addressToHex)
-			_, err = o.setSignatureData(sig)
+			_, err = o.setSignature(sig)
 			if err != nil {
 				return nil, err
 			}
 		}
-		sigI, err := o.Signature()
+		_, err := o.Signature()
 		if err != nil {
 			return nil, err
 		}
-		multiSignature, ok := sigI.(*SignatureMulti)
-		if !ok {
-			return nil, errors.New("tx is not multi signature type")
-		}
 
+		if len(multisigPrKeys) == 0 {
+			return o, nil
+		}
+		signatures := make([]*Signature, 0, len(multisigPrKeys))
 		for _, prKey := range multisigPrKeys {
 			signature, err := signature(prKey, h)
 			if err != nil {
 				return nil, err
 			}
 
-			multiSignature.Signatures = append(multiSignature.Signatures, signature)
+			signatures = append(signatures, signature)
 		}
 
-		sig = multiSignature
+		return o.addSignature(signatures...)
 	default:
 		return nil, fmt.Errorf("undefined signature type: %d", o.SignatureType)
 	}
-
-	_, err = o.setSignatureData(sig)
-	if err != nil {
-		return nil, err
-	}
-
-	return o, nil
 }
 
 func signature(prKey string, h [32]byte) (*Signature, error) {
@@ -533,10 +617,10 @@ func rlpHash(x interface{}) (h [32]byte, err error) {
 
 func addressToHex(address string) ([]byte, error) {
 	if len(address) != 42 {
-		return nil, errors.New("len < 42")
+		return nil, errors.New("address length less than 42 characters")
 	}
 	if !strings.HasPrefix(address, "Mx") {
-		return nil, errors.New("don't has prefix 'Mx'")
+		return nil, errors.New("address don't has prefix 'Mx'")
 	}
 	bytes, err := hex.DecodeString(address[2:])
 	if err != nil {

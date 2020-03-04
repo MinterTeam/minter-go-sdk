@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"encoding/hex"
 	"math/big"
 	"testing"
 )
@@ -298,6 +299,137 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 
 	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
 	encode, err := signedTx.Encode()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if encode != validSignature {
+		t.Errorf("EncodeTx got %s, want %s", encode, validSignature)
+	}
+}
+
+func TestMultisigAddSignatures(t *testing.T) {
+	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
+	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
+	symbolMNT := "MNT"
+	data, err := NewSendData().
+		SetCoin(symbolMNT).
+		SetValue(value).
+		SetTo(address)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	nonce := uint64(1)
+	gasPrice := uint8(1)
+
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType()
+	transaction0 := *(tx.(*object).Transaction)
+	tx0 := object{Transaction: &transaction0}
+
+	transaction1 := *(tx.(*object).Transaction)
+	tx1 := object{Transaction: &transaction1}
+	signedTx1, err := tx1.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	transaction2 := *(tx.(*object).Transaction)
+	tx2 := object{Transaction: &transaction2}
+	signedTx2, err := tx2.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "38b7dfb77426247aed6081f769ed8f62aaec2ee2b38336110ac4f7484478dccb")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	transaction3 := *(tx.(*object).Transaction)
+	tx3 := object{Transaction: &transaction3}
+	signedTx3, err := tx3.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "94c0915734f92dd66acfdc48f82b1d0b208efd544fe763386160ec30c968b4af")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signedTransaction, err := tx0.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
+	if err != nil {
+		t.Fatal(err)
+	}
+	simpleSignatureData1, err := signedTx1.SimpleSignatureData()
+	if err != nil {
+		t.Fatal(err)
+	}
+	simpleSignatureData2, err := signedTx2.SimpleSignatureData()
+	if err != nil {
+		t.Fatal(err)
+	}
+	simpleSignatureData3, err := signedTx3.SimpleSignatureData()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	signedTx0, err := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+	encode, err := signedTx0.Encode()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if encode != validSignature {
+		t.Errorf("EncodeTx got %s, want %s", encode, validSignature)
+	}
+}
+
+func TestMultisigAddSignatures2(t *testing.T) {
+	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
+	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
+	symbolMNT := "MNT"
+	data, err := NewSendData().
+		SetCoin(symbolMNT).
+		SetValue(value).
+		SetTo(address)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	nonce := uint64(1)
+	gasPrice := uint8(1)
+
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType()
+
+	signedTransaction, err := tx.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sig1, err := hex.DecodeString("f8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cd")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sig2, err := hex.DecodeString("f8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sig3, err := hex.DecodeString("f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454")
+	if err != nil {
+		t.Fatal(err)
+	}
+	signedTx0, err := signedTransaction.AddSignature(sig1, sig2, sig3)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+	encode, err := signedTx0.Encode()
 	if err != nil {
 		t.Fatal(err)
 	}
