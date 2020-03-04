@@ -197,7 +197,7 @@ func TestMultisigSig(t *testing.T) {
 		MustAddSigData("Mx823bb524d5702addbe13086082f7f0310e07d176", 5).
 		SetThreshold(7)
 
-	multisigAddress := createMultisigData.MultisigAddressString()
+	multisigAddress := createMultisigData.AddressString()
 	validAddr := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
 	if multisigAddress != validAddr {
 		t.Fatalf("Address got %s, want %s", multisigAddress, validAddr)
@@ -316,7 +316,7 @@ func TestDecodeMulti(t *testing.T) {
 	if senderAddress != validSenderAddress {
 		t.Errorf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
 	}
-	multisigAddress := decode.Data().(*CreateMultisigData).MultisigAddressString()
+	multisigAddress := decode.Data().(*CreateMultisigData).AddressString()
 	validMultisigAddress := "Mxf6f23648e8ea09535f6cd8f650d02b26d870b673"
 	if multisigAddress != validMultisigAddress {
 		t.Errorf("SenderAddress got %s, want %s", multisigAddress, validMultisigAddress)

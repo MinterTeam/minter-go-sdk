@@ -65,7 +65,7 @@ func (d *CreateMultisigData) fee() Fee {
 	return feeTypeCreateMultisig
 }
 
-func (d *CreateMultisigData) MultisigAddress() [20]byte {
+func (d *CreateMultisigData) AddressBytes() [20]byte {
 	b, err := rlp.EncodeToBytes(d)
 	if err != nil {
 		panic(err)
@@ -77,6 +77,6 @@ func (d *CreateMultisigData) MultisigAddress() [20]byte {
 	return addr
 }
 
-func (d *CreateMultisigData) MultisigAddressString() string {
-	return wallet.BytesToAddress(d.MultisigAddress())
+func (d *CreateMultisigData) AddressString() string {
+	return wallet.BytesToAddress(d.AddressBytes())
 }

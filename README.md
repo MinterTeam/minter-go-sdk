@@ -417,7 +417,7 @@ dataMultisig = transaction.NewCreateMultisigData().
 		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
 		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
 		SetThreshold(7)
-msigAddress := dataMultisig.MultisigAddressString()
+msigAddress := dataMultisig.AddressString()
 signedTx, _ := tx.Sign(msigAddress, privatKey1, privatKey2, privatKey3)
 minterClient.SendTransaction(signedTx)
 ```
@@ -617,7 +617,7 @@ data := transaction.NewCreateMultisigData().
 Get the multisig address to use it for transaction signatures
 
 ```go
-msigAddress := dataMultisig.MultisigAddressString()
+msigAddress := dataMultisig.AddressString()
 signedTx, _ := tx.Sign(msigAddress, privatKey1, privatKey2, privatKey3)
 ```
 #### Multisend transaction

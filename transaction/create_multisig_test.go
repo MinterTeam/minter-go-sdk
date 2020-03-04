@@ -20,7 +20,7 @@ func TestCreateMultisigData_Sign(t *testing.T) {
 	nonce := uint64(11)
 	gasPrice := uint8(1)
 
-	msigAddress := data.MultisigAddressString()
+	msigAddress := data.AddressString()
 	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(SignatureTypeSingle).
 		SetPayload([]byte(fmt.Sprintf("%v, %v, %v, %v", "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63", "9d78895fa954b2b07fb3f29d2ae9f5eb0dc0e925a68ef8362e40c47ba4adb30c", "7e4089c7b683f1b8d1832a8e977cf79aa459bf170ff196354112747124bbd072", msigAddress)))
 
@@ -54,7 +54,7 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	msigAddress := data.MultisigAddressString()
+	msigAddress := data.AddressString()
 	addr := "Mx4fe800483f59a36eec2b6f218778f9c5fceb38c0"
 	if addr != msigAddress {
 		t.Errorf("Address got %s, want %s", msigAddress, addr)
@@ -88,7 +88,7 @@ func TestDecodeCreateMultisig(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	address := decode.Data().(*CreateMultisigData).MultisigAddressString()
+	address := decode.Data().(*CreateMultisigData).AddressString()
 	validAddress := "Mxd43eef7b9406762aa031b82ed0b1082264a13934"
 	if address != validAddress {
 		t.Errorf("Address got %s, want %s", address, validAddress)
