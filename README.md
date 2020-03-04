@@ -423,7 +423,7 @@ minterClient.SendTransaction(signedTx)
 ```
 You can transfer the transaction to the remaining addresses
 ```go
-signedTx1, _ := tx.Sign(wallet.BytesToAddress(msigAddress, privatKey1)
+signedTx1, _ := tx.Sign(msigAddress, privatKey1)
 encode, _ := signedTx.Encode()
 // transfer encode transaction
 signedTx1, _ = Decode(encode)
