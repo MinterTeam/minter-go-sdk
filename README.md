@@ -432,7 +432,18 @@ signedTx12, _ := decode.Sign(msigAddress, privatKey2)
 signedTx123, _ := decode.Sign(msigAddress, privatKey3)
 minterClient.SendTransaction(signedTx123)
 ```
-
+You can collect all signatures in one place without revealing the private key
+```go
+signedTx1, _ := tx.Sign(msigAddress, privatKey1)
+signedTx2, _ := tx.Sign(msigAddress, privatKey2)
+signedTx3, _ := tx.Sign(msigAddress, privatKey3)
+simpleSignatureData1, _ := signedTx1.SimpleSignatureData()
+simpleSignatureData2, _ := signedTx2.SimpleSignatureData()
+simpleSignatureData3, _ := signedTx3.SimpleSignatureData()
+signedTransaction, _ := tx0.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
+signedTx, _ := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
+minterClient.SendTransaction(signedTx123)
+```
 
 #### Send transaction
 
