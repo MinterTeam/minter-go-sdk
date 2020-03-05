@@ -441,7 +441,7 @@ simpleSignatureData1, _ := signedTx1.SimpleSignatureData()
 simpleSignatureData2, _ := signedTx2.SimpleSignatureData()
 simpleSignatureData3, _ := signedTx3.SimpleSignatureData()
 signedTransaction, _ := tx0.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
-signedTx, _ := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
+signedTx123, _ := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
 minterClient.SendTransaction(signedTx123)
 ```
 
