@@ -94,15 +94,3 @@ func TestDecodeCreateMultisig(t *testing.T) {
 		t.Errorf("Address got %s, want %s", address, validAddress)
 	}
 }
-
-func TestDecodeCreateMultisigTODO(t *testing.T) {
-	decode, err := Decode("0xf89681eb02018a4d4e54000000000000000cb83af83889056bc75e2d63100000c20102ea94c5d6b463c18ef37c026b90def5cbd272fb6b2674947633980c000139dd3bd24a3f54e06474fa941e01808001b845f8431ba0bd30aecfbc088e40fa3d497195f93d392ec3e5de0e27d34eeeeaa585a1d8a1c3a01bb7dcd05d9f323aeba420325c8c5bbf9762c6746f6fd12f3ebd778cfa21494b")
-	if err != nil {
-		t.Fatal(err)
-	}
-	address := decode.Data().(*CreateMultisigData).AddressString()
-	validAddress := "Mxd43eef7b9406762aa031b82ed0b1082264a13934"
-	if address != validAddress {
-		t.Errorf("Address got %s, want %s", address, validAddress)
-	}
-}
