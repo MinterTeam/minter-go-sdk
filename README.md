@@ -398,7 +398,7 @@ var data transaction.DataInterface
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
 tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeMulti)
-signedTx, _ := tx.Sign(privatKey)
+signedTx, _ := tx.Sign(privateKey)
 minterClient.SendTransaction(signedTx)
 ```
 
@@ -418,25 +418,25 @@ dataMultisig = transaction.NewCreateMultisigData().
 		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
 		SetThreshold(7)
 msigAddress := dataMultisig.AddressString()
-signedTx, _ := tx.Sign(msigAddress, privatKey1, privatKey2, privatKey3)
+signedTx, _ := tx.Sign(msigAddress, privateKey1, privateKey2, privateKey3)
 minterClient.SendTransaction(signedTx)
 ```
 You can transfer the transaction to the remaining addresses
 ```go
-signedTx1, _ := tx.Sign(msigAddress, privatKey1)
+signedTx1, _ := tx.Sign(msigAddress, privateKey1)
 encode, _ := signedTx.Encode()
 // transfer encode transaction
 signedTx1, _ = Decode(encode)
 // and continue its signature by the remaining participants
-signedTx12, _ := decode.Sign(msigAddress, privatKey2)
-signedTx123, _ := decode.Sign(msigAddress, privatKey3)
+signedTx12, _ := decode.Sign(msigAddress, privateKey2)
+signedTx123, _ := decode.Sign(msigAddress, privateKey3)
 minterClient.SendTransaction(signedTx123)
 ```
 You can collect all signatures in one place without revealing the private key
 ```go
-signedTx1, _ := tx.Sign(msigAddress, privatKey1)
-signedTx2, _ := tx.Sign(msigAddress, privatKey2)
-signedTx3, _ := tx.Sign(msigAddress, privatKey3)
+signedTx1, _ := tx.Sign(msigAddress, privateKey1)
+signedTx2, _ := tx.Sign(msigAddress, privateKey2)
+signedTx3, _ := tx.Sign(msigAddress, privateKey3)
 simpleSignatureData1, _ := signedTx1.SimpleSignatureData()
 simpleSignatureData2, _ := signedTx2.SimpleSignatureData()
 simpleSignatureData3, _ := signedTx3.SimpleSignatureData()
@@ -629,7 +629,7 @@ Get the multisig address to use it for transaction signatures
 
 ```go
 msigAddress := dataMultisig.AddressString()
-signedTx, _ := tx.Sign(msigAddress, privatKey1, privatKey2, privatKey3)
+signedTx, _ := tx.Sign(msigAddress, privateKey1, privateKey2, privateKey3)
 ```
 #### Multisend transaction
 
