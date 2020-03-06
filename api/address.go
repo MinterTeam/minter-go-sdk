@@ -18,7 +18,12 @@ type AddressResult struct {
 }
 
 // Returns coins list, balance and transaction count (for nonce) of an address.
-func (a *Api) Address(address string, height int) (*AddressResult, error) {
+func (a *Api) Address(address string) (*AddressResult, error) {
+	return a.AddressAtHeight(address, LatestBlockHeight)
+}
+
+// Returns coins list, balance and transaction count (for nonce) of an address.
+func (a *Api) AddressAtHeight(address string, height int) (*AddressResult, error) {
 
 	params := make(map[string]string)
 	params["address"] = address
@@ -48,8 +53,13 @@ func (a *Api) Address(address string, height int) (*AddressResult, error) {
 }
 
 // Returns balance of an address.
-func (a *Api) Balance(address string, height int) (map[string]string, error) {
-	response, err := a.Address(address, height)
+func (a *Api) Balance(address string) (map[string]string, error) {
+	return a.BalanceAtHeight(address, LatestBlockHeight)
+}
+
+// Returns balance of an address.
+func (a *Api) BalanceAtHeight(address string, height int) (map[string]string, error) {
+	response, err := a.AddressAtHeight(address, height)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +69,7 @@ func (a *Api) Balance(address string, height int) (map[string]string, error) {
 
 // Returns next transaction number (nonce) of an address.
 func (a *Api) Nonce(address string) (uint64, error) {
-	response, err := a.Address(address, LatestBlockHeight)
+	response, err := a.Address(address)
 	if err != nil {
 		return 0, err
 	}

@@ -29,6 +29,8 @@ This is a pure Go SDK for working with **Minter** blockchain
 	    - [Validators](#validators)
 * [Minter SDK](#using-mintersdk)
 	- [Sign transaction](#sign-transaction)
+	  - [Single signature](#single-signature)
+	  - [Multi signature](#multi-signatures)
 		- [Send](#send-transaction)
 		- [SellCoin](#sell-coin-transaction)
         - [SellAllCoin](#sell-all-coin-transaction)
@@ -74,13 +76,13 @@ minterClient := api.NewApi(nodeUrl)
 Returns coins list, balance and transaction count (for nonce) of an address.
 
 ```go
-func (a *Api) Address(address string, height int) (*AddressResult, error) {...}
+func (a *Api) AddressAtHeight(address string, height int) (*AddressResult, error) {...}
 ````
 
 ##### Example
 
 ```go
-response, err := minterClient.Address("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99", api.LatestBlockHeight)
+response, err := minterClient.AddressAtHeight("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99", api.LatestBlockHeight)
 
 // &{Balance:map[CAPITAL:57010462073783319332082 KLM0VCOIN:16619033694080914686 MNT:41943252740815940564238] TransactionCount:81}
 ```
@@ -90,7 +92,7 @@ response, err := minterClient.Address("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee9
 Returns balance of an address.
 
 ```go
-func (a *Api) Balance(address string, height int) (map[string]string, error) {...}
+func (a *Api) BalanceAtHeight(address string, height int) (map[string]string, error) {...}
 ```
 
 ### Nonce
@@ -126,13 +128,13 @@ response, err := minterClient.Block(19)
 Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
 
 ```go
-func (a *Api) Candidate(pubKey string, height int) (*CandidateResult, error) {...}
+func (a *Api) CandidateAtHeight(pubKey string, height int) (*CandidateResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.Candidate(publicKey, api.LatestBlockHeight)
+response, err := minterClient.CandidateAtHeight(publicKey, api.LatestBlockHeight)
 
 // &{RewardAddress:Mxee81347211c72524338f9680072af90744333146 OwnerAddress:Mxee81347211c72524338f9680072af90744333146 TotalStake:411815911951894107025876955 PubKey:Mp0d29a83e54653a1d5f34e561e0135f1e81cbcae152f1f327ab36857a7e32de4c Commission:100 Stakes:[{Owner:Mxee81347211c72524338f9680072af90744333146 Coin:MNT Value:411000000000000000000000000 BipValue:411000000000000000000000000} {Owner:Mx0004ae43810ac75200a0c681487d1748a4f1e0b3 Coin:TESTCOIN01 Value:31000000000000000000 BipValue:58901486017405331247} {Owner:Mxd231b4777c430da4070bc6ddbe4897812243dee5 Coin:MNT Value:999800000000000000000 BipValue:999800000000000000000} {Owner:Mx84dbe42bcb96de4a3f799fb0231f312b5914f2ea Coin:MNT Value:9765625000000000000 BipValue:9765625000000000000} {Owner:Mx506e94536a0b9b02e6393ab4743ad4660ed96640 Coin:MNT Value:100000000000000000000 BipValue:100000000000000000000} {Owner:Mx3ef60f4b47ce69fc741935ec9e3e058c72c76f50 Coin:MNT Value:2120918824665577665 BipValue:2120918824665577665} {Owner:Mx3ec303f29f9dafcef845743a4039cba9ab0fffa7 Coin:MNT Value:14451032630231196077 BipValue:14451032630231196077} {Owner:Mx952a5cea874ac69bd25102c143d71693de906ec7 Coin:MNT Value:32740220926399860702 BipValue:32740220926399860702} {Owner:Mx952a5cea874ac69bd25102c143d71693de906ec7 Coin:GOVNOCOIN3 Value:50000000000000000000000 BipValue:103209736084198678281} {Owner:Mx3ec303f29f9dafcef845743a4039cba9ab0fffa7 Coin:GOVNOCOIN3 Value:14869835499703502226824 BipValue:30694235950796940768} {Owner:Mx952a5cea874ac69bd25102c143d71693de906ec7 Coin:GOVNOCOIN4 Value:50000000000000000000000 BipValue:13277150942092457073837} {Owner:Mx3ec303f29f9dafcef845743a4039cba9ab0fffa7 Coin:GOVNOCOIN4 Value:3600000000000000000000 BipValue:955954867830656909316} {Owner:Mxd92903294385fbbe3fa806c8d3bb9bb916922e45 Coin:MNT Value:1610564000000000000000 BipValue:1610564000000000000000} {Owner:Mx3c57a889ec01714f26477f3758ee3b5c08bcabd3 Coin:MINTERPAY Value:250000000000000000000000 BipValue:27591235387156689505611} {Owner:Mx228e5a68b847d169da439ec15f727f08233a7ca6 Coin:MNT Value:1000000000000000000 BipValue:1000000000000000000} {Owner:Mx492da1475e270cca7f4ad9879357b6bc740a1abc Coin:BANANATEST Value:999000000000000000000 BipValue:2056371081317486602} {Owner:Mx3e3b5d6087f58f2592623a62da9618a2ee020d2d Coin:MNT Value:100000000000000000000000 BipValue:100000000000000000000000} {Owner:Mx9d5131d0f37934d1e47595543261008e29a3b9c4 Coin:MNT Value:10055039629613311735113 BipValue:10055039629613311735113} {Owner:Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb Coin:MNT Value:550000000000000000000000 BipValue:550000000000000000000000} {Owner:Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb Coin:MEONE Value:996000000000000000000 BipValue:993626519503202223180} {Owner:Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb Coin:BIP Value:889000000000000000000 BipValue:889000000000000000000} {Owner:Mxed4d8865160c9896eb33d242aaca98261ac62272 Coin:MNT Value:100999800000000000000000 BipValue:100999800000000000000000} {Owner:Mxed4d8865160c9896eb33d242aaca98261ac62272 Coin:CAPITAL Value:8946315680512535288679 BipValue:3185058921395693358556} {Owner:Mx4427875d2254e2f25b2c527bf04fe5e83fc3322c Coin:MNT Value:1000000000000000000000 BipValue:1000000000000000000000} {Owner:Mxd06ff74d3bd520ae6be3ca4aac7cefa4b92fe96f Coin:MNT Value:3999782000000000000000 BipValue:3999782000000000000000}] CreatedAtBlock:1 Status:2}
 ```
@@ -142,13 +144,13 @@ response, err := minterClient.Candidate(publicKey, api.LatestBlockHeight)
 Returns list of candidates.
 
 ```go
-func (a *Api) Candidates(height int, includeStakes bool) ([]*CandidateResult, error) {...}
+func (a *Api) CandidatesAtHeight(height int, includeStakes bool) ([]*CandidateResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.Candidates(0, true)
+response, err := minterClient.CandidatesAtHeight(0, true)
 
 // &{RewardAddress:Mxee81347211c72524338f9680072af90744333146 OwnerAddress:Mxee81347211c72524338f9680072af90744333146 TotalStake:411815911951894107025876955 PubKey:Mp0d29a83e54653a1d5f34e561e0135f1e81cbcae152f1f327ab36857a7e32de4c Commission:100 Stakes:[{Owner:Mxee81347211c72524338f9680072af90744333146 Coin:MNT Value:411000000000000000000000000 BipValue:411000000000000000000000000} {Owner:Mx0004ae43810ac75200a0c681487d1748a4f1e0b3 Coin:TESTCOIN01 Value:31000000000000000000 BipValue:58901486017405331247} {Owner:Mxd231b4777c430da4070bc6ddbe4897812243dee5 Coin:MNT Value:999800000000000000000 BipValue:999800000000000000000} {Owner:Mx84dbe42bcb96de4a3f799fb0231f312b5914f2ea Coin:MNT Value:9765625000000000000 BipValue:9765625000000000000} {Owner:Mx506e94536a0b9b02e6393ab4743ad4660ed96640 Coin:MNT Value:100000000000000000000 BipValue:100000000000000000000} {Owner:Mx3ef60f4b47ce69fc741935ec9e3e058c72c76f50 Coin:MNT Value:2120918824665577665 BipValue:2120918824665577665} {Owner:Mx3ec303f29f9dafcef845743a4039cba9ab0fffa7 Coin:MNT Value:14451032630231196077 BipValue:14451032630231196077} {Owner:Mx952a5cea874ac69bd25102c143d71693de906ec7 Coin:MNT Value:32740220926399860702 BipValue:32740220926399860702} {Owner:Mx952a5cea874ac69bd25102c143d71693de906ec7 Coin:GOVNOCOIN3 Value:50000000000000000000000 BipValue:103209736084198678281} {Owner:Mx3ec303f29f9dafcef845743a4039cba9ab0fffa7 Coin:GOVNOCOIN3 Value:14869835499703502226824 BipValue:30694235950796940768} {Owner:Mx952a5cea874ac69bd25102c143d71693de906ec7 Coin:GOVNOCOIN4 Value:50000000000000000000000 BipValue:13277150942092457073837} {Owner:Mx3ec303f29f9dafcef845743a4039cba9ab0fffa7 Coin:GOVNOCOIN4 Value:3600000000000000000000 BipValue:955954867830656909316} {Owner:Mxd92903294385fbbe3fa806c8d3bb9bb916922e45 Coin:MNT Value:1610564000000000000000 BipValue:1610564000000000000000} {Owner:Mx3c57a889ec01714f26477f3758ee3b5c08bcabd3 Coin:MINTERPAY Value:250000000000000000000000 BipValue:27591235387156689505611} {Owner:Mx228e5a68b847d169da439ec15f727f08233a7ca6 Coin:MNT Value:1000000000000000000 BipValue:1000000000000000000} {Owner:Mx492da1475e270cca7f4ad9879357b6bc740a1abc Coin:BANANATEST Value:999000000000000000000 BipValue:2056371081317486602} {Owner:Mx3e3b5d6087f58f2592623a62da9618a2ee020d2d Coin:MNT Value:100000000000000000000000 BipValue:100000000000000000000000} {Owner:Mx9d5131d0f37934d1e47595543261008e29a3b9c4 Coin:MNT Value:10055039629613311735113 BipValue:10055039629613311735113} {Owner:Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb Coin:MNT Value:550000000000000000000000 BipValue:550000000000000000000000} {Owner:Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb Coin:MEONE Value:996000000000000000000 BipValue:993626519503202223180} {Owner:Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb Coin:BIP Value:889000000000000000000 BipValue:889000000000000000000} {Owner:Mxed4d8865160c9896eb33d242aaca98261ac62272 Coin:MNT Value:100999800000000000000000 BipValue:100999800000000000000000} {Owner:Mxed4d8865160c9896eb33d242aaca98261ac62272 Coin:CAPITAL Value:8946315680512535288679 BipValue:3185058921395693358556} {Owner:Mx4427875d2254e2f25b2c527bf04fe5e83fc3322c Coin:MNT Value:1000000000000000000000 BipValue:1000000000000000000000} {Owner:Mxd06ff74d3bd520ae6be3ca4aac7cefa4b92fe96f Coin:MNT Value:3999782000000000000000 BipValue:3999782000000000000000}] CreatedAtBlock:1 Status:2}
 ```
@@ -159,13 +161,13 @@ Returns information about coin.
 Note: this method does not return information about base coins (MNT and BIP).
 
 ```go
-func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResult, error) {...}
+func (a *Api) CoinInfoAtHeight(symbol string, height int) (*CoinInfoResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.CoinInfo("CAPITAL", api.LatestBlockHeight)
+response, err := minterClient.CoinInfoAtHeight("CAPITAL", api.LatestBlockHeight)
 
 // &{Name:Minter Capital Symbol:CAPITAL Volume:160424270982998917252256781 Crr:80 ReserveBalance:57093621687856995327577694}
 ```
@@ -175,13 +177,13 @@ response, err := minterClient.CoinInfo("CAPITAL", api.LatestBlockHeight)
 Return estimate of buy coin transaction.
 
 ```go
-func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResult, error) {...}
+func (a *Api) EstimateCoinBuyAtHeight(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.EstimateCoinBuy("BIP", "1", "MNT", api.LatestBlockHeight)
+response, err := minterClient.EstimateCoinBuyAtHeight("BIP", "1", "MNT", api.LatestBlockHeight)
 
 // &{WillPay:1 Commission:100000000000000000}
 ```
@@ -191,13 +193,13 @@ response, err := minterClient.EstimateCoinBuy("BIP", "1", "MNT", api.LatestBlock
 Return estimate of sell coin transaction.
 
 ```go
-func (a *Api) EstimateCoinSell(coinToSell string, valueToSell string, coinToBuy string, height int) (*EstimateCoinSellResult, error) {...}
+func (a *Api) EstimateCoinSellAtHeight(coinToSell string, valueToSell string, coinToBuy string, height int) (*EstimateCoinSellResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.EstimateCoinSell("BIP", "1", "MNT", api.LatestBlockHeight)
+response, err := minterClient.EstimateCoinSellAtHeight("BIP", "1", "MNT", api.LatestBlockHeight)
 
 // &{WillGet:1 Commission:100000000000000000}
 ```
@@ -224,13 +226,13 @@ response, _ := minterClient.EstimateTxCommission(signedTransaction)
 Returns events at given height.
 
 ```go
-func (a *Api) Events(height int) (*EventsResult, error) {...}
+func (a *Api) EventsAtHeight(height int) (*EventsResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.Events(12)
+response, err := minterClient.EventsAtHeight(12)
 
 // &{Events:[{Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp738da41ba6a7b7d69b7294afa158b89c5a1b410cbf0c2443c85c5fe24ad1dd1c]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp738da41ba6a7b7d69b7294afa158b89c5a1b410cbf0c2443c85c5fe24ad1dd1c]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp738da41ba6a7b7d69b7294afa158b89c5a1b410cbf0c2443c85c5fe24ad1dd1c]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp6f16c1ff21a6fb946aaed0f4c1fcca272b72fd904988f91d3883282b8ae31ba2]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp6f16c1ff21a6fb946aaed0f4c1fcca272b72fd904988f91d3883282b8ae31ba2]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp6f16c1ff21a6fb946aaed0f4c1fcca272b72fd904988f91d3883282b8ae31ba2]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp9e13f2f5468dd782b316444fbd66595e13dba7d7bd3efa1becd50b42045f58c6]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp9e13f2f5468dd782b316444fbd66595e13dba7d7bd3efa1becd50b42045f58c6]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp9e13f2f5468dd782b316444fbd66595e13dba7d7bd3efa1becd50b42045f58c6]}]}
 ```
@@ -272,13 +274,13 @@ response, err := minterClient.MinGasPrice()
 Returns missed blocks by validator public key.
 
 ```go
-func (a *Api) MissedBlocks(pubKey string, height int) (*MissedBlocksResult, error) {...}
+func (a *Api) MissedBlocksAtHeight(pubKey string, height int) (*MissedBlocksResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.MissedBlocks("Mp1ada5ac409b965623bf6a4320260190038ae27230abfb5ebc9158280cdffffff", api.LatestBlockHeight)
+response, err := minterClient.MissedBlocksAtHeight("Mp1ada5ac409b965623bf6a4320260190038ae27230abfb5ebc9158280cdffffff", api.LatestBlockHeight)
 
 // &{MissedBlocks:________________________ MissedBlocksCount:0}
 ```
@@ -369,13 +371,13 @@ response, err := minterClient.UnconfirmedTxs(0)
 Returns list of active validators.
 
 ```go
-func (a *Api) Validators(height int) (*ValidatorsResult, error) {...}
+func (a *Api) ValidatorsAtHeight(height int) (*ValidatorsResult, error) {...}
 ```
 
 ##### Example
 
 ```go
-response, err := minterClient.Validators(0)
+response, err := minterClient.ValidatorsAtHeight(0)
 
 // [&{PubKey:Mp8038275ca777c051b4baeefc09d05673f9b10d984395c1abed8e5cfae15be191 VotingPower:1296218} &{PubKey:Mp0d29a83e54653a1d5f34e561e0135f1e81cbcae152f1f327ab36857a7e32de4c VotingPower:80787843} &{PubKey:Mp14c93843ca40a62b9e7d02a824e7ffe83b49e3329ae963afdd7e500071ab9bfc VotingPower:17915937}]
 ```
@@ -386,15 +388,61 @@ response, err := minterClient.Validators(0)
 
 Returns a signed tx.
 
+
+#### Single signature
+
 ##### Example
 
 ```go
 var data transaction.DataInterface
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
-tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
-signedTx, _ := tx.Sign(privatKey)
+tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeMulti)
+signedTx, _ := tx.Sign(privateKey)
 minterClient.SendTransaction(signedTx)
+```
+
+#### Multi signatures
+
+##### Example
+
+```go
+var data transaction.DataInterface
+var dataMultisig *transaction.CreateMultisigData
+// data = ...
+tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
+tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType(transaction.SignatureTypeMulti)
+dataMultisig = transaction.NewCreateMultisigData().
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
+		SetThreshold(7)
+msigAddress := dataMultisig.AddressString()
+signedTx, _ := tx.Sign(msigAddress, privateKey1, privateKey2, privateKey3)
+minterClient.SendTransaction(signedTx)
+```
+You can transfer the transaction to the remaining addresses
+```go
+signedTx1, _ := tx.Sign(msigAddress, privateKey1)
+encode, _ := signedTx.Encode()
+// transfer encode transaction
+signedTx1, _ = Decode(encode)
+// and continue its signature by the remaining participants
+signedTx12, _ := decode.Sign(msigAddress, privateKey2)
+signedTx123, _ := decode.Sign(msigAddress, privateKey3)
+minterClient.SendTransaction(signedTx123)
+```
+You can collect all signatures in one place without revealing the private key
+```go
+signedTx1, _ := tx.Sign(msigAddress, privateKey1)
+signedTx2, _ := tx.Sign(msigAddress, privateKey2)
+signedTx3, _ := tx.Sign(msigAddress, privateKey3)
+simpleSignatureData1, _ := signedTx1.SimpleSignatureData()
+simpleSignatureData2, _ := signedTx2.SimpleSignatureData()
+simpleSignatureData3, _ := signedTx3.SimpleSignatureData()
+signedTransaction, _ := tx0.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
+signedTx123, _ := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
+minterClient.SendTransaction(signedTx123)
 ```
 
 #### Send transaction
@@ -569,6 +617,20 @@ data, _ := transaction.NewSetCandidateOffData().
 
 Transaction for creating multisignature address.
 
+```go
+data := transaction.NewCreateMultisigData().
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
+		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
+		SetThreshold(7)
+```
+
+Get the multisig address to use it for transaction signatures
+
+```go
+msigAddress := dataMultisig.AddressString()
+signedTx, _ := tx.Sign(msigAddress, privateKey1, privateKey2, privateKey3)
+```
 #### Multisend transaction
 
 Transaction for sending coins to multiple addresses.

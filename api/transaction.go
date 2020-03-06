@@ -28,14 +28,15 @@ type TransactionResult struct {
 	Payload     []byte          `json:"payload"`
 	ServiceData []byte          `json:"service_data"`
 	Tags        struct {
-		TxCoinToBuy  string `json:"tx.coin_to_buy,omitempty"`
-		TxCoinToSell string `json:"tx.coin_to_sell,omitempty"`
-		TxReturn     string `json:"tx.return,omitempty"`
-		TxType       string `json:"tx.type,omitempty"`
-		TxFrom       string `json:"tx.from,omitempty"`
-		TxTo         string `json:"tx.to,omitempty"`
-		TxCoin       string `json:"tx.coin,omitempty"`
-		TxSellAmount string `json:"tx.sell_amount,omitempty"`
+		TxCoinToBuy       string `json:"tx.coin_to_buy,omitempty"`
+		TxCoinToSell      string `json:"tx.coin_to_sell,omitempty"`
+		TxReturn          string `json:"tx.return,omitempty"`
+		TxType            string `json:"tx.type,omitempty"`
+		TxFrom            string `json:"tx.from,omitempty"`
+		TxTo              string `json:"tx.to,omitempty"`
+		TxCoin            string `json:"tx.coin,omitempty"`
+		TxSellAmount      string `json:"tx.sell_amount,omitempty"`
+		TxCreatedMultisig string `json:"tx.created_multisig,omitempty"`
 	} `json:"tags,omitempty"`
 	Code uint32 `json:"code,omitempty"`
 	Log  string `json:"log,omitempty"`

@@ -49,6 +49,6 @@ func (d *DelegateData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *DelegateData) fee() Fee {
+func (d *DelegateData) fee() fee {
 	return feeTypeDelegate
 }

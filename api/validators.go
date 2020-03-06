@@ -19,6 +19,11 @@ type ValidatorResult struct {
 
 // Returns list of active validators.
 func (a *Api) Validators(height int) ([]*ValidatorResult, error) {
+	return a.ValidatorsAtHeight(LatestBlockHeight)
+}
+
+// Returns list of active validators.
+func (a *Api) ValidatorsAtHeight(height int) ([]*ValidatorResult, error) {
 
 	params := make(map[string]string)
 	if height > 0 {

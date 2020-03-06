@@ -18,7 +18,7 @@ type EstimateTxCommissionResult struct {
 }
 
 // Return estimate of transaction.
-func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*EstimateTxCommissionResult, error) {
+func (a *Api) EstimateTxCommission(transaction transaction.EncodeInterface) (*EstimateTxCommissionResult, error) {
 	bytes, err := transaction.Encode()
 	if err != nil {
 		return nil, err

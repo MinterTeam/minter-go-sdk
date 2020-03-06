@@ -70,6 +70,6 @@ func (d *EditCandidateData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *EditCandidateData) fee() Fee {
+func (d *EditCandidateData) fee() fee {
 	return feeTypeEditCandidate
 }

@@ -8,7 +8,7 @@ import (
 
 func TestApi_Candidate(t *testing.T) {
 
-	responseCandidates, err := testApi.Candidates(0, true)
+	responseCandidates, err := testApi.CandidatesAtHeight(0, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -16,7 +16,7 @@ func TestApi_Candidate(t *testing.T) {
 		t.Fatal("no candidates")
 	}
 
-	response, err := testApi.Candidate(responseCandidates[0].PubKey, LatestBlockHeight)
+	response, err := testApi.Candidate(responseCandidates[0].PubKey)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -7,7 +7,7 @@ import (
 )
 
 func TestApi_EstimateCoinBuy(t *testing.T) {
-	response, err := testApi.EstimateCoinBuy("BIP", "1", "MNT", LatestBlockHeight)
+	response, err := testApi.EstimateCoinBuyAtHeight("BIP", "1", "MNT", LatestBlockHeight)
 	if err != nil {
 		t.Fatal(err)
 	}

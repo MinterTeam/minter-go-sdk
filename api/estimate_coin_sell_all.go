@@ -15,7 +15,11 @@ type EstimateCoinSellAllResult struct {
 	WillGet string `json:"will_get"`
 }
 
-func (a *Api) EstimateCoinSellAll(coinToSell string, coinToBuy string, valueToSell string, gasPrice int, height int) (*EstimateCoinSellAllResult, error) {
+func (a *Api) EstimateCoinSellAll(coinToSell string, coinToBuy string, valueToSell string, gasPrice int) (*EstimateCoinSellAllResult, error) {
+	return a.EstimateCoinSellAllAtHeight(coinToSell, coinToBuy, valueToSell, gasPrice, LatestBlockHeight)
+}
+
+func (a *Api) EstimateCoinSellAllAtHeight(coinToSell string, coinToBuy string, valueToSell string, gasPrice int, height int) (*EstimateCoinSellAllResult, error) {
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)
 	params["coin_to_sell"] = coinToSell

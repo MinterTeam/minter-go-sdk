@@ -28,7 +28,12 @@ type CandidateResult struct {
 }
 
 // Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
-func (a *Api) Candidate(pubKey string, height int) (*CandidateResult, error) {
+func (a *Api) Candidate(pubKey string) (*CandidateResult, error) {
+	return a.CandidateAtHeight(pubKey, LatestBlockHeight)
+}
+
+// Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
+func (a *Api) CandidateAtHeight(pubKey string, height int) (*CandidateResult, error) {
 
 	params := make(map[string]string)
 	params["pub_key"] = pubKey

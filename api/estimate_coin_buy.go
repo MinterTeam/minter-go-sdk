@@ -18,7 +18,12 @@ type EstimateCoinBuyResult struct {
 }
 
 // Return estimate of buy coin transaction.
-func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResult, error) {
+func (a *Api) EstimateCoinBuy(coinToSell string, valueToBuy string, coinToBuy string) (*EstimateCoinBuyResult, error) {
+	return a.EstimateCoinBuyAtHeight(coinToSell, valueToBuy, coinToBuy, LatestBlockHeight)
+}
+
+// Return estimate of buy coin transaction.
+func (a *Api) EstimateCoinBuyAtHeight(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResult, error) {
 
 	params := make(map[string]string)
 	params["coin_to_sell"] = coinToSell

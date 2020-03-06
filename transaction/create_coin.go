@@ -17,10 +17,13 @@ type CreateCoinData struct {
 	InitialAmount        *big.Int
 	InitialReserve       *big.Int
 	ConstantReserveRatio uint
+	MaxSupply            *big.Int
 }
 
 func NewCreateCoinData() *CreateCoinData {
-	return &CreateCoinData{}
+	return &CreateCoinData{
+		InitialReserve: big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+	}
 }
 
 func (d *CreateCoinData) SetName(name string) *CreateCoinData {
@@ -34,7 +37,9 @@ func (d *CreateCoinData) SetSymbol(symbol string) *CreateCoinData {
 }
 
 func (d *CreateCoinData) SetInitialReserve(value *big.Int) *CreateCoinData {
-	d.InitialReserve = value
+	if big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)).Cmp(value) == -1 {
+		d.InitialReserve = value
+	}
 	return d
 }
 
@@ -48,11 +53,16 @@ func (d *CreateCoinData) SetConstantReserveRatio(ratio uint) *CreateCoinData {
 	return d
 }
 
+func (d *CreateCoinData) SetMaxSupply(maxSupply *big.Int) *CreateCoinData {
+	d.MaxSupply = maxSupply
+	return d
+}
+
 func (d *CreateCoinData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *CreateCoinData) fee() Fee {
+func (d *CreateCoinData) fee() fee {
 	switch strings.Index(string(d.Symbol[:]), "\x00") {
 	case 3:
 		return 1000000 * feeTypeCreateCoin

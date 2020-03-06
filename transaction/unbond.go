@@ -49,6 +49,6 @@ func (d *UnbondData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *UnbondData) fee() Fee {
+func (d *UnbondData) fee() fee {
 	return feeTypeUnbond
 }

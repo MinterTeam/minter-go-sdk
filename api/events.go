@@ -71,7 +71,12 @@ type UnbondEventValue struct {
 }
 
 // Returns events at given height.
-func (a *Api) Events(height int) (*EventsResult, error) {
+func (a *Api) Events() (*EventsResult, error) {
+	return a.EventsAtHeight(LatestBlockHeight)
+}
+
+// Returns events at given height.
+func (a *Api) EventsAtHeight(height int) (*EventsResult, error) {
 
 	params := make(map[string]string)
 	params["height"] = strconv.Itoa(height)

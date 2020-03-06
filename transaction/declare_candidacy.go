@@ -76,6 +76,6 @@ func (d *DeclareCandidacyData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-func (d *DeclareCandidacyData) fee() Fee {
+func (d *DeclareCandidacyData) fee() fee {
 	return feeTypeDeclareCandidacy
 }

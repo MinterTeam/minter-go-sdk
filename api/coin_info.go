@@ -21,7 +21,12 @@ type CoinInfoResult struct {
 }
 
 // Returns information about coin. Note: this method does not return information about base coins (MNT and BIP).
-func (a *Api) CoinInfo(symbol string, height int) (*CoinInfoResult, error) {
+func (a *Api) CoinInfo(symbol string) (*CoinInfoResult, error) {
+	return a.CoinInfoAtHeight(symbol, LatestBlockHeight)
+}
+
+// Returns information about coin. Note: this method does not return information about base coins (MNT and BIP).
+func (a *Api) CoinInfoAtHeight(symbol string, height int) (*CoinInfoResult, error) {
 
 	params := make(map[string]string)
 	params["symbol"] = symbol

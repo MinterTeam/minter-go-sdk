@@ -34,13 +34,8 @@ func (e *TxError) Error() string {
 	return fmt.Sprintf("code: %d, message: %s, data: \"%s\", tx_result.code: %d, tx_result.log: \"%s\"", e.Code, e.Message, e.Message, e.TxResult.Code, e.TxResult.Log)
 }
 
-// Returns the result of sending signed tx.
-func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendTransactionResult, error) {
-	tx, err := transaction.Encode()
-	if err != nil {
-		return nil, err
-	}
-
+// Returns the result of raw tx.
+func (a *Api) SendRawTransaction(tx string) (*SendTransactionResult, error) {
 	res, err := a.client.R().SetQueryParam("tx", tx).Get("/send_transaction")
 	if err != nil {
 		return nil, err
@@ -60,4 +55,14 @@ func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendT
 	}
 
 	return response.Result, nil
+}
+
+// Returns the result of sending signed tx.
+func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendTransactionResult, error) {
+	tx, err := transaction.Encode()
+	if err != nil {
+		return nil, err
+	}
+
+	return a.SendRawTransaction(tx)
 }

@@ -67,8 +67,8 @@ func NewDeepLink(data DataInterface) (*DeepLink, error) {
 		return d.setType(TypeSetCandidateOnline), nil
 	case *SetCandidateOffData:
 		return d.setType(TypeSetCandidateOffline), nil
-	// case *CreateMultisigData:
-	//	return transaction.setType(TypeCreateMultisig), nil
+	case *CreateMultisigData:
+		return d.setType(TypeCreateMultisig), nil
 	case *MultisendData:
 		return d.setType(TypeMultisend), nil
 	case *EditCandidateData:
