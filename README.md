@@ -426,7 +426,7 @@ You can transfer the transaction to the remaining addresses
 signedTx1, _ := tx.Sign(msigAddress, privateKey1)
 encode, _ := signedTx.Encode()
 // transfer encode transaction
-signedTx1, _ = Decode(encode)
+signedTx1, _ = transaction.Decode(encode)
 // and continue its signature by the remaining participants
 signedTx12, _ := decode.Sign(msigAddress, privateKey2)
 signedTx123, _ := decode.Sign(msigAddress, privateKey3)
