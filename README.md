@@ -397,7 +397,7 @@ Returns a signed tx.
 var data transaction.DataInterface
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
-tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeMulti)
+tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeSingle)
 signedTx, _ := tx.Sign(privateKey)
 minterClient.SendTransaction(signedTx)
 ```
