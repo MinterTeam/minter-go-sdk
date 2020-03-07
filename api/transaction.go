@@ -156,6 +156,7 @@ type CreateCoinData struct {
 	InitialAmount        string `json:"initial_amount"`
 	InitialReserve       string `json:"initial_reserve"`
 	ConstantReserveRatio string `json:"constant_reserve_ratio"`
+	MaxSupply            string `json:"max_supply"`
 }
 
 func (s *CreateCoinData) fill(b []byte) error {
