@@ -73,6 +73,7 @@ func (check *CheckData) PublicKey() (string, error) {
 		check.DueBlock,
 		check.Coin,
 		check.Value,
+		check.GasCoin,
 		check.Lock,
 	})
 	if err != nil {

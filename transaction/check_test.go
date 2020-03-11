@@ -120,3 +120,20 @@ func TestDecodeCheck(t *testing.T) {
 		t.Errorf("Sender want %s, got %s", address, sender)
 	}
 }
+
+func TestDecodeCheck_Sender(t *testing.T) {
+	data, err := DecodeCheck("+KwxAoQ7msn/ik1OVAAAAAAAAACIiscjBInoAACKTU5UAAAAAAAAALhBYQJc9o+FL0Z6Az0c4WZu4xi3s1E2qao2l3cGnDOE62o++8TmJywtVrsNJ5fRXOYbYPV15CASqIUImRGp+3rq/gEcoLrEN0b0ePUvPXLb7stC1FL5q3WbbBT1jnb/9AvfeOg3oD0R2ZYtSHDdF8aJs5/wOgyR7Bh5KomUsBWjkoWYMQBC")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sender, err := data.Sender()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	address := "Mx2f574419b6cba6d886341b5cd4110d2b02eafe8e"
+	if sender != address {
+		t.Errorf("Sender want %s, got %s", address, sender)
+	}
+}
