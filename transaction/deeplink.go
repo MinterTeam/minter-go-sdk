@@ -1,9 +1,11 @@
 package transaction
 
 import (
-	"encoding/hex"
+	"encoding/base64"
 	"errors"
+	"fmt"
 	"github.com/ethereum/go-ethereum/rlp"
+	"net/url"
 )
 
 type DeepLink struct {
@@ -16,13 +18,33 @@ type DeepLink struct {
 	GasCoin  *[10]byte // optional
 }
 
+func (d *DeepLink) CreateLink(pass string) (string, error) {
+	tx, err := d.Encode()
+	if err != nil {
+		return "", err
+	}
+
+	rawQuery := ""
+	if pass != "" {
+		rawQuery = fmt.Sprintf("p=%s", base64.RawStdEncoding.EncodeToString([]byte(pass)))
+	}
+
+	u := &url.URL{
+		Scheme:   "https",
+		Host:     "bip.to",
+		Path:     fmt.Sprintf("/tx/%s", tx),
+		RawQuery: rawQuery,
+	}
+	return u.String(), nil
+}
+
 func (d *DeepLink) Encode() (string, error) {
 	src, err := rlp.EncodeToBytes(d)
 	if err != nil {
 		return "", err
 	}
 
-	return hex.EncodeToString(src), err
+	return base64.RawURLEncoding.EncodeToString(src), nil
 }
 
 func (d *DeepLink) setType(t Type) *DeepLink {
@@ -32,6 +54,13 @@ func (d *DeepLink) setType(t Type) *DeepLink {
 
 func (d *DeepLink) SetPayload(payload []byte) *DeepLink {
 	d.Payload = payload
+	return d
+}
+
+func (d *DeepLink) SetGasCoin(symbol string) *DeepLink {
+	gasCoin := [10]byte{}
+	d.GasCoin = &gasCoin
+	copy(d.GasCoin[:], symbol)
 	return d
 }
 
