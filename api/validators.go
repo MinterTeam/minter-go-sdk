@@ -18,17 +18,25 @@ type ValidatorResult struct {
 }
 
 // Returns list of active validators.
-func (a *Api) Validators(height int) ([]*ValidatorResult, error) {
+func (a *Api) Validators() ([]*ValidatorResult, error) {
 	return a.ValidatorsAtHeight(LatestBlockHeight)
 }
 
 // Returns list of active validators.
 func (a *Api) ValidatorsAtHeight(height int) ([]*ValidatorResult, error) {
+	return a.ValidatorsPage(height, 1, 100)
+}
+
+// Returns list of active validators with custom paging.
+func (a *Api) ValidatorsPage(height, page, perPage int) ([]*ValidatorResult, error) {
 
 	params := make(map[string]string)
 	if height > 0 {
 		params["height"] = strconv.Itoa(height)
 	}
+
+	params["page"] = strconv.Itoa(page)
+	params["perPage"] = strconv.Itoa(perPage)
 
 	res, err := a.client.R().SetQueryParams(params).Get("/validators")
 	if err != nil {
