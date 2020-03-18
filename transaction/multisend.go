@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -26,7 +27,7 @@ func (d *MultisendDataItem) SetCoin(symbol string) *MultisendDataItem {
 }
 
 func (d *MultisendDataItem) SetTo(address string) (*MultisendDataItem, error) {
-	bytes, err := addressToHex(address)
+	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
 		return d, err
 	}

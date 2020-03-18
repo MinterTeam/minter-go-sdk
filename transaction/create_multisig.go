@@ -22,7 +22,7 @@ func (d *CreateMultisigData) SetThreshold(threshold uint) *CreateMultisigData {
 }
 
 func (d *CreateMultisigData) addAddress(address string) (*CreateMultisigData, error) {
-	hexAddress, err := addressToHex(address)
+	hexAddress, err := wallet.AddressToHex(address)
 	if err != nil {
 		return d, err
 	}

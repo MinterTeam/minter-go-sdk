@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"encoding/hex"
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
@@ -41,7 +42,7 @@ func (d *EditCandidateData) MustSetRewardAddress(address string) *EditCandidateD
 }
 
 func (d *EditCandidateData) SetRewardAddress(address string) (*EditCandidateData, error) {
-	bytes, err := addressToHex(address)
+	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
 		return d, err
 	}
@@ -58,7 +59,7 @@ func (d *EditCandidateData) MustSetOwnerAddress(address string) *EditCandidateDa
 }
 
 func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData, error) {
-	bytes, err := addressToHex(address)
+	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
 		return d, err
 	}

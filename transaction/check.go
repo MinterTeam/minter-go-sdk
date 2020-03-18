@@ -213,7 +213,7 @@ type CheckAddress struct {
 }
 
 func NewCheckAddress(address string, passphrase string) (*CheckAddress, error) {
-	toHex, err := addressToHex(address)
+	toHex, err := wallet.AddressToHex(address)
 	if err != nil {
 		return nil, err
 	}

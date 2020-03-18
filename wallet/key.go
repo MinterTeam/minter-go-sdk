@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/tyler-smith/go-bip32"
@@ -95,4 +96,26 @@ func addressToLowerPrefix0xToMx(key string) string {
 
 func PubPrefix04ToMp(key string) string {
 	return strings.Replace(key, "04", "Mp", 1)
+}
+
+func AddressToHex(address string) ([]byte, error) {
+	if len(address) != 42 {
+		return nil, errors.New("address length less than 42 characters")
+	}
+	if !strings.HasPrefix(address, "Mx") {
+		return nil, errors.New("address don't has prefix 'Mx'")
+	}
+	bytes, err := hex.DecodeString(address[2:])
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
+}
+
+func IsValidAddress(address string) bool {
+	_, err := AddressToHex(address)
+	if err != nil {
+		return false
+	}
+	return true
 }

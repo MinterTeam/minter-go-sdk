@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"encoding/hex"
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -24,7 +25,7 @@ func NewDeclareCandidacyData() *DeclareCandidacyData {
 }
 
 func (d *DeclareCandidacyData) SetAddress(address string) (*DeclareCandidacyData, error) {
-	bytes, err := addressToHex(address)
+	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
 		return d, err
 	}

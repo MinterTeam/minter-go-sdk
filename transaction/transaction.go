@@ -10,7 +10,6 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
 	"math/big"
-	"strings"
 )
 
 type Type byte
@@ -545,7 +544,7 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (SignedTransaction, 
 				Multisig:   [20]byte{},
 				Signatures: make([]*Signature, 0, len(multisigPrKeys)),
 			}
-			addressToHex, err := addressToHex(key)
+			addressToHex, err := wallet.AddressToHex(key)
 			if err != nil {
 				return nil, err
 			}
@@ -613,18 +612,4 @@ func rlpHash(x interface{}) (h [32]byte, err error) {
 	}
 	hw.Sum(h[:0])
 	return h, nil
-}
-
-func addressToHex(address string) ([]byte, error) {
-	if len(address) != 42 {
-		return nil, errors.New("address length less than 42 characters")
-	}
-	if !strings.HasPrefix(address, "Mx") {
-		return nil, errors.New("address don't has prefix 'Mx'")
-	}
-	bytes, err := hex.DecodeString(address[2:])
-	if err != nil {
-		return nil, err
-	}
-	return bytes, nil
 }
