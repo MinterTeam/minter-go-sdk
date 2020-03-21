@@ -13,7 +13,7 @@ import (
 // InitialReserve - Initial reserve in BIP's. ConstantReserveRatio - CRR, uint, should be from 10 to 100.
 type CreateCoinData struct {
 	Name                 string
-	Symbol               [10]byte
+	Symbol               Coin
 	InitialAmount        *big.Int
 	InitialReserve       *big.Int
 	ConstantReserveRatio uint

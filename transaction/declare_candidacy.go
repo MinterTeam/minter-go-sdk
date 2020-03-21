@@ -16,7 +16,7 @@ type DeclareCandidacyData struct {
 	Address    [20]byte
 	PubKey     []byte
 	Commission uint
-	Coin       [10]byte
+	Coin       Coin
 	Stake      *big.Int
 }
 

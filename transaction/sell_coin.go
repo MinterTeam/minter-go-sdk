@@ -9,9 +9,9 @@ import (
 // CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give.
 // CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get.
 type SellCoinData struct {
-	CoinToSell        [10]byte
+	CoinToSell        Coin
 	ValueToSell       *big.Int
-	CoinToBuy         [10]byte
+	CoinToBuy         Coin
 	MinimumValueToBuy *big.Int
 }
 

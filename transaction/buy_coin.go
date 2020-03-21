@@ -10,9 +10,9 @@ import (
 // CoinToSell - Symbol of a coin to give.
 // MaximumValueToSell - Maximum value of coins to sell.
 type BuyCoinData struct {
-	CoinToBuy          [10]byte
+	CoinToBuy          Coin
 	ValueToBuy         *big.Int
-	CoinToSell         [10]byte
+	CoinToSell         Coin
 	MaximumValueToSell *big.Int
 }
 

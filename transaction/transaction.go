@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
@@ -130,6 +131,10 @@ type DataInterface interface {
 	encode() ([]byte, error)
 	fee() fee
 }
+
+type Coin [10]byte
+
+func (c Coin) String() string { return string(bytes.Trim(c[:], "\x00")) }
 
 type EncodeInterface interface {
 	Encode() (string, error)
@@ -325,7 +330,7 @@ type Transaction struct {
 	Nonce         uint64
 	ChainID       ChainID
 	GasPrice      uint8
-	GasCoin       [10]byte
+	GasCoin       Coin
 	Type          Type
 	Data          []byte
 	Payload       []byte

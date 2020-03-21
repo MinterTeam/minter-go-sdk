@@ -53,7 +53,7 @@ func TestTransactionSend_Sign(t *testing.T) {
 		t.Errorf("GasPrice got %d, want %d", transaction.GasPrice, gasPrice)
 	}
 
-	gasCoinBytes := [10]byte{'\x4d', '\x4e', '\x54'} // MNT
+	gasCoinBytes := Coin{'\x4d', '\x4e', '\x54'} // MNT
 	if string(transaction.GasCoin[:]) != string(gasCoinBytes[:]) {
 		t.Errorf("GasCoin got %s, want %s", transaction.GasCoin, gasCoinBytes)
 	}

@@ -115,7 +115,7 @@ func TestDecodeCheck(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	address := "Mx9b0ee3d580ee5a5bf825b35978def1b162b3948f"
+	address := "Mxce931863b9c94a526d94acd8090c1c5955a6eb4b"
 	if sender != address {
 		t.Errorf("Sender want %s, got %s", address, sender)
 	}
@@ -125,6 +125,10 @@ func TestDecodeCheck_Sender(t *testing.T) {
 	data, err := DecodeCheck("+KwxAoQ7msn/ik1OVAAAAAAAAACIiscjBInoAACKTU5UAAAAAAAAALhBYQJc9o+FL0Z6Az0c4WZu4xi3s1E2qao2l3cGnDOE62o++8TmJywtVrsNJ5fRXOYbYPV15CASqIUImRGp+3rq/gEcoLrEN0b0ePUvPXLb7stC1FL5q3WbbBT1jnb/9AvfeOg3oD0R2ZYtSHDdF8aJs5/wOgyR7Bh5KomUsBWjkoWYMQBC")
 	if err != nil {
 		t.Fatal(err)
+	}
+
+	if data.Coin.String() != "MNT" {
+		t.Errorf("Coin want %s, got %s", data.Coin.String(), "MNT")
 	}
 
 	sender, err := data.Sender()

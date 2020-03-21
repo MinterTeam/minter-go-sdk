@@ -20,9 +20,9 @@ type CheckData struct {
 	Nonce    []byte
 	ChainID  ChainID
 	DueBlock uint64
-	Coin     [10]byte
+	Coin     Coin
 	Value    *big.Int
-	GasCoin  [10]byte
+	GasCoin  Coin
 	Lock     *big.Int
 	V        *big.Int
 	R        *big.Int

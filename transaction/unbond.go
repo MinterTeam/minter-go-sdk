@@ -10,7 +10,7 @@ import (
 // PubKey - Public key of a validator. Coin - Symbol of coin to stake. Value - Amount of coins to stake.
 type UnbondData struct {
 	PubKey []byte
-	Coin   [10]byte
+	Coin   Coin
 	Value  *big.Int
 }
 

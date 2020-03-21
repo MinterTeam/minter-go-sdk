@@ -13,9 +13,9 @@ type DeepLink struct {
 	Data    []byte
 	Payload []byte
 
-	Nonce    *uint     // optional
-	GasPrice *uint     // optional
-	GasCoin  *[10]byte // optional
+	Nonce    *uint // optional
+	GasPrice *uint // optional
+	GasCoin  *Coin // optional
 }
 
 func (d *DeepLink) CreateLink(pass string) (string, error) {
@@ -58,7 +58,7 @@ func (d *DeepLink) SetPayload(payload []byte) *DeepLink {
 }
 
 func (d *DeepLink) SetGasCoin(symbol string) *DeepLink {
-	gasCoin := [10]byte{}
+	gasCoin := Coin{}
 	d.GasCoin = &gasCoin
 	copy(d.GasCoin[:], symbol)
 	return d
