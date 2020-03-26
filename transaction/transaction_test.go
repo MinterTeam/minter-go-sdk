@@ -7,6 +7,23 @@ import (
 )
 
 func TestTransaction_Hash(t *testing.T) {
+	signedTransaction, err := Decode("0xf8911602018a4d4e540000000000000008b7f6a014c93843ca40a62b9e7d02a824e7ffe83b49e3329ae963afdd7e500071ab9bfc8a4d4e54000000000000008902b5e3af16b1880000808001b845f8431ca043e12cac5d5059a60ef63e88904c6d3885cf17be25aa5bea291ea0ceb3103757a0274f26f6436db1e12c9bf2f701ff2d75285149f381785bf14c2c578510aa7d44")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	hash, err := signedTransaction.Hash()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	validHash := "Mt15ff7e4485f030c2b0e3e414b0d89615b5ecd24a5c3b4659bf561c32f75f5032"
+	if hash != validHash {
+		t.Errorf("Hash got %s, want %s", hash, validHash)
+	}
+}
+
+func TestTransaction_Hash2(t *testing.T) {
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData().
 		SetCoin("MNT").
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -30,7 +47,7 @@ func TestTransaction_Hash(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validHash := "Mt13b73500c171006613fa8e82cc8b29857af1d63a"
+	validHash := "Mt13b73500c171006613fa8e82cc8b29857af1d63a34ca2cada95024bacca1670c"
 	if hash != validHash {
 		t.Errorf("Hash got %s, want %s", hash, validHash)
 	}

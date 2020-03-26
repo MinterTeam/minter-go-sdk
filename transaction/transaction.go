@@ -457,14 +457,14 @@ func (o *object) Hash() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	bytes := make([]byte, hex.DecodedLen(len(encode)-2))
-	_, err = hex.Decode(bytes, []byte(encode)[2:])
+	b := make([]byte, hex.DecodedLen(len(encode)-2))
+	_, err = hex.Decode(b, []byte(encode)[2:])
 	if err != nil {
 		return "", err
 	}
-	hash := sha256.Sum256(bytes)
+	hash := sha256.Sum256(b)
 
-	return "Mt" + hex.EncodeToString(hash[:])[:40], nil
+	return "Mt" + hex.EncodeToString(hash[:]), nil
 }
 
 func (o *object) addSignature(signatures ...*Signature) (SignedTransaction, error) {
@@ -505,8 +505,6 @@ func (o *object) AddSignature(signatures ...[]byte) (SignedTransaction, error) {
 		return nil, errors.New("multisig address not set")
 	}
 	signatureMulti := signature.(*SignatureMulti)
-	bytes, _ := rlp.EncodeToBytes(signatureMulti)
-	_ = bytes
 	signs := make([]*Signature, 0, len(signatures))
 	for _, signature := range signatures {
 		sig, err := decodeSignature(signature)

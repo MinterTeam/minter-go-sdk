@@ -102,6 +102,7 @@ func AddressToHex(address string) ([]byte, error) {
 	if len(address) != 42 {
 		return nil, errors.New("address length less than 42 characters")
 	}
+	address = strings.Title(strings.ToLower(address))
 	if !strings.HasPrefix(address, "Mx") {
 		return nil, errors.New("address don't has prefix 'Mx'")
 	}
