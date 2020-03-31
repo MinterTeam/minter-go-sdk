@@ -70,9 +70,6 @@ func PrivateKeyBySeed(seed []byte) (string, error) {
 
 // Get Minter address from public key.
 func AddressByPublicKey(publicKey string) (string, error) {
-	if len(publicKey) != 66 {
-		return "", errors.New("public key length less than 66 characters")
-	}
 	publicKey = strings.Title(strings.ToLower(publicKey))
 	if !strings.HasPrefix(publicKey, "Mp") {
 		return "", errors.New("address don't has prefix 'Mp'")
