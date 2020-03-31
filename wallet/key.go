@@ -72,7 +72,7 @@ func PrivateKeyBySeed(seed []byte) (string, error) {
 func AddressByPublicKey(publicKey string) (string, error) {
 	publicKey = strings.Title(strings.ToLower(publicKey))
 	if !strings.HasPrefix(publicKey, "Mp") {
-		return "", errors.New("address don't has prefix 'Mp'")
+		return "", errors.New("public key don't has prefix 'Mp'")
 	}
 	decodeString, err := hex.DecodeString(publicKey[2:])
 	if err != nil {
