@@ -1,5 +1,3 @@
-package grpc_client
-
 /*
 This package is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway@v1.1.1/api_pb?tab=doc
 
@@ -100,3 +98,4 @@ Examples:
 		//&api_pb.SubscribeResponse_Event{Key:"tx.hash", Events:[]string{"002290B942B5685462689DB838F9EEA6AE07C062B48BBC369E4EE0D6E0964A06"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
 
 */
+package grpc_client
