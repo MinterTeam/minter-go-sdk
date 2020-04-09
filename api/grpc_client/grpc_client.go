@@ -12,6 +12,19 @@ type Client struct {
 	ctxFunc    func() context.Context
 }
 
+func New(address string) *Client {
+	clientConn, err := grpc.Dial(address, grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
+
+	return &Client{grpcClient: api_pb.NewApiServiceClient(clientConn), ctxFunc: context.Background}
+}
+
+func (c *Client) WithContextFunc(contextFunc func() context.Context) *Client {
+	return &Client{grpcClient: c.grpcClient, ctxFunc: contextFunc}
+}
+
 func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 	return c.grpcClient
 }
@@ -110,20 +123,6 @@ func (c *Client) EstimateCoinSellAll(coinToBuy, coinToSell, valueToBuy string, g
 
 func (c *Client) EstimateTxCommission(tx string, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
 	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{Height: optionalInt(optionalHeight), Tx: tx})
-}
-
-func New(address string) *Client {
-	clientConn, err := grpc.Dial(address, grpc.WithInsecure())
-	if err != nil {
-		panic(err)
-	}
-
-	return &Client{grpcClient: api_pb.NewApiServiceClient(clientConn), ctxFunc: context.Background}
-}
-
-func (c *Client) WithContextFunc(contextFunc func() context.Context) *Client {
-	c.ctxFunc = contextFunc
-	return c
 }
 
 func optionalInt(height []int) uint64 {
