@@ -1,18 +1,20 @@
 // +build integration
 
-package grpc_client_test
+package grpc_client
 
 import (
+	"context"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/api/grpc_client"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"time"
 )
 
 const grpcAddressTestnet = "minter-node-1.testnet.minter.network:8842"
 
 func ExampleClient_Status() {
-	statusResponse, err := grpc_client.New(grpcAddressTestnet).Status()
+	statusResponse, err := New(grpcAddressTestnet).Status()
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -22,7 +24,7 @@ func ExampleClient_Status() {
 }
 
 func ExampleClient_CoinInfo_exast_coin() {
-	statusResponse, err := grpc_client.New(grpcAddressTestnet).CoinInfo("CAPITAL")
+	statusResponse, err := New(grpcAddressTestnet).CoinInfo("CAPITAL")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -32,7 +34,7 @@ func ExampleClient_CoinInfo_exast_coin() {
 }
 
 func ExampleClient_CoinInfo_coin_is_not_found() {
-	coinInfoResponse, err := grpc_client.New(grpcAddressTestnet).CoinInfo("KLIM")
+	coinInfoResponse, err := New(grpcAddressTestnet).CoinInfo("KLIM")
 	if err == nil {
 		fmt.Printf("want error: \"not found\" , got #%v", coinInfoResponse)
 		return
@@ -61,7 +63,7 @@ func ExampleClient_CoinInfo_coin_is_not_found() {
 }
 
 func ExampleClient_Address_empty_balance_at_height() {
-	addressResponse, err := grpc_client.New(grpcAddressTestnet).Address("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 17262)
+	addressResponse, err := New(grpcAddressTestnet).Address("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 17262)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -71,7 +73,7 @@ func ExampleClient_Address_empty_balance_at_height() {
 }
 
 func ExampleClient_Address() {
-	addressResponse, err := grpc_client.New(grpcAddressTestnet).Address("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c")
+	addressResponse, err := New(grpcAddressTestnet).Address("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c")
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -81,7 +83,7 @@ func ExampleClient_Address() {
 }
 
 func ExampleClient_Addresses() {
-	addressResponse, err := grpc_client.New(grpcAddressTestnet).Addresses([]string{"Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", "Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb"}, 17520)
+	addressResponse, err := New(grpcAddressTestnet).Addresses([]string{"Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", "Mxa7bd17b15f341ebd38a300a469744f1541f6ffcb"}, 17520)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -95,7 +97,7 @@ func ExampleClient_Addresses() {
 }
 
 func ExampleClient_Block() {
-	blockResponse, err := grpc_client.New(grpcAddressTestnet).Block(17500)
+	blockResponse, err := New(grpcAddressTestnet).Block(17500)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -115,7 +117,7 @@ func ExampleClient_Block() {
 }
 
 func ExampleClient_Subscribe() {
-	subscribeClient, err := grpc_client.New(grpcAddressTestnet).Subscribe("tags.tx.type='01'")
+	subscribeClient, err := New(grpcAddressTestnet).Subscribe("tags.tx.type='01'")
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -162,4 +164,20 @@ func ExampleClient_Subscribe() {
 	//&api_pb.SubscribeResponse_Event{Key:"tags.tx.coin", Events:[]string{"CAPITAL"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
 	//&api_pb.SubscribeResponse_Event{Key:"tm.event", Events:[]string{"Tx"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
 	//&api_pb.SubscribeResponse_Event{Key:"tx.hash", Events:[]string{"002290B942B5685462689DB838F9EEA6AE07C062B48BBC369E4EE0D6E0964A06"}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
+}
+
+func ExampleClient_WithContextFunc_timeout() {
+	footCtx := context.TODO()
+	f := func() context.Context {
+		ctx, _ := context.WithTimeout(footCtx, time.Second)
+		return ctx
+	}
+
+	_, err := New(grpcAddressTestnet).WithContextFunc(f).Genesis()
+	if err == nil {
+		fmt.Printf("want error: \"%s\"", codes.DeadlineExceeded.String())
+		return
+	}
+	fmt.Println(err)
+	// Output: rpc error: code = DeadlineExceeded desc = context deadline exceeded
 }
