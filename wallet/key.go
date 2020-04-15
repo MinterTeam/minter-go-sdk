@@ -74,10 +74,12 @@ func AddressByPublicKey(publicKey string) (string, error) {
 	if !strings.HasPrefix(publicKey, "Mp") {
 		return "", errors.New("public key don't has prefix 'Mp'")
 	}
+
 	decodeString, err := hex.DecodeString(publicKey[2:])
 	if err != nil {
 		return "", err
 	}
+
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(crypto.Keccak256(decodeString)[12:]).String()), nil
 }
 
@@ -103,18 +105,33 @@ func PubPrefix04ToMp(key string) string {
 }
 
 func AddressToHex(address string) ([]byte, error) {
-	if len(address) != 42 {
-		return nil, errors.New("address length less than 42 characters")
-	}
 	address = strings.Title(strings.ToLower(address))
 	if !strings.HasPrefix(address, "Mx") {
 		return nil, errors.New("address don't has prefix 'Mx'")
 	}
+
+	if len(address) != 42 {
+		return nil, errors.New("address length less than 42 characters")
+	}
+
 	bytes, err := hex.DecodeString(address[2:])
 	if err != nil {
 		return nil, err
 	}
 	return bytes, nil
+}
+
+func PublicKeyToHex(key string) ([]byte, error) {
+	key = strings.Title(strings.ToLower(key))
+	if !strings.HasPrefix(key, "Mp") {
+		return nil, errors.New("public key don't has prefix 'Mp'")
+	}
+
+	hexKey, err := hex.DecodeString(key[2:])
+	if err != nil {
+		return hexKey, err
+	}
+	return hexKey, nil
 }
 
 func IsValidAddress(address string) bool {

@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"encoding/hex"
+	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -20,7 +20,7 @@ func NewUnbondData() *UnbondData {
 
 func (d *UnbondData) SetPubKey(key string) (*UnbondData, error) {
 	var err error
-	d.PubKey, err = hex.DecodeString(key[2:])
+	d.PubKey, err = wallet.PublicKeyToHex(key)
 	if err != nil {
 		return d, err
 	}

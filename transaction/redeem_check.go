@@ -2,7 +2,9 @@ package transaction
 
 import (
 	"encoding/hex"
+	"errors"
 	"github.com/ethereum/go-ethereum/rlp"
+	"strings"
 )
 
 // Transaction for redeeming a check.
@@ -19,6 +21,11 @@ func NewRedeemCheckData() *RedeemCheckData {
 }
 
 func (d *RedeemCheckData) SetRawCheck(raw string) (*RedeemCheckData, error) {
+	raw = strings.Title(strings.ToLower(raw))
+	if !strings.HasPrefix(raw, "Mc") {
+		return nil, errors.New("raw check don't has prefix 'Mc'")
+	}
+
 	var err error
 	d.RawCheck, err = hex.DecodeString(raw[2:])
 	if err != nil {

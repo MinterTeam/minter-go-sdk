@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"encoding/hex"
 	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
 )
@@ -19,7 +18,7 @@ func NewEditCandidateData() *EditCandidateData {
 
 func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
 	var err error
-	d.PubKey, err = hex.DecodeString(key[2:])
+	d.PubKey, err = wallet.PublicKeyToHex(key)
 	if err != nil {
 		return d, err
 	}

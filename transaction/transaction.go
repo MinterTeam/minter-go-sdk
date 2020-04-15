@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
 	"math/big"
+	"strings"
 )
 
 type Type byte
@@ -225,6 +226,10 @@ func (o *object) Signature() (signatureInterface, error) {
 
 // Decode transaction
 func Decode(tx string) (SignedTransaction, error) {
+	if !strings.HasPrefix(tx, "0x") {
+		return nil, errors.New("transaction don't has prefix '0x'")
+	}
+
 	decodeString, err := hex.DecodeString(tx[2:])
 	if err != nil {
 		return nil, err
@@ -457,13 +462,14 @@ func (o *object) Hash() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	b := make([]byte, hex.DecodedLen(len(encode)-2))
 	_, err = hex.Decode(b, []byte(encode)[2:])
 	if err != nil {
 		return "", err
 	}
-	hash := sha256.Sum256(b)
 
+	hash := sha256.Sum256(b)
 	return "Mt" + hex.EncodeToString(hash[:]), nil
 }
 
