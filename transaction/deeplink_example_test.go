@@ -21,7 +21,7 @@ func ExampleNewDeepLink() {
 	// -DsBqumKQklQAAAAAAAAAJQYRnu7ZKjt-JAgHVJsNZV9gr49lYgRIhD0do20AItIZWxsbyBXb3JsZICAgA
 }
 
-func ExampleNewDeepLink_createLink() {
+func ExampleDeepLink_CreateLink() {
 	link, _ := transaction.NewDeepLink(
 		transaction.NewSendData().
 			MustSetTo("Mx7633980c000139dd3bd24a3f54e06474fa941e16").

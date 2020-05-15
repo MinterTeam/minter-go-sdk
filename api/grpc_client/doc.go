@@ -1,8 +1,7 @@
 /*
 	This package is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway@v1.1.1/api_pb?tab=doc.
 
-
-	Examples
+	Examples:
 
 		client := grpc_client.New(grpcAddress)
 		statusResponse, _ := client.Status()
@@ -63,7 +62,6 @@
 
 			fmt.Printf("%#v\n", recv)
 		}
-
 */
 
 package grpc_client
