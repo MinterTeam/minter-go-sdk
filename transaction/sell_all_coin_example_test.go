@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleNewSellAllCoinData_SignTransaction() {
+func ExampleNewSellAllCoinData() {
 	data := transaction.NewSellAllCoinData().
 		SetCoinToSell("MNT").
 		SetCoinToBuy("TEST").

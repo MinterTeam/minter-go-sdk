@@ -5,7 +5,7 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
-func ExampleNewSetCandidateOffData_SignTransaction() {
+func ExampleNewSetCandidateOffData() {
 	data := transaction.NewSetCandidateOffData().
 		MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
 

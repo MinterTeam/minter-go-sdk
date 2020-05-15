@@ -5,7 +5,7 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
-func ExampleNewEditCandidateData_SignTransaction() {
+func ExampleNewEditCandidateData() {
 	data := transaction.NewEditCandidateData().
 		MustSetPubKey("Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8").
 		MustSetOwnerAddress("Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0").

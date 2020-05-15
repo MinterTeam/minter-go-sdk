@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleTransaction_Sign() {
+func ExampleBuilder_NewTransaction_signSimple() {
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
 		transaction.NewSendData().
 			SetCoin("MNT").
@@ -36,7 +36,7 @@ func ExampleTransaction_Sign() {
 
 }
 
-func ExampleTransaction_Sign_SignatureTypeMulti_1() {
+func ExampleBuilder_NewTransaction_signMultiSignature1() {
 	createMultisigData := transaction.NewCreateMultisigData().
 		MustAddSigData("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 1).
 		MustAddSigData("Mx6bf192730d01a19739b5030cdb6a60c992712a59", 3).
@@ -71,7 +71,7 @@ func ExampleTransaction_Sign_SignatureTypeMulti_1() {
 	// 0xf901270102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ba0014aaffef58c3def74bbb828d7cba907df59b50a68749b8d90aa0d7520571be3a04397def13aa5a38b666d5ecf590af7fdec18663bfa448d517d6671fbe25cdde6f8431ba07bd81f68708141c01ed3bac914cc04dc07831989cb86c4b0e992ad9677bfa33aa03b0d936c268e080bbb85a70cfa6c48a88f023d9e06fa4ecfb9e3cb6659bc767af8431ba0767922509d65315ddf728da8cf5450fa8ba410680f7046405a1eeb7cf22f521aa01222a82c41f7ef51e5b6a64414078185393578f8a5373ac5f5a19ee512b9317b
 }
 
-func ExampleTransaction_Sign_SignatureTypeMulti_2() {
+func ExampleBuilder_NewTransaction_signMultiSignature2() {
 	symbolMNT := "MNT"
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).
@@ -101,7 +101,7 @@ func ExampleTransaction_Sign_SignatureTypeMulti_2() {
 
 }
 
-func ExampleTransaction_Sign_SignatureTypeMulti_3() {
+func ExampleBuilder_NewTransaction_signMultiSignature3() {
 	symbolMNT := "MNT"
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).

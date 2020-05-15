@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleNewCreateCoinData_SignTransaction() {
+func ExampleNewCreateCoinData() {
 	data := transaction.NewCreateCoinData().
 		SetName("SUPER TEST").
 		SetSymbol("SPRTEST").

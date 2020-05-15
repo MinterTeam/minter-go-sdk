@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleNewMultisendData_SignTransaction() {
+func ExampleNewMultisendData() {
 	symbolMNT := "MNT"
 	data := transaction.NewMultisendData().AddItem(
 		*transaction.NewMultisendDataItem().
