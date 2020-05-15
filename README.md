@@ -42,21 +42,25 @@ go get github.com/MinterTeam/minter-go-sdk
 ## Using Minter API
 
 * v1 - Will be deprecated soon.
-    [GoDoc](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/api?tab=doc)
+    - [Doc](https://github.com/MinterTeam/minter-go-sdk/tree/v1.1.1#using-minterapi)
+    - [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/api?tab=doc)
 * v2 - RESTful API and gRPC. 
-    - [Source Code](https://github.com/MinterTeam/node-grpc-gateway)
+    - [Github Source Code](https://github.com/MinterTeam/node-grpc-gateway)
     - [ReDoc](https://minterteam.github.io/node-gateway-api-v2-doc/)
+    - [![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Fraw.githubusercontent.com%2FMinterTeam%2Fnode-grpc-gateway%2Fmaster%2Fapi.swagger.json)](https://minterteam.github.io/minter-api-v2-docs/)
+    - [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway/api_pb?tab=doc)
 
 ## Using Minter gRPC
 
-[GoDoc](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/api/grpc_client?tab=doc)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/api/grpc_client?tab=doc)
 
 ## Using MinterSDK
+
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/transaction?tab=doc)
 
 ### Sign transaction
 
 Returns a signed tx.
-
 
 #### Single signature
 
@@ -116,6 +120,8 @@ encode, _ := signedTx123.Encode()
 ```
 
 ### Create transaction
+
+[](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/transaction?tab=doc)
 
 #### Send transaction
 
