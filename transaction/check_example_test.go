@@ -7,7 +7,7 @@ import (
 	"math/big"
 )
 
-func ExampleNewCheck_Sign() {
+func ExampleNewCheck() {
 	check := transaction.NewCheck(
 		480,
 		transaction.TestNetChainID,

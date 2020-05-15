@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleNewDeepLink_NewSendData() {
+func ExampleNewDeepLink() {
 	link, _ := transaction.NewDeepLink(
 		transaction.NewSendData().
 			MustSetTo("Mx18467bbb64a8edf890201d526c35957d82be3d95").
@@ -21,7 +21,7 @@ func ExampleNewDeepLink_NewSendData() {
 	// -DsBqumKQklQAAAAAAAAAJQYRnu7ZKjt-JAgHVJsNZV9gr49lYgRIhD0do20AItIZWxsbyBXb3JsZICAgA
 }
 
-func ExampleNewDeepLink_NewSendData_CreateLink() {
+func ExampleNewDeepLink_createLink() {
 	link, _ := transaction.NewDeepLink(
 		transaction.NewSendData().
 			MustSetTo("Mx7633980c000139dd3bd24a3f54e06474fa941e16").
