@@ -166,7 +166,8 @@ type Interface interface {
 	SetGasPrice(price uint8) Interface
 	SetPayload(payload []byte) Interface
 	SetServiceData(serviceData []byte) Interface
-	Sign(prKey string, multisigPrKeys ...string) (SignedTransaction, error)
+	Sign(key string, multisigPrKeys ...string) (SignedTransaction, error)
+	Clone() Interface
 }
 
 type object struct {
@@ -183,6 +184,11 @@ func (o *object) Fee() *big.Int {
 
 func (o *object) Data() DataInterface {
 	return o.data
+}
+
+func (o *object) Clone() Interface {
+	tx := *o.Transaction
+	return &object{Transaction: &tx, data: o.data}
 }
 
 func (o *object) GetTransaction() *Transaction {
@@ -315,7 +321,7 @@ func (o *object) SenderAddress() (string, error) {
 			return "", err
 		}
 
-		address, err := wallet.AddressByPublicKey(hex.EncodeToString(ecrecover))
+		address, err := wallet.AddressByPublicKey("Mp" + hex.EncodeToString(ecrecover))
 		if err != nil {
 			return "", err
 		}
