@@ -1,5 +1,5 @@
 /*
-	This package is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway@v1.1.1/api_pb?tab=doc.
+	This package is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway@/api_pb?tab=doc.
 
 	Examples:
 
@@ -62,6 +62,9 @@
 
 			fmt.Printf("%#v\n", recv)
 		}
-*/
+		// Result:
+		//&api_pb.SubscribeResponse{Query:"tags.tx.type='01'", Data:(*structpb.Struct)(0xc000202060), Events:[]*api_pb.SubscribeResponse_Event{(*api_pb.SubscribeResponse_Event)(0xc000208500), (*api_pb.SubscribeResponse_Event)(0xc0002086e0), (*api_pb.SubscribeResponse_Event)(0xc000208730), (*api_pb.SubscribeResponse_Event)(0xc000208780), (*api_pb.SubscribeResponse_Event)(0xc0002087d0), (*api_pb.SubscribeResponse_Event)(0xc000208820), (*api_pb.SubscribeResponse_Event)(0xc000208870)}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
+		//&api_pb.SubscribeResponse{Query:"tags.tx.type='01'", Data:(*structpb.Struct)(0xc0002028d0), Events:[]*api_pb.SubscribeResponse_Event{(*api_pb.SubscribeResponse_Event)(0xc000208b90), (*api_pb.SubscribeResponse_Event)(0xc000208be0), (*api_pb.SubscribeResponse_Event)(0xc000208c30), (*api_pb.SubscribeResponse_Event)(0xc000208c80), (*api_pb.SubscribeResponse_Event)(0xc000208cd0), (*api_pb.SubscribeResponse_Event)(0xc000208d20), (*api_pb.SubscribeResponse_Event)(0xc000208d70)}, XXX_NoUnkeyedLiteral:struct {}{}, XXX_unrecognized:[]uint8(nil), XXX_sizecache:0}
 
+*/
 package grpc_client
