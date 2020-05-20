@@ -35,6 +35,8 @@ func (e *TxError) Error() string {
 }
 
 // Returns the result of raw tx.
+// To ensure that transaction was successfully committed to the blockchain,
+// you need to find the transaction by the hash and ensure that the status code equals to 0.
 func (a *Api) SendRawTransaction(tx string) (*SendTransactionResult, error) {
 	res, err := a.client.R().SetQueryParam("tx", tx).Get("/send_transaction")
 	if err != nil {

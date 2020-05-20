@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/MinterTeam/node-grpc-gateway/api_pb"
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"google.golang.org/grpc"
 	"strconv"
 )
@@ -14,7 +15,10 @@ type Client struct {
 }
 
 func New(address string) *Client {
-	clientConn, err := grpc.Dial(address, grpc.WithInsecure())
+	clientConn, err := grpc.Dial(address,
+		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
+		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor()),
+		grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
@@ -136,6 +140,8 @@ func (c *Client) NetInfo() (*api_pb.NetInfoResponse, error) {
 }
 
 //SendTransaction returns the result of sending signed tx.
+//To ensure that transaction was successfully committed to the blockchain,
+//you need to find the transaction by the hash and ensure that the status code equals to 0.
 func (c *Client) SendTransaction(tx string) (*api_pb.SendTransactionResponse, error) {
 	return c.grpcClient.SendGetTransaction(c.ctxFunc(), &api_pb.SendTransactionRequest{Tx: tx})
 }

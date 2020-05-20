@@ -62,6 +62,8 @@ go get github.com/MinterTeam/minter-go-sdk
 
 Returns a signed tx.
 
+⚠️ After sending the transaction, to make sure that the transaction was successfully committed on the blockchain, you need to find the transaction by hash and make sure that the status code is 0.
+
 #### Single signature
 
 ##### Example
