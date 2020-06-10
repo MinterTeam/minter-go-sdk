@@ -1,5 +1,5 @@
 /*
-	This package is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway@/api_pb?tab=doc.
+	This package is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway/api_pb?tab=doc.
 
 	Examples:
 
