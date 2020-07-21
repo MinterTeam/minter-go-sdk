@@ -1,8 +1,8 @@
 package v2
 
 import (
-	"github.com/klim0v/node-api-v2-client-go/client"
-	"github.com/klim0v/node-api-v2-client-go/client/api_service"
+	"github.com/MinterTeam/minter-go-sdk/api/v2/client"
+	"github.com/MinterTeam/minter-go-sdk/api/v2/client/api_service"
 	"net/url"
 )
 
