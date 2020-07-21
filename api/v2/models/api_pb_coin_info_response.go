@@ -21,6 +21,9 @@ type APIPbCoinInfoResponse struct {
 	// id
 	ID string `json:"id,omitempty"`
 
+	// max supply
+	MaxSupply string `json:"max_supply,omitempty"`
+
 	// name
 	Name string `json:"name,omitempty"`
 

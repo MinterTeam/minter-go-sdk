@@ -6,7 +6,7 @@
 
 This is a pure Go SDK for working with **Minter** blockchain
 
-* [Minter Api](#using-minter-api)
+* [Minter API](#using-minter-api)
 * [Minter gRPC](#using-minter-grpc)
 * [Minter SDK](#using-mintersdk)
 	- [Sign transaction](#sign-transaction)

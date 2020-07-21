@@ -14,6 +14,7 @@ type Client struct {
 	ctxFunc    func() context.Context
 }
 
+// New API v2 client
 func New(address string) (*Client, error) {
 	clientConn, err := grpc.Dial(address,
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
@@ -89,7 +90,12 @@ func (c *Client) Candidates(includeStakes bool, optionalHeight ...int) (*api_pb.
 	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes})
 }
 
-//CoinInfo returns information about coin. Note: this method does not return information about base coins (MNT and BIP).
+//CoinId returns information about coin ID. Note: this method does not return information about base coins (MNT and BIP).
+func (c *Client) CoinId(id uint32, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
+	return c.grpcClient.CoinId(c.ctxFunc(), &api_pb.CoinIdRequest{Height: optionalInt(optionalHeight), Id: id})
+}
+
+//CoinInfo returns information about coin symbol. Note: this method does not return information about base coins (MNT and BIP).
 func (c *Client) CoinInfo(symbol string, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
 	return c.grpcClient.CoinInfo(c.ctxFunc(), &api_pb.CoinInfoRequest{Height: optionalInt(optionalHeight), Symbol: symbol})
 }
