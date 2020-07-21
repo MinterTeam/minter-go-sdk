@@ -90,44 +90,12 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 		Data:          dataBytes,
 	}
 
-	object := object{
+	object := &object{
 		Transaction: transaction,
 		data:        data,
 	}
 
-	switch data.(type) {
-	case *SendData:
-		return object.setType(TypeSend), nil
-	case *SellCoinData:
-		return object.setType(TypeSellCoin), nil
-	case *SellAllCoinData:
-		return object.setType(TypeSellAllCoin), nil
-	case *BuyCoinData:
-		return object.setType(TypeBuyCoin), nil
-	case *CreateCoinData:
-		return object.setType(TypeCreateCoin), nil
-	case *DeclareCandidacyData:
-		return object.setType(TypeDeclareCandidacy), nil
-	case *DelegateData:
-		return object.setType(TypeDelegate), nil
-	case *UnbondData:
-		return object.setType(TypeUnbond), nil
-	case *RedeemCheckData:
-		return object.setType(TypeRedeemCheck), nil
-	case *SetCandidateOnData:
-		return object.setType(TypeSetCandidateOnline), nil
-	case *SetCandidateOffData:
-		return object.setType(TypeSetCandidateOffline), nil
-	case *CreateMultisigData:
-		return object.setType(TypeCreateMultisig), nil
-	case *MultisendData:
-		return object.setType(TypeMultisend), nil
-	case *EditCandidateData:
-		return object.setType(TypeEditCandidate), nil
-
-	default:
-		return nil, errors.New("unknown transaction type")
-	}
+	return object.setType(data.Type()), nil
 }
 
 type Data interface {
