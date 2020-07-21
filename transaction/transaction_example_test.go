@@ -9,14 +9,14 @@ import (
 func ExampleBuilder_NewTransaction_signSimple() {
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
 		transaction.NewSendData().
-			SetCoin("MNT").
+			SetCoin(1).
 			SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 			MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
 	)
 
 	signedTransaction, _ := tx.
 		SetGasPrice(1).
-		SetGasCoin("MNT").
+		SetGasCoin(1).
 		SetNonce(1).
 		Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
 
@@ -47,7 +47,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature1() {
 	fmt.Println(multisigAddress)
 	// Result: Mx0023aa9371e0779189ef5a7434456fc21a938945
 
-	symbolMNT := "MNT"
+	symbolMNT := transaction.CoinID(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -72,7 +72,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature1() {
 }
 
 func ExampleBuilder_NewTransaction_signMultiSignature2() {
-	symbolMNT := "MNT"
+	symbolMNT := transaction.CoinID(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -102,7 +102,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature2() {
 }
 
 func ExampleBuilder_NewTransaction_signMultiSignature3() {
-	symbolMNT := "MNT"
+	symbolMNT := transaction.CoinID(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -115,9 +115,9 @@ func ExampleBuilder_NewTransaction_signMultiSignature3() {
 	signedTx1, _ := tx.Clone().Sign(msigAddress, "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
 	signedTx2, _ := tx.Clone().Sign(msigAddress, "b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7")
 	signedTx3, _ := tx.Clone().Sign(msigAddress, "4c8dbfb3258f383adf656c2131e5ed77ec482a36125db71fb49d29e0528ff2ba")
-	simpleSignatureData1, _ := signedTx1.SimpleSignatureData()
-	simpleSignatureData2, _ := signedTx2.SimpleSignatureData()
-	simpleSignatureData3, _ := signedTx3.SimpleSignatureData()
+	simpleSignatureData1, _ := signedTx1.SingleSignatureData()
+	simpleSignatureData2, _ := signedTx2.SingleSignatureData()
+	simpleSignatureData3, _ := signedTx3.SingleSignatureData()
 	signedTransaction, _ := tx.Clone().Sign(msigAddress)
 	signedTx123, _ := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
 

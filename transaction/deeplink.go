@@ -2,7 +2,6 @@ package transaction
 
 import (
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"github.com/ethereum/go-ethereum/rlp"
 	"net/url"
@@ -13,9 +12,9 @@ type DeepLink struct {
 	Data    []byte
 	Payload []byte
 
-	Nonce    *uint // optional
-	GasPrice *uint // optional
-	GasCoin  *Coin // optional
+	Nonce    *uint   `rlp:"nil"` // optional
+	GasPrice *uint   `rlp:"nil"` // optional
+	GasCoin  *CoinID `rlp:"nil"` // optional
 }
 
 func (d *DeepLink) CreateLink(pass string) (string, error) {
@@ -57,14 +56,22 @@ func (d *DeepLink) SetPayload(payload []byte) *DeepLink {
 	return d
 }
 
-func (d *DeepLink) SetGasCoin(symbol string) *DeepLink {
-	gasCoin := Coin{}
-	d.GasCoin = &gasCoin
-	copy(d.GasCoin[:], symbol)
+func (d *DeepLink) SetNonce(nonce uint) *DeepLink {
+	d.Nonce = &nonce
 	return d
 }
 
-func NewDeepLink(data DataInterface) (*DeepLink, error) {
+func (d *DeepLink) SetGasPrice(gasPrice uint) *DeepLink {
+	d.GasPrice = &gasPrice
+	return d
+}
+
+func (d *DeepLink) SetGasCoin(id CoinID) *DeepLink {
+	d.GasCoin = &id
+	return d
+}
+
+func NewDeepLink(data Data) (*DeepLink, error) {
 	d := new(DeepLink)
 
 	bytes, err := data.encode()
@@ -73,37 +80,5 @@ func NewDeepLink(data DataInterface) (*DeepLink, error) {
 	}
 	d.Data = bytes
 
-	switch data.(type) {
-	case *SendData:
-		return d.setType(TypeSend), nil
-	case *SellCoinData:
-		return d.setType(TypeSellCoin), nil
-	case *SellAllCoinData:
-		return d.setType(TypeSellAllCoin), nil
-	case *BuyCoinData:
-		return d.setType(TypeBuyCoin), nil
-	case *CreateCoinData:
-		return d.setType(TypeCreateCoin), nil
-	case *DeclareCandidacyData:
-		return d.setType(TypeDeclareCandidacy), nil
-	case *DelegateData:
-		return d.setType(TypeDelegate), nil
-	case *UnbondData:
-		return d.setType(TypeUnbond), nil
-	case *RedeemCheckData:
-		return d.setType(TypeRedeemCheck), nil
-	case *SetCandidateOnData:
-		return d.setType(TypeSetCandidateOnline), nil
-	case *SetCandidateOffData:
-		return d.setType(TypeSetCandidateOffline), nil
-	case *CreateMultisigData:
-		return d.setType(TypeCreateMultisig), nil
-	case *MultisendData:
-		return d.setType(TypeMultisend), nil
-	case *EditCandidateData:
-		return d.setType(TypeEditCandidate), nil
-
-	default:
-		return nil, errors.New("unknown transaction type")
-	}
+	return d.setType(data.Type()), nil
 }

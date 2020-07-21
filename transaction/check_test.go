@@ -12,9 +12,9 @@ func TestCheck_Sign(t *testing.T) {
 		480,
 		TestNetChainID,
 		999999,
-		"MNT",
+		1,
 		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
-		"MNT",
+		1,
 	).SetPassphrase("pass")
 
 	sign, err := check.Sign("64e27afaab363f21eec05291084367f6f1297a7b280d69d672febecda94a09ea")
@@ -38,9 +38,9 @@ func TestCheck_Sign1(t *testing.T) {
 		1,
 		MainNetChainID,
 		999999,
-		"MNT",
+		1,
 		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
-		"MNT",
+		1,
 	).SetPassphrase("pass")
 
 	sign, err := check.Sign("2919c43d5c712cae66f869a524d9523999998d51157dc40ac4d8d80a7602ce02")
@@ -88,8 +88,8 @@ func TestDecodeCheck(t *testing.T) {
 	if data.ChainID != TestNetChainID {
 		t.Errorf("ChainID want %d, got %d", data.ChainID, TestNetChainID)
 	}
-	if string(data.Coin[:3]) != "MNT" {
-		t.Errorf("Coin want %s, got %s", string(data.Coin[:3]), "MNT")
+	if data.Coin != 1 {
+		t.Errorf("CoinID want %s, got %d", data.Coin.String(), 1)
 	}
 	if data.DueBlock != 999999 {
 		t.Errorf("DueBlock want %d, got %d", data.DueBlock, 999999)
@@ -127,8 +127,8 @@ func TestDecodeCheck_Sender(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if data.Coin.String() != "MNT" {
-		t.Errorf("Coin want %s, got %s", data.Coin.String(), "MNT")
+	if data.Coin != 1 {
+		t.Errorf("CoinID want %s, got %d", data.Coin.String(), 1)
 	}
 
 	sender, err := data.Sender()

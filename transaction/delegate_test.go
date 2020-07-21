@@ -8,7 +8,7 @@ import (
 func TestTransactionDelegate_Sign(t *testing.T) {
 	data := NewDelegateData().
 		MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
-		SetCoin("MNT").
+		SetCoin(1).
 		SetValue(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
 
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
@@ -19,7 +19,7 @@ func TestTransactionDelegate_Sign(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT")
+	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1)
 
 	signedTx, err := transaction.Sign("6e1df6ec69638d152f563c5eca6c13cdb5db4055861efc11ec1cdd578afd96bf")
 	if err != nil {

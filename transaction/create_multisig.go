@@ -57,12 +57,16 @@ func (d *CreateMultisigData) MustAddSigData(address string, weight uint) *Create
 	return d
 }
 
-func (d *CreateMultisigData) encode() ([]byte, error) {
-	return rlp.EncodeToBytes(d)
+func (d *CreateMultisigData) Type() Type {
+	return TypeCreateMultisig
 }
 
-func (d *CreateMultisigData) fee() fee {
+func (d *CreateMultisigData) Fee() Fee {
 	return feeTypeCreateMultisig
+}
+
+func (d *CreateMultisigData) encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
 }
 
 func (d *CreateMultisigData) AddressBytes() [20]byte {

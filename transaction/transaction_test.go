@@ -25,7 +25,7 @@ func TestTransaction_Hash(t *testing.T) {
 
 func TestTransaction_Hash2(t *testing.T) {
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData().
-		SetCoin("MNT").
+		SetCoin(1).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 		MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
 	)
@@ -35,7 +35,7 @@ func TestTransaction_Hash2(t *testing.T) {
 
 	signedTransaction, err := transaction.
 		SetGasPrice(1).
-		SetGasCoin("MNT").
+		SetGasCoin(1).
 		SetNonce(1).
 		Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
 	if err != nil {
@@ -164,11 +164,11 @@ func TestObject_Fee_Coin3Symbol(t *testing.T) {
 
 func TestObject_Fee_Multisend(t *testing.T) {
 	data := NewMultisendData().
-		AddItem(*NewMultisendDataItem()).
-		AddItem(*NewMultisendDataItem()).
-		AddItem(*NewMultisendDataItem()).
-		AddItem(*NewMultisendDataItem()).
-		AddItem(*NewMultisendDataItem())
+		AddItem(NewSendData()).
+		AddItem(NewSendData()).
+		AddItem(NewSendData()).
+		AddItem(NewSendData()).
+		AddItem(NewSendData())
 
 	multisendTransaction, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {
@@ -190,7 +190,7 @@ func TestObject_Fee_Multisend(t *testing.T) {
 func TestMultisigSig(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
-	symbolMNT := "MNT"
+	symbolMNT := CoinID(1)
 	data, err := NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(value).
@@ -242,7 +242,7 @@ func TestMultisigSig(t *testing.T) {
 func TestMultisigSig1(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := "MNT"
+	symbolMNT := CoinID(1)
 	data, err := NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(value).
@@ -282,7 +282,7 @@ func TestMultisigSig1(t *testing.T) {
 func TestMultisigSigTwoTimeSig(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := "MNT"
+	symbolMNT := CoinID(1)
 	data, err := NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(value).
@@ -327,7 +327,7 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 func TestMultisigAddSignatures(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := "MNT"
+	symbolMNT := CoinID(1)
 	data, err := NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(value).
@@ -373,15 +373,15 @@ func TestMultisigAddSignatures(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	simpleSignatureData1, err := signedTx1.SimpleSignatureData()
+	simpleSignatureData1, err := signedTx1.SingleSignatureData()
 	if err != nil {
 		t.Fatal(err)
 	}
-	simpleSignatureData2, err := signedTx2.SimpleSignatureData()
+	simpleSignatureData2, err := signedTx2.SingleSignatureData()
 	if err != nil {
 		t.Fatal(err)
 	}
-	simpleSignatureData3, err := signedTx3.SimpleSignatureData()
+	simpleSignatureData3, err := signedTx3.SingleSignatureData()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -404,7 +404,7 @@ func TestMultisigAddSignatures(t *testing.T) {
 func TestMultisigAddSignatures2(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := "MNT"
+	symbolMNT := CoinID(1)
 	data, err := NewSendData().
 		SetCoin(symbolMNT).
 		SetValue(value).

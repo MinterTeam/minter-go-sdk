@@ -7,14 +7,14 @@ import (
 )
 
 func ExampleNewMultisendData() {
-	symbolMNT := "MNT"
+	symbolMNT := transaction.CoinID(1)
 	data := transaction.NewMultisendData().AddItem(
-		*transaction.NewMultisendDataItem().
+		transaction.NewSendData().
 			SetCoin(symbolMNT).
 			SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
 			MustSetTo("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"),
 	).AddItem(
-		*transaction.NewMultisendDataItem().
+		transaction.NewSendData().
 			SetCoin(symbolMNT).
 			SetValue(big.NewInt(0).Mul(big.NewInt(2), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
 			MustSetTo("Mxddab6281766ad86497741ff91b6b48fe85012e3c"),

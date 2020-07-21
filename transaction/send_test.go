@@ -9,17 +9,16 @@ import (
 func TestTransactionSend_Sign(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
-	symbolMNT := "MNT"
 	data, err := NewSendData().
-		SetCoin(symbolMNT).
+		SetCoin(1).
 		SetValue(value).
 		SetTo(address)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if string(data.Coin[:3]) != symbolMNT {
-		t.Errorf("SendData.Coin got %s, want %s", data.Coin, symbolMNT)
+	if data.Coin != 1 {
+		t.Errorf("SendData.CoinID got %s, want %d", data.Coin, 1)
 	}
 
 	addressBytes, err := hex.DecodeString(address[2:])
@@ -38,7 +37,7 @@ func TestTransactionSend_Sign(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1)
 	transaction := tx.(*object)
 
 	if transaction.Nonce != nonce {
@@ -53,8 +52,8 @@ func TestTransactionSend_Sign(t *testing.T) {
 		t.Errorf("GasPrice got %d, want %d", transaction.GasPrice, gasPrice)
 	}
 
-	gasCoinBytes := Coin{'\x4d', '\x4e', '\x54'} // MNT
-	if string(transaction.GasCoin[:]) != string(gasCoinBytes[:]) {
+	gasCoinBytes := CoinID(1) // MNT
+	if transaction.GasCoin != gasCoinBytes {
 		t.Errorf("GasCoin got %s, want %s", transaction.GasCoin, gasCoinBytes)
 	}
 

@@ -18,7 +18,7 @@ func ExampleNewCreateMultisigData() {
 	fmt.Println(msigAddress)
 	// Result: Mxd43eef7b9406762aa031b82ed0b1082264a13934
 
-	signedTx, _ := tx.SetNonce(11).SetGasPrice(1).SetGasCoin("MNT").SetSignatureType(transaction.SignatureTypeSingle).
+	signedTx, _ := tx.SetNonce(11).SetGasPrice(1).SetGasCoin(1).SetSignatureType(transaction.SignatureTypeSingle).
 		SetPayload([]byte(fmt.Sprintf("Multisig Address %s", msigAddress))).Sign("ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
 
 	signedTxEncode, _ := signedTx.Encode()

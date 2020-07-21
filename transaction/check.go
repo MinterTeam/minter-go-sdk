@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
@@ -17,16 +16,25 @@ import (
 
 // Issue a check that will later be redeemed by the person of your choice.
 type CheckData struct {
-	Nonce    []byte
+	Nonce    []byte // unique ID of the check
 	ChainID  ChainID
-	DueBlock uint64
-	Coin     Coin
-	Value    *big.Int
-	GasCoin  Coin
+	DueBlock uint64   // defines last block height in which the check can be used
+	Coin     CoinID   // ID of coin
+	Value    *big.Int // amount of coins
+	GasCoin  CoinID
 	Lock     *big.Int
 	V        *big.Int
 	R        *big.Int
 	S        *big.Int
+}
+
+func (check *CheckData) MustSender() string {
+	sender, err := check.Sender()
+	if err != nil {
+		panic(err)
+	}
+
+	return sender
 }
 
 func (check *CheckData) Sender() (string, error) {
@@ -44,8 +52,8 @@ func (check *CheckData) String() string {
 		panic(err)
 	}
 
-	return fmt.Sprintf("Check sender: %s nonce: %x, dueBlock: %d, value: %s %s", sender, check.Nonce,
-		check.DueBlock, check.Value.String(), string(bytes.Trim(check.Coin[:], "\x00")))
+	return fmt.Sprintf("Check sender: %s nonce: %x, dueBlock: %d, value: %s, coinID: %s", sender, check.Nonce,
+		check.DueBlock, check.Value.String(), check.Coin)
 }
 
 func (check *CheckData) PublicKey() (string, error) {
@@ -107,19 +115,17 @@ type Check struct {
 }
 
 // Create Check
-// Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins.
-// Due Block - defines last block height in which the check can be used.
-func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin string, value *big.Int, gasCoin string) CheckInterface {
+func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin CoinID, value *big.Int, gasCoin CoinID) CheckInterface {
 	check := &Check{
 		CheckData: &CheckData{
 			Nonce:    []byte(strconv.Itoa(int(nonce))),
 			ChainID:  chainID,
 			DueBlock: dueBlock,
+			Coin:     coin,
 			Value:    value,
+			GasCoin:  gasCoin,
 		},
 	}
-	copy(check.Coin[:], coin)
-	copy(check.GasCoin[:], gasCoin)
 	return check
 }
 

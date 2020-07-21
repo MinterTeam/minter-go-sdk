@@ -21,7 +21,7 @@ func TestCreateMultisigData_Sign(t *testing.T) {
 	gasPrice := uint8(1)
 
 	msigAddress := data.AddressString()
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(SignatureTypeSingle).
+	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1).SetSignatureType(SignatureTypeSingle).
 		SetPayload([]byte(fmt.Sprintf("%v, %v, %v, %v", "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63", "9d78895fa954b2b07fb3f29d2ae9f5eb0dc0e925a68ef8362e40c47ba4adb30c", "7e4089c7b683f1b8d1832a8e977cf79aa459bf170ff196354112747124bbd072", msigAddress)))
 
 	signedTx, err := transaction.Sign("ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
@@ -60,7 +60,7 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 		t.Errorf("Address got %s, want %s", msigAddress, addr)
 	}
 
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT").SetSignatureType(SignatureTypeSingle)
+	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1).SetSignatureType(SignatureTypeSingle)
 
 	signedTx, err := transaction.Sign("bc3503cae8c8561df5eadc4a9eda21d32c252a6c94cfae55b5310bf6085c8582")
 	if err != nil {

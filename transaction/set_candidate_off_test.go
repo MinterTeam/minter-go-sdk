@@ -16,7 +16,7 @@ func TestTransactionSetCandidateOff_Sign(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin("MNT")
+	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1)
 
 	signedTx, err := transaction.Sign("05ddcd4e6f7d248ed1388f0091fe345bf9bf4fc2390384e26005e7675c98b3c1")
 	if err != nil {

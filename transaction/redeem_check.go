@@ -59,10 +59,14 @@ func (d *RedeemCheckData) MustSetProof(proof string) *RedeemCheckData {
 	return d
 }
 
-func (d *RedeemCheckData) encode() ([]byte, error) {
-	return rlp.EncodeToBytes(d)
+func (d *RedeemCheckData) Type() Type {
+	return TypeRedeemCheck
 }
 
-func (d *RedeemCheckData) fee() fee {
+func (d *RedeemCheckData) Fee() Fee {
 	return feeTypeRedeemCheck
+}
+
+func (d *RedeemCheckData) encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
 }

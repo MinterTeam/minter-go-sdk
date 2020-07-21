@@ -1,61 +1,33 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
-	"math/big"
 )
 
-// Transaction for sending coins to multiple addresses.
+// Transaction data for sending coins to multiple addresses.
 type MultisendData struct {
-	List []MultisendDataItem
+	List []*SendData
 }
 
-type MultisendDataItem SendData
-
+// Data of transaction for sending coins to multiple addresses
 func NewMultisendData() *MultisendData {
 	return &MultisendData{}
 }
 
-func NewMultisendDataItem() *MultisendDataItem {
-	return &MultisendDataItem{}
-}
-
-func (d *MultisendDataItem) SetCoin(symbol string) *MultisendDataItem {
-	copy(d.Coin[:], symbol)
-	return d
-}
-
-func (d *MultisendDataItem) SetTo(address string) (*MultisendDataItem, error) {
-	bytes, err := wallet.AddressToHex(address)
-	if err != nil {
-		return d, err
-	}
-	copy(d.To[:], bytes)
-	return d, nil
-}
-
-func (d *MultisendDataItem) MustSetTo(address string) *MultisendDataItem {
-	_, err := d.SetTo(address)
-	if err != nil {
-		panic(err)
-	}
-	return d
-}
-
-func (d *MultisendDataItem) SetValue(value *big.Int) *MultisendDataItem {
-	d.Value = value
-	return d
-}
-
-func (d *MultisendData) AddItem(item MultisendDataItem) *MultisendData {
+// Add SendData to Multisend list
+func (d *MultisendData) AddItem(item *SendData) *MultisendData {
 	d.List = append(d.List, item)
 	return d
 }
 
+func (d *MultisendData) Type() Type {
+	return TypeMultisend
+}
+
+func (d *MultisendData) Fee() Fee {
+	return Fee(10 + (len(d.List)-1)*5)
+}
+
 func (d *MultisendData) encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
-}
-func (d *MultisendData) fee() fee {
-	return fee(10 + (len(d.List)-1)*5)
 }

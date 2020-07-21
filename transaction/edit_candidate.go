@@ -7,25 +7,50 @@ import (
 
 // Transaction for editing existing candidate.
 type EditCandidateData struct {
-	PubKey        []byte
-	RewardAddress [20]byte
-	OwnerAddress  [20]byte
+	PubKey         [32]byte
+	NewPubKey      *[32]byte `rlp:"nil"` // optional
+	RewardAddress  [20]byte
+	OwnerAddress   [20]byte
+	ControlAddress [20]byte
 }
 
 func NewEditCandidateData() *EditCandidateData {
 	return &EditCandidateData{}
 }
 
+// Set public key of a validator.
 func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
-	var err error
-	d.PubKey, err = wallet.PublicKeyToHex(key)
+	pk, err := wallet.PublicKeyToHex(key)
 	if err != nil {
 		return d, err
 	}
+	var pubKey [32]byte
+	copy(pubKey[:], pk)
+	d.PubKey = pubKey
 	return d, nil
 }
+
+// Tries to set public key of validator and panics on error.
 func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
 	_, err := d.SetPubKey(key)
+	if err != nil {
+		panic(err)
+	}
+	return d
+}
+
+func (d *EditCandidateData) SetNewPubKey(key string) (*EditCandidateData, error) {
+	newPubKey, err := wallet.PublicKeyToHex(key)
+	if err != nil {
+		return d, err
+	}
+	var pubKey [32]byte
+	copy(pubKey[:], newPubKey)
+	d.NewPubKey = &pubKey
+	return d, nil
+}
+func (d *EditCandidateData) MustSetNewPubKey(key string) *EditCandidateData {
+	_, err := d.SetNewPubKey(key)
 	if err != nil {
 		panic(err)
 	}
@@ -66,10 +91,31 @@ func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData,
 	return d, nil
 }
 
-func (d *EditCandidateData) encode() ([]byte, error) {
-	return rlp.EncodeToBytes(d)
+func (d *EditCandidateData) MustSetControlAddress(address string) *EditCandidateData {
+	_, err := d.SetControlAddress(address)
+	if err != nil {
+		panic(err)
+	}
+	return d
 }
 
-func (d *EditCandidateData) fee() fee {
+func (d *EditCandidateData) SetControlAddress(address string) (*EditCandidateData, error) {
+	bytes, err := wallet.AddressToHex(address)
+	if err != nil {
+		return d, err
+	}
+	copy(d.ControlAddress[:], bytes)
+	return d, nil
+}
+
+func (d *EditCandidateData) Type() Type {
+	return TypeEditCandidate
+}
+
+func (d *EditCandidateData) Fee() Fee {
 	return feeTypeEditCandidate
+}
+
+func (d *EditCandidateData) encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
 }

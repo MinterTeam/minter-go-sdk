@@ -6,23 +6,25 @@ import (
 	"math/big"
 )
 
-// Transaction for sending arbitrary coin.
-// Coin - Symbol of a coin. To - Recipient address in Minter Network. Value - Amount of Coin to send.
+// Transaction data for sending arbitrary coin.
 type SendData struct {
-	Coin  Coin
-	To    [20]byte
-	Value *big.Int
+	Coin  CoinID   // ID of a coin
+	To    [20]byte // Recipient address
+	Value *big.Int // Amount of CoinID to send
 }
 
+// New data of transaction data for sending arbitrary coin.
 func NewSendData() *SendData {
 	return &SendData{}
 }
 
-func (d *SendData) SetCoin(symbol string) *SendData {
-	copy(d.Coin[:], symbol)
+// Set ID of a coin.
+func (d *SendData) SetCoin(id CoinID) *SendData {
+	d.Coin = id
 	return d
 }
 
+// Set recipient address.
 func (d *SendData) SetTo(address string) (*SendData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -32,6 +34,7 @@ func (d *SendData) SetTo(address string) (*SendData, error) {
 	return d, nil
 }
 
+// Tries to set recipient address and panics on error
 func (d *SendData) MustSetTo(address string) *SendData {
 	_, err := d.SetTo(address)
 	if err != nil {
@@ -40,15 +43,20 @@ func (d *SendData) MustSetTo(address string) *SendData {
 	return d
 }
 
+// Set amount of CoinID to send
 func (d *SendData) SetValue(value *big.Int) *SendData {
 	d.Value = value
 	return d
 }
 
-func (d *SendData) encode() ([]byte, error) {
-	return rlp.EncodeToBytes(d)
+func (d *SendData) Type() Type {
+	return TypeSend
 }
 
-func (d *SendData) fee() fee {
+func (d *SendData) Fee() Fee {
 	return feeTypeSend
+}
+
+func (d *SendData) encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
 }

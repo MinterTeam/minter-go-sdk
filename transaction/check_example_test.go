@@ -12,9 +12,9 @@ func ExampleNewCheck() {
 		480,
 		transaction.TestNetChainID,
 		999999,
-		"MNT",
+		1,
 		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
-		"MNT",
+		1,
 	).SetPassphrase("pass")
 
 	sign, _ := check.Sign("64e27afaab363f21eec05291084367f6f1297a7b280d69d672febecda94a09ea")
