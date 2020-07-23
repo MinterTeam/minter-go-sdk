@@ -9,7 +9,7 @@ import (
 // Transaction data for declaring new validator candidacy.
 type DeclareCandidacyData struct {
 	Address    [20]byte // Address of candidate
-	PubKey     []byte   // Public key of a validator
+	PubKey     [32]byte // Public key of a validator
 	Commission uint     // Commission (from 0 to 100) from rewards which delegators will pay to validator
 	Coin       CoinID   // ID of coin to stake
 	Stake      *big.Int // Amount of coins to stake
@@ -41,11 +41,11 @@ func (d *DeclareCandidacyData) MustSetAddress(address string) *DeclareCandidacyD
 
 // Set public key of a validator.
 func (d *DeclareCandidacyData) SetPubKey(key string) (*DeclareCandidacyData, error) {
-	var err error
-	d.PubKey, err = wallet.PublicKeyToHex(key)
+	pubKey, err := wallet.PublicKeyToHex(key)
 	if err != nil {
 		return d, err
 	}
+	copy(d.PubKey[:], pubKey)
 	return d, nil
 }
 

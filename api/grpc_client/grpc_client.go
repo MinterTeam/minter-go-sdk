@@ -117,20 +117,18 @@ func (c *Client) EstimateCoinSellAll(coinToBuy, coinToSell uint32, valueToBuy st
 
 //EstimateTxCommissionTx return estimate of encoding transaction.
 func (c *Client) EstimateTxCommissionTx(tx string, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
-	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{Height: optionalInt(optionalHeight), Transaction: &api_pb.EstimateTxCommissionRequest_Tx{Tx: tx}})
+	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{Height: optionalInt(optionalHeight), Tx: tx})
 }
 
 //EstimateTxCommissionData return estimate of transaction data.
 func (c *Client) EstimateTxCommissionData(gasCoin uint32, t api_pb.EstimateTxCommissionRequest_TransactionData_Type, payload []byte, mtxsCount int64, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
 	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{
 		Height: optionalInt(optionalHeight),
-		Transaction: &api_pb.EstimateTxCommissionRequest_Data{
-			Data: &api_pb.EstimateTxCommissionRequest_TransactionData{
-				GasCoinId: gasCoin,
-				Type:      t,
-				Payload:   payload,
-				Mtxs:      mtxsCount,
-			},
+		Data: &api_pb.EstimateTxCommissionRequest_TransactionData{
+			GasCoinId: gasCoin,
+			Type:      t,
+			Payload:   payload,
+			Mtxs:      mtxsCount,
 		},
 	})
 }

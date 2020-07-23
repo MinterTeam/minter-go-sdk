@@ -21,7 +21,7 @@ import (
 // with the default values initialized.
 func NewAPIServiceEstimateTxCommission2Params() *APIServiceEstimateTxCommission2Params {
 	var (
-		dataTypeDefault = string("_")
+		dataTypeDefault = string("unknown")
 	)
 	return &APIServiceEstimateTxCommission2Params{
 		DataType: &dataTypeDefault,
@@ -34,7 +34,7 @@ func NewAPIServiceEstimateTxCommission2Params() *APIServiceEstimateTxCommission2
 // with the default values initialized, and the ability to set a timeout on a request
 func NewAPIServiceEstimateTxCommission2ParamsWithTimeout(timeout time.Duration) *APIServiceEstimateTxCommission2Params {
 	var (
-		dataTypeDefault = string("_")
+		dataTypeDefault = string("unknown")
 	)
 	return &APIServiceEstimateTxCommission2Params{
 		DataType: &dataTypeDefault,
@@ -47,7 +47,7 @@ func NewAPIServiceEstimateTxCommission2ParamsWithTimeout(timeout time.Duration) 
 // with the default values initialized, and the ability to set a context for a request
 func NewAPIServiceEstimateTxCommission2ParamsWithContext(ctx context.Context) *APIServiceEstimateTxCommission2Params {
 	var (
-		dataTypeDefault = string("_")
+		dataTypeDefault = string("unknown")
 	)
 	return &APIServiceEstimateTxCommission2Params{
 		DataType: &dataTypeDefault,
@@ -60,7 +60,7 @@ func NewAPIServiceEstimateTxCommission2ParamsWithContext(ctx context.Context) *A
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewAPIServiceEstimateTxCommission2ParamsWithHTTPClient(client *http.Client) *APIServiceEstimateTxCommission2Params {
 	var (
-		dataTypeDefault = string("_")
+		dataTypeDefault = string("unknown")
 	)
 	return &APIServiceEstimateTxCommission2Params{
 		DataType:   &dataTypeDefault,

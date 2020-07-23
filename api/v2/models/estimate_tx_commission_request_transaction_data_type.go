@@ -20,8 +20,8 @@ type EstimateTxCommissionRequestTransactionDataType string
 
 const (
 
-	// EstimateTxCommissionRequestTransactionDataTypeNr captures enum value "_"
-	EstimateTxCommissionRequestTransactionDataTypeNr EstimateTxCommissionRequestTransactionDataType = "_"
+	// EstimateTxCommissionRequestTransactionDataTypeUnknown captures enum value "unknown"
+	EstimateTxCommissionRequestTransactionDataTypeUnknown EstimateTxCommissionRequestTransactionDataType = "unknown"
 
 	// EstimateTxCommissionRequestTransactionDataTypeSend captures enum value "Send"
 	EstimateTxCommissionRequestTransactionDataTypeSend EstimateTxCommissionRequestTransactionDataType = "Send"
@@ -77,7 +77,7 @@ var estimateTxCommissionRequestTransactionDataTypeEnum []interface{}
 
 func init() {
 	var res []EstimateTxCommissionRequestTransactionDataType
-	if err := json.Unmarshal([]byte(`["_","Send","SellCoin","SellAllCoin","BuyCoin","CreateCoin","DeclareCandidacy","Delegate","Unbond","RedeemCheck","SetCandidateOnline","SetCandidateOffline","CreateMultisig","Multisend","EditCandidate","RecreateCoin","ChangeOwner"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["unknown","Send","SellCoin","SellAllCoin","BuyCoin","CreateCoin","DeclareCandidacy","Delegate","Unbond","RedeemCheck","SetCandidateOnline","SetCandidateOffline","CreateMultisig","Multisend","EditCandidate","RecreateCoin","ChangeOwner"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

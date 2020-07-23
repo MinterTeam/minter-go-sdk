@@ -33,6 +33,9 @@ const (
 	TypeCreateMultisig
 	TypeMultisend
 	TypeEditCandidate
+	TypeSetHaltBlock
+	TypeRecreateCoin
+	TypeChangeOwner
 )
 
 type Fee uint
@@ -52,6 +55,9 @@ const (
 	feeTypeCreateMultisig      Fee = 100
 	// feeMultisend Fee =  10+(n-1)*5
 	feeTypeEditCandidate Fee = 100000
+	feeTypeSetHaltBlock  Fee = 1000
+	feeTypeRecreateCoin  Fee = 10000000
+	feeTypeChangeOwner   Fee = 10000000
 )
 
 type SignatureType byte
@@ -112,9 +118,9 @@ type CoinID uint32
 
 func (c CoinID) String() string { return strconv.Itoa(int(c)) }
 
-type Coin [10]byte
+type CoinSymbol [10]byte
 
-func (c Coin) String() string { return string(bytes.Trim(c[:], "\x00")) }
+func (c CoinSymbol) String() string { return string(bytes.Trim(c[:], "\x00")) }
 
 type EncodeInterface interface {
 	Encode() (string, error)

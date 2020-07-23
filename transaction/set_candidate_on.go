@@ -8,7 +8,7 @@ import (
 // Transaction data for turning candidate on.
 // This transaction should be sent from address which is set in the "Declare candidacy transaction".
 type SetCandidateOnData struct {
-	PubKey []byte // Public key of a validator
+	PubKey [32]byte // Public key of a validator
 }
 
 // New data of Transaction for turning candidate on.
@@ -18,11 +18,11 @@ func NewSetCandidateOnData() *SetCandidateOnData {
 
 // Set public key of a validator.
 func (d *SetCandidateOnData) SetPubKey(key string) (*SetCandidateOnData, error) {
-	var err error
-	d.PubKey, err = wallet.PublicKeyToHex(key)
+	pubKey, err := wallet.PublicKeyToHex(key)
 	if err != nil {
 		return d, err
 	}
+	copy(d.PubKey[:], pubKey)
 	return d, nil
 }
 

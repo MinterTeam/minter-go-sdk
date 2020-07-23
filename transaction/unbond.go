@@ -8,7 +8,7 @@ import (
 
 // Transaction data for unbonding funds from validator's stake.
 type UnbondData struct {
-	PubKey []byte   // Public key of a validator
+	PubKey [32]byte // Public key of a validator
 	Coin   CoinID   // ID of coin to stake
 	Value  *big.Int // Amount of coins to stake
 }
@@ -20,11 +20,11 @@ func NewUnbondData() *UnbondData {
 
 // Set Public key of a validator
 func (d *UnbondData) SetPubKey(key string) (*UnbondData, error) {
-	var err error
-	d.PubKey, err = wallet.PublicKeyToHex(key)
+	pubKey, err := wallet.PublicKeyToHex(key)
 	if err != nil {
 		return d, err
 	}
+	copy(d.PubKey[:], pubKey)
 	return d, nil
 }
 

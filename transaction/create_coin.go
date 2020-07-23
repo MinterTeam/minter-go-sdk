@@ -7,12 +7,12 @@ import (
 
 // Transaction data for creating new coin in a system.
 type CreateCoinData struct {
-	Name                 string   // Name of a coin
-	Symbol               Coin     // Symbol of a coin
-	InitialAmount        *big.Int // Amount of coins to issue
-	InitialReserve       *big.Int // Initial reserve
-	ConstantReserveRatio uint     // ConstantReserveRatio (CRR)
-	MaxSupply            *big.Int // Maximum number of coins issued
+	Name                 string     // Name of a coin
+	Symbol               CoinSymbol // Symbol of a coin
+	InitialAmount        *big.Int   // Amount of coins to issue
+	InitialReserve       *big.Int   // Initial reserve
+	ConstantReserveRatio uint       // ConstantReserveRatio (CRR)
+	MaxSupply            *big.Int   // Maximum number of coins issued
 }
 
 // New data of transaction for creating new coin in a system.
