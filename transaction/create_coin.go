@@ -9,10 +9,10 @@ import (
 type CreateCoinData struct {
 	Name                 string     // Name of a coin
 	Symbol               CoinSymbol // Symbol of a coin
-	InitialAmount        *big.Int   // Amount of coins to issue
+	InitialAmount        *big.Int   // Amount of coins to issue. Issued coins will be available to sender account. Should be between 1 and 1,000,000,000,000,000 coins.
 	InitialReserve       *big.Int   // Initial reserve
 	ConstantReserveRatio uint       // ConstantReserveRatio (CRR)
-	MaxSupply            *big.Int   // Maximum number of coins issued
+	MaxSupply            *big.Int   // Max amount of coins that are allowed to be issued. Maximum is 1,000,000,000,000,000
 }
 
 // New data of transaction for creating new coin in a system.
@@ -54,6 +54,7 @@ func (d *CreateCoinData) SetConstantReserveRatio(ratio uint) *CreateCoinData {
 	return d
 }
 
+// Set maximum amount of coins that are allowed to be issued.
 func (d *CreateCoinData) SetMaxSupply(maxSupply *big.Int) *CreateCoinData {
 	d.MaxSupply = maxSupply
 	return d

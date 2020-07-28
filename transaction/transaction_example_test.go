@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleBuilder_NewTransaction_signSimple() {
+func ExampleObject_Sign_simple() {
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
 		transaction.NewSendData().
 			SetCoin(1).
@@ -43,7 +43,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature1() {
 		MustAddSigData("Mx823bb524d5702addbe13086082f7f0310e07d176", 5).
 		SetThreshold(7)
 
-	multisigAddress := createMultisigData.AddressString()
+	multisigAddress := createMultisigData.Address()
 	fmt.Println(multisigAddress)
 	// Result: Mx0023aa9371e0779189ef5a7434456fc21a938945
 
@@ -101,7 +101,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature2() {
 
 }
 
-func ExampleBuilder_NewTransaction_signMultiSignature3() {
+func ExampleSignatureMulti_First() {
 	symbolMNT := transaction.CoinID(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).

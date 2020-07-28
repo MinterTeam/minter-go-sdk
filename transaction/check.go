@@ -14,20 +14,23 @@ import (
 	"strconv"
 )
 
-// Issue a check that will later be redeemed by the person of your choice.
+// Minter Check is like an ordinary bank check.
+// Each user of network can issue check with any amount of coins and pass it to another person.
+// Receiver will be able to cash a check from arbitrary account.
 type CheckData struct {
-	Nonce    []byte // unique ID of the check
-	ChainID  ChainID
-	DueBlock uint64   // defines last block height in which the check can be used
+	Nonce    []byte   // Unique ID of the check
+	ChainID  ChainID  // ID of the network
+	DueBlock uint64   // Defines last block height in which the check can be used
 	Coin     CoinID   // ID of coin
-	Value    *big.Int // amount of coins
-	GasCoin  CoinID
-	Lock     *big.Int
-	V        *big.Int
-	R        *big.Int
-	S        *big.Int
+	Value    *big.Int // Amount of coins
+	GasCoin  CoinID   // ID of a coin to pay fee
+	Lock     *big.Int // Secret to prevent hijacking
+	V        *big.Int // V signature of issuer
+	R        *big.Int // R signature of issuer
+	S        *big.Int // S signature of issuer
 }
 
+// Tries returns sender of transaction and panics on error.
 func (check *CheckData) MustSender() string {
 	sender, err := check.Sender()
 	if err != nil {
@@ -37,6 +40,7 @@ func (check *CheckData) MustSender() string {
 	return sender
 }
 
+// Return sender of transactions.
 func (check *CheckData) Sender() (string, error) {
 	pub, err := check.PublicKey()
 	if err != nil {
@@ -56,6 +60,7 @@ func (check *CheckData) String() string {
 		check.DueBlock, check.Value.String(), check.Coin)
 }
 
+// Returns public key from the transaction signature.
 func (check *CheckData) PublicKey() (string, error) {
 
 	if check.V.BitLen() > 8 {
@@ -100,13 +105,9 @@ func (check *CheckData) PublicKey() (string, error) {
 	return wallet.PubPrefix04ToMp(hex.EncodeToString(pub)), nil
 }
 
-type Signed interface {
-	Encode() (string, error)
-}
-
 type CheckInterface interface {
 	SetPassphrase(passphrase string) CheckInterface
-	Sign(prKey string) (Signed, error)
+	Sign(prKey string) (EncodeInterface, error)
 }
 
 type Check struct {
@@ -114,7 +115,7 @@ type Check struct {
 	passphrase string
 }
 
-// Create Check
+// Issue a check that will later be redeemed by the person of your choice.
 func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin CoinID, value *big.Int, gasCoin CoinID) CheckInterface {
 	check := &Check{
 		CheckData: &CheckData{
@@ -150,7 +151,7 @@ func (check *Check) SetPassphrase(passphrase string) CheckInterface {
 	return check
 }
 
-//
+// Get string representation of a check. Checks are prefixed with "Mc"
 func (check *Check) Encode() (string, error) {
 	src, err := rlp.EncodeToBytes(check.CheckData)
 	if err != nil {
@@ -160,8 +161,8 @@ func (check *Check) Encode() (string, error) {
 	return "Mc" + hex.EncodeToString(src), err
 }
 
-// Sign Check
-func (check *Check) Sign(prKey string) (Signed, error) {
+// Sign Check with private key
+func (check *Check) Sign(prKey string) (EncodeInterface, error) {
 	msgHash, err := rlpHash([]interface{}{
 		check.Nonce,
 		check.ChainID,

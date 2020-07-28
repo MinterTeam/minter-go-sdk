@@ -33,7 +33,10 @@ func ExampleCheckAddress_Proof() {
 }
 
 func ExampleDecodeCheck() {
-	data, _ := transaction.DecodeCheck("+K6DNDgwAoMPQj+KTU5UAAAAAAAAAIiKxyMEiegAAIpNTlQAAAAAAAAAuEFJfF8+b8GC/Rp5FSKp73V2cQvfvIb9vxZUdu8iDon5/xOA+T8tmi+S/asO3B4mBcwsabcHzUBLLLFSK3q6Te/VABugg8mUUWnwp7vllpc7MtyIdgh4BYCx07x7GIvts704VZSgR7LVNFlG7VSY9b7nE/hidqrARqX++CC+rud6m2+bwd8=")
+	data, err := transaction.DecodeCheck("+K6DNDgwAoMPQj+KTU5UAAAAAAAAAIiKxyMEiegAAIpNTlQAAAAAAAAAuEFJfF8+b8GC/Rp5FSKp73V2cQvfvIb9vxZUdu8iDon5/xOA+T8tmi+S/asO3B4mBcwsabcHzUBLLLFSK3q6Te/VABugg8mUUWnwp7vllpc7MtyIdgh4BYCx07x7GIvts704VZSgR7LVNFlG7VSY9b7nE/hidqrARqX++CC+rud6m2+bwd8=")
+	if err != nil {
+		return
+	}
 
 	fmt.Println(string(data.Nonce))
 	// Result: 480

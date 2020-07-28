@@ -23,7 +23,7 @@ func TestDeepLink_NewDeepLink(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	data := "-DsBqumKQklQAAAAAAAAAJQYRnu7ZKjt-JAgHVJsNZV9gr49lYgRIhD0do20AItIZWxsbyBXb3JsZICAgA"
+	data := "8QGg3wKUGEZ7u2So7fiQIB1SbDWVfYK-PZWIESIQ9HaNtACLSGVsbG8gV29ybGSAgIA"
 	if encode != data {
 		t.Errorf("Encode got %s, want %s", encode, data)
 	}
@@ -47,7 +47,7 @@ func TestDeepLink_CreateLinkSend(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	data := "https://bip.to/tx/-EgBqumKTU5UAAAAAAAAAJR2M5gMAAE53TvSSj9U4GR0-pQeFoiKxyMEiegAAI5jdXN0b20gbWVzc2FnZYCAikFTRAAAAAAAAAA?p=cGFzcw"
+	data := "https://bip.to/tx/9AGg3wGUdjOYDAABOd070ko_VOBkdPqUHhaIiscjBInoAACOY3VzdG9tIG1lc3NhZ2WAgAM?p=cGFzcw"
 	if text != data {
 		t.Errorf("Encode got %s, want %s", text, data)
 	}

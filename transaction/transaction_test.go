@@ -7,7 +7,7 @@ import (
 )
 
 func TestTransaction_Hash(t *testing.T) {
-	signedTransaction, err := Decode("0xf8911602018a4d4e540000000000000008b7f6a014c93843ca40a62b9e7d02a824e7ffe83b49e3329ae963afdd7e500071ab9bfc8a4d4e54000000000000008902b5e3af16b1880000808001b845f8431ca043e12cac5d5059a60ef63e88904c6d3885cf17be25aa5bea291ea0ceb3103757a0274f26f6436db1e12c9bf2f701ff2d75285149f381785bf14c2c578510aa7d44")
+	signedTransaction, err := Decode("0xf872010201010aa2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43808001b845f8431ba0efff777e61a78141ceeab311776dfd0bfc6745f125c688db86ccfa350d3d3b84a074419c32dd0d1d2ebdc1c5bfdffb238d2ef88a618e28a2ce2410880264d3b3cc")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -17,7 +17,7 @@ func TestTransaction_Hash(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validHash := "Mt15ff7e4485f030c2b0e3e414b0d89615b5ecd24a5c3b4659bf561c32f75f5032"
+	validHash := "Mtd018688eceaed7b7f09b4a0b7b8fadd208f06d1f040eef1048d7beea2370790d"
 	if hash != validHash {
 		t.Errorf("Hash got %s, want %s", hash, validHash)
 	}
@@ -47,32 +47,27 @@ func TestTransaction_Hash2(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validHash := "Mt13b73500c171006613fa8e82cc8b29857af1d63a34ca2cada95024bacca1670c"
+	validHash := "Mtec2166cced36276426360a79934fbf49f29f9e48e9d1f06ef4afc4f557aa3767"
 	if hash != validHash {
 		t.Errorf("Hash got %s, want %s", hash, validHash)
 	}
 }
 
 func TestTransaction_Encode(t *testing.T) {
-	transaction, err := Decode("0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a")
+	transaction, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	objectTransaction, ok := transaction.(*object)
-	if !ok {
-		t.Fatal("error ")
+	if transaction.ChainID != TestNetChainID {
+		t.Errorf("ChainID got %d, want %d", transaction.ChainID, TestNetChainID)
 	}
 
-	if objectTransaction.ChainID != TestNetChainID {
-		t.Errorf("ChainID got %d, want %d", objectTransaction.ChainID, TestNetChainID)
+	if transaction.Type != TypeBuyCoin {
+		t.Errorf("Type got %d, want %d", transaction.Type, TypeSend)
 	}
 
-	if objectTransaction.Type != TypeSend {
-		t.Errorf("Type got %d, want %d", objectTransaction.Type, TypeSend)
-	}
-
-	signature, err := objectTransaction.Signature()
+	signature, err := transaction.Signature()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -83,7 +78,7 @@ func TestTransaction_Encode(t *testing.T) {
 }
 
 func TestObject_SenderAddress(t *testing.T) {
-	transaction, err := Decode("0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a")
+	transaction, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,8 +88,8 @@ func TestObject_SenderAddress(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if senderAddress != "Mx31e61a05adbd13c6b625262704bc305bf7725026" {
-		t.Errorf("SenderAddress want %s,\ngot %s", "Mx31e61a05adbd13c6b625262704bc305bf7725026", senderAddress)
+	if senderAddress != "Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de" {
+		t.Errorf("SenderAddress want %s,\ngot %s", "Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de", senderAddress)
 	}
 }
 
@@ -215,7 +210,7 @@ func TestMultisigSig(t *testing.T) {
 		MustAddSigData("Mx823bb524d5702addbe13086082f7f0310e07d176", 5).
 		SetThreshold(7)
 
-	multisigAddress := createMultisigData.AddressString()
+	multisigAddress := createMultisigData.Address()
 	validAddr := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
 	if multisigAddress != validAddr {
 		t.Fatalf("Address got %s, want %s", multisigAddress, validAddr)
@@ -229,7 +224,7 @@ func TestMultisigSig(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ba0014aaffef58c3def74bbb828d7cba907df59b50a68749b8d90aa0d7520571be3a04397def13aa5a38b666d5ecf590af7fdec18663bfa448d517d6671fbe25cdde6f8431ba07bd81f68708141c01ed3bac914cc04dc07831989cb86c4b0e992ad9677bfa33aa03b0d936c268e080bbb85a70cfa6c48a88f023d9e06fa4ecfb9e3cb6659bc767af8431ba0767922509d65315ddf728da8cf5450fa8ba410680f7046405a1eeb7cf22f521aa01222a82c41f7ef51e5b6a64414078185393578f8a5373ac5f5a19ee512b9317b"
+	validSignature := "0xf901130102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ca07dd407fa5d2a161581d03cdeb7c94fcd5ade47d376af75f2c92d1483f821fe2ca00d16b6cdbceaadcd0fd72bd39ee17841871da333a571535fccfbcf6285881c2af8431ba07c2d063126024a1e19363e7e254312ca9ab37795b06102da25bd1c0dec81a934a043b7bec83db41c594ac7a8d416fca2f83f0e65ada1221fe659ba4dbe1f3c921af8431ba09318e56a242c39c10ce87ab51d10322cc62cf23885867bc89a24e8c3fa8483e9a04c82c1224d1b4efa7fba06623da2896745ce444d35ed77973759e6404b66bb95"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -269,7 +264,7 @@ func TestMultisigSig1(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+	validSignature := "0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca02eb820086487f83a5ffd99e9fc4e32e5684c915d7b1b02e76204adb8efd452eea0107f3e6cbd2d42649128e85fed63b1e633fc6718f93d50ee7f07df580c891491f8431ba05be1f763cd25c360e14cd154887facd9170ceec0483d49c95805c75c59da0faca03e0446bac2f12dadb22f43b95cb9ce4038582f779f55c17187680c7920ef672af8431ba0716e2989d1b0e97844b271fb05a1e743722e7164c7aeb15ec76482633ff0bc2aa0210628724dbf267ea82228d784eb1d72cf9c8f4353804af1f2f56d94ca20fdbc"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -314,7 +309,7 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+	validSignature := "0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca02eb820086487f83a5ffd99e9fc4e32e5684c915d7b1b02e76204adb8efd452eea0107f3e6cbd2d42649128e85fed63b1e633fc6718f93d50ee7f07df580c891491f8431ba05be1f763cd25c360e14cd154887facd9170ceec0483d49c95805c75c59da0faca03e0446bac2f12dadb22f43b95cb9ce4038582f779f55c17187680c7920ef672af8431ba0716e2989d1b0e97844b271fb05a1e743722e7164c7aeb15ec76482633ff0bc2aa0210628724dbf267ea82228d784eb1d72cf9c8f4353804af1f2f56d94ca20fdbc"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -345,25 +340,25 @@ func TestMultisigAddSignatures(t *testing.T) {
 	gasPrice := uint8(1)
 
 	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType()
-	transaction0 := *(tx.(*object).Transaction)
-	tx0 := object{Transaction: &transaction0}
+	transaction0 := *(tx.(*Object).Transaction)
+	tx0 := Object{Transaction: &transaction0}
 
-	transaction1 := *(tx.(*object).Transaction)
-	tx1 := object{Transaction: &transaction1}
+	transaction1 := *(tx.(*Object).Transaction)
+	tx1 := Object{Transaction: &transaction1}
 	signedTx1, err := tx1.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	transaction2 := *(tx.(*object).Transaction)
-	tx2 := object{Transaction: &transaction2}
+	transaction2 := *(tx.(*Object).Transaction)
+	tx2 := Object{Transaction: &transaction2}
 	signedTx2, err := tx2.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "38b7dfb77426247aed6081f769ed8f62aaec2ee2b38336110ac4f7484478dccb")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	transaction3 := *(tx.(*object).Transaction)
-	tx3 := object{Transaction: &transaction3}
+	transaction3 := *(tx.(*Object).Transaction)
+	tx3 := Object{Transaction: &transaction3}
 	signedTx3, err := tx3.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "94c0915734f92dd66acfdc48f82b1d0b208efd544fe763386160ec30c968b4af")
 	if err != nil {
 		t.Fatal(err)
@@ -391,7 +386,7 @@ func TestMultisigAddSignatures(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+	validSignature := "0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca02eb820086487f83a5ffd99e9fc4e32e5684c915d7b1b02e76204adb8efd452eea0107f3e6cbd2d42649128e85fed63b1e633fc6718f93d50ee7f07df580c891491f8431ba05be1f763cd25c360e14cd154887facd9170ceec0483d49c95805c75c59da0faca03e0446bac2f12dadb22f43b95cb9ce4038582f779f55c17187680c7920ef672af8431ba0716e2989d1b0e97844b271fb05a1e743722e7164c7aeb15ec76482633ff0bc2aa0210628724dbf267ea82228d784eb1d72cf9c8f4353804af1f2f56d94ca20fdbc"
 	encode, err := signedTx0.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -445,7 +440,7 @@ func TestMultisigAddSignatures2(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+	validSignature := "0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
 	encode, err := signedTx0.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -456,17 +451,17 @@ func TestMultisigAddSignatures2(t *testing.T) {
 }
 
 func TestDecodeMulti(t *testing.T) {
-	decode, err := Decode("0xf901b30a02018a4d4e54000000000000000cb848f84607c3010305f83f9408d920c5d93dbf23038fe1a54bbb34f41f77677c943211a16aeda4d92de05d1e7e981b6db63571b032940c1e7b65e79a7df40494e5df99e9b39122791b5cb9010e616530383962333265346530393736636136383838636231303233313438626431613966316363323863356434343265353265353836373534666634386436332c20313664623465363332326566313335303136643733616561636530646438333939383133316662386535316562373933633636376430313635666539343762352c20383637393933313438393066656232623034626163646662346464356565373661393432643435643864623630356266613739376634643864653261333964632c205b323436203234322035342037322032333220323334203920383320393520313038203231362032343620383020323038203433203338203231362031313220313832203131355d8001b845f8431ca0554a56ba708535b1b5ebc5c49daa17b0b97d4c9c18d8860be83dbfab954e8b06a045125d4c9d572404a4cf266ed4f9d9c0452548c72905d346679b930001f829b9")
+	decode, err := Decode("0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454")
 	if err != nil {
 		t.Fatal(err)
 	}
 	senderAddress, err := decode.SenderAddress()
-	validSenderAddress := "Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c"
+	validSenderAddress := "Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2"
 	if senderAddress != validSenderAddress {
-		t.Errorf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
+		t.Fatalf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
 	}
-	multisigAddress := decode.Data().(*CreateMultisigData).AddressString()
-	validMultisigAddress := "Mxf6f23648e8ea09535f6cd8f650d02b26d870b673"
+	multisigAddress := decode.Data().(*CreateMultisigData).Address()
+	validMultisigAddress := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
 	if multisigAddress != validMultisigAddress {
 		t.Errorf("SenderAddress got %s, want %s", multisigAddress, validMultisigAddress)
 	}

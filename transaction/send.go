@@ -10,7 +10,7 @@ import (
 type SendData struct {
 	Coin  CoinID   // ID of a coin
 	To    [20]byte // Recipient address
-	Value *big.Int // Amount of CoinID to send
+	Value *big.Int // Amount of coin to send
 }
 
 // New data of transaction data for sending arbitrary coin.
@@ -43,7 +43,7 @@ func (d *SendData) MustSetTo(address string) *SendData {
 	return d
 }
 
-// Set amount of CoinID to send
+// Set amount of coin to send.
 func (d *SendData) SetValue(value *big.Int) *SendData {
 	d.Value = value
 	return d

@@ -14,6 +14,11 @@ func NewMultisendData() *MultisendData {
 	return &MultisendData{}
 }
 
+// New item for Multisend list
+func NewMultisendDataItem() *SendData {
+	return NewSendData()
+}
+
 // Add SendData to Multisend list
 func (d *MultisendData) AddItem(item *SendData) *MultisendData {
 	d.List = append(d.List, item)

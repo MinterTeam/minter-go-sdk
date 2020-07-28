@@ -7,13 +7,14 @@ import (
 
 // Transaction for editing existing candidate.
 type EditCandidateData struct {
-	PubKey         [32]byte
-	NewPubKey      *[32]byte `rlp:"nil"` // optional
-	RewardAddress  [20]byte
-	OwnerAddress   [20]byte
-	ControlAddress [20]byte
+	PubKey         [32]byte  // Public key of a validator
+	NewPubKey      *[32]byte `rlp:"nil"` // New public key for change.
+	RewardAddress  [20]byte  // Address where validator’s rewards go to.
+	OwnerAddress   [20]byte  // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate.
+	ControlAddress [20]byte  // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
 }
 
+// New data of transaction for editing existing candidate.
 func NewEditCandidateData() *EditCandidateData {
 	return &EditCandidateData{}
 }
@@ -39,6 +40,7 @@ func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
 	return d
 }
 
+// Set new public key for change.
 func (d *EditCandidateData) SetNewPubKey(key string) (*EditCandidateData, error) {
 	newPubKey, err := wallet.PublicKeyToHex(key)
 	if err != nil {
@@ -49,6 +51,8 @@ func (d *EditCandidateData) SetNewPubKey(key string) (*EditCandidateData, error)
 	d.NewPubKey = &pubKey
 	return d, nil
 }
+
+// Tries to set new public key and panics on error.
 func (d *EditCandidateData) MustSetNewPubKey(key string) *EditCandidateData {
 	_, err := d.SetNewPubKey(key)
 	if err != nil {
@@ -57,6 +61,7 @@ func (d *EditCandidateData) MustSetNewPubKey(key string) *EditCandidateData {
 	return d
 }
 
+// Tries to set reward address of validator and panics on error.
 func (d *EditCandidateData) MustSetRewardAddress(address string) *EditCandidateData {
 	_, err := d.SetRewardAddress(address)
 	if err != nil {
@@ -65,6 +70,7 @@ func (d *EditCandidateData) MustSetRewardAddress(address string) *EditCandidateD
 	return d
 }
 
+// Set address where validator’s rewards go to.
 func (d *EditCandidateData) SetRewardAddress(address string) (*EditCandidateData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -74,6 +80,7 @@ func (d *EditCandidateData) SetRewardAddress(address string) (*EditCandidateData
 	return d, nil
 }
 
+// Tries to set owner address of validator and panics on error.
 func (d *EditCandidateData) MustSetOwnerAddress(address string) *EditCandidateData {
 	_, err := d.SetOwnerAddress(address)
 	if err != nil {
@@ -82,6 +89,7 @@ func (d *EditCandidateData) MustSetOwnerAddress(address string) *EditCandidateDa
 	return d
 }
 
+// Set address for managing SetCandidateOnline, SetCandidateOffline and EditCandidate data of transaction
 func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -91,6 +99,7 @@ func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData,
 	return d, nil
 }
 
+// Tries to set control address of validator and panics on error.
 func (d *EditCandidateData) MustSetControlAddress(address string) *EditCandidateData {
 	_, err := d.SetControlAddress(address)
 	if err != nil {
@@ -99,6 +108,7 @@ func (d *EditCandidateData) MustSetControlAddress(address string) *EditCandidate
 	return d
 }
 
+// Set address for managing SetCandidateOnline and SetCandidateOffline data of transaction
 func (d *EditCandidateData) SetControlAddress(address string) (*EditCandidateData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {

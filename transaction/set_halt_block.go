@@ -24,7 +24,7 @@ func (d *SetHaltBlockData) SetPubKey(key string) (*SetHaltBlockData, error) {
 	return d, nil
 }
 
-// Tries to set public key of validator and panics on error.
+// Tries to set public key and panics on error.
 func (d *SetHaltBlockData) MustSetPubKey(key string) *SetHaltBlockData {
 	_, err := d.SetPubKey(key)
 	if err != nil {

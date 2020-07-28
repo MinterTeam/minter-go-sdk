@@ -17,6 +17,7 @@ type DeepLink struct {
 	GasCoin  *CoinID `rlp:"nil"` // optional
 }
 
+// Returns deep link.
 func (d *DeepLink) CreateLink(pass string) (string, error) {
 	tx, err := d.Encode()
 	if err != nil {

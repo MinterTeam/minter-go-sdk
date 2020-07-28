@@ -14,7 +14,7 @@ func ExampleNewCreateMultisigData() {
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
 
-	msigAddress := data.AddressString()
+	msigAddress := data.Address()
 	fmt.Println(msigAddress)
 	// Result: Mxd43eef7b9406762aa031b82ed0b1082264a13934
 
