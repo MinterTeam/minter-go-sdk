@@ -8,16 +8,15 @@ import (
 )
 
 type DeepLink struct {
-	Type    Type
-	Data    []byte
-	Payload []byte
-
-	Nonce    *uint   `rlp:"nil"` // optional
-	GasPrice *uint   `rlp:"nil"` // optional
-	GasCoin  *CoinID `rlp:"nil"` // optional
+	Type     Type    // type of transaction
+	Data     []byte  // data of transaction (depends on transaction type)
+	Payload  []byte  // optional, arbitrary user-defined bytes
+	Nonce    *uint   `rlp:"nil"` // optional, used for prevent transaction reply
+	GasPrice *uint   `rlp:"nil"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
+	GasCoin  *CoinID `rlp:"nil"` // optional, ID of a coin to pay fee, right padded with zeros
 }
 
-// Returns deep link.
+// Returns url link.
 func (d *DeepLink) CreateLink(pass string) (string, error) {
 	tx, err := d.Encode()
 	if err != nil {
@@ -38,6 +37,7 @@ func (d *DeepLink) CreateLink(pass string) (string, error) {
 	return u.String(), nil
 }
 
+// Returns tx-like data. RLP-encoded structure in base64url format.
 func (d *DeepLink) Encode() (string, error) {
 	src, err := rlp.EncodeToBytes(d)
 	if err != nil {
@@ -52,21 +52,25 @@ func (d *DeepLink) setType(t Type) *DeepLink {
 	return d
 }
 
+// Set arbitrary user-defined bytes
 func (d *DeepLink) SetPayload(payload []byte) *DeepLink {
 	d.Payload = payload
 	return d
 }
 
+// Set nonce of transaction
 func (d *DeepLink) SetNonce(nonce uint) *DeepLink {
 	d.Nonce = &nonce
 	return d
 }
 
+// Set fee multiplier.
 func (d *DeepLink) SetGasPrice(gasPrice uint) *DeepLink {
 	d.GasPrice = &gasPrice
 	return d
 }
 
+// Set ID of a coin to pay fee
 func (d *DeepLink) SetGasCoin(id CoinID) *DeepLink {
 	d.GasCoin = &id
 	return d

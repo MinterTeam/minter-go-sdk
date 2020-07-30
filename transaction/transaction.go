@@ -130,7 +130,7 @@ type CoinSymbol [10]byte
 func (c CoinSymbol) String() string { return string(bytes.Trim(c[:], "\x00")) }
 
 type EncodeInterface interface {
-	// Get string representation of a transaction
+	// Get string representation of a transaction.
 	Encode() (string, error)
 }
 
@@ -218,7 +218,7 @@ func (o *Object) SignatureData() []byte {
 	return o.Transaction.SignatureData
 }
 
-// Get first  SignatureData
+// Get first SignatureData
 func (o *Object) SingleSignatureData() ([]byte, error) {
 	s, err := o.Signature()
 	if err != nil {
@@ -496,7 +496,7 @@ func (o *Object) SetServiceData(serviceData []byte) Interface {
 	return o
 }
 
-// Get string representation of a transaction
+// Get string representation of a transaction. RLP-encoded structure in hex format.
 func (tx *Transaction) Encode() (string, error) {
 	src, err := rlp.EncodeToBytes(tx)
 	if err != nil {

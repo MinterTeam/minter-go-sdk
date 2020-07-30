@@ -4,10 +4,12 @@ import (
 	"encoding/hex"
 )
 
+// Wallet
 type Wallet struct {
 	*Data
 }
 
+// Data of wallet
 type Data struct {
 	Mnemonic   string
 	Seed       string
@@ -16,7 +18,7 @@ type Data struct {
 	Address    string
 }
 
-// Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
+// Create new wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
 func Create() (*Data, error) {
 	mnemonic, err := NewMnemonic()
 	if err != nil {
@@ -37,6 +39,7 @@ func Create() (*Data, error) {
 	return data.Data, nil
 }
 
+// Get wallet by exists seed
 func NewWallet(seed []byte) (*Wallet, error) {
 	prKey, err := PrivateKeyBySeed(seed)
 	if err != nil {
@@ -64,14 +67,17 @@ func NewWallet(seed []byte) (*Wallet, error) {
 	}, nil
 }
 
+// Get address
 func (w *Wallet) Address() string {
 	return w.Data.Address
 }
 
+// Get private key
 func (w *Wallet) PrivateKey() string {
 	return w.Data.PrivateKey
 }
 
+// Get public key
 func (w *Wallet) PublicKey() string {
 	return w.Data.PublicKey
 }

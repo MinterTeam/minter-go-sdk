@@ -83,6 +83,7 @@ func AddressByPublicKey(publicKey string) (string, error) {
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(crypto.Keccak256(decodeString)[12:]).String()), nil
 }
 
+// Convert hex value to [20]byte of address
 func BytesToAddress(address [20]byte) string {
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(address[:]).String())
 }
@@ -104,6 +105,7 @@ func PubPrefix04ToMp(key string) string {
 	return strings.Replace(key, "04", "Mp", 1)
 }
 
+// Convert string address to hex bytes
 func AddressToHex(address string) ([]byte, error) {
 	address = strings.Title(strings.ToLower(address))
 	if !strings.HasPrefix(address, "Mx") {
@@ -121,6 +123,7 @@ func AddressToHex(address string) ([]byte, error) {
 	return bytes, nil
 }
 
+// Convert string public key to hex bytes
 func PublicKeyToHex(key string) ([]byte, error) {
 	key = strings.Title(strings.ToLower(key))
 	if !strings.HasPrefix(key, "Mp") {
@@ -134,6 +137,7 @@ func PublicKeyToHex(key string) ([]byte, error) {
 	return hexKey, nil
 }
 
+// Check if the address is correct
 func IsValidAddress(address string) bool {
 	_, err := AddressToHex(address)
 	if err != nil {

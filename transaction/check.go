@@ -151,7 +151,7 @@ func (check *Check) SetPassphrase(passphrase string) CheckInterface {
 	return check
 }
 
-// Get string representation of a check. Checks are prefixed with "Mc"
+// Get string representation of a check. Checks are prefixed with "Mc". RLP-encoded structure in hex format.
 func (check *Check) Encode() (string, error) {
 	src, err := rlp.EncodeToBytes(check.CheckData)
 	if err != nil {
