@@ -18,7 +18,7 @@ func ExampleNewDeepLink() {
 	encode, _ := link.Encode()
 	fmt.Println(encode)
 	// Output:
-	// -DsBqumKQklQAAAAAAAAAJQYRnu7ZKjt-JAgHVJsNZV9gr49lYgRIhD0do20AItIZWxsbyBXb3JsZICAgA
+	// 8QGg3wGUGEZ7u2So7fiQIB1SbDWVfYK-PZWIESIQ9HaNtACLSGVsbG8gV29ybGSAgIA
 }
 
 func ExampleDeepLink_CreateLink() {
@@ -34,5 +34,5 @@ func ExampleDeepLink_CreateLink() {
 	data, _ := link.CreateLink("pass")
 	fmt.Println(data)
 	// Output:
-	// https://bip.to/tx/-EgBqumKTU5UAAAAAAAAAJR2M5gMAAE53TvSSj9U4GR0-pQeFoiKxyMEiegAAI5jdXN0b20gbWVzc2FnZYCAikFTRAAAAAAAAAA?p=cGFzcw
+	// https://bip.to/tx/9AGg3wGUdjOYDAABOd070ko_VOBkdPqUHhaIiscjBInoAACOY3VzdG9tIG1lc3NhZ2WAgAM?p=cGFzcw
 }

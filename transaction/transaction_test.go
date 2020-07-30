@@ -451,18 +451,18 @@ func TestMultisigAddSignatures2(t *testing.T) {
 }
 
 func TestDecodeMulti(t *testing.T) {
-	decode, err := Decode("0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454")
+	decode, err := Decode("0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988")
 	if err != nil {
 		t.Fatal(err)
 	}
 	senderAddress, err := decode.SenderAddress()
-	validSenderAddress := "Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2"
+	validSenderAddress := "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c"
 	if senderAddress != validSenderAddress {
 		t.Fatalf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
 	}
 	multisigAddress := decode.Data().(*CreateMultisigData).Address()
-	validMultisigAddress := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
+	validMultisigAddress := "Mx4fe800483f59a36eec2b6f218778f9c5fceb38c0"
 	if multisigAddress != validMultisigAddress {
-		t.Errorf("SenderAddress got %s, want %s", multisigAddress, validMultisigAddress)
+		t.Errorf("MultisigAddress got %s, want %s", multisigAddress, validMultisigAddress)
 	}
 }
