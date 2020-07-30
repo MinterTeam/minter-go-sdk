@@ -11,10 +11,10 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// APIPbCandidateResponseStake api pb candidate response stake
+// CandidateResponseStake candidate response stake
 //
-// swagger:model api_pbCandidateResponseStake
-type APIPbCandidateResponseStake struct {
+// swagger:model CandidateResponseStake
+type CandidateResponseStake struct {
 
 	// bip value
 	BipValue string `json:"bip_value,omitempty"`
@@ -29,8 +29,8 @@ type APIPbCandidateResponseStake struct {
 	Value string `json:"value,omitempty"`
 }
 
-// Validate validates this api pb candidate response stake
-func (m *APIPbCandidateResponseStake) Validate(formats strfmt.Registry) error {
+// Validate validates this candidate response stake
+func (m *CandidateResponseStake) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCoin(formats); err != nil {
@@ -43,7 +43,7 @@ func (m *APIPbCandidateResponseStake) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *APIPbCandidateResponseStake) validateCoin(formats strfmt.Registry) error {
+func (m *CandidateResponseStake) validateCoin(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.Coin) { // not required
 		return nil
@@ -62,7 +62,7 @@ func (m *APIPbCandidateResponseStake) validateCoin(formats strfmt.Registry) erro
 }
 
 // MarshalBinary interface implementation
-func (m *APIPbCandidateResponseStake) MarshalBinary() ([]byte, error) {
+func (m *CandidateResponseStake) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -70,8 +70,8 @@ func (m *APIPbCandidateResponseStake) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *APIPbCandidateResponseStake) UnmarshalBinary(b []byte) error {
-	var res APIPbCandidateResponseStake
+func (m *CandidateResponseStake) UnmarshalBinary(b []byte) error {
+	var res CandidateResponseStake
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

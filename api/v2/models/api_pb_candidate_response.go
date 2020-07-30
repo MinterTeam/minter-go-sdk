@@ -31,7 +31,7 @@ type APIPbCandidateResponse struct {
 	RewardAddress string `json:"reward_address,omitempty"`
 
 	// stakes
-	Stakes []*APIPbCandidateResponseStake `json:"stakes"`
+	Stakes []*CandidateResponseStake `json:"stakes"`
 
 	// status
 	Status string `json:"status,omitempty"`
