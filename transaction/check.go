@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -130,14 +131,29 @@ func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin CoinID, value
 	return check
 }
 
-// Prepare check string and convert to data
-func DecodeCheck(rawCheck string) (*CheckData, error) {
-	rawCheck = strings.Title(strings.ToLower(rawCheck))
-	if !strings.HasPrefix(rawCheck, "Mc") {
-		return nil, errors.New("raw check don't has prefix 'Mc'")
+// Get CheckData from RLP-encoded structure in base64 format.
+func DecodeRawCheck(rawCheck string) (*CheckData, error) {
+	decode, err := base64.StdEncoding.DecodeString(rawCheck)
+	if err != nil {
+		panic(err)
 	}
 
-	decode, err := hex.DecodeString(rawCheck[2:])
+	res := new(CheckData)
+	if err := rlp.DecodeBytes(decode, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// Get CheckData from RLP-encoded structure in hex format.
+func DecodeCheck(check string) (*CheckData, error) {
+	check = strings.Title(strings.ToLower(check))
+	if !strings.HasPrefix(check, "Mc") {
+		return nil, errors.New("check don't has prefix 'Mc'")
+	}
+
+	decode, err := hex.DecodeString(check[2:])
 	if err != nil {
 		panic(err)
 	}
@@ -163,7 +179,8 @@ func (check *Check) Encode() (string, error) {
 		return "", err
 	}
 
-	return "Mc" + hex.EncodeToString(src), err
+	return "Mc" + hex.EncodeToString(src), nil
+
 }
 
 // Sign Check with private key

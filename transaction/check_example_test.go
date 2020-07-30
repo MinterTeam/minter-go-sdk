@@ -81,3 +81,53 @@ func ExampleDecodeCheck() {
 	// 5b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6
 	// Mxce931863b9c94a526d94acd8090c1c5955a6eb4b
 }
+
+func ExampleDecodeRawCheck() {
+	data, err := transaction.DecodeRawCheck("+JqDNDgwAoMPQj8BiIrHIwSJ6AAAAbhB6j0CLIMmllVW8bZRsU0xJJR7hoP3s6tW/KBuC0IEdXsqEdrOhdATnOTo/bGDadB5BeczaDuCKfQbwhbHhLTXFAEcoBe///Sz9DHck4I5zScn8MHfphzNyYcn+o6br2CLN1X1oFt2jFPQnF6VF0h4IN9Dn0luFuRZhi59RJNgzmmizMTW")
+	if err != nil {
+		return
+	}
+
+	fmt.Println(string(data.Nonce))
+	// Result: 480
+
+	fmt.Println(data.ChainID)
+	// Result: 2
+
+	fmt.Println(data.Coin.String())
+	// Result: MNT
+
+	fmt.Println(data.DueBlock)
+	// Result: 999999
+
+	fmt.Println(data.Value.String())
+	// Result: 10000000000000000000
+
+	fmt.Println(data.Lock.String())
+	//Result: 985283871505876742053353384809055983203325304659217336382177168476233943196356552072809135181493031263037291805582875144952622907359402361966594748392133888
+
+	fmt.Println(data.V.Int64())
+	// Result: 27
+
+	fmt.Println(hex.EncodeToString(data.R.Bytes()))
+	// Result: 83c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594
+
+	fmt.Println(hex.EncodeToString(data.S.Bytes()))
+	// Result: 47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df
+
+	sender, _ := data.Sender()
+	fmt.Println(sender)
+	// Result: Mxce931863b9c94a526d94acd8090c1c5955a6eb4b
+
+	// Output:
+	// 480
+	// 2
+	// 1
+	// 999999
+	// 10000000000000000000
+	// 3140622329586495619178957840119431069413669815577585079847850638320450546439777094725740545888163635015645563228183373665216451470665191568503369618620355585
+	// 28
+	// 17bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5
+	// 5b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6
+	// Mxce931863b9c94a526d94acd8090c1c5955a6eb4b
+}
