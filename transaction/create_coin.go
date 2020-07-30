@@ -8,18 +8,16 @@ import (
 // Transaction data for creating new coin in a system.
 type CreateCoinData struct {
 	Name                 string     // Name of a coin
-	Symbol               CoinSymbol // Symbol of a coin
+	Symbol               CoinSymbol // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
 	InitialAmount        *big.Int   // Amount of coins to issue. Issued coins will be available to sender account. Should be between 1 and 1,000,000,000,000,000 coins.
-	InitialReserve       *big.Int   // Initial reserve
-	ConstantReserveRatio uint       // ConstantReserveRatio (CRR)
+	InitialReserve       *big.Int   // Initial reserve in BIP's
+	ConstantReserveRatio uint       // ConstantReserveRatio (CRR), should be from 10 to 100.
 	MaxSupply            *big.Int   // Max amount of coins that are allowed to be issued. Maximum is 1,000,000,000,000,000
 }
 
 // New data of transaction for creating new coin in a system.
 func NewCreateCoinData() *CreateCoinData {
-	return &CreateCoinData{
-		InitialReserve: big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
-	}
+	return &CreateCoinData{}
 }
 
 // Set name of a coin. Arbitrary string up to 64 letters length.
@@ -36,9 +34,7 @@ func (d *CreateCoinData) SetSymbol(symbol string) *CreateCoinData {
 
 // Set initial reserve in BIP's.
 func (d *CreateCoinData) SetInitialReserve(value *big.Int) *CreateCoinData {
-	if big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)).Cmp(value) == -1 {
-		d.InitialReserve = value
-	}
+	d.InitialReserve = value
 	return d
 }
 
