@@ -77,13 +77,13 @@ func TestCheckAddress_Proof(t *testing.T) {
 }
 
 func TestDecodeCheck(t *testing.T) {
-	data, err := DecodeCheck("+K6DNDgwAoMPQj+KTU5UAAAAAAAAAIiKxyMEiegAAIpNTlQAAAAAAAAAuEFJfF8+b8GC/Rp5FSKp73V2cQvfvIb9vxZUdu8iDon5/xOA+T8tmi+S/asO3B4mBcwsabcHzUBLLLFSK3q6Te/VABugg8mUUWnwp7vllpc7MtyIdgh4BYCx07x7GIvts704VZSgR7LVNFlG7VSY9b7nE/hidqrARqX++CC+rud6m2+bwd8=")
+	data, err := DecodeCheck("Mcf89a8334383002830f423f01888ac7230489e8000001b841ea3d022c8326965556f1b651b14d3124947b8683f7b3ab56fca06e0b4204757b2a11dace85d0139ce4e8fdb18369d07905e733683b8229f41bc216c784b4d714011ca017bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5a05b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6")
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	if string(data.Nonce) != "480" {
-		t.Errorf("Nonce want %s, got %s", string(data.Nonce), "480")
+		t.Errorf("Nonce want %s, got %s", "480", string(data.Nonce))
 	}
 	if data.ChainID != TestNetChainID {
 		t.Errorf("ChainID want %d, got %d", data.ChainID, TestNetChainID)
@@ -97,32 +97,22 @@ func TestDecodeCheck(t *testing.T) {
 	if data.Value.String() != "10"+strings.Repeat("0", 18) {
 		t.Errorf("Value want %s, got %s", data.Value.String(), "10"+strings.Repeat("0", 18))
 	}
-	if data.Lock.String() != "985283871505876742053353384809055983203325304659217336382177168476233943196356552072809135181493031263037291805582875144952622907359402361966594748392133888" {
-		t.Errorf("Lock want %s, got %s", data.Lock.String(), "985283871505876742053353384809055983203325304659217336382177168476233943196356552072809135181493031263037291805582875144952622907359402361966594748392133888")
+	if data.Lock.String() != "3140622329586495619178957840119431069413669815577585079847850638320450546439777094725740545888163635015645563228183373665216451470665191568503369618620355585" {
+		t.Errorf("Lock want %s, got %s", data.Lock.String(), "3140622329586495619178957840119431069413669815577585079847850638320450546439777094725740545888163635015645563228183373665216451470665191568503369618620355585")
 	}
-	if data.V.Int64() != 27 {
-		t.Errorf("V want %d, got %d", data.V.Int64(), 28)
+	if data.V.Int64() != 28 {
+		t.Errorf("V want %d, got %d", 28, data.V.Int64())
 	}
-	if hex.EncodeToString(data.R.Bytes()) != "83c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594" {
-		t.Errorf("R want %s, got %s", hex.EncodeToString(data.R.Bytes()), "83c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594")
+	if hex.EncodeToString(data.R.Bytes()) != "17bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5" {
+		t.Errorf("R want %s, got %s", "17bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5", hex.EncodeToString(data.R.Bytes()))
 	}
-	if hex.EncodeToString(data.S.Bytes()) != "47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df" {
-		t.Errorf("S want %s, got %s", hex.EncodeToString(data.S.Bytes()), "47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df")
-	}
-
-	sender, err := data.Sender()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	address := "Mxce931863b9c94a526d94acd8090c1c5955a6eb4b"
-	if sender != address {
-		t.Errorf("Sender want %s, got %s", address, sender)
+	if hex.EncodeToString(data.S.Bytes()) != "5b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6" {
+		t.Errorf("S want %s, got %s", "5b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6", hex.EncodeToString(data.S.Bytes()))
 	}
 }
 
 func TestDecodeCheck_Sender(t *testing.T) {
-	data, err := DecodeCheck("+K6DNDgwAoMPQj+KTU5UAAAAAAAAAIiKxyMEiegAAIpNTlQAAAAAAAAAuEFJfF8+b8GC/Rp5FSKp73V2cQvfvIb9vxZUdu8iDon5/xOA+T8tmi+S/asO3B4mBcwsabcHzUBLLLFSK3q6Te/VABugg8mUUWnwp7vllpc7MtyIdgh4BYCx07x7GIvts704VZSgR7LVNFlG7VSY9b7nE/hidqrARqX++CC+rud6m2+bwd8=")
+	data, err := DecodeCheck("Mcf89a8334383002830f423f01888ac7230489e8000001b841ea3d022c8326965556f1b651b14d3124947b8683f7b3ab56fca06e0b4204757b2a11dace85d0139ce4e8fdb18369d07905e733683b8229f41bc216c784b4d714011ca017bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5a05b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6")
 	if err != nil {
 		t.Fatal(err)
 	}

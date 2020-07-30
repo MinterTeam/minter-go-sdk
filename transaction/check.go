@@ -2,7 +2,6 @@ package transaction
 
 import (
 	"crypto/sha256"
-	"encoding/base64"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -12,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 	"strconv"
+	"strings"
 )
 
 // Minter Check is like an ordinary bank check.
@@ -132,7 +132,12 @@ func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin CoinID, value
 
 // Prepare check string and convert to data
 func DecodeCheck(rawCheck string) (*CheckData, error) {
-	decode, err := base64.StdEncoding.DecodeString(rawCheck)
+	rawCheck = strings.Title(strings.ToLower(rawCheck))
+	if !strings.HasPrefix(rawCheck, "Mc") {
+		return nil, errors.New("raw check don't has prefix 'Mc'")
+	}
+
+	decode, err := hex.DecodeString(rawCheck[2:])
 	if err != nil {
 		panic(err)
 	}
