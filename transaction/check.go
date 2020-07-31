@@ -132,7 +132,7 @@ func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin CoinID, value
 }
 
 // Get CheckData from RLP-encoded structure in base64 format.
-func DecodeRawCheck(rawCheck string) (*CheckData, error) {
+func DecodeCheckBase64(rawCheck string) (*CheckData, error) {
 	decode, err := base64.StdEncoding.DecodeString(rawCheck)
 	if err != nil {
 		panic(err)
@@ -180,7 +180,16 @@ func (check *Check) Encode() (string, error) {
 	}
 
 	return "Mc" + hex.EncodeToString(src), nil
+}
 
+// Get string representation of a check. RLP-encoded structure in base64 format.
+func (check *Check) EncodeBase64() (string, error) {
+	src, err := rlp.EncodeToBytes(check.CheckData)
+	if err != nil {
+		return "", err
+	}
+
+	return base64.StdEncoding.EncodeToString(src), nil
 }
 
 // Sign Check with private key

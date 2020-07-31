@@ -89,3 +89,22 @@ func TestBugAddress(t *testing.T) {
 		t.Fatalf("Address got %s, want %s", addressByPublicKey, "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b")
 	}
 }
+
+func TestPrivatKeyToAddress(t *testing.T) {
+
+	publicKeyByPrivateKey, err := PublicKeyByPrivateKey("ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if publicKeyByPrivateKey != "Mpd207240a29ce4490977bfd548e8a03c77d758fb15d4f7867f43756307ea76bccceececa0e695523c7f99bac2b47144dec0b815fcfd2514568554d485f9ec2437" {
+		t.Fatalf("PublicKey got %s, want %s", publicKeyByPrivateKey, "Mpd207240a29ce4490977bfd548e8a03c77d758fb15d4f7867f43756307ea76bccceececa0e695523c7f99bac2b47144dec0b815fcfd2514568554d485f9ec2437")
+	}
+
+	addressByPublicKey, err := AddressByPublicKey(publicKeyByPrivateKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if addressByPublicKey != "Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c" {
+		t.Fatalf("Address got %s, want %s", addressByPublicKey, "Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c")
+	}
+}

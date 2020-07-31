@@ -29,10 +29,14 @@ func ExampleObject_Sign_simple() {
 	hash, _ := signedTransaction.Hash()
 	fmt.Println(hash)
 
+	encode, _ := signedTransaction.Encode()
+	fmt.Println(encode)
+
 	// Output:
 	// Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de
 	// 10000000000000000
 	// Mtec2166cced36276426360a79934fbf49f29f9e48e9d1f06ef4afc4f557aa3767
+	// 0xf8700102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ba0fffc3f503ace8a5d0c87efe50cf33ad41e3475459120d9c6fd75bd796b192313a0243d643a799e844ad82382d41cee98137a1d0c5888ff13951919e5e241ab89e0
 
 }
 
@@ -101,7 +105,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature2() {
 
 }
 
-func ExampleSignatureMulti_First() {
+func ExampleSignatureMulti_Single() {
 	symbolMNT := transaction.CoinID(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(symbolMNT).
@@ -126,4 +130,32 @@ func ExampleSignatureMulti_First() {
 	// Output:
 	// 0xf901130102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ca07dd407fa5d2a161581d03cdeb7c94fcd5ade47d376af75f2c92d1483f821fe2ca00d16b6cdbceaadcd0fd72bd39ee17841871da333a571535fccfbcf6285881c2af8431ba07c2d063126024a1e19363e7e254312ca9ab37795b06102da25bd1c0dec81a934a043b7bec83db41c594ac7a8d416fca2f83f0e65ada1221fe659ba4dbe1f3c921af8431ba09318e56a242c39c10ce87ab51d10322cc62cf23885867bc89a24e8c3fa8483e9a04c82c1224d1b4efa7fba06623da2896745ce444d35ed77973759e6404b66bb95
 
+}
+
+func ExampleObject_Signers_multi() {
+	decode, _ := transaction.Decode("0xf901130102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ca07dd407fa5d2a161581d03cdeb7c94fcd5ade47d376af75f2c92d1483f821fe2ca00d16b6cdbceaadcd0fd72bd39ee17841871da333a571535fccfbcf6285881c2af8431ba07c2d063126024a1e19363e7e254312ca9ab37795b06102da25bd1c0dec81a934a043b7bec83db41c594ac7a8d416fca2f83f0e65ada1221fe659ba4dbe1f3c921af8431ba09318e56a242c39c10ce87ab51d10322cc62cf23885867bc89a24e8c3fa8483e9a04c82c1224d1b4efa7fba06623da2896745ce444d35ed77973759e6404b66bb95")
+	signers, _ := decode.Signers()
+	for _, signer := range signers {
+		fmt.Println(signer)
+	}
+
+	// Output:
+	// Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c
+	// Mx6bf192730d01a19739b5030cdb6a60c992712a59
+	// Mx823bb524d5702addbe13086082f7f0310e07d176
+}
+
+func ExampleObject_Signers_single() {
+	decode, _ := transaction.Decode("0xf8700102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ba0fffc3f503ace8a5d0c87efe50cf33ad41e3475459120d9c6fd75bd796b192313a0243d643a799e844ad82382d41cee98137a1d0c5888ff13951919e5e241ab89e0")
+	signers, _ := decode.Signers()
+	for _, signer := range signers {
+		fmt.Println(signer)
+	}
+
+	address, _ := decode.SenderAddress()
+	fmt.Println(address)
+
+	// Output:
+	// Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de
+	// Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de
 }

@@ -154,6 +154,8 @@ type SignedTransaction interface {
 	SingleSignatureData() ([]byte, error)
 	// Get sender address
 	SenderAddress() (string, error)
+	// Get set of signers
+	Signers() ([]string, error)
 	// Sign transaction
 	Sign(prKey string, multisigPrKeys ...string) (SignedTransaction, error)
 	// Make a copy of the transaction
@@ -322,7 +324,12 @@ func Decode(tx string) (*Object, error) {
 
 // Get sender address
 func (o *Object) SenderAddress() (string, error) {
-	if o.SignatureType == SignatureTypeSingle {
+	signature, err := o.Signature()
+	if err != nil {
+		return "", err
+	}
+
+	if single, ok := signature.(*Signature); o.SignatureType == SignatureTypeSingle && ok {
 		hash, err := rlpHash([]interface{}{
 			o.Transaction.Nonce,
 			o.Transaction.ChainID,
@@ -338,30 +345,14 @@ func (o *Object) SenderAddress() (string, error) {
 			return "", err
 		}
 
-		signature, err := o.Signature()
-		if err != nil {
-			return "", err
-		}
-
-		ecrecover, err := crypto.Ecrecover(hash[:], signature.(*Signature).toBytes())
-		if err != nil {
-			return "", err
-		}
-
-		address, err := wallet.AddressByPublicKey("Mp" + hex.EncodeToString(ecrecover))
-		if err != nil {
-			return "", err
-		}
-
-		return address, nil
+		return single.signer(hash, SignatureTypeSingle)
 	}
 
-	signature, err := o.Signature()
-	if err != nil {
-		return "", err
+	if multi, ok := signature.(*SignatureMulti); o.SignatureType == SignatureTypeMulti && ok {
+		return wallet.BytesToAddress(multi.Multisig), nil
 	}
 
-	return wallet.BytesToAddress(signature.(*SignatureMulti).Multisig), nil
+	return "", errors.New("signature is invalid")
 }
 
 type Transaction struct {
@@ -380,9 +371,10 @@ type Transaction struct {
 type SignatureInterface interface {
 	// Get digital signature of transaction
 	Encode() ([]byte, error)
-
 	// Get SingleSignature
 	Single() ([]byte, error)
+	// Get signature type
+	Type() SignatureType
 }
 
 // Simple Signature
@@ -390,6 +382,11 @@ type Signature struct {
 	V *big.Int
 	R *big.Int
 	S *big.Int
+}
+
+// Get signature type
+func (s *Signature) Type() SignatureType {
+	return SignatureTypeSingle
 }
 
 // Get digital signature of transaction
@@ -402,6 +399,21 @@ func (s *Signature) Single() ([]byte, error) {
 	return s.Encode()
 }
 
+// Get signer address
+func (s *Signature) signer(hash [32]byte, t SignatureType) (string, error) {
+	publicKey, err := crypto.Ecrecover(hash[:], s.toBytes())
+	if err != nil {
+		return "", err
+	}
+
+	address, err := wallet.AddressByPublicKey("Mp" + hex.EncodeToString(publicKey[t-1:]))
+	if err != nil {
+		return "", err
+	}
+
+	return address, nil
+}
+
 func decodeSignature(b []byte) (*Signature, error) {
 	s := &Signature{}
 	err := rlp.DecodeBytes(b, s)
@@ -412,10 +424,11 @@ func decodeSignature(b []byte) (*Signature, error) {
 }
 
 func (s *Signature) toBytes() []byte {
+	R, S := s.R.Bytes(), s.S.Bytes()
 	sig := make([]byte, 65)
-	copy(sig[:32], s.R.Bytes())
-	copy(sig[32:64], s.S.Bytes())
-	sig[64] = s.V.Bytes()[0] - 27
+	copy(sig[32-len(R):32], R)
+	copy(sig[64-len(S):64], S)
+	sig[64] = byte(s.V.Uint64() - 27)
 
 	return sig
 }
@@ -426,9 +439,57 @@ type SignatureMulti struct {
 	Signatures []*Signature
 }
 
+// Get signature type
+func (s *SignatureMulti) Type() SignatureType {
+	return SignatureTypeMulti
+}
+
 // Get digital signature of transaction
 func (s *SignatureMulti) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(s)
+}
+
+// Get set of signers
+func (o *Object) Signers() ([]string, error) {
+	signatures, err := o.Signature()
+	if err != nil {
+		return nil, err
+	}
+
+	if multi, ok := signatures.(*SignatureMulti); o.SignatureType == SignatureTypeMulti && ok {
+		hash, err := rlpHash([]interface{}{
+			o.Transaction.Nonce,
+			o.Transaction.ChainID,
+			o.Transaction.GasPrice,
+			o.Transaction.GasCoin,
+			o.Transaction.Type,
+			o.Transaction.Data,
+			o.Transaction.Payload,
+			o.Transaction.ServiceData,
+			o.Transaction.SignatureType,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		signers := make([]string, 0, len(multi.Signatures))
+		for _, signature := range multi.Signatures {
+			address, err := signature.signer(hash, SignatureTypeMulti)
+			if err != nil {
+				return nil, err
+			}
+
+			signers = append(signers, address)
+		}
+		return signers, nil
+	}
+
+	address, err := o.SenderAddress()
+	if err != nil {
+		return nil, err
+	}
+
+	return []string{address}, nil
 }
 
 // Get first SingleSignature

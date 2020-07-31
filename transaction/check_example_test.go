@@ -83,7 +83,7 @@ func ExampleDecodeCheck() {
 }
 
 func ExampleDecodeRawCheck() {
-	data, err := transaction.DecodeRawCheck("+JqDNDgwAoMPQj8BiIrHIwSJ6AAAAbhB6j0CLIMmllVW8bZRsU0xJJR7hoP3s6tW/KBuC0IEdXsqEdrOhdATnOTo/bGDadB5BeczaDuCKfQbwhbHhLTXFAEcoBe///Sz9DHck4I5zScn8MHfphzNyYcn+o6br2CLN1X1oFt2jFPQnF6VF0h4IN9Dn0luFuRZhi59RJNgzmmizMTW")
+	data, err := transaction.DecodeCheckBase64("+JqDNDgwAoMPQj8BiIrHIwSJ6AAAAbhB6j0CLIMmllVW8bZRsU0xJJR7hoP3s6tW/KBuC0IEdXsqEdrOhdATnOTo/bGDadB5BeczaDuCKfQbwhbHhLTXFAEcoBe///Sz9DHck4I5zScn8MHfphzNyYcn+o6br2CLN1X1oFt2jFPQnF6VF0h4IN9Dn0luFuRZhi59RJNgzmmizMTW")
 	if err != nil {
 		return
 	}

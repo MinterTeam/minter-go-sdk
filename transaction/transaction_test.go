@@ -141,7 +141,7 @@ func TestObject_Fee_PayloadUTF8(t *testing.T) {
 	}
 }
 
-func TestObject_Fee_Coin3Symbol(t *testing.T) {
+func TestCreateCoinData_Fee_3symbol(t *testing.T) {
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewCreateCoinData().SetSymbol("ABC"))
 	if err != nil {
 		t.Fatal(err)
