@@ -7,21 +7,21 @@ import (
 )
 
 func ExampleNewMultisendData() {
-	symbolMNT := transaction.CoinID(1)
+	coinID := transaction.CoinID(1)
 	data := transaction.NewMultisendData().AddItem(
 		transaction.NewSendData().
-			SetCoin(symbolMNT).
+			SetCoin(coinID).
 			SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
 			MustSetTo("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"),
 	).AddItem(
 		transaction.NewSendData().
-			SetCoin(symbolMNT).
+			SetCoin(coinID).
 			SetValue(big.NewInt(0).Mul(big.NewInt(2), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-1), nil))).
 			MustSetTo("Mxddab6281766ad86497741ff91b6b48fe85012e3c"),
 	)
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
-	signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(symbolMNT).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+	signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(coinID).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
 	signedTxEncode, _ := signedTx.Encode()
 	fmt.Println(signedTxEncode)
 	// Output:

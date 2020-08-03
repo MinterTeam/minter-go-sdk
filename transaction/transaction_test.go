@@ -185,9 +185,9 @@ func TestObject_Fee_Multisend(t *testing.T) {
 func TestMultisigSig(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
-	symbolMNT := CoinID(1)
+	coinID := CoinID(1)
 	data, err := NewSendData().
-		SetCoin(symbolMNT).
+		SetCoin(coinID).
 		SetValue(value).
 		SetTo(address)
 	if err != nil {
@@ -202,7 +202,7 @@ func TestMultisigSig(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(SignatureTypeMulti)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetSignatureType(SignatureTypeMulti)
 
 	createMultisigData := NewCreateMultisigData().
 		MustAddSigData("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 1).
@@ -237,9 +237,9 @@ func TestMultisigSig(t *testing.T) {
 func TestMultisigSig1(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := CoinID(1)
+	coinID := CoinID(1)
 	data, err := NewSendData().
-		SetCoin(symbolMNT).
+		SetCoin(coinID).
 		SetValue(value).
 		SetTo(address)
 	if err != nil {
@@ -254,7 +254,7 @@ func TestMultisigSig1(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(SignatureTypeMulti)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetSignatureType(SignatureTypeMulti)
 
 	signedTx, err := tx.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2",
 		"b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9",
@@ -277,9 +277,9 @@ func TestMultisigSig1(t *testing.T) {
 func TestMultisigSigTwoTimeSig(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := CoinID(1)
+	coinID := CoinID(1)
 	data, err := NewSendData().
-		SetCoin(symbolMNT).
+		SetCoin(coinID).
 		SetValue(value).
 		SetTo(address)
 	if err != nil {
@@ -294,7 +294,7 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(SignatureTypeMulti)
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetSignatureType(SignatureTypeMulti)
 
 	signedTx1, err := tx.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2",
 		"b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9")
@@ -322,9 +322,9 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 func TestMultisigAddSignatures(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := CoinID(1)
+	coinID := CoinID(1)
 	data, err := NewSendData().
-		SetCoin(symbolMNT).
+		SetCoin(coinID).
 		SetValue(value).
 		SetTo(address)
 	if err != nil {
@@ -339,7 +339,7 @@ func TestMultisigAddSignatures(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType()
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetMultiSignatureType()
 	transaction0 := *(tx.(*Object).Transaction)
 	tx0 := Object{Transaction: &transaction0}
 
@@ -399,9 +399,9 @@ func TestMultisigAddSignatures(t *testing.T) {
 func TestMultisigAddSignatures2(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	symbolMNT := CoinID(1)
+	coinID := CoinID(1)
 	data, err := NewSendData().
-		SetCoin(symbolMNT).
+		SetCoin(coinID).
 		SetValue(value).
 		SetTo(address)
 	if err != nil {
@@ -416,7 +416,7 @@ func TestMultisigAddSignatures2(t *testing.T) {
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 
-	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType()
+	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetMultiSignatureType()
 
 	signedTransaction, err := tx.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
 	if err != nil {
