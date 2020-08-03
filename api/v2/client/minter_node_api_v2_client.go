@@ -10,7 +10,7 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"github.com/MinterTeam/minter-go-sdk/api/v2/client/api_service"
+	"github.com/MinterTeam/minter-go-sdk/v2/api/v2/client/api_service"
 )
 
 // Default minter node API v2 HTTP client.

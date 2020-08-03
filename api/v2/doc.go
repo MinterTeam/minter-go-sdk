@@ -4,10 +4,10 @@
 	Example:
 
 		import (
-			v2 "github.com/MinterTeam/minter-go-sdk/api/v2"
-			"github.com/MinterTeam/minter-go-sdk/api/v2/client/api_service"
-			"github.com/MinterTeam/minter-go-sdk/transaction"
-			"github.com/MinterTeam/minter-go-sdk/wallet"
+			v2 "github.com/MinterTeam/minter-go-sdk/v2/api/v2"
+			"github.com/MinterTeam/minter-go-sdk/v2/api/v2/client/api_service"
+			"github.com/MinterTeam/minter-go-sdk/v2/transaction"
+			"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 			"log"
 			"math/big"
 		)

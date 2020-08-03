@@ -2,7 +2,7 @@ package transaction_test
 
 import (
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
+	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 )
 
 func ExampleNewChangeOwnerData() {

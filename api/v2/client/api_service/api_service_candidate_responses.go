@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"github.com/MinterTeam/minter-go-sdk/api/v2/models"
+	"github.com/MinterTeam/minter-go-sdk/v2/api/v2/models"
 )
 
 // APIServiceCandidateReader is a Reader for the APIServiceCandidate structure.

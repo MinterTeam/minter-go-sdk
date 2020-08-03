@@ -3,7 +3,7 @@ package transaction_test
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
+	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"math/big"
 )
 

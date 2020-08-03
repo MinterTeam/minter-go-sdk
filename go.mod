@@ -1,10 +1,11 @@
-module github.com/MinterTeam/minter-go-sdk
+module github.com/MinterTeam/minter-go-sdk/v2
 
 go 1.14
 
 require (
 	github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec // indirect
+	github.com/MinterTeam/minter-go-sdk v1.1.6 // indirect
 	github.com/MinterTeam/node-grpc-gateway v1.1.3-0.20200722132702-359ed49dcb7e
 	github.com/btcsuite/btcd v0.0.0-20190824003749-130ea5bddde3 // indirect
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect

@@ -15,7 +15,7 @@ import (
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"github.com/MinterTeam/minter-go-sdk/api/v2/models"
+	"github.com/MinterTeam/minter-go-sdk/v2/api/v2/models"
 )
 
 // NewAPIServiceSendTransaction2Params creates a new APIServiceSendTransaction2Params object
