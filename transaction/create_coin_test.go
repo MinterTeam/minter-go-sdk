@@ -10,7 +10,7 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 		SetName("SUPER TEST").
 		SetSymbol("SPRTEST").
 		SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-		SetInitialReserve(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetInitialReserve(big.NewInt(0).Mul(big.NewInt(20000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
 		SetConstantReserveRatio(10).
 		SetMaxSupply(big.NewInt(0).Mul(big.NewInt(1000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
 
@@ -29,7 +29,7 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf8850102010105b5f48a535550455220544553548a5350525445535400000089056bc75e2d63100000888ac7230489e800000a893635c9adc5dea00000808001b845f8431ba0e6fc1f864b0a7bd0ac385c11e059aaab1c8507b4a7b05233e226663ba8fc22bda044f4ca23b492d038e7e5d0075293b23d9aa585cab5740f75aa8f8bd1aaae6eca"
+	validSignature := "0xf8870102010105b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a043c33c19375648000000a893635c9adc5dea00000808001b845f8431ba034615f080a026ee579395aeb4c2eac974a14c091f1bb112629b2b5be0a82628da07f3347c71fa0668d01126dfae49d2b402067275878e4ffd26fd42a73cdf01950"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)

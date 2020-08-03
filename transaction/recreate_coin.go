@@ -6,11 +6,11 @@ import (
 )
 
 type RecreateCoinData struct {
-	Symbol               CoinSymbol
-	InitialAmount        *big.Int
-	InitialReserve       *big.Int
-	ConstantReserveRatio uint
-	MaxSupply            *big.Int
+	Symbol               CoinSymbol // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
+	InitialAmount        *big.Int   // Amount of coins to issue. Issued coins will be available to sender account. Should be between 1 and 1,000,000,000,000,000 coins.
+	InitialReserve       *big.Int   // Initial reserve in BIP's
+	ConstantReserveRatio uint       // ConstantReserveRatio (CRR), should be from 10 to 100.
+	MaxSupply            *big.Int   // Max amount of coins that are allowed to be issued. Maximum is 1,000,000,000,000,000
 }
 
 func NewRecreateCoinData() *RecreateCoinData {
@@ -43,6 +43,7 @@ func (d *RecreateCoinData) SetConstantReserveRatio(ratio uint) *RecreateCoinData
 	return d
 }
 
+// Set maximum amount of coins that are allowed to be issued.
 func (d *RecreateCoinData) SetMaxSupply(maxSupply *big.Int) *RecreateCoinData {
 	d.MaxSupply = maxSupply
 	return d
