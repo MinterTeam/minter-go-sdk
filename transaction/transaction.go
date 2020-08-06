@@ -37,6 +37,8 @@ const (
 	TypeSetHaltBlock
 	TypeRecreateCoin
 	TypeChangeOwner
+	TypeEditMultisigOwner
+	TypePriceVote
 )
 
 // For each transaction sender should pay fee. Fees are measured in "units".
@@ -56,10 +58,12 @@ const (
 	feeTypeSetCandidateOffline Fee = 100
 	feeTypeCreateMultisig      Fee = 100
 	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate Fee = 100000
-	feeTypeSetHaltBlock  Fee = 1000
-	feeTypeRecreateCoin  Fee = 10000000
-	feeTypeChangeOwner   Fee = 10000000
+	feeTypeEditCandidate  Fee = 100000
+	feeTypeSetHaltBlock   Fee = 1000
+	feeTypeRecreateCoin   Fee = 10000000
+	feeTypeChangeOwner    Fee = 10000000
+	feeEditMultisigOwners Fee = 1000
+	feePriceVote          Fee = 10
 )
 
 type SignatureType byte
@@ -90,7 +94,7 @@ func NewBuilder(chainID ChainID) *Builder {
 
 // New transaction from data
 func (b *Builder) NewTransaction(data Data) (Interface, error) {
-	dataBytes, err := data.encode()
+	dataBytes, err := data.Encode()
 	if err != nil {
 		return nil, err
 	}
@@ -110,11 +114,10 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 }
 
 type Data interface {
-	encode() ([]byte, error)
-
+	// Get bytes representation of a transaction data.
+	Encode() ([]byte, error)
 	// Get transaction data type
 	Type() Type
-
 	// Get transaction data fee
 	Fee() Fee
 }
@@ -431,6 +434,29 @@ func (s *Signature) toBytes() []byte {
 	sig[64] = byte(s.V.Uint64() - 27)
 
 	return sig
+}
+
+func MultisigAddress(owner string, nonce uint64) string {
+	o, err := wallet.AddressToHex(owner)
+	if err != nil {
+		panic(err)
+	}
+
+	var ownerAddress [20]byte
+	copy(ownerAddress[:], o)
+
+	b, err := rlp.EncodeToBytes(&struct {
+		Owner [20]byte
+		Nonce uint64
+	}{Owner: ownerAddress, Nonce: nonce})
+	if err != nil {
+		panic(err)
+	}
+
+	var addr [20]byte
+	copy(addr[:], crypto.Keccak256(b)[12:])
+
+	return wallet.BytesToAddress(addr)
 }
 
 // Signature from Multisig address

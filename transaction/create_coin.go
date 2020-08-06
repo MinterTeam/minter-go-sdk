@@ -77,6 +77,6 @@ func (d *CreateCoinData) Fee() Fee {
 	}
 }
 
-func (d *CreateCoinData) encode() ([]byte, error) {
+func (d *CreateCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

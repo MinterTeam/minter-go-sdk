@@ -33,6 +33,6 @@ func (d *MultisendData) Fee() Fee {
 	return Fee(10 + (len(d.List)-1)*5)
 }
 
-func (d *MultisendData) encode() ([]byte, error) {
+func (d *MultisendData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

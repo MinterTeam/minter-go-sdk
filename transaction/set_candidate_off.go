@@ -43,6 +43,6 @@ func (d *SetCandidateOffData) Fee() Fee {
 	return feeTypeSetCandidateOffline
 }
 
-func (d *SetCandidateOffData) encode() ([]byte, error) {
+func (d *SetCandidateOffData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

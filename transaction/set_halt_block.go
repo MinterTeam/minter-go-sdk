@@ -47,6 +47,6 @@ func (d *SetHaltBlockData) Fee() Fee {
 	return feeTypeSetHaltBlock
 }
 
-func (d *SetHaltBlockData) encode() ([]byte, error) {
+func (d *SetHaltBlockData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

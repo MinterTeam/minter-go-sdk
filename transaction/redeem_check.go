@@ -71,6 +71,6 @@ func (d *RedeemCheckData) Fee() Fee {
 	return feeTypeRedeemCheck
 }
 
-func (d *RedeemCheckData) encode() ([]byte, error) {
+func (d *RedeemCheckData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

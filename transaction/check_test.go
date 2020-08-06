@@ -9,7 +9,7 @@ import (
 
 func TestCheck_Sign(t *testing.T) {
 	check := NewCheck(
-		480,
+		"480",
 		TestNetChainID,
 		999999,
 		1,
@@ -35,7 +35,7 @@ func TestCheck_Sign(t *testing.T) {
 
 func TestCheck_Sign1(t *testing.T) {
 	check := NewCheck(
-		1,
+		"1",
 		MainNetChainID,
 		999999,
 		1,

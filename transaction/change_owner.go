@@ -45,6 +45,6 @@ func (d *ChangeOwnerData) Fee() Fee {
 	return feeTypeChangeOwner
 }
 
-func (d *ChangeOwnerData) encode() ([]byte, error) {
+func (d *ChangeOwnerData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

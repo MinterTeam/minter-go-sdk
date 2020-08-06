@@ -9,7 +9,7 @@ import (
 
 func ExampleNewCheck() {
 	check := transaction.NewCheck(
-		480,
+		"480",
 		transaction.TestNetChainID,
 		999999,
 		1,

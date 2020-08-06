@@ -57,6 +57,6 @@ func (d *RecreateCoinData) Fee() Fee {
 	return feeTypeRecreateCoin
 }
 
-func (d *RecreateCoinData) encode() ([]byte, error) {
+func (d *RecreateCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

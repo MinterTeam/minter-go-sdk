@@ -79,7 +79,7 @@ func (d *DeepLink) SetGasCoin(id CoinID) *DeepLink {
 func NewDeepLink(data Data) (*DeepLink, error) {
 	d := new(DeepLink)
 
-	bytes, err := data.encode()
+	bytes, err := data.Encode()
 	if err != nil {
 		return d, err
 	}

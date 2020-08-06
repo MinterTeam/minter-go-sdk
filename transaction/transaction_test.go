@@ -204,19 +204,7 @@ func TestMultisigSig(t *testing.T) {
 
 	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetSignatureType(SignatureTypeMulti)
 
-	createMultisigData := NewCreateMultisigData().
-		MustAddSigData("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 1).
-		MustAddSigData("Mx6bf192730d01a19739b5030cdb6a60c992712a59", 3).
-		MustAddSigData("Mx823bb524d5702addbe13086082f7f0310e07d176", 5).
-		SetThreshold(7)
-
-	multisigAddress := createMultisigData.Address()
-	validAddr := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
-	if multisigAddress != validAddr {
-		t.Fatalf("Address got %s, want %s", multisigAddress, validAddr)
-	}
-
-	signedTx, err := tx.Sign(multisigAddress,
+	signedTx, err := tx.Sign("Mxade8c935e6e33b3ffd775cfa7612d89f3cde21b4",
 		"ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63",
 		"b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7",
 		"4c8dbfb3258f383adf656c2131e5ed77ec482a36125db71fb49d29e0528ff2ba")
@@ -224,7 +212,7 @@ func TestMultisigSig(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf901130102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ca07dd407fa5d2a161581d03cdeb7c94fcd5ade47d376af75f2c92d1483f821fe2ca00d16b6cdbceaadcd0fd72bd39ee17841871da333a571535fccfbcf6285881c2af8431ba07c2d063126024a1e19363e7e254312ca9ab37795b06102da25bd1c0dec81a934a043b7bec83db41c594ac7a8d416fca2f83f0e65ada1221fe659ba4dbe1f3c921af8431ba09318e56a242c39c10ce87ab51d10322cc62cf23885867bc89a24e8c3fa8483e9a04c82c1224d1b4efa7fba06623da2896745ce444d35ed77973759e6404b66bb95"
+	validSignature := "0xf901130102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e694ade8c935e6e33b3ffd775cfa7612d89f3cde21b4f8cff8431ca07dd407fa5d2a161581d03cdeb7c94fcd5ade47d376af75f2c92d1483f821fe2ca00d16b6cdbceaadcd0fd72bd39ee17841871da333a571535fccfbcf6285881c2af8431ba07c2d063126024a1e19363e7e254312ca9ab37795b06102da25bd1c0dec81a934a043b7bec83db41c594ac7a8d416fca2f83f0e65ada1221fe659ba4dbe1f3c921af8431ba09318e56a242c39c10ce87ab51d10322cc62cf23885867bc89a24e8c3fa8483e9a04c82c1224d1b4efa7fba06623da2896745ce444d35ed77973759e6404b66bb95"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -459,10 +447,5 @@ func TestDecodeMulti(t *testing.T) {
 	validSenderAddress := "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c"
 	if senderAddress != validSenderAddress {
 		t.Fatalf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
-	}
-	multisigAddress := decode.Data().(*CreateMultisigData).Address()
-	validMultisigAddress := "Mx4fe800483f59a36eec2b6f218778f9c5fceb38c0"
-	if multisigAddress != validMultisigAddress {
-		t.Errorf("MultisigAddress got %s, want %s", multisigAddress, validMultisigAddress)
 	}
 }

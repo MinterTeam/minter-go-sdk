@@ -11,7 +11,6 @@ import (
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
-	"strconv"
 	"strings"
 )
 
@@ -117,10 +116,10 @@ type Check struct {
 }
 
 // Issue a check that will later be redeemed by the person of your choice.
-func NewCheck(nonce uint64, chainID ChainID, dueBlock uint64, coin CoinID, value *big.Int, gasCoin CoinID) CheckInterface {
+func NewCheck(nonce string, chainID ChainID, dueBlock uint64, coin CoinID, value *big.Int, gasCoin CoinID) CheckInterface {
 	check := &Check{
 		CheckData: &CheckData{
-			Nonce:    []byte(strconv.Itoa(int(nonce))),
+			Nonce:    []byte(nonce),
 			ChainID:  chainID,
 			DueBlock: dueBlock,
 			Coin:     coin,

@@ -57,6 +57,6 @@ func (d *SendData) Fee() Fee {
 	return feeTypeSend
 }
 
-func (d *SendData) encode() ([]byte, error) {
+func (d *SendData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

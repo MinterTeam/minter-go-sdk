@@ -50,6 +50,6 @@ func (d *BuyCoinData) Fee() Fee {
 	return feeTypeBuyCoin
 }
 
-func (d *BuyCoinData) encode() ([]byte, error) {
+func (d *BuyCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
