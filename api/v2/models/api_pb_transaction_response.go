@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -19,7 +20,7 @@ type APIPbTransactionResponse struct {
 	Code string `json:"code,omitempty"`
 
 	// data
-	Data interface{} `json:"data,omitempty"`
+	Data *ProtobufAny `json:"data,omitempty"`
 
 	// from
 	From string `json:"from,omitempty"`
@@ -64,6 +65,33 @@ type APIPbTransactionResponse struct {
 
 // Validate validates this api pb transaction response
 func (m *APIPbTransactionResponse) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateData(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *APIPbTransactionResponse) validateData(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Data) { // not required
+		return nil
+	}
+
+	if m.Data != nil {
+		if err := m.Data.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("data")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

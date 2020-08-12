@@ -11,10 +11,7 @@ import (
 )
 
 // swagger:model protobufAny
-type ProtobufAny struct {
-	//TypeURL string `json:"@type,omitempty"`
-	Value map[string]interface{} `json:"value,omitempty"`
-}
+type ProtobufAny map[string]interface{}
 
 // Validate validates this protobuf any
 func (m *ProtobufAny) Validate(formats strfmt.Registry) error {

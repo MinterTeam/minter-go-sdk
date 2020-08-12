@@ -92,7 +92,7 @@ func (c *Client) Candidates(includeStakes bool, optionalHeight ...int) (*api_pb.
 
 //CoinId returns information about coin ID. Note: this method does not return information about base coins (MNT and BIP).
 func (c *Client) CoinId(id uint32, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
-	return c.grpcClient.CoinId(c.ctxFunc(), &api_pb.CoinIdRequest{Height: optionalInt(optionalHeight), Id: id})
+	return c.grpcClient.CoinInfoById(c.ctxFunc(), &api_pb.CoinIdRequest{Height: optionalInt(optionalHeight), Id: id})
 }
 
 //CoinInfo returns information about coin symbol. Note: this method does not return information about base coins (MNT and BIP).
