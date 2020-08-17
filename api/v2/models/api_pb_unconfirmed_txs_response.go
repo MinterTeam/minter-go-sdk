@@ -21,11 +21,11 @@ type APIPbUnconfirmedTxsResponse struct {
 	// total transactions
 	TotalTransactions string `json:"total_transactions,omitempty"`
 
+	// transaction count
+	TransactionCount string `json:"transaction_count,omitempty"`
+
 	// transactions
 	Transactions []string `json:"transactions"`
-
-	// transactions count
-	TransactionsCount string `json:"transactions_count,omitempty"`
 }
 
 // Validate validates this api pb unconfirmed txs response

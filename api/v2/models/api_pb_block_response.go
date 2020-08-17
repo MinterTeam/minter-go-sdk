@@ -42,11 +42,11 @@ type APIPbBlockResponse struct {
 	// time
 	Time string `json:"time,omitempty"`
 
+	// transaction count
+	TransactionCount string `json:"transaction_count,omitempty"`
+
 	// transactions
 	Transactions []*BlockResponseTransaction `json:"transactions"`
-
-	// transactions count
-	TransactionsCount string `json:"transactions_count,omitempty"`
 
 	// validators
 	Validators []*APIPbBlockResponseValidator `json:"validators"`

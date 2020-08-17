@@ -52,7 +52,7 @@ func (c *Client) Nonce(address string) (uint64, error) {
 		return 0, err
 	}
 
-	transactionsCount, err := strconv.Atoi(status.TransactionsCount)
+	transactionsCount, err := strconv.Atoi(status.TransactionCount)
 	if err != nil {
 		return 0, err
 	}

@@ -30,8 +30,8 @@ type APIPbAddressesResponseResult struct {
 	// total
 	Total []*APIPbAddressBalance `json:"total"`
 
-	// transactions count
-	TransactionsCount string `json:"transactions_count,omitempty"`
+	// transaction count
+	TransactionCount string `json:"transaction_count,omitempty"`
 }
 
 // Validate validates this api pb addresses response result
