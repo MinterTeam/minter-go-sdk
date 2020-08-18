@@ -24,6 +24,9 @@ type APIPbCandidateResponse struct {
 	// min stake
 	MinStake string `json:"min_stake,omitempty"`
 
+	// owner address
+	OwnerAddress string `json:"owner_address,omitempty"`
+
 	// public key
 	PublicKey string `json:"public_key,omitempty"`
 
