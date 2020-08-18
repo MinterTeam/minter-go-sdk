@@ -10,7 +10,7 @@ type ChangeCoinOwnerData struct {
 	NewOwner [20]byte
 }
 
-func NewChangeOwnerData() *ChangeCoinOwnerData {
+func NewChangeCoinOwnerData() *ChangeCoinOwnerData {
 	return &ChangeCoinOwnerData{}
 }
 

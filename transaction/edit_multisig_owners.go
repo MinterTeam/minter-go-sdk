@@ -7,10 +7,9 @@ import (
 
 // Transaction data for edit multisig owners.
 type EditMultisigOwnersData struct {
-	MultisigAddress [20]byte
-	Threshold       uint       // Threshold for the sums of signature weights.
-	Weights         []uint     // Weights of signers
-	Addresses       [][20]byte // List of signed addresses
+	Threshold uint       // Threshold for the sums of signature weights.
+	Weights   []uint     // Weights of signers
+	Addresses [][20]byte // List of signed addresses
 }
 
 // Data of transaction for edit multisig owners.
@@ -21,25 +20,6 @@ func NewEditMultisigOwnersData() *EditMultisigOwnersData {
 // Set threshold for the sums of signature weights.
 func (d *EditMultisigOwnersData) SetThreshold(threshold uint) *EditMultisigOwnersData {
 	d.Threshold = threshold
-	return d
-}
-
-// Set multisig address.
-func (d *EditMultisigOwnersData) SetMultisigAddress(address string) (*EditMultisigOwnersData, error) {
-	bytes, err := wallet.AddressToHex(address)
-	if err != nil {
-		return d, err
-	}
-	copy(d.MultisigAddress[:], bytes)
-	return d, nil
-}
-
-// // Tries to set multisig address and panics on error.
-func (d *EditMultisigOwnersData) MustSetMultisigAddress(address string) *EditMultisigOwnersData {
-	_, err := d.SetMultisigAddress(address)
-	if err != nil {
-		panic(err)
-	}
 	return d
 }
 
