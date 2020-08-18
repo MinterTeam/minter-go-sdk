@@ -5,21 +5,21 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-type ChangeOwnerData struct {
+type ChangeCoinOwnerData struct {
 	Symbol   CoinSymbol
 	NewOwner [20]byte
 }
 
-func NewChangeOwnerData() *ChangeOwnerData {
-	return &ChangeOwnerData{}
+func NewChangeOwnerData() *ChangeCoinOwnerData {
+	return &ChangeCoinOwnerData{}
 }
 
-func (d *ChangeOwnerData) SetSymbol(symbol string) *ChangeOwnerData {
+func (d *ChangeCoinOwnerData) SetSymbol(symbol string) *ChangeCoinOwnerData {
 	copy(d.Symbol[:], symbol)
 	return d
 }
 
-func (d *ChangeOwnerData) SetNewOwner(address string) (*ChangeOwnerData, error) {
+func (d *ChangeCoinOwnerData) SetNewOwner(address string) (*ChangeCoinOwnerData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
 		return d, err
@@ -29,7 +29,7 @@ func (d *ChangeOwnerData) SetNewOwner(address string) (*ChangeOwnerData, error) 
 }
 
 // Tries to set address of candidate and panics on error.
-func (d *ChangeOwnerData) MustSetNewOwner(address string) *ChangeOwnerData {
+func (d *ChangeCoinOwnerData) MustSetNewOwner(address string) *ChangeCoinOwnerData {
 	_, err := d.SetNewOwner(address)
 	if err != nil {
 		panic(err)
@@ -37,14 +37,14 @@ func (d *ChangeOwnerData) MustSetNewOwner(address string) *ChangeOwnerData {
 	return d
 }
 
-func (d *ChangeOwnerData) Type() Type {
+func (d *ChangeCoinOwnerData) Type() Type {
 	return TypeChangeOwner
 }
 
-func (d *ChangeOwnerData) Fee() Fee {
+func (d *ChangeCoinOwnerData) Fee() Fee {
 	return feeTypeChangeOwner
 }
 
-func (d *ChangeOwnerData) Encode() ([]byte, error) {
+func (d *ChangeCoinOwnerData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

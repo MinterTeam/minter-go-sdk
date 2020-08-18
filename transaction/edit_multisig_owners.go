@@ -8,13 +8,20 @@ import (
 // Transaction data for edit multisig owners.
 type EditMultisigOwnersData struct {
 	MultisigAddress [20]byte
-	Weights         []uint
-	Addresses       [][20]byte
+	Threshold       uint       // Threshold for the sums of signature weights.
+	Weights         []uint     // Weights of signers
+	Addresses       [][20]byte // List of signed addresses
 }
 
 // Data of transaction for edit multisig owners.
 func NewEditMultisigOwnersData() *EditMultisigOwnersData {
 	return &EditMultisigOwnersData{}
+}
+
+// Set threshold for the sums of signature weights.
+func (d *EditMultisigOwnersData) SetThreshold(threshold uint) *EditMultisigOwnersData {
+	d.Threshold = threshold
+	return d
 }
 
 // Set multisig address.
