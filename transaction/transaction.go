@@ -307,7 +307,7 @@ func Decode(tx string) (*Object, error) {
 		data = &SetHaltBlockData{}
 	case TypeRecreateCoin:
 		data = &RecreateCoinData{}
-	case TypeChangeOwner:
+	case TypeChangeCoinOwner:
 		data = &ChangeCoinOwnerData{}
 	default:
 		return nil, errors.New("unknown transaction type")

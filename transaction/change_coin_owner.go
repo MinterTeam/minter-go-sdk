@@ -38,11 +38,11 @@ func (d *ChangeCoinOwnerData) MustSetNewOwner(address string) *ChangeCoinOwnerDa
 }
 
 func (d *ChangeCoinOwnerData) Type() Type {
-	return TypeChangeOwner
+	return TypeChangeCoinOwner
 }
 
 func (d *ChangeCoinOwnerData) Fee() Fee {
-	return feeTypeChangeOwner
+	return feeTypeChangeCoinOwner
 }
 
 func (d *ChangeCoinOwnerData) Encode() ([]byte, error) {

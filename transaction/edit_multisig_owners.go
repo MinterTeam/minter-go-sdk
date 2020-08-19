@@ -62,7 +62,7 @@ func (d *EditMultisigOwnersData) addWeight(weight uint) *EditMultisigOwnersData 
 }
 
 func (d *EditMultisigOwnersData) Type() Type {
-	return TypeEditMultisigOwner
+	return TypeEditMultisigOwners
 }
 
 func (d *EditMultisigOwnersData) Fee() Fee {
