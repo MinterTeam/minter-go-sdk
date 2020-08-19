@@ -36,8 +36,8 @@ const (
 	TypeEditCandidate
 	TypeSetHaltBlock
 	TypeRecreateCoin
-	TypeChangeOwner
-	TypeEditMultisigOwner
+	TypeChangeCoinOwner
+	TypeEditMultisigOwners
 	TypePriceVote
 )
 
@@ -58,12 +58,12 @@ const (
 	feeTypeSetCandidateOffline Fee = 100
 	feeTypeCreateMultisig      Fee = 100
 	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate  Fee = 100000
-	feeTypeSetHaltBlock   Fee = 1000
-	feeTypeRecreateCoin   Fee = 10000000
-	feeTypeChangeOwner    Fee = 10000000
-	feeEditMultisigOwners Fee = 1000
-	feePriceVote          Fee = 10
+	feeTypeEditCandidate   Fee = 100000
+	feeTypeSetHaltBlock    Fee = 1000
+	feeTypeRecreateCoin    Fee = 10000000
+	feeTypeChangeCoinOwner Fee = 10000000
+	feeEditMultisigOwners  Fee = 1000
+	feePriceVote           Fee = 10
 )
 
 type SignatureType byte
