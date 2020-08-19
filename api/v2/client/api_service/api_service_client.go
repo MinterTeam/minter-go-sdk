@@ -516,7 +516,7 @@ func (a *Client) APIServiceEvents(params *APIServiceEventsParams) (*APIServiceEv
 }
 
 /*
-  APIServiceFrozen validators returns frozen balance
+  APIServiceFrozen frozens returns frozen balance
 */
 func (a *Client) APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFrozenOK, error) {
 	// TODO: Validate the params before sending
@@ -1011,7 +1011,7 @@ func (a *Client) APIServiceValidators(params *APIServiceValidatorsParams) (*APIS
 }
 
 /*
-  APIServiceWaitList validators returns frozen balance
+  APIServiceWaitList waits list returns the list of address stakes in waitlist
 */
 func (a *Client) APIServiceWaitList(params *APIServiceWaitListParams) (*APIServiceWaitListOK, error) {
 	// TODO: Validate the params before sending

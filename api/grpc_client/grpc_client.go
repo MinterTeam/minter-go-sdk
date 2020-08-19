@@ -90,8 +90,8 @@ func (c *Client) Candidates(includeStakes bool, optionalHeight ...int) (*api_pb.
 	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes})
 }
 
-//CoinId returns information about coin ID. Note: this method does not return information about base coins (MNT and BIP).
-func (c *Client) CoinId(id uint32, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
+//CoinInfoByID returns information about coin ID. Note: this method does not return information about base coins (MNT and BIP).
+func (c *Client) CoinInfoByID(id uint32, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
 	return c.grpcClient.CoinInfoById(c.ctxFunc(), &api_pb.CoinIdRequest{Height: optionalInt(optionalHeight), Id: id})
 }
 
@@ -185,9 +185,19 @@ func (c *Client) Validators(page, perPage int, limit ...int) (*api_pb.Validators
 	return c.grpcClient.Validators(c.ctxFunc(), &api_pb.ValidatorsRequest{Height: optionalInt(limit), Page: int32(page), PerPage: int32(perPage)})
 }
 
+//WaitList returns the list of address stakes in waitlist.
+func (c *Client) WaitList(publicKey, address string, limit ...int) (*api_pb.WaitListResponse, error) {
+	return c.grpcClient.WaitList(c.ctxFunc(), &api_pb.WaitListRequest{Height: optionalInt(limit), PublicKey: publicKey, Address: address})
+}
+
 //Subscribe returns a subscription for events by query.
 func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, error) {
 	return c.grpcClient.Subscribe(c.ctxFunc(), &api_pb.SubscribeRequest{Query: query})
+}
+
+//Frozen returns frozen balance.
+func (c *Client) Frozen(address, coin string) (*api_pb.FrozenResponse, error) {
+	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, Coin: coin})
 }
 
 func optionalInt(height []int) uint64 {
