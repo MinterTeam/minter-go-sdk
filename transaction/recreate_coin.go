@@ -6,6 +6,7 @@ import (
 )
 
 type RecreateCoinData struct {
+	Name                 string     // Name of a coin
 	Symbol               CoinSymbol // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
 	InitialAmount        *big.Int   // Amount of coins to issue. Issued coins will be available to sender account. Should be between 1 and 1,000,000,000,000,000 coins.
 	InitialReserve       *big.Int   // Initial reserve in BIP's
@@ -15,6 +16,12 @@ type RecreateCoinData struct {
 
 func NewRecreateCoinData() *RecreateCoinData {
 	return &RecreateCoinData{}
+}
+
+// Set name of a coin. Arbitrary string up to 64 letters length.
+func (d *RecreateCoinData) SetName(name string) *RecreateCoinData {
+	d.Name = name
+	return d
 }
 
 // Set symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.

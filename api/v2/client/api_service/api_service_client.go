@@ -87,7 +87,7 @@ type ClientService interface {
 }
 
 /*
-  APIServiceAddress Api service address API
+  APIServiceAddress addresses returns coins list balance and transaction count of an address
 */
 func (a *Client) APIServiceAddress(params *APIServiceAddressParams) (*APIServiceAddressOK, error) {
 	// TODO: Validate the params before sending
@@ -120,7 +120,7 @@ func (a *Client) APIServiceAddress(params *APIServiceAddressParams) (*APIService
 }
 
 /*
-  APIServiceAddresses Api service addresses API
+  APIServiceAddresses addresses returns list of addresses
 */
 func (a *Client) APIServiceAddresses(params *APIServiceAddressesParams) (*APIServiceAddressesOK, error) {
 	// TODO: Validate the params before sending
@@ -153,7 +153,7 @@ func (a *Client) APIServiceAddresses(params *APIServiceAddressesParams) (*APISer
 }
 
 /*
-  APIServiceBlock Api service block API
+  APIServiceBlock blocks returns block data at given height
 */
 func (a *Client) APIServiceBlock(params *APIServiceBlockParams) (*APIServiceBlockOK, error) {
 	// TODO: Validate the params before sending
@@ -186,7 +186,7 @@ func (a *Client) APIServiceBlock(params *APIServiceBlockParams) (*APIServiceBloc
 }
 
 /*
-  APIServiceCandidate Api service candidate API
+  APIServiceCandidate candidates returns candidate s info by provided public key it will respond with 404 code if candidate is not found
 */
 func (a *Client) APIServiceCandidate(params *APIServiceCandidateParams) (*APIServiceCandidateOK, error) {
 	// TODO: Validate the params before sending
@@ -219,7 +219,7 @@ func (a *Client) APIServiceCandidate(params *APIServiceCandidateParams) (*APISer
 }
 
 /*
-  APIServiceCandidates Api service candidates API
+  APIServiceCandidates candidates returns list of candidates
 */
 func (a *Client) APIServiceCandidates(params *APIServiceCandidatesParams) (*APIServiceCandidatesOK, error) {
 	// TODO: Validate the params before sending
@@ -252,7 +252,7 @@ func (a *Client) APIServiceCandidates(params *APIServiceCandidatesParams) (*APIS
 }
 
 /*
-  APIServiceCoinInfo Api service coin info API
+  APIServiceCoinInfo coins info returns information about coin symbol note this method does not return information about base coins m n t and b IP
 */
 func (a *Client) APIServiceCoinInfo(params *APIServiceCoinInfoParams) (*APIServiceCoinInfoOK, error) {
 	// TODO: Validate the params before sending
@@ -285,7 +285,7 @@ func (a *Client) APIServiceCoinInfo(params *APIServiceCoinInfoParams) (*APIServi
 }
 
 /*
-  APIServiceCoinInfoByID Api service coin info by Id API
+  APIServiceCoinInfoByID coins info by Id returns information about coin ID note this method does not return information about base coins m n t and b IP
 */
 func (a *Client) APIServiceCoinInfoByID(params *APIServiceCoinInfoByIDParams) (*APIServiceCoinInfoByIDOK, error) {
 	// TODO: Validate the params before sending
@@ -318,7 +318,7 @@ func (a *Client) APIServiceCoinInfoByID(params *APIServiceCoinInfoByIDParams) (*
 }
 
 /*
-  APIServiceEstimateCoinBuy Api service estimate coin buy API
+  APIServiceEstimateCoinBuy estimates coin buy return estimate of buy coin transaction
 */
 func (a *Client) APIServiceEstimateCoinBuy(params *APIServiceEstimateCoinBuyParams) (*APIServiceEstimateCoinBuyOK, error) {
 	// TODO: Validate the params before sending
@@ -351,7 +351,7 @@ func (a *Client) APIServiceEstimateCoinBuy(params *APIServiceEstimateCoinBuyPara
 }
 
 /*
-  APIServiceEstimateCoinSell Api service estimate coin sell API
+  APIServiceEstimateCoinSell estimates coin sell return estimate of sell coin transaction
 */
 func (a *Client) APIServiceEstimateCoinSell(params *APIServiceEstimateCoinSellParams) (*APIServiceEstimateCoinSellOK, error) {
 	// TODO: Validate the params before sending
@@ -384,7 +384,7 @@ func (a *Client) APIServiceEstimateCoinSell(params *APIServiceEstimateCoinSellPa
 }
 
 /*
-  APIServiceEstimateCoinSellAll Api service estimate coin sell all API
+  APIServiceEstimateCoinSellAll estimates coin sell all return estimate of sell all coin transaction
 */
 func (a *Client) APIServiceEstimateCoinSellAll(params *APIServiceEstimateCoinSellAllParams) (*APIServiceEstimateCoinSellAllOK, error) {
 	// TODO: Validate the params before sending
@@ -417,7 +417,7 @@ func (a *Client) APIServiceEstimateCoinSellAll(params *APIServiceEstimateCoinSel
 }
 
 /*
-  APIServiceEstimateTxCommission Api service estimate tx commission API
+  APIServiceEstimateTxCommission estimates tx commission return estimate of transaction
 */
 func (a *Client) APIServiceEstimateTxCommission(params *APIServiceEstimateTxCommissionParams) (*APIServiceEstimateTxCommissionOK, error) {
 	// TODO: Validate the params before sending
@@ -450,7 +450,7 @@ func (a *Client) APIServiceEstimateTxCommission(params *APIServiceEstimateTxComm
 }
 
 /*
-  APIServiceEstimateTxCommission2 Api service estimate tx commission2 API
+  APIServiceEstimateTxCommission2 estimates tx commission return estimate of transaction
 */
 func (a *Client) APIServiceEstimateTxCommission2(params *APIServiceEstimateTxCommission2Params) (*APIServiceEstimateTxCommission2OK, error) {
 	// TODO: Validate the params before sending
@@ -483,7 +483,7 @@ func (a *Client) APIServiceEstimateTxCommission2(params *APIServiceEstimateTxCom
 }
 
 /*
-  APIServiceEvents Api service events API
+  APIServiceEvents events returns events at given height
 */
 func (a *Client) APIServiceEvents(params *APIServiceEventsParams) (*APIServiceEventsOK, error) {
 	// TODO: Validate the params before sending
@@ -516,7 +516,7 @@ func (a *Client) APIServiceEvents(params *APIServiceEventsParams) (*APIServiceEv
 }
 
 /*
-  APIServiceFrozen Api service frozen API
+  APIServiceFrozen validators returns frozen balance
 */
 func (a *Client) APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFrozenOK, error) {
 	// TODO: Validate the params before sending
@@ -549,7 +549,7 @@ func (a *Client) APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFr
 }
 
 /*
-  APIServiceGenesis Api service genesis API
+  APIServiceGenesis geneses returns genesis file
 */
 func (a *Client) APIServiceGenesis(params *APIServiceGenesisParams) (*APIServiceGenesisOK, error) {
 	// TODO: Validate the params before sending
@@ -582,7 +582,7 @@ func (a *Client) APIServiceGenesis(params *APIServiceGenesisParams) (*APIService
 }
 
 /*
-  APIServiceHalts Api service halts API
+  APIServiceHalts halts
 */
 func (a *Client) APIServiceHalts(params *APIServiceHaltsParams) (*APIServiceHaltsOK, error) {
 	// TODO: Validate the params before sending
@@ -615,7 +615,7 @@ func (a *Client) APIServiceHalts(params *APIServiceHaltsParams) (*APIServiceHalt
 }
 
 /*
-  APIServiceMaxGas Api service max gas API
+  APIServiceMaxGas maxes gas returns current max gas
 */
 func (a *Client) APIServiceMaxGas(params *APIServiceMaxGasParams) (*APIServiceMaxGasOK, error) {
 	// TODO: Validate the params before sending
@@ -648,7 +648,7 @@ func (a *Client) APIServiceMaxGas(params *APIServiceMaxGasParams) (*APIServiceMa
 }
 
 /*
-  APIServiceMinGasPrice Api service min gas price API
+  APIServiceMinGasPrice mins gas price returns current min gas price
 */
 func (a *Client) APIServiceMinGasPrice(params *APIServiceMinGasPriceParams) (*APIServiceMinGasPriceOK, error) {
 	// TODO: Validate the params before sending
@@ -681,7 +681,7 @@ func (a *Client) APIServiceMinGasPrice(params *APIServiceMinGasPriceParams) (*AP
 }
 
 /*
-  APIServiceMissedBlocks Api service missed blocks API
+  APIServiceMissedBlocks misseds blocks returns missed blocks by validator public key
 */
 func (a *Client) APIServiceMissedBlocks(params *APIServiceMissedBlocksParams) (*APIServiceMissedBlocksOK, error) {
 	// TODO: Validate the params before sending
@@ -714,7 +714,7 @@ func (a *Client) APIServiceMissedBlocks(params *APIServiceMissedBlocksParams) (*
 }
 
 /*
-  APIServiceNetInfo Api service net info API
+  APIServiceNetInfo nets info returns network info
 */
 func (a *Client) APIServiceNetInfo(params *APIServiceNetInfoParams) (*APIServiceNetInfoOK, error) {
 	// TODO: Validate the params before sending
@@ -747,7 +747,7 @@ func (a *Client) APIServiceNetInfo(params *APIServiceNetInfoParams) (*APIService
 }
 
 /*
-  APIServiceSendTransaction Api service send transaction API
+  APIServiceSendTransaction sends transaction returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
 */
 func (a *Client) APIServiceSendTransaction(params *APIServiceSendTransactionParams) (*APIServiceSendTransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -780,7 +780,7 @@ func (a *Client) APIServiceSendTransaction(params *APIServiceSendTransactionPara
 }
 
 /*
-  APIServiceSendTransaction2 Api service send transaction2 API
+  APIServiceSendTransaction2 sends transaction returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
 */
 func (a *Client) APIServiceSendTransaction2(params *APIServiceSendTransaction2Params) (*APIServiceSendTransaction2OK, error) {
 	// TODO: Validate the params before sending
@@ -813,7 +813,7 @@ func (a *Client) APIServiceSendTransaction2(params *APIServiceSendTransaction2Pa
 }
 
 /*
-  APIServiceStatus Api service status API
+  APIServiceStatus statuses returns node status including pubkey latest block
 */
 func (a *Client) APIServiceStatus(params *APIServiceStatusParams) (*APIServiceStatusOK, error) {
 	// TODO: Validate the params before sending
@@ -846,7 +846,7 @@ func (a *Client) APIServiceStatus(params *APIServiceStatusParams) (*APIServiceSt
 }
 
 /*
-  APIServiceSubscribe Api service subscribe API
+  APIServiceSubscribe subscribes returns a subscription for events by query
 */
 func (a *Client) APIServiceSubscribe(params *APIServiceSubscribeParams) (*APIServiceSubscribeOK, error) {
 	// TODO: Validate the params before sending
@@ -879,7 +879,7 @@ func (a *Client) APIServiceSubscribe(params *APIServiceSubscribeParams) (*APISer
 }
 
 /*
-  APIServiceTransaction Api service transaction API
+  APIServiceTransaction transactions returns transaction info
 */
 func (a *Client) APIServiceTransaction(params *APIServiceTransactionParams) (*APIServiceTransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -912,7 +912,7 @@ func (a *Client) APIServiceTransaction(params *APIServiceTransactionParams) (*AP
 }
 
 /*
-  APIServiceTransactions Api service transactions API
+  APIServiceTransactions transactions return transactions by query
 */
 func (a *Client) APIServiceTransactions(params *APIServiceTransactionsParams) (*APIServiceTransactionsOK, error) {
 	// TODO: Validate the params before sending
@@ -945,7 +945,7 @@ func (a *Client) APIServiceTransactions(params *APIServiceTransactionsParams) (*
 }
 
 /*
-  APIServiceUnconfirmedTxs Api service unconfirmed txs API
+  APIServiceUnconfirmedTxs unconfirmeds txs returns unconfirmed transactions
 */
 func (a *Client) APIServiceUnconfirmedTxs(params *APIServiceUnconfirmedTxsParams) (*APIServiceUnconfirmedTxsOK, error) {
 	// TODO: Validate the params before sending
@@ -978,7 +978,7 @@ func (a *Client) APIServiceUnconfirmedTxs(params *APIServiceUnconfirmedTxsParams
 }
 
 /*
-  APIServiceValidators Api service validators API
+  APIServiceValidators validators returns list of active validators
 */
 func (a *Client) APIServiceValidators(params *APIServiceValidatorsParams) (*APIServiceValidatorsOK, error) {
 	// TODO: Validate the params before sending
@@ -1011,7 +1011,7 @@ func (a *Client) APIServiceValidators(params *APIServiceValidatorsParams) (*APIS
 }
 
 /*
-  APIServiceWaitList Api service wait list API
+  APIServiceWaitList validators returns frozen balance
 */
 func (a *Client) APIServiceWaitList(params *APIServiceWaitListParams) (*APIServiceWaitListOK, error) {
 	// TODO: Validate the params before sending
