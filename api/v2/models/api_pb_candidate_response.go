@@ -21,6 +21,9 @@ type APIPbCandidateResponse struct {
 	// commission
 	Commission string `json:"commission,omitempty"`
 
+	// control address
+	ControlAddress string `json:"control_address,omitempty"`
+
 	// min stake
 	MinStake string `json:"min_stake,omitempty"`
 
