@@ -18,8 +18,8 @@ github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e h1:ahyvB3q25Yn
 github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e/go.mod h1:kGUqhHd//musdITWjFvNTHn90WG9bMLBEPQZ17Cmlpw=
 github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec h1:1Qb69mGp/UtRPn422BH4/Y4Q3SLUrD9KHuDkm8iodFc=
 github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec/go.mod h1:CD8UlnlLDiqb36L110uqiP2iSflVjx9g/3U9hCI4q2U=
-github.com/MinterTeam/node-grpc-gateway v1.1.3-0.20200819130148-0deeb7162b8e h1:jAGbWevIHbzxE0WMyPgTnSJJs4dmetKnaRaute1lG/Q=
-github.com/MinterTeam/node-grpc-gateway v1.1.3-0.20200819130148-0deeb7162b8e/go.mod h1:qQbnQmtHQPubkT2hF/4qSBe/XMcHm+QVMLhm6AfQT5M=
+github.com/MinterTeam/node-grpc-gateway v1.1.3-0.20200827075149-9a899154bdc5 h1:ALM3TTNVX9Tx65o1aZixOTZM7M20s/+qcLudCVU/tvc=
+github.com/MinterTeam/node-grpc-gateway v1.1.3-0.20200827075149-9a899154bdc5/go.mod h1:qQbnQmtHQPubkT2hF/4qSBe/XMcHm+QVMLhm6AfQT5M=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/OneOfOne/xxhash v1.2.5/go.mod h1:eZbhyaAYD41SGSSsnmcpxVoRiQ/MPUTjUdIIOT9Um7Q=
 github.com/PuerkitoBio/purell v1.1.0/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
