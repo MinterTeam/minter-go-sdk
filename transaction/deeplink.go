@@ -11,9 +11,9 @@ type DeepLink struct {
 	Type     Type    // type of transaction
 	Data     []byte  // data of transaction (depends on transaction type)
 	Payload  []byte  // optional, arbitrary user-defined bytes
-	Nonce    *uint   `rlp:"nil"` // optional, used for prevent transaction reply
-	GasPrice *uint   `rlp:"nil"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
-	GasCoin  *CoinID `rlp:"nil"` // optional, ID of a coin to pay fee, right padded with zeros
+	Nonce    *uint   `rlp:"nilList"` // optional, used for prevent transaction reply
+	GasPrice *uint   `rlp:"nilList"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
+	GasCoin  *CoinID `rlp:"nilList"` // optional, ID of a coin to pay fee, right padded with zeros
 }
 
 // Returns url link.

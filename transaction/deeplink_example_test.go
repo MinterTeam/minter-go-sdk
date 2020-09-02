@@ -13,7 +13,6 @@ func ExampleNewDeepLink() {
 			SetCoin(1).
 			SetValue(big.NewInt(0).Mul(big.NewInt(123456789), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-8), nil))),
 	)
-
 	link.SetPayload([]byte("Hello World"))
 	encode, _ := link.Encode()
 	fmt.Println(encode)
