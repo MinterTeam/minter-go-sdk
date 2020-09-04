@@ -29,6 +29,12 @@ func (o *APIServiceSendTransactionReader) ReadResponse(response runtime.ClientRe
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceSendTransactionBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceSendTransactionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceSendTransactionOK) readResponse(response runtime.ClientRespon
 	return nil
 }
 
+// NewAPIServiceSendTransactionBadRequest creates a APIServiceSendTransactionBadRequest with default headers values
+func NewAPIServiceSendTransactionBadRequest() *APIServiceSendTransactionBadRequest {
+	return &APIServiceSendTransactionBadRequest{}
+}
+
+/*APIServiceSendTransactionBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceSendTransactionBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceSendTransactionBadRequest) Error() string {
+	return fmt.Sprintf("[GET /send_transaction/{tx}][%d] apiServiceSendTransactionBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceSendTransactionBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceSendTransactionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceSendTransactionDefault creates a APIServiceSendTransactionDefault with default headers values
 func NewAPIServiceSendTransactionDefault(code int) *APIServiceSendTransactionDefault {
 	return &APIServiceSendTransactionDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceSendTransactionDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service send transaction default response
@@ -100,13 +139,13 @@ func (o *APIServiceSendTransactionDefault) Error() string {
 	return fmt.Sprintf("[GET /send_transaction/{tx}][%d] ApiService_SendTransaction default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceSendTransactionDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceSendTransactionDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceSendTransactionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

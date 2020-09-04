@@ -29,6 +29,12 @@ func (o *APIServiceMinGasPriceReader) ReadResponse(response runtime.ClientRespon
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceMinGasPriceBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceMinGasPriceDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceMinGasPriceOK) readResponse(response runtime.ClientResponse, 
 	return nil
 }
 
+// NewAPIServiceMinGasPriceBadRequest creates a APIServiceMinGasPriceBadRequest with default headers values
+func NewAPIServiceMinGasPriceBadRequest() *APIServiceMinGasPriceBadRequest {
+	return &APIServiceMinGasPriceBadRequest{}
+}
+
+/*APIServiceMinGasPriceBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceMinGasPriceBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceMinGasPriceBadRequest) Error() string {
+	return fmt.Sprintf("[GET /min_gas_price][%d] apiServiceMinGasPriceBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceMinGasPriceBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceMinGasPriceBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceMinGasPriceDefault creates a APIServiceMinGasPriceDefault with default headers values
 func NewAPIServiceMinGasPriceDefault(code int) *APIServiceMinGasPriceDefault {
 	return &APIServiceMinGasPriceDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceMinGasPriceDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service min gas price default response
@@ -100,13 +139,13 @@ func (o *APIServiceMinGasPriceDefault) Error() string {
 	return fmt.Sprintf("[GET /min_gas_price][%d] ApiService_MinGasPrice default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceMinGasPriceDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceMinGasPriceDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceMinGasPriceDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

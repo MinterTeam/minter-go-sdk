@@ -29,6 +29,12 @@ func (o *APIServiceBlockReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceBlockBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceBlockDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceBlockOK) readResponse(response runtime.ClientResponse, consum
 	return nil
 }
 
+// NewAPIServiceBlockBadRequest creates a APIServiceBlockBadRequest with default headers values
+func NewAPIServiceBlockBadRequest() *APIServiceBlockBadRequest {
+	return &APIServiceBlockBadRequest{}
+}
+
+/*APIServiceBlockBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceBlockBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceBlockBadRequest) Error() string {
+	return fmt.Sprintf("[GET /block/{height}][%d] apiServiceBlockBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceBlockBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceBlockBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceBlockDefault creates a APIServiceBlockDefault with default headers values
 func NewAPIServiceBlockDefault(code int) *APIServiceBlockDefault {
 	return &APIServiceBlockDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceBlockDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service block default response
@@ -100,13 +139,13 @@ func (o *APIServiceBlockDefault) Error() string {
 	return fmt.Sprintf("[GET /block/{height}][%d] ApiService_Block default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceBlockDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceBlockDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceBlockDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

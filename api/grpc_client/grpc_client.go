@@ -100,37 +100,39 @@ func (c *Client) CoinInfo(symbol string, optionalHeight ...int) (*api_pb.CoinInf
 	return c.grpcClient.CoinInfo(c.ctxFunc(), &api_pb.CoinInfoRequest{Height: optionalInt(optionalHeight), Symbol: symbol})
 }
 
-//EstimateCoinBuy return estimate of buy coin transaction.
-func (c *Client) EstimateCoinBuy(coinToSell, coinToBuy uint32, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinBuyResponse, error) {
-	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), CoinIdToSell: coinToSell, CoinIdToBuy: coinToBuy, ValueToBuy: valueToBuy})
+//EstimateCoinSymbolBuy return estimate of buy coin transaction.
+func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy string, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinBuyResponse, error) {
+	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToBuy: valueToBuy})
 }
 
-//EstimateCoinSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinSell(coinToBuy, coinToSell uint32, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), CoinIdToBuy: coinToBuy, CoinIdToSell: coinToSell, ValueToSell: valueToBuy})
+//EstimateCoinSymbolSell return estimate of sell coin transaction.
+func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy})
 }
 
-//EstimateCoinSellAll return estimate of sell all coin transaction.
-func (c *Client) EstimateCoinSellAll(coinToBuy, coinToSell uint32, valueToBuy string, gasPrice int, optionalHeight ...int) (*api_pb.EstimateCoinSellAllResponse, error) {
-	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), CoinIdToBuy: coinToBuy, CoinIdToSell: coinToSell, ValueToSell: valueToBuy, GasPrice: uint64(gasPrice)})
+//EstimateCoinSymbolSellAll return estimate of sell all coin transaction.
+func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, valueToBuy string, gasPrice int, optionalHeight ...int) (*api_pb.EstimateCoinSellAllResponse, error) {
+	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy, GasPrice: uint64(gasPrice)})
 }
 
-//EstimateTxCommissionTx return estimate of encoding transaction.
-func (c *Client) EstimateTxCommissionTx(tx string, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
+//EstimateCoinIDBuy return estimate of buy coin transaction.
+func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint32, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinBuyResponse, error) {
+	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToBuy: valueToBuy})
+}
+
+//EstimateCoinIDSell return estimate of sell coin transaction.
+func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint32, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToBuy})
+}
+
+//EstimateCoinSellIDAll return estimate of sell all coin transaction.
+func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell uint32, valueToBuy string, gasPrice int, optionalHeight ...int) (*api_pb.EstimateCoinSellAllResponse, error) {
+	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToBuy, GasPrice: uint64(gasPrice)})
+}
+
+//EstimateTxCommission return estimate of encoding transaction.
+func (c *Client) EstimateTxCommission(tx string, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
 	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{Height: optionalInt(optionalHeight), Tx: tx})
-}
-
-//EstimateTxCommissionData return estimate of transaction data.
-func (c *Client) EstimateTxCommissionData(gasCoin uint32, t api_pb.EstimateTxCommissionRequest_TransactionData_Type, payload []byte, mtxsCount int64, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
-	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{
-		Height: optionalInt(optionalHeight),
-		Data: &api_pb.EstimateTxCommissionRequest_TransactionData{
-			GasCoinId: gasCoin,
-			Type:      t,
-			Payload:   payload,
-			Mtxs:      mtxsCount,
-		},
-	})
 }
 
 //Events returns events at given height.

@@ -29,6 +29,12 @@ func (o *APIServiceValidatorsReader) ReadResponse(response runtime.ClientRespons
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceValidatorsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceValidatorsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceValidatorsOK) readResponse(response runtime.ClientResponse, c
 	return nil
 }
 
+// NewAPIServiceValidatorsBadRequest creates a APIServiceValidatorsBadRequest with default headers values
+func NewAPIServiceValidatorsBadRequest() *APIServiceValidatorsBadRequest {
+	return &APIServiceValidatorsBadRequest{}
+}
+
+/*APIServiceValidatorsBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceValidatorsBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceValidatorsBadRequest) Error() string {
+	return fmt.Sprintf("[GET /validators][%d] apiServiceValidatorsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceValidatorsBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceValidatorsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceValidatorsDefault creates a APIServiceValidatorsDefault with default headers values
 func NewAPIServiceValidatorsDefault(code int) *APIServiceValidatorsDefault {
 	return &APIServiceValidatorsDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceValidatorsDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service validators default response
@@ -100,13 +139,13 @@ func (o *APIServiceValidatorsDefault) Error() string {
 	return fmt.Sprintf("[GET /validators][%d] ApiService_Validators default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceValidatorsDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceValidatorsDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceValidatorsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

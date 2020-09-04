@@ -65,6 +65,10 @@ type APIServiceEstimateCoinSellParams struct {
 	CoinIDToBuy *int64
 	/*CoinIDToSell*/
 	CoinIDToSell *int64
+	/*CoinToBuy*/
+	CoinToBuy *string
+	/*CoinToSell*/
+	CoinToSell *string
 	/*Height*/
 	Height *string
 	/*ValueToSell*/
@@ -130,6 +134,28 @@ func (o *APIServiceEstimateCoinSellParams) SetCoinIDToSell(coinIDToSell *int64) 
 	o.CoinIDToSell = coinIDToSell
 }
 
+// WithCoinToBuy adds the coinToBuy to the Api service estimate coin sell params
+func (o *APIServiceEstimateCoinSellParams) WithCoinToBuy(coinToBuy *string) *APIServiceEstimateCoinSellParams {
+	o.SetCoinToBuy(coinToBuy)
+	return o
+}
+
+// SetCoinToBuy adds the coinToBuy to the Api service estimate coin sell params
+func (o *APIServiceEstimateCoinSellParams) SetCoinToBuy(coinToBuy *string) {
+	o.CoinToBuy = coinToBuy
+}
+
+// WithCoinToSell adds the coinToSell to the Api service estimate coin sell params
+func (o *APIServiceEstimateCoinSellParams) WithCoinToSell(coinToSell *string) *APIServiceEstimateCoinSellParams {
+	o.SetCoinToSell(coinToSell)
+	return o
+}
+
+// SetCoinToSell adds the coinToSell to the Api service estimate coin sell params
+func (o *APIServiceEstimateCoinSellParams) SetCoinToSell(coinToSell *string) {
+	o.CoinToSell = coinToSell
+}
+
 // WithHeight adds the height to the Api service estimate coin sell params
 func (o *APIServiceEstimateCoinSellParams) WithHeight(height *string) *APIServiceEstimateCoinSellParams {
 	o.SetHeight(height)
@@ -186,6 +212,38 @@ func (o *APIServiceEstimateCoinSellParams) WriteToRequest(r runtime.ClientReques
 		qCoinIDToSell := swag.FormatInt64(qrCoinIDToSell)
 		if qCoinIDToSell != "" {
 			if err := r.SetQueryParam("coin_id_to_sell", qCoinIDToSell); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.CoinToBuy != nil {
+
+		// query param coin_to_buy
+		var qrCoinToBuy string
+		if o.CoinToBuy != nil {
+			qrCoinToBuy = *o.CoinToBuy
+		}
+		qCoinToBuy := qrCoinToBuy
+		if qCoinToBuy != "" {
+			if err := r.SetQueryParam("coin_to_buy", qCoinToBuy); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.CoinToSell != nil {
+
+		// query param coin_to_sell
+		var qrCoinToSell string
+		if o.CoinToSell != nil {
+			qrCoinToSell = *o.CoinToSell
+		}
+		qCoinToSell := qrCoinToSell
+		if qCoinToSell != "" {
+			if err := r.SetQueryParam("coin_to_sell", qCoinToSell); err != nil {
 				return err
 			}
 		}

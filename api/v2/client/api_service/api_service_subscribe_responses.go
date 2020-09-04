@@ -31,6 +31,12 @@ func (o *APIServiceSubscribeReader) ReadResponse(response runtime.ClientResponse
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceSubscribeBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceSubscribeDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -76,6 +82,39 @@ func (o *APIServiceSubscribeOK) readResponse(response runtime.ClientResponse, co
 	return nil
 }
 
+// NewAPIServiceSubscribeBadRequest creates a APIServiceSubscribeBadRequest with default headers values
+func NewAPIServiceSubscribeBadRequest() *APIServiceSubscribeBadRequest {
+	return &APIServiceSubscribeBadRequest{}
+}
+
+/*APIServiceSubscribeBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceSubscribeBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceSubscribeBadRequest) Error() string {
+	return fmt.Sprintf("[GET /subscribe][%d] apiServiceSubscribeBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceSubscribeBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceSubscribeBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceSubscribeDefault creates a APIServiceSubscribeDefault with default headers values
 func NewAPIServiceSubscribeDefault(code int) *APIServiceSubscribeDefault {
 	return &APIServiceSubscribeDefault{
@@ -90,7 +129,7 @@ An unexpected error response
 type APIServiceSubscribeDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service subscribe default response
@@ -102,13 +141,13 @@ func (o *APIServiceSubscribeDefault) Error() string {
 	return fmt.Sprintf("[GET /subscribe][%d] ApiService_Subscribe default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceSubscribeDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceSubscribeDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceSubscribeDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

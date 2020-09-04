@@ -29,6 +29,12 @@ func (o *APIServiceCoinInfoByIDReader) ReadResponse(response runtime.ClientRespo
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceCoinInfoByIDBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceCoinInfoByIDDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceCoinInfoByIDOK) readResponse(response runtime.ClientResponse,
 	return nil
 }
 
+// NewAPIServiceCoinInfoByIDBadRequest creates a APIServiceCoinInfoByIDBadRequest with default headers values
+func NewAPIServiceCoinInfoByIDBadRequest() *APIServiceCoinInfoByIDBadRequest {
+	return &APIServiceCoinInfoByIDBadRequest{}
+}
+
+/*APIServiceCoinInfoByIDBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceCoinInfoByIDBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceCoinInfoByIDBadRequest) Error() string {
+	return fmt.Sprintf("[GET /coin_info_by_id/{id}][%d] apiServiceCoinInfoByIdBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceCoinInfoByIDBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceCoinInfoByIDBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceCoinInfoByIDDefault creates a APIServiceCoinInfoByIDDefault with default headers values
 func NewAPIServiceCoinInfoByIDDefault(code int) *APIServiceCoinInfoByIDDefault {
 	return &APIServiceCoinInfoByIDDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceCoinInfoByIDDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service coin info by Id default response
@@ -100,13 +139,13 @@ func (o *APIServiceCoinInfoByIDDefault) Error() string {
 	return fmt.Sprintf("[GET /coin_info_by_id/{id}][%d] ApiService_CoinInfoById default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceCoinInfoByIDDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceCoinInfoByIDDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceCoinInfoByIDDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

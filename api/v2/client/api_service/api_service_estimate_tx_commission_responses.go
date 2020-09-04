@@ -29,6 +29,12 @@ func (o *APIServiceEstimateTxCommissionReader) ReadResponse(response runtime.Cli
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceEstimateTxCommissionBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceEstimateTxCommissionDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceEstimateTxCommissionOK) readResponse(response runtime.ClientR
 	return nil
 }
 
+// NewAPIServiceEstimateTxCommissionBadRequest creates a APIServiceEstimateTxCommissionBadRequest with default headers values
+func NewAPIServiceEstimateTxCommissionBadRequest() *APIServiceEstimateTxCommissionBadRequest {
+	return &APIServiceEstimateTxCommissionBadRequest{}
+}
+
+/*APIServiceEstimateTxCommissionBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceEstimateTxCommissionBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceEstimateTxCommissionBadRequest) Error() string {
+	return fmt.Sprintf("[GET /estimate_tx_commission/{tx}][%d] apiServiceEstimateTxCommissionBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceEstimateTxCommissionBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceEstimateTxCommissionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceEstimateTxCommissionDefault creates a APIServiceEstimateTxCommissionDefault with default headers values
 func NewAPIServiceEstimateTxCommissionDefault(code int) *APIServiceEstimateTxCommissionDefault {
 	return &APIServiceEstimateTxCommissionDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceEstimateTxCommissionDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service estimate tx commission default response
@@ -100,13 +139,13 @@ func (o *APIServiceEstimateTxCommissionDefault) Error() string {
 	return fmt.Sprintf("[GET /estimate_tx_commission/{tx}][%d] ApiService_EstimateTxCommission default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceEstimateTxCommissionDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceEstimateTxCommissionDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceEstimateTxCommissionDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

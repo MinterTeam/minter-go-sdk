@@ -29,6 +29,12 @@ func (o *APIServiceUnconfirmedTxsReader) ReadResponse(response runtime.ClientRes
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceUnconfirmedTxsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceUnconfirmedTxsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceUnconfirmedTxsOK) readResponse(response runtime.ClientRespons
 	return nil
 }
 
+// NewAPIServiceUnconfirmedTxsBadRequest creates a APIServiceUnconfirmedTxsBadRequest with default headers values
+func NewAPIServiceUnconfirmedTxsBadRequest() *APIServiceUnconfirmedTxsBadRequest {
+	return &APIServiceUnconfirmedTxsBadRequest{}
+}
+
+/*APIServiceUnconfirmedTxsBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceUnconfirmedTxsBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceUnconfirmedTxsBadRequest) Error() string {
+	return fmt.Sprintf("[GET /unconfirmed_txs][%d] apiServiceUnconfirmedTxsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceUnconfirmedTxsBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceUnconfirmedTxsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceUnconfirmedTxsDefault creates a APIServiceUnconfirmedTxsDefault with default headers values
 func NewAPIServiceUnconfirmedTxsDefault(code int) *APIServiceUnconfirmedTxsDefault {
 	return &APIServiceUnconfirmedTxsDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceUnconfirmedTxsDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service unconfirmed txs default response
@@ -100,13 +139,13 @@ func (o *APIServiceUnconfirmedTxsDefault) Error() string {
 	return fmt.Sprintf("[GET /unconfirmed_txs][%d] ApiService_UnconfirmedTxs default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceUnconfirmedTxsDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceUnconfirmedTxsDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceUnconfirmedTxsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -29,6 +29,12 @@ func (o *APIServiceStatusReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceStatusBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceStatusDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceStatusOK) readResponse(response runtime.ClientResponse, consu
 	return nil
 }
 
+// NewAPIServiceStatusBadRequest creates a APIServiceStatusBadRequest with default headers values
+func NewAPIServiceStatusBadRequest() *APIServiceStatusBadRequest {
+	return &APIServiceStatusBadRequest{}
+}
+
+/*APIServiceStatusBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceStatusBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceStatusBadRequest) Error() string {
+	return fmt.Sprintf("[GET /status][%d] apiServiceStatusBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceStatusBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceStatusBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceStatusDefault creates a APIServiceStatusDefault with default headers values
 func NewAPIServiceStatusDefault(code int) *APIServiceStatusDefault {
 	return &APIServiceStatusDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceStatusDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service status default response
@@ -100,13 +139,13 @@ func (o *APIServiceStatusDefault) Error() string {
 	return fmt.Sprintf("[GET /status][%d] ApiService_Status default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceStatusDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceStatusDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceStatusDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

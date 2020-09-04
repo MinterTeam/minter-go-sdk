@@ -29,6 +29,12 @@ func (o *APIServiceEstimateCoinBuyReader) ReadResponse(response runtime.ClientRe
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceEstimateCoinBuyBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceEstimateCoinBuyDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceEstimateCoinBuyOK) readResponse(response runtime.ClientRespon
 	return nil
 }
 
+// NewAPIServiceEstimateCoinBuyBadRequest creates a APIServiceEstimateCoinBuyBadRequest with default headers values
+func NewAPIServiceEstimateCoinBuyBadRequest() *APIServiceEstimateCoinBuyBadRequest {
+	return &APIServiceEstimateCoinBuyBadRequest{}
+}
+
+/*APIServiceEstimateCoinBuyBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceEstimateCoinBuyBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceEstimateCoinBuyBadRequest) Error() string {
+	return fmt.Sprintf("[GET /estimate_coin_buy][%d] apiServiceEstimateCoinBuyBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceEstimateCoinBuyBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceEstimateCoinBuyBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceEstimateCoinBuyDefault creates a APIServiceEstimateCoinBuyDefault with default headers values
 func NewAPIServiceEstimateCoinBuyDefault(code int) *APIServiceEstimateCoinBuyDefault {
 	return &APIServiceEstimateCoinBuyDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceEstimateCoinBuyDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service estimate coin buy default response
@@ -100,13 +139,13 @@ func (o *APIServiceEstimateCoinBuyDefault) Error() string {
 	return fmt.Sprintf("[GET /estimate_coin_buy][%d] ApiService_EstimateCoinBuy default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceEstimateCoinBuyDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceEstimateCoinBuyDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceEstimateCoinBuyDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

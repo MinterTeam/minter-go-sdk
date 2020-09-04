@@ -47,8 +47,6 @@ type ClientService interface {
 
 	APIServiceEstimateTxCommission(params *APIServiceEstimateTxCommissionParams) (*APIServiceEstimateTxCommissionOK, error)
 
-	APIServiceEstimateTxCommission2(params *APIServiceEstimateTxCommission2Params) (*APIServiceEstimateTxCommission2OK, error)
-
 	APIServiceEvents(params *APIServiceEventsParams) (*APIServiceEventsOK, error)
 
 	APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFrozenOK, error)
@@ -446,39 +444,6 @@ func (a *Client) APIServiceEstimateTxCommission(params *APIServiceEstimateTxComm
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*APIServiceEstimateTxCommissionDefault)
-	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
-}
-
-/*
-  APIServiceEstimateTxCommission2 returns estimate of transaction
-*/
-func (a *Client) APIServiceEstimateTxCommission2(params *APIServiceEstimateTxCommission2Params) (*APIServiceEstimateTxCommission2OK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewAPIServiceEstimateTxCommission2Params()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_EstimateTxCommission2",
-		Method:             "GET",
-		PathPattern:        "/estimate_tx_commission",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
-		Params:             params,
-		Reader:             &APIServiceEstimateTxCommission2Reader{formats: a.formats},
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*APIServiceEstimateTxCommission2OK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceEstimateTxCommission2Default)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

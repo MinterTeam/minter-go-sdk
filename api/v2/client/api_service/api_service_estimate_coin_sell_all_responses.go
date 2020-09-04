@@ -29,6 +29,12 @@ func (o *APIServiceEstimateCoinSellAllReader) ReadResponse(response runtime.Clie
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceEstimateCoinSellAllBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceEstimateCoinSellAllDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceEstimateCoinSellAllOK) readResponse(response runtime.ClientRe
 	return nil
 }
 
+// NewAPIServiceEstimateCoinSellAllBadRequest creates a APIServiceEstimateCoinSellAllBadRequest with default headers values
+func NewAPIServiceEstimateCoinSellAllBadRequest() *APIServiceEstimateCoinSellAllBadRequest {
+	return &APIServiceEstimateCoinSellAllBadRequest{}
+}
+
+/*APIServiceEstimateCoinSellAllBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceEstimateCoinSellAllBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceEstimateCoinSellAllBadRequest) Error() string {
+	return fmt.Sprintf("[GET /estimate_coin_sell_all][%d] apiServiceEstimateCoinSellAllBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceEstimateCoinSellAllBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceEstimateCoinSellAllBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceEstimateCoinSellAllDefault creates a APIServiceEstimateCoinSellAllDefault with default headers values
 func NewAPIServiceEstimateCoinSellAllDefault(code int) *APIServiceEstimateCoinSellAllDefault {
 	return &APIServiceEstimateCoinSellAllDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceEstimateCoinSellAllDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service estimate coin sell all default response
@@ -100,13 +139,13 @@ func (o *APIServiceEstimateCoinSellAllDefault) Error() string {
 	return fmt.Sprintf("[GET /estimate_coin_sell_all][%d] ApiService_EstimateCoinSellAll default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceEstimateCoinSellAllDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceEstimateCoinSellAllDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceEstimateCoinSellAllDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

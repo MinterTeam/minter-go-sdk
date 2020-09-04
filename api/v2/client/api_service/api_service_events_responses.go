@@ -29,6 +29,12 @@ func (o *APIServiceEventsReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceEventsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceEventsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceEventsOK) readResponse(response runtime.ClientResponse, consu
 	return nil
 }
 
+// NewAPIServiceEventsBadRequest creates a APIServiceEventsBadRequest with default headers values
+func NewAPIServiceEventsBadRequest() *APIServiceEventsBadRequest {
+	return &APIServiceEventsBadRequest{}
+}
+
+/*APIServiceEventsBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceEventsBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceEventsBadRequest) Error() string {
+	return fmt.Sprintf("[GET /events/{height}][%d] apiServiceEventsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceEventsBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceEventsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceEventsDefault creates a APIServiceEventsDefault with default headers values
 func NewAPIServiceEventsDefault(code int) *APIServiceEventsDefault {
 	return &APIServiceEventsDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceEventsDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service events default response
@@ -100,13 +139,13 @@ func (o *APIServiceEventsDefault) Error() string {
 	return fmt.Sprintf("[GET /events/{height}][%d] ApiService_Events default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceEventsDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceEventsDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceEventsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

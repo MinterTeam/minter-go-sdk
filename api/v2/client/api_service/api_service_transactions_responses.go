@@ -29,6 +29,12 @@ func (o *APIServiceTransactionsReader) ReadResponse(response runtime.ClientRespo
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceTransactionsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceTransactionsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceTransactionsOK) readResponse(response runtime.ClientResponse,
 	return nil
 }
 
+// NewAPIServiceTransactionsBadRequest creates a APIServiceTransactionsBadRequest with default headers values
+func NewAPIServiceTransactionsBadRequest() *APIServiceTransactionsBadRequest {
+	return &APIServiceTransactionsBadRequest{}
+}
+
+/*APIServiceTransactionsBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceTransactionsBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceTransactionsBadRequest) Error() string {
+	return fmt.Sprintf("[GET /transactions][%d] apiServiceTransactionsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceTransactionsBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceTransactionsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceTransactionsDefault creates a APIServiceTransactionsDefault with default headers values
 func NewAPIServiceTransactionsDefault(code int) *APIServiceTransactionsDefault {
 	return &APIServiceTransactionsDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceTransactionsDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service transactions default response
@@ -100,13 +139,13 @@ func (o *APIServiceTransactionsDefault) Error() string {
 	return fmt.Sprintf("[GET /transactions][%d] ApiService_Transactions default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceTransactionsDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceTransactionsDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceTransactionsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

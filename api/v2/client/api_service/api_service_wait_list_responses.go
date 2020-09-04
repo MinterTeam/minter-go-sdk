@@ -29,6 +29,12 @@ func (o *APIServiceWaitListReader) ReadResponse(response runtime.ClientResponse,
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewAPIServiceWaitListBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		result := NewAPIServiceWaitListDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -74,6 +80,39 @@ func (o *APIServiceWaitListOK) readResponse(response runtime.ClientResponse, con
 	return nil
 }
 
+// NewAPIServiceWaitListBadRequest creates a APIServiceWaitListBadRequest with default headers values
+func NewAPIServiceWaitListBadRequest() *APIServiceWaitListBadRequest {
+	return &APIServiceWaitListBadRequest{}
+}
+
+/*APIServiceWaitListBadRequest handles this case with default header values.
+
+An unexpected error response
+*/
+type APIServiceWaitListBadRequest struct {
+	Payload *models.APIPbErrorBody
+}
+
+func (o *APIServiceWaitListBadRequest) Error() string {
+	return fmt.Sprintf("[GET /waitlist/{public_key}/{address}][%d] apiServiceWaitListBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *APIServiceWaitListBadRequest) GetPayload() *models.APIPbErrorBody {
+	return o.Payload
+}
+
+func (o *APIServiceWaitListBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.APIPbErrorBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewAPIServiceWaitListDefault creates a APIServiceWaitListDefault with default headers values
 func NewAPIServiceWaitListDefault(code int) *APIServiceWaitListDefault {
 	return &APIServiceWaitListDefault{
@@ -88,7 +127,7 @@ An unexpected error response
 type APIServiceWaitListDefault struct {
 	_statusCode int
 
-	Payload *models.RuntimeError
+	Payload *models.GatewayruntimeError
 }
 
 // Code gets the status code for the Api service wait list default response
@@ -100,13 +139,13 @@ func (o *APIServiceWaitListDefault) Error() string {
 	return fmt.Sprintf("[GET /waitlist/{public_key}/{address}][%d] ApiService_WaitList default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceWaitListDefault) GetPayload() *models.RuntimeError {
+func (o *APIServiceWaitListDefault) GetPayload() *models.GatewayruntimeError {
 	return o.Payload
 }
 
 func (o *APIServiceWaitListDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.RuntimeError)
+	o.Payload = new(models.GatewayruntimeError)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
