@@ -29,12 +29,6 @@ func (o *APIServiceAddressReader) ReadResponse(response runtime.ClientResponse, 
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceAddressBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceAddressDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceAddressOK) readResponse(response runtime.ClientResponse, cons
 	return nil
 }
 
-// NewAPIServiceAddressBadRequest creates a APIServiceAddressBadRequest with default headers values
-func NewAPIServiceAddressBadRequest() *APIServiceAddressBadRequest {
-	return &APIServiceAddressBadRequest{}
-}
-
-/*APIServiceAddressBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceAddressBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceAddressBadRequest) Error() string {
-	return fmt.Sprintf("[GET /address/{address}][%d] apiServiceAddressBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceAddressBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceAddressBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceAddressDefault creates a APIServiceAddressDefault with default headers values
 func NewAPIServiceAddressDefault(code int) *APIServiceAddressDefault {
 	return &APIServiceAddressDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceAddressDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service address default response
@@ -139,13 +100,13 @@ func (o *APIServiceAddressDefault) Error() string {
 	return fmt.Sprintf("[GET /address/{address}][%d] ApiService_Address default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceAddressDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceAddressDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceAddressDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

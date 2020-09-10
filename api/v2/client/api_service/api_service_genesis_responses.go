@@ -29,12 +29,6 @@ func (o *APIServiceGenesisReader) ReadResponse(response runtime.ClientResponse, 
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceGenesisBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceGenesisDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceGenesisOK) readResponse(response runtime.ClientResponse, cons
 	return nil
 }
 
-// NewAPIServiceGenesisBadRequest creates a APIServiceGenesisBadRequest with default headers values
-func NewAPIServiceGenesisBadRequest() *APIServiceGenesisBadRequest {
-	return &APIServiceGenesisBadRequest{}
-}
-
-/*APIServiceGenesisBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceGenesisBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceGenesisBadRequest) Error() string {
-	return fmt.Sprintf("[GET /genesis][%d] apiServiceGenesisBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceGenesisBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceGenesisBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceGenesisDefault creates a APIServiceGenesisDefault with default headers values
 func NewAPIServiceGenesisDefault(code int) *APIServiceGenesisDefault {
 	return &APIServiceGenesisDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceGenesisDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service genesis default response
@@ -139,13 +100,13 @@ func (o *APIServiceGenesisDefault) Error() string {
 	return fmt.Sprintf("[GET /genesis][%d] ApiService_Genesis default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceGenesisDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceGenesisDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceGenesisDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

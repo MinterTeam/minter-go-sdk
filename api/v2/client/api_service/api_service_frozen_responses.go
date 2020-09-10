@@ -29,12 +29,6 @@ func (o *APIServiceFrozenReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceFrozenBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceFrozenDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceFrozenOK) readResponse(response runtime.ClientResponse, consu
 	return nil
 }
 
-// NewAPIServiceFrozenBadRequest creates a APIServiceFrozenBadRequest with default headers values
-func NewAPIServiceFrozenBadRequest() *APIServiceFrozenBadRequest {
-	return &APIServiceFrozenBadRequest{}
-}
-
-/*APIServiceFrozenBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceFrozenBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceFrozenBadRequest) Error() string {
-	return fmt.Sprintf("[GET /frozen][%d] apiServiceFrozenBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceFrozenBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceFrozenBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceFrozenDefault creates a APIServiceFrozenDefault with default headers values
 func NewAPIServiceFrozenDefault(code int) *APIServiceFrozenDefault {
 	return &APIServiceFrozenDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceFrozenDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service frozen default response
@@ -139,13 +100,13 @@ func (o *APIServiceFrozenDefault) Error() string {
 	return fmt.Sprintf("[GET /frozen][%d] ApiService_Frozen default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceFrozenDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceFrozenDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceFrozenDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

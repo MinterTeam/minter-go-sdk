@@ -15,8 +15,8 @@ import (
 // swagger:model GenesisResponseConsensusParamsValidator
 type GenesisResponseConsensusParamsValidator struct {
 
-	// public key types
-	PublicKeyTypes []string `json:"public_key_types"`
+	// pub key types
+	PubKeyTypes []string `json:"pub_key_types"`
 }
 
 // Validate validates this genesis response consensus params validator

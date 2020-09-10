@@ -29,12 +29,6 @@ func (o *APIServiceMissedBlocksReader) ReadResponse(response runtime.ClientRespo
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceMissedBlocksBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceMissedBlocksDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceMissedBlocksOK) readResponse(response runtime.ClientResponse,
 	return nil
 }
 
-// NewAPIServiceMissedBlocksBadRequest creates a APIServiceMissedBlocksBadRequest with default headers values
-func NewAPIServiceMissedBlocksBadRequest() *APIServiceMissedBlocksBadRequest {
-	return &APIServiceMissedBlocksBadRequest{}
-}
-
-/*APIServiceMissedBlocksBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceMissedBlocksBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceMissedBlocksBadRequest) Error() string {
-	return fmt.Sprintf("[GET /missed_blocks/{public_key}][%d] apiServiceMissedBlocksBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceMissedBlocksBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceMissedBlocksBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceMissedBlocksDefault creates a APIServiceMissedBlocksDefault with default headers values
 func NewAPIServiceMissedBlocksDefault(code int) *APIServiceMissedBlocksDefault {
 	return &APIServiceMissedBlocksDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceMissedBlocksDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service missed blocks default response
@@ -139,13 +100,13 @@ func (o *APIServiceMissedBlocksDefault) Error() string {
 	return fmt.Sprintf("[GET /missed_blocks/{public_key}][%d] ApiService_MissedBlocks default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceMissedBlocksDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceMissedBlocksDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceMissedBlocksDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

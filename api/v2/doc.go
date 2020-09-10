@@ -53,9 +53,8 @@
 					panic(err)
 				}
 
-				log.Println(runtimeError.Payload.Message)
-				log.Println(runtimeError.Payload.Error)
-				log.Println(runtimeError.Payload.Code)
+				log.Println(runtimeError.Payload.Error.Message)
+				log.Println(runtimeError.Payload.Error.Code)
 				binary, err := runtimeError.GetPayload().MarshalBinary()
 				if err != nil {
 					panic(err)

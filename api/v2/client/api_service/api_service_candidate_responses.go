@@ -29,12 +29,6 @@ func (o *APIServiceCandidateReader) ReadResponse(response runtime.ClientResponse
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceCandidateBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceCandidateDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceCandidateOK) readResponse(response runtime.ClientResponse, co
 	return nil
 }
 
-// NewAPIServiceCandidateBadRequest creates a APIServiceCandidateBadRequest with default headers values
-func NewAPIServiceCandidateBadRequest() *APIServiceCandidateBadRequest {
-	return &APIServiceCandidateBadRequest{}
-}
-
-/*APIServiceCandidateBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceCandidateBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceCandidateBadRequest) Error() string {
-	return fmt.Sprintf("[GET /candidate/{public_key}][%d] apiServiceCandidateBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceCandidateBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceCandidateBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceCandidateDefault creates a APIServiceCandidateDefault with default headers values
 func NewAPIServiceCandidateDefault(code int) *APIServiceCandidateDefault {
 	return &APIServiceCandidateDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceCandidateDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service candidate default response
@@ -139,13 +100,13 @@ func (o *APIServiceCandidateDefault) Error() string {
 	return fmt.Sprintf("[GET /candidate/{public_key}][%d] ApiService_Candidate default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceCandidateDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceCandidateDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceCandidateDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

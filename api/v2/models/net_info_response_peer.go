@@ -22,6 +22,9 @@ type NetInfoResponsePeer struct {
 	// is outbound
 	IsOutbound bool `json:"is_outbound,omitempty"`
 
+	// latest block height
+	LatestBlockHeight string `json:"latest_block_height,omitempty"`
+
 	// node info
 	NodeInfo *APIPbNodeInfo `json:"node_info,omitempty"`
 

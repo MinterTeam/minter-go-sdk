@@ -29,12 +29,6 @@ func (o *APIServiceMaxGasReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceMaxGasBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceMaxGasDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceMaxGasOK) readResponse(response runtime.ClientResponse, consu
 	return nil
 }
 
-// NewAPIServiceMaxGasBadRequest creates a APIServiceMaxGasBadRequest with default headers values
-func NewAPIServiceMaxGasBadRequest() *APIServiceMaxGasBadRequest {
-	return &APIServiceMaxGasBadRequest{}
-}
-
-/*APIServiceMaxGasBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceMaxGasBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceMaxGasBadRequest) Error() string {
-	return fmt.Sprintf("[GET /max_gas][%d] apiServiceMaxGasBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceMaxGasBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceMaxGasBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceMaxGasDefault creates a APIServiceMaxGasDefault with default headers values
 func NewAPIServiceMaxGasDefault(code int) *APIServiceMaxGasDefault {
 	return &APIServiceMaxGasDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceMaxGasDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service max gas default response
@@ -139,13 +100,13 @@ func (o *APIServiceMaxGasDefault) Error() string {
 	return fmt.Sprintf("[GET /max_gas][%d] ApiService_MaxGas default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceMaxGasDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceMaxGasDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceMaxGasDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

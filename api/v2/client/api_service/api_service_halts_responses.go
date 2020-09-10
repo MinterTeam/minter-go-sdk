@@ -29,12 +29,6 @@ func (o *APIServiceHaltsReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceHaltsBadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceHaltsDefault(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceHaltsOK) readResponse(response runtime.ClientResponse, consum
 	return nil
 }
 
-// NewAPIServiceHaltsBadRequest creates a APIServiceHaltsBadRequest with default headers values
-func NewAPIServiceHaltsBadRequest() *APIServiceHaltsBadRequest {
-	return &APIServiceHaltsBadRequest{}
-}
-
-/*APIServiceHaltsBadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceHaltsBadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceHaltsBadRequest) Error() string {
-	return fmt.Sprintf("[GET /halts][%d] apiServiceHaltsBadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceHaltsBadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceHaltsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceHaltsDefault creates a APIServiceHaltsDefault with default headers values
 func NewAPIServiceHaltsDefault(code int) *APIServiceHaltsDefault {
 	return &APIServiceHaltsDefault{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceHaltsDefault struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service halts default response
@@ -139,13 +100,13 @@ func (o *APIServiceHaltsDefault) Error() string {
 	return fmt.Sprintf("[GET /halts][%d] ApiService_Halts default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceHaltsDefault) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceHaltsDefault) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceHaltsDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

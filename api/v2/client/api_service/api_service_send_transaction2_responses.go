@@ -29,12 +29,6 @@ func (o *APIServiceSendTransaction2Reader) ReadResponse(response runtime.ClientR
 			return nil, err
 		}
 		return result, nil
-	case 400:
-		result := NewAPIServiceSendTransaction2BadRequest()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
 	default:
 		result := NewAPIServiceSendTransaction2Default(response.Code())
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -80,39 +74,6 @@ func (o *APIServiceSendTransaction2OK) readResponse(response runtime.ClientRespo
 	return nil
 }
 
-// NewAPIServiceSendTransaction2BadRequest creates a APIServiceSendTransaction2BadRequest with default headers values
-func NewAPIServiceSendTransaction2BadRequest() *APIServiceSendTransaction2BadRequest {
-	return &APIServiceSendTransaction2BadRequest{}
-}
-
-/*APIServiceSendTransaction2BadRequest handles this case with default header values.
-
-An unexpected error response
-*/
-type APIServiceSendTransaction2BadRequest struct {
-	Payload *models.APIPbErrorBody
-}
-
-func (o *APIServiceSendTransaction2BadRequest) Error() string {
-	return fmt.Sprintf("[POST /send_transaction][%d] apiServiceSendTransaction2BadRequest  %+v", 400, o.Payload)
-}
-
-func (o *APIServiceSendTransaction2BadRequest) GetPayload() *models.APIPbErrorBody {
-	return o.Payload
-}
-
-func (o *APIServiceSendTransaction2BadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
-
-	o.Payload = new(models.APIPbErrorBody)
-
-	// response payload
-	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
-		return err
-	}
-
-	return nil
-}
-
 // NewAPIServiceSendTransaction2Default creates a APIServiceSendTransaction2Default with default headers values
 func NewAPIServiceSendTransaction2Default(code int) *APIServiceSendTransaction2Default {
 	return &APIServiceSendTransaction2Default{
@@ -127,7 +88,7 @@ An unexpected error response
 type APIServiceSendTransaction2Default struct {
 	_statusCode int
 
-	Payload *models.GatewayruntimeError
+	Payload *models.APIPbErrorBody
 }
 
 // Code gets the status code for the Api service send transaction2 default response
@@ -139,13 +100,13 @@ func (o *APIServiceSendTransaction2Default) Error() string {
 	return fmt.Sprintf("[POST /send_transaction][%d] ApiService_SendTransaction2 default  %+v", o._statusCode, o.Payload)
 }
 
-func (o *APIServiceSendTransaction2Default) GetPayload() *models.GatewayruntimeError {
+func (o *APIServiceSendTransaction2Default) GetPayload() *models.APIPbErrorBody {
 	return o.Payload
 }
 
 func (o *APIServiceSendTransaction2Default) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.GatewayruntimeError)
+	o.Payload = new(models.APIPbErrorBody)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
