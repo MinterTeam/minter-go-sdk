@@ -7,11 +7,10 @@ import (
 
 // Transaction for editing existing candidate.
 type EditCandidateData struct {
-	PubKey         [32]byte  // Public key of a validator
-	NewPubKey      *[32]byte `rlp:"nil"` // New public key for change.
-	RewardAddress  [20]byte  // Address where validator’s rewards go to.
-	OwnerAddress   [20]byte  // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate.
-	ControlAddress [20]byte  // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
+	PubKey         [32]byte // Public key of a validator
+	RewardAddress  [20]byte // Address where validator’s rewards go to.
+	OwnerAddress   [20]byte // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate.
+	ControlAddress [20]byte // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
 }
 
 // New data of transaction for editing existing candidate.
@@ -34,27 +33,6 @@ func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
 // Tries to set public key of validator and panics on error.
 func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
 	_, err := d.SetPubKey(key)
-	if err != nil {
-		panic(err)
-	}
-	return d
-}
-
-// Set new public key for change.
-func (d *EditCandidateData) SetNewPubKey(key string) (*EditCandidateData, error) {
-	newPubKey, err := wallet.PublicKeyToHex(key)
-	if err != nil {
-		return d, err
-	}
-	var pubKey [32]byte
-	copy(pubKey[:], newPubKey)
-	d.NewPubKey = &pubKey
-	return d, nil
-}
-
-// Tries to set new public key and panics on error.
-func (d *EditCandidateData) MustSetNewPubKey(key string) *EditCandidateData {
-	_, err := d.SetNewPubKey(key)
 	if err != nil {
 		panic(err)
 	}

@@ -36,9 +36,10 @@ const (
 	TypeEditCandidate
 	TypeSetHaltBlock
 	TypeRecreateCoin
-	TypeChangeCoinOwner
+	TypeEditCoinOwner
 	TypeEditMultisigOwners
 	TypePriceVote
+	TypeEditCandidatePublicKey
 )
 
 // For each transaction sender should pay fee. Fees are measured in "units".
@@ -58,12 +59,13 @@ const (
 	feeTypeSetCandidateOffline Fee = 100
 	feeTypeCreateMultisig      Fee = 100
 	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate   Fee = 100000
-	feeTypeSetHaltBlock    Fee = 1000
-	feeTypeRecreateCoin    Fee = 10000000
-	feeTypeChangeCoinOwner Fee = 10000000
-	feeEditMultisigOwners  Fee = 1000
-	feePriceVote           Fee = 10
+	feeTypeEditCandidate          Fee = 100000
+	feeTypeEditCandidatePublicKey Fee = 100000
+	feeTypeSetHaltBlock           Fee = 1000
+	feeTypeRecreateCoin           Fee = 10000000
+	feeTypeEditCoinOwner          Fee = 10000000
+	feeEditMultisigOwners         Fee = 1000
+	feePriceVote                  Fee = 10
 )
 
 type SignatureType byte
@@ -307,8 +309,8 @@ func Decode(tx string) (*Object, error) {
 		data = &SetHaltBlockData{}
 	case TypeRecreateCoin:
 		data = &RecreateCoinData{}
-	case TypeChangeCoinOwner:
-		data = &ChangeCoinOwnerData{}
+	case TypeEditCoinOwner:
+		data = &EditCoinOwnerData{}
 	default:
 		return nil, errors.New("unknown transaction type")
 	}
