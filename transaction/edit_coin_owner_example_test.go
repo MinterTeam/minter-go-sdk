@@ -5,7 +5,7 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 )
 
-func ExampleNewChangeCoinOwnerData() {
+func ExampleNewEditCoinOwnerData() {
 	data := transaction.NewEditCoinOwnerData().
 		SetSymbol("SPRTEST").
 		MustSetNewOwner("Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47")
