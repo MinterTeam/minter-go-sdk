@@ -37,7 +37,7 @@ const (
 	TypeSetHaltBlock
 	TypeRecreateCoin
 	TypeEditCoinOwner
-	TypeEditMultisigOwners
+	TypeEditMultisig
 	TypePriceVote
 	TypeEditCandidatePublicKey
 )
@@ -60,11 +60,11 @@ const (
 	feeTypeCreateMultisig      Fee = 100
 	// feeMultisend Fee =  10+(n-1)*5
 	feeTypeEditCandidate          Fee = 100000
-	feeTypeEditCandidatePublicKey Fee = 100000
+	feeTypeEditCandidatePublicKey Fee = 100000000
 	feeTypeSetHaltBlock           Fee = 1000
 	feeTypeRecreateCoin           Fee = 10000000
 	feeTypeEditCoinOwner          Fee = 10000000
-	feeEditMultisigOwners         Fee = 1000
+	feeEditMultisig               Fee = 1000
 	feePriceVote                  Fee = 10
 )
 
