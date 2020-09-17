@@ -492,7 +492,7 @@ func (a *Client) APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFr
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "ApiService_Frozen",
 		Method:             "GET",
-		PathPattern:        "/frozen",
+		PathPattern:        "/frozen/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},

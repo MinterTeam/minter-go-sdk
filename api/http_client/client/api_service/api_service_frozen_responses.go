@@ -55,7 +55,7 @@ type APIServiceFrozenOK struct {
 }
 
 func (o *APIServiceFrozenOK) Error() string {
-	return fmt.Sprintf("[GET /frozen][%d] apiServiceFrozenOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /frozen/{address}][%d] apiServiceFrozenOK  %+v", 200, o.Payload)
 }
 
 func (o *APIServiceFrozenOK) GetPayload() *models.APIPbFrozenResponse {
@@ -97,7 +97,7 @@ func (o *APIServiceFrozenDefault) Code() int {
 }
 
 func (o *APIServiceFrozenDefault) Error() string {
-	return fmt.Sprintf("[GET /frozen][%d] ApiService_Frozen default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[GET /frozen/{address}][%d] ApiService_Frozen default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *APIServiceFrozenDefault) GetPayload() *models.APIPbErrorBody {

@@ -61,7 +61,7 @@ for the Api service frozen operation typically these are written to a http.Reque
 type APIServiceFrozenParams struct {
 
 	/*Address*/
-	Address *string
+	Address string
 	/*Coin*/
 	Coin *string
 
@@ -104,13 +104,13 @@ func (o *APIServiceFrozenParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithAddress adds the address to the Api service frozen params
-func (o *APIServiceFrozenParams) WithAddress(address *string) *APIServiceFrozenParams {
+func (o *APIServiceFrozenParams) WithAddress(address string) *APIServiceFrozenParams {
 	o.SetAddress(address)
 	return o
 }
 
 // SetAddress adds the address to the Api service frozen params
-func (o *APIServiceFrozenParams) SetAddress(address *string) {
+func (o *APIServiceFrozenParams) SetAddress(address string) {
 	o.Address = address
 }
 
@@ -133,20 +133,9 @@ func (o *APIServiceFrozenParams) WriteToRequest(r runtime.ClientRequest, reg str
 	}
 	var res []error
 
-	if o.Address != nil {
-
-		// query param address
-		var qrAddress string
-		if o.Address != nil {
-			qrAddress = *o.Address
-		}
-		qAddress := qrAddress
-		if qAddress != "" {
-			if err := r.SetQueryParam("address", qAddress); err != nil {
-				return err
-			}
-		}
-
+	// path param address
+	if err := r.SetPathParam("address", o.Address); err != nil {
+		return err
 	}
 
 	if o.Coin != nil {
