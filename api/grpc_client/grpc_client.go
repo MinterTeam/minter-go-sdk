@@ -16,13 +16,14 @@ import (
 	"strconv"
 )
 
+// Client gRPC
 type Client struct {
 	grpcClient api_pb.ApiServiceClient
 	ctxFunc    func() context.Context
 	marshaler  runtime.Marshaler
 }
 
-// New gRPC Client
+// New returns gRPC Client
 func New(address string) (*Client, error) {
 	clientConn, err := grpc.Dial(address,
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
