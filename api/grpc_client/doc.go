@@ -3,7 +3,7 @@
 
 	Example:
 
-		client, _ := grpc_client.New("node.chilinet.minter.network:28842")
+		client, _ := grpc_client.New("localhost:8842")
 		coinSymbol := "SUPERTEST9"
 		dataCreateCoin := transaction.NewCreateCoinData().
 			SetSymbol(coinSymbol)...

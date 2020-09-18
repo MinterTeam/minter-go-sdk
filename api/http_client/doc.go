@@ -3,7 +3,7 @@
 
 	Example:
 
-		client, _ := http_client.New("http://node.chilinet.minter.network:28843")
+		client, _ := http_client.New("http://localhost:8843")
 		coinSymbol := "SUPERTEST9"
 		dataCreateCoin := transaction.NewCreateCoinData().
 			SetSymbol(coinSymbol)...
