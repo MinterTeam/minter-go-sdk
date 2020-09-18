@@ -62,6 +62,7 @@ func (c *Client) ErrorBody(err error) (int, *api_pb.ErrorBody, error) {
 		Error: &api_pb.ErrorBody_Error{
 			Code:    strconv.Itoa(statusCode),
 			Message: s.Message(),
+			Data:    map[string]string{},
 		},
 	}
 
