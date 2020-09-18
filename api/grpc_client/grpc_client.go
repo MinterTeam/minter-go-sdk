@@ -9,8 +9,10 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	_struct "google.golang.org/protobuf/types/known/structpb"
+	"net/http"
 	"strconv"
 )
 
@@ -43,12 +45,16 @@ func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 
 func (c *Client) ErrorBody(err error) (int, *api_pb.ErrorBody, error) {
 	if err == nil {
-		return 0, nil, nil
+		return http.StatusOK, nil, nil
 	}
 
 	s, ok := status.FromError(err)
 	if !ok {
 		return 0, nil, err
+	}
+
+	if s.Code() == codes.OK {
+		return http.StatusOK, nil, nil
 	}
 
 	statusCode := runtime.HTTPStatusFromCode(s.Code())
@@ -69,25 +75,27 @@ func (c *Client) ErrorBody(err error) (int, *api_pb.ErrorBody, error) {
 		return statusCode, errorBody, nil
 	}
 
-	dataString := map[string]string{}
 	data := detail.AsMap()
-	for k, v := range data {
-		dataString[k] = fmt.Sprintf("%s", v)
-	}
-	code, ok := detail.GetFields()["code"]
+	code, ok := data["code"]
 	if ok {
-		errorBody.Error.Code = code.GetStringValue()
+		errorBody.Error.Code = fmt.Sprintf("%v", code)
+		delete(data, "code")
 	}
-	delete(data, "code")
-	errorBody.Error.Data = dataString
+	for k, v := range data {
+		errorBody.Error.Data[k] = fmt.Sprintf("%s", v)
+	}
 
 	return statusCode, errorBody, nil
 }
 
 func (c *Client) HttpError(statusError error) (statusCode int, json string, err error) {
 	statusCode, errorBody, err := c.ErrorBody(statusError)
-	if statusError != nil {
+	if err != nil {
 		return 0, "", err
+	}
+
+	if errorBody == nil {
+		return statusCode, "", nil
 	}
 
 	jErr, err := c.Marshal(errorBody)

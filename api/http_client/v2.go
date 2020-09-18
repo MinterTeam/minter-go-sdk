@@ -4,6 +4,7 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
+	"net/http"
 	"net/url"
 )
 
@@ -27,6 +28,10 @@ type DefaultError interface {
 }
 
 func ErrorBody(err error) (int, *models.APIPbErrorBody, error) {
+	if err == nil {
+		return http.StatusOK, nil, nil
+	}
+
 	if errorBody, ok := err.(DefaultError); ok {
 		return errorBody.Code(), errorBody.GetPayload(), nil
 	}
