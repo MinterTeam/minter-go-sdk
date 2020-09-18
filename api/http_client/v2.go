@@ -8,6 +8,7 @@ import (
 	"net/url"
 )
 
+// New return HTTP client api_service.ClientService
 func New(address string) (api_service.ClientService, error) {
 	parseAddress, err := url.Parse(address)
 	if err != nil {
@@ -24,10 +25,11 @@ func New(address string) (api_service.ClientService, error) {
 
 type DefaultError interface {
 	Code() int
-	GetPayload() *models.APIPbErrorBody
+	GetPayload() *models.ErrorBody
 }
 
-func ErrorBody(err error) (int, *models.APIPbErrorBody, error) {
+// ErrorBody returns error as API model
+func ErrorBody(err error) (int, *models.ErrorBody, error) {
 	if err == nil {
 		return http.StatusOK, nil, nil
 	}

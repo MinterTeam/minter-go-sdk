@@ -25,986 +25,986 @@ type Client struct {
 
 // ClientService is the interface for Client methods
 type ClientService interface {
-	APIServiceAddress(params *APIServiceAddressParams) (*APIServiceAddressOK, error)
+	Address(params *AddressParams) (*AddressOK, error)
 
-	APIServiceAddresses(params *APIServiceAddressesParams) (*APIServiceAddressesOK, error)
+	Addresses(params *AddressesParams) (*AddressesOK, error)
 
-	APIServiceBlock(params *APIServiceBlockParams) (*APIServiceBlockOK, error)
+	Block(params *BlockParams) (*BlockOK, error)
 
-	APIServiceCandidate(params *APIServiceCandidateParams) (*APIServiceCandidateOK, error)
+	Candidate(params *CandidateParams) (*CandidateOK, error)
 
-	APIServiceCandidates(params *APIServiceCandidatesParams) (*APIServiceCandidatesOK, error)
+	Candidates(params *CandidatesParams) (*CandidatesOK, error)
 
-	APIServiceCoinInfo(params *APIServiceCoinInfoParams) (*APIServiceCoinInfoOK, error)
+	CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error)
 
-	APIServiceCoinInfoByID(params *APIServiceCoinInfoByIDParams) (*APIServiceCoinInfoByIDOK, error)
+	CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, error)
 
-	APIServiceEstimateCoinBuy(params *APIServiceEstimateCoinBuyParams) (*APIServiceEstimateCoinBuyOK, error)
+	EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBuyOK, error)
 
-	APIServiceEstimateCoinSell(params *APIServiceEstimateCoinSellParams) (*APIServiceEstimateCoinSellOK, error)
+	EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoinSellOK, error)
 
-	APIServiceEstimateCoinSellAll(params *APIServiceEstimateCoinSellAllParams) (*APIServiceEstimateCoinSellAllOK, error)
+	EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*EstimateCoinSellAllOK, error)
 
-	APIServiceEstimateTxCommission(params *APIServiceEstimateTxCommissionParams) (*APIServiceEstimateTxCommissionOK, error)
+	EstimateTxCommission(params *EstimateTxCommissionParams) (*EstimateTxCommissionOK, error)
 
-	APIServiceEvents(params *APIServiceEventsParams) (*APIServiceEventsOK, error)
+	Events(params *EventsParams) (*EventsOK, error)
 
-	APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFrozenOK, error)
+	Frozen(params *FrozenParams) (*FrozenOK, error)
 
-	APIServiceGenesis(params *APIServiceGenesisParams) (*APIServiceGenesisOK, error)
+	Genesis(params *GenesisParams) (*GenesisOK, error)
 
-	APIServiceHalts(params *APIServiceHaltsParams) (*APIServiceHaltsOK, error)
+	Halts(params *HaltsParams) (*HaltsOK, error)
 
-	APIServiceMaxGas(params *APIServiceMaxGasParams) (*APIServiceMaxGasOK, error)
+	MaxGas(params *MaxGasParams) (*MaxGasOK, error)
 
-	APIServiceMinGasPrice(params *APIServiceMinGasPriceParams) (*APIServiceMinGasPriceOK, error)
+	MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error)
 
-	APIServiceMissedBlocks(params *APIServiceMissedBlocksParams) (*APIServiceMissedBlocksOK, error)
+	MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, error)
 
-	APIServiceNetInfo(params *APIServiceNetInfoParams) (*APIServiceNetInfoOK, error)
+	NetInfo(params *NetInfoParams) (*NetInfoOK, error)
 
-	APIServiceSendTransaction(params *APIServiceSendTransactionParams) (*APIServiceSendTransactionOK, error)
+	SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error)
 
-	APIServiceSendTransaction2(params *APIServiceSendTransaction2Params) (*APIServiceSendTransaction2OK, error)
+	SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error)
 
-	APIServiceStatus(params *APIServiceStatusParams) (*APIServiceStatusOK, error)
+	Status(params *StatusParams) (*StatusOK, error)
 
-	APIServiceSubscribe(params *APIServiceSubscribeParams) (*APIServiceSubscribeOK, error)
+	Subscribe(params *SubscribeParams) (*SubscribeOK, error)
 
-	APIServiceTransaction(params *APIServiceTransactionParams) (*APIServiceTransactionOK, error)
+	Transaction(params *TransactionParams) (*TransactionOK, error)
 
-	APIServiceTransactions(params *APIServiceTransactionsParams) (*APIServiceTransactionsOK, error)
+	Transactions(params *TransactionsParams) (*TransactionsOK, error)
 
-	APIServiceUnconfirmedTxs(params *APIServiceUnconfirmedTxsParams) (*APIServiceUnconfirmedTxsOK, error)
+	UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK, error)
 
-	APIServiceValidators(params *APIServiceValidatorsParams) (*APIServiceValidatorsOK, error)
+	Validators(params *ValidatorsParams) (*ValidatorsOK, error)
 
-	APIServiceWaitList(params *APIServiceWaitListParams) (*APIServiceWaitListOK, error)
+	WaitList(params *WaitListParams) (*WaitListOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
 
 /*
-  APIServiceAddress returns coins list balance and transaction count of an address
+  Address returns coins list balance and transaction count of an address
 */
-func (a *Client) APIServiceAddress(params *APIServiceAddressParams) (*APIServiceAddressOK, error) {
+func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceAddressParams()
+		params = NewAddressParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Address",
+		ID:                 "Address",
 		Method:             "GET",
 		PathPattern:        "/address/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceAddressReader{formats: a.formats},
+		Reader:             &AddressReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceAddressOK)
+	success, ok := result.(*AddressOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceAddressDefault)
+	unexpectedSuccess := result.(*AddressDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceAddresses returns list of addresses
+  Addresses returns list of addresses
 */
-func (a *Client) APIServiceAddresses(params *APIServiceAddressesParams) (*APIServiceAddressesOK, error) {
+func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceAddressesParams()
+		params = NewAddressesParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Addresses",
+		ID:                 "Addresses",
 		Method:             "GET",
 		PathPattern:        "/addresses",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceAddressesReader{formats: a.formats},
+		Reader:             &AddressesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceAddressesOK)
+	success, ok := result.(*AddressesOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceAddressesDefault)
+	unexpectedSuccess := result.(*AddressesDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceBlock returns block data at given height
+  Block returns block data at given height
 */
-func (a *Client) APIServiceBlock(params *APIServiceBlockParams) (*APIServiceBlockOK, error) {
+func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceBlockParams()
+		params = NewBlockParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Block",
+		ID:                 "Block",
 		Method:             "GET",
 		PathPattern:        "/block/{height}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceBlockReader{formats: a.formats},
+		Reader:             &BlockReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceBlockOK)
+	success, ok := result.(*BlockOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceBlockDefault)
+	unexpectedSuccess := result.(*BlockDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceCandidate returns candidate s info by provided public key it will respond with 404 code if candidate is not found
+  Candidate returns candidate s info by provided public key it will respond with 404 code if candidate is not found
 */
-func (a *Client) APIServiceCandidate(params *APIServiceCandidateParams) (*APIServiceCandidateOK, error) {
+func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceCandidateParams()
+		params = NewCandidateParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Candidate",
+		ID:                 "Candidate",
 		Method:             "GET",
 		PathPattern:        "/candidate/{public_key}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceCandidateReader{formats: a.formats},
+		Reader:             &CandidateReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceCandidateOK)
+	success, ok := result.(*CandidateOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceCandidateDefault)
+	unexpectedSuccess := result.(*CandidateDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceCandidates returns list of candidates
+  Candidates returns list of candidates
 */
-func (a *Client) APIServiceCandidates(params *APIServiceCandidatesParams) (*APIServiceCandidatesOK, error) {
+func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceCandidatesParams()
+		params = NewCandidatesParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Candidates",
+		ID:                 "Candidates",
 		Method:             "GET",
 		PathPattern:        "/candidates",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceCandidatesReader{formats: a.formats},
+		Reader:             &CandidatesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceCandidatesOK)
+	success, ok := result.(*CandidatesOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceCandidatesDefault)
+	unexpectedSuccess := result.(*CandidatesDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceCoinInfo returns information about coin symbol
+  CoinInfo returns information about coin symbol
 */
-func (a *Client) APIServiceCoinInfo(params *APIServiceCoinInfoParams) (*APIServiceCoinInfoOK, error) {
+func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceCoinInfoParams()
+		params = NewCoinInfoParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_CoinInfo",
+		ID:                 "CoinInfo",
 		Method:             "GET",
 		PathPattern:        "/coin_info/{symbol}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceCoinInfoReader{formats: a.formats},
+		Reader:             &CoinInfoReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceCoinInfoOK)
+	success, ok := result.(*CoinInfoOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceCoinInfoDefault)
+	unexpectedSuccess := result.(*CoinInfoDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceCoinInfoByID returns information about coin ID
+  CoinInfoByID returns information about coin ID
 */
-func (a *Client) APIServiceCoinInfoByID(params *APIServiceCoinInfoByIDParams) (*APIServiceCoinInfoByIDOK, error) {
+func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceCoinInfoByIDParams()
+		params = NewCoinInfoByIDParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_CoinInfoById",
+		ID:                 "CoinInfoById",
 		Method:             "GET",
 		PathPattern:        "/coin_info_by_id/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceCoinInfoByIDReader{formats: a.formats},
+		Reader:             &CoinInfoByIDReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceCoinInfoByIDOK)
+	success, ok := result.(*CoinInfoByIDOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceCoinInfoByIDDefault)
+	unexpectedSuccess := result.(*CoinInfoByIDDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceEstimateCoinBuy returns estimate of buy coin transaction
+  EstimateCoinBuy returns estimate of buy coin transaction
 */
-func (a *Client) APIServiceEstimateCoinBuy(params *APIServiceEstimateCoinBuyParams) (*APIServiceEstimateCoinBuyOK, error) {
+func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBuyOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceEstimateCoinBuyParams()
+		params = NewEstimateCoinBuyParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_EstimateCoinBuy",
+		ID:                 "EstimateCoinBuy",
 		Method:             "GET",
 		PathPattern:        "/estimate_coin_buy",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceEstimateCoinBuyReader{formats: a.formats},
+		Reader:             &EstimateCoinBuyReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceEstimateCoinBuyOK)
+	success, ok := result.(*EstimateCoinBuyOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceEstimateCoinBuyDefault)
+	unexpectedSuccess := result.(*EstimateCoinBuyDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceEstimateCoinSell returns estimate of sell coin transaction
+  EstimateCoinSell returns estimate of sell coin transaction
 */
-func (a *Client) APIServiceEstimateCoinSell(params *APIServiceEstimateCoinSellParams) (*APIServiceEstimateCoinSellOK, error) {
+func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoinSellOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceEstimateCoinSellParams()
+		params = NewEstimateCoinSellParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_EstimateCoinSell",
+		ID:                 "EstimateCoinSell",
 		Method:             "GET",
 		PathPattern:        "/estimate_coin_sell",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceEstimateCoinSellReader{formats: a.formats},
+		Reader:             &EstimateCoinSellReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceEstimateCoinSellOK)
+	success, ok := result.(*EstimateCoinSellOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceEstimateCoinSellDefault)
+	unexpectedSuccess := result.(*EstimateCoinSellDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceEstimateCoinSellAll returns estimate of sell all coin transaction
+  EstimateCoinSellAll returns estimate of sell all coin transaction
 */
-func (a *Client) APIServiceEstimateCoinSellAll(params *APIServiceEstimateCoinSellAllParams) (*APIServiceEstimateCoinSellAllOK, error) {
+func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*EstimateCoinSellAllOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceEstimateCoinSellAllParams()
+		params = NewEstimateCoinSellAllParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_EstimateCoinSellAll",
+		ID:                 "EstimateCoinSellAll",
 		Method:             "GET",
 		PathPattern:        "/estimate_coin_sell_all",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceEstimateCoinSellAllReader{formats: a.formats},
+		Reader:             &EstimateCoinSellAllReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceEstimateCoinSellAllOK)
+	success, ok := result.(*EstimateCoinSellAllOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceEstimateCoinSellAllDefault)
+	unexpectedSuccess := result.(*EstimateCoinSellAllDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceEstimateTxCommission returns estimate of transaction
+  EstimateTxCommission returns estimate of transaction
 */
-func (a *Client) APIServiceEstimateTxCommission(params *APIServiceEstimateTxCommissionParams) (*APIServiceEstimateTxCommissionOK, error) {
+func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*EstimateTxCommissionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceEstimateTxCommissionParams()
+		params = NewEstimateTxCommissionParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_EstimateTxCommission",
+		ID:                 "EstimateTxCommission",
 		Method:             "GET",
 		PathPattern:        "/estimate_tx_commission/{tx}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceEstimateTxCommissionReader{formats: a.formats},
+		Reader:             &EstimateTxCommissionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceEstimateTxCommissionOK)
+	success, ok := result.(*EstimateTxCommissionOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceEstimateTxCommissionDefault)
+	unexpectedSuccess := result.(*EstimateTxCommissionDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceEvents returns events at given height
+  Events returns events at given height
 */
-func (a *Client) APIServiceEvents(params *APIServiceEventsParams) (*APIServiceEventsOK, error) {
+func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceEventsParams()
+		params = NewEventsParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Events",
+		ID:                 "Events",
 		Method:             "GET",
 		PathPattern:        "/events/{height}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceEventsReader{formats: a.formats},
+		Reader:             &EventsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceEventsOK)
+	success, ok := result.(*EventsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceEventsDefault)
+	unexpectedSuccess := result.(*EventsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceFrozen returns frozen balance
+  Frozen returns frozen balance
 */
-func (a *Client) APIServiceFrozen(params *APIServiceFrozenParams) (*APIServiceFrozenOK, error) {
+func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceFrozenParams()
+		params = NewFrozenParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Frozen",
+		ID:                 "Frozen",
 		Method:             "GET",
 		PathPattern:        "/frozen/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceFrozenReader{formats: a.formats},
+		Reader:             &FrozenReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceFrozenOK)
+	success, ok := result.(*FrozenOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceFrozenDefault)
+	unexpectedSuccess := result.(*FrozenDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceGenesis returns genesis file
+  Genesis returns genesis file
 */
-func (a *Client) APIServiceGenesis(params *APIServiceGenesisParams) (*APIServiceGenesisOK, error) {
+func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceGenesisParams()
+		params = NewGenesisParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Genesis",
+		ID:                 "Genesis",
 		Method:             "GET",
 		PathPattern:        "/genesis",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceGenesisReader{formats: a.formats},
+		Reader:             &GenesisReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceGenesisOK)
+	success, ok := result.(*GenesisOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceGenesisDefault)
+	unexpectedSuccess := result.(*GenesisDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceHalts halts
+  Halts halts
 */
-func (a *Client) APIServiceHalts(params *APIServiceHaltsParams) (*APIServiceHaltsOK, error) {
+func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceHaltsParams()
+		params = NewHaltsParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Halts",
+		ID:                 "Halts",
 		Method:             "GET",
 		PathPattern:        "/halts",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceHaltsReader{formats: a.formats},
+		Reader:             &HaltsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceHaltsOK)
+	success, ok := result.(*HaltsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceHaltsDefault)
+	unexpectedSuccess := result.(*HaltsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceMaxGas returns current max gas
+  MaxGas returns current max gas
 */
-func (a *Client) APIServiceMaxGas(params *APIServiceMaxGasParams) (*APIServiceMaxGasOK, error) {
+func (a *Client) MaxGas(params *MaxGasParams) (*MaxGasOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceMaxGasParams()
+		params = NewMaxGasParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_MaxGas",
+		ID:                 "MaxGas",
 		Method:             "GET",
 		PathPattern:        "/max_gas",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceMaxGasReader{formats: a.formats},
+		Reader:             &MaxGasReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceMaxGasOK)
+	success, ok := result.(*MaxGasOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceMaxGasDefault)
+	unexpectedSuccess := result.(*MaxGasDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceMinGasPrice returns current min gas price
+  MinGasPrice returns current min gas price
 */
-func (a *Client) APIServiceMinGasPrice(params *APIServiceMinGasPriceParams) (*APIServiceMinGasPriceOK, error) {
+func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceMinGasPriceParams()
+		params = NewMinGasPriceParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_MinGasPrice",
+		ID:                 "MinGasPrice",
 		Method:             "GET",
 		PathPattern:        "/min_gas_price",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceMinGasPriceReader{formats: a.formats},
+		Reader:             &MinGasPriceReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceMinGasPriceOK)
+	success, ok := result.(*MinGasPriceOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceMinGasPriceDefault)
+	unexpectedSuccess := result.(*MinGasPriceDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceMissedBlocks returns missed blocks by validator public key
+  MissedBlocks returns missed blocks by validator public key
 */
-func (a *Client) APIServiceMissedBlocks(params *APIServiceMissedBlocksParams) (*APIServiceMissedBlocksOK, error) {
+func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceMissedBlocksParams()
+		params = NewMissedBlocksParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_MissedBlocks",
+		ID:                 "MissedBlocks",
 		Method:             "GET",
 		PathPattern:        "/missed_blocks/{public_key}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceMissedBlocksReader{formats: a.formats},
+		Reader:             &MissedBlocksReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceMissedBlocksOK)
+	success, ok := result.(*MissedBlocksOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceMissedBlocksDefault)
+	unexpectedSuccess := result.(*MissedBlocksDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceNetInfo returns network info
+  NetInfo returns network info
 */
-func (a *Client) APIServiceNetInfo(params *APIServiceNetInfoParams) (*APIServiceNetInfoOK, error) {
+func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceNetInfoParams()
+		params = NewNetInfoParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_NetInfo",
+		ID:                 "NetInfo",
 		Method:             "GET",
 		PathPattern:        "/net_info",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceNetInfoReader{formats: a.formats},
+		Reader:             &NetInfoReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceNetInfoOK)
+	success, ok := result.(*NetInfoOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceNetInfoDefault)
+	unexpectedSuccess := result.(*NetInfoDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceSendTransaction returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
+  SendTransaction returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
 */
-func (a *Client) APIServiceSendTransaction(params *APIServiceSendTransactionParams) (*APIServiceSendTransactionOK, error) {
+func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceSendTransactionParams()
+		params = NewSendTransactionParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_SendTransaction",
+		ID:                 "SendTransaction",
 		Method:             "GET",
 		PathPattern:        "/send_transaction/{tx}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceSendTransactionReader{formats: a.formats},
+		Reader:             &SendTransactionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceSendTransactionOK)
+	success, ok := result.(*SendTransactionOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceSendTransactionDefault)
+	unexpectedSuccess := result.(*SendTransactionDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceSendTransaction2 returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
+  SendTransaction2 returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
 */
-func (a *Client) APIServiceSendTransaction2(params *APIServiceSendTransaction2Params) (*APIServiceSendTransaction2OK, error) {
+func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceSendTransaction2Params()
+		params = NewSendTransaction2Params()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_SendTransaction2",
+		ID:                 "SendTransaction2",
 		Method:             "POST",
 		PathPattern:        "/send_transaction",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceSendTransaction2Reader{formats: a.formats},
+		Reader:             &SendTransaction2Reader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceSendTransaction2OK)
+	success, ok := result.(*SendTransaction2OK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceSendTransaction2Default)
+	unexpectedSuccess := result.(*SendTransaction2Default)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceStatus returns node status including pubkey latest block
+  Status returns node status including pubkey latest block
 */
-func (a *Client) APIServiceStatus(params *APIServiceStatusParams) (*APIServiceStatusOK, error) {
+func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceStatusParams()
+		params = NewStatusParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Status",
+		ID:                 "Status",
 		Method:             "GET",
 		PathPattern:        "/status",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceStatusReader{formats: a.formats},
+		Reader:             &StatusReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceStatusOK)
+	success, ok := result.(*StatusOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceStatusDefault)
+	unexpectedSuccess := result.(*StatusDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceSubscribe returns a subscription for events by query
+  Subscribe returns a subscription for events by query
 */
-func (a *Client) APIServiceSubscribe(params *APIServiceSubscribeParams) (*APIServiceSubscribeOK, error) {
+func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceSubscribeParams()
+		params = NewSubscribeParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Subscribe",
+		ID:                 "Subscribe",
 		Method:             "GET",
 		PathPattern:        "/subscribe",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceSubscribeReader{formats: a.formats},
+		Reader:             &SubscribeReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceSubscribeOK)
+	success, ok := result.(*SubscribeOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceSubscribeDefault)
+	unexpectedSuccess := result.(*SubscribeDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceTransaction returns transaction info
+  Transaction returns transaction info
 */
-func (a *Client) APIServiceTransaction(params *APIServiceTransactionParams) (*APIServiceTransactionOK, error) {
+func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceTransactionParams()
+		params = NewTransactionParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Transaction",
+		ID:                 "Transaction",
 		Method:             "GET",
 		PathPattern:        "/transaction/{hash}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceTransactionReader{formats: a.formats},
+		Reader:             &TransactionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceTransactionOK)
+	success, ok := result.(*TransactionOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceTransactionDefault)
+	unexpectedSuccess := result.(*TransactionDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceTransactions returns transactions by query
+  Transactions returns transactions by query
 */
-func (a *Client) APIServiceTransactions(params *APIServiceTransactionsParams) (*APIServiceTransactionsOK, error) {
+func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceTransactionsParams()
+		params = NewTransactionsParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Transactions",
+		ID:                 "Transactions",
 		Method:             "GET",
 		PathPattern:        "/transactions",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceTransactionsReader{formats: a.formats},
+		Reader:             &TransactionsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceTransactionsOK)
+	success, ok := result.(*TransactionsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceTransactionsDefault)
+	unexpectedSuccess := result.(*TransactionsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceUnconfirmedTxs returns unconfirmed transactions
+  UnconfirmedTxs returns unconfirmed transactions
 */
-func (a *Client) APIServiceUnconfirmedTxs(params *APIServiceUnconfirmedTxsParams) (*APIServiceUnconfirmedTxsOK, error) {
+func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceUnconfirmedTxsParams()
+		params = NewUnconfirmedTxsParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_UnconfirmedTxs",
+		ID:                 "UnconfirmedTxs",
 		Method:             "GET",
 		PathPattern:        "/unconfirmed_txs",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceUnconfirmedTxsReader{formats: a.formats},
+		Reader:             &UnconfirmedTxsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceUnconfirmedTxsOK)
+	success, ok := result.(*UnconfirmedTxsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceUnconfirmedTxsDefault)
+	unexpectedSuccess := result.(*UnconfirmedTxsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceValidators returns list of active validators
+  Validators returns list of active validators
 */
-func (a *Client) APIServiceValidators(params *APIServiceValidatorsParams) (*APIServiceValidatorsOK, error) {
+func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceValidatorsParams()
+		params = NewValidatorsParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_Validators",
+		ID:                 "Validators",
 		Method:             "GET",
 		PathPattern:        "/validators",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceValidatorsReader{formats: a.formats},
+		Reader:             &ValidatorsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceValidatorsOK)
+	success, ok := result.(*ValidatorsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceValidatorsDefault)
+	unexpectedSuccess := result.(*ValidatorsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
 /*
-  APIServiceWaitList returns the list of address stakes in waitlist
+  WaitList returns the list of address stakes in waitlist
 */
-func (a *Client) APIServiceWaitList(params *APIServiceWaitListParams) (*APIServiceWaitListOK, error) {
+func (a *Client) WaitList(params *WaitListParams) (*WaitListOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewAPIServiceWaitListParams()
+		params = NewWaitListParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "ApiService_WaitList",
+		ID:                 "WaitList",
 		Method:             "GET",
 		PathPattern:        "/waitlist/{public_key}/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http", "https"},
 		Params:             params,
-		Reader:             &APIServiceWaitListReader{formats: a.formats},
+		Reader:             &WaitListReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*APIServiceWaitListOK)
+	success, ok := result.(*WaitListOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*APIServiceWaitListDefault)
+	unexpectedSuccess := result.(*WaitListDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

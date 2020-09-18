@@ -152,11 +152,11 @@ type SignedTransaction interface {
 	// Get signature interface
 	Signature() (SignatureInterface, error)
 	// Add signature from bytes
-	AddSignature(signatures ...[]byte) (SignedTransaction, error)
+	AddSignature(signatures ...string) (SignedTransaction, error)
 	// Get bytes of Signature
 	SignatureData() []byte
 	// Get single SignatureData
-	SingleSignatureData() ([]byte, error)
+	SingleSignatureData() (string, error)
 	// Get sender address
 	SenderAddress() (string, error)
 	// Get set of signers
@@ -226,12 +226,18 @@ func (o *Object) SignatureData() []byte {
 }
 
 // Get first SignatureData
-func (o *Object) SingleSignatureData() ([]byte, error) {
+func (o *Object) SingleSignatureData() (string, error) {
 	s, err := o.Signature()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return s.Single()
+
+	single, err := s.Single()
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(single), nil
 }
 
 // Get signature interface
@@ -525,6 +531,7 @@ func (s *SignatureMulti) Single() ([]byte, error) {
 	if len(s.Signatures) == 0 {
 		return nil, errors.New("signature not set")
 	}
+
 	return s.Signatures[0].Encode()
 }
 
@@ -592,7 +599,7 @@ func (tx *Transaction) Encode() (string, error) {
 		return "", err
 	}
 
-	return "0x" + hex.EncodeToString(src), err
+	return "0x" + hex.EncodeToString(src), nil
 }
 
 // Get hash of transaction
@@ -602,13 +609,12 @@ func (o *Object) Hash() (string, error) {
 		return "", err
 	}
 
-	b := make([]byte, hex.DecodedLen(len(encode)-2))
-	_, err = hex.Decode(b, []byte(encode)[2:])
+	decode, err := hex.DecodeString(encode[2:])
 	if err != nil {
 		return "", err
 	}
 
-	hash := sha256.Sum256(b)
+	hash := sha256.Sum256(decode)
 	return "Mt" + hex.EncodeToString(hash[:]), nil
 }
 
@@ -632,20 +638,28 @@ func (o *Object) addSignature(signatures ...*Signature) (SignedTransaction, erro
 }
 
 // Add signature from bytes
-func (o *Object) AddSignature(signatures ...[]byte) (SignedTransaction, error) {
+func (o *Object) AddSignature(signatures ...string) (SignedTransaction, error) {
 	signature, err := o.Signature()
 	if err != nil {
 		return nil, err
 	}
+
 	if len(signatures) == 0 {
 		return nil, errors.New("number of signatures must be greater than 0")
 	}
+
 	if o.SignatureType == SignatureTypeSingle {
-		sig, err := decodeSignature(signatures[0])
+		decode, err := hex.DecodeString(signatures[0])
 		if err != nil {
 			return nil, err
 		}
-		return o.setSignature(sig)
+
+		sign, err := decodeSignature(decode)
+		if err != nil {
+			return nil, err
+		}
+
+		return o.setSignature(sign)
 	}
 	if len(o.SignatureData()) == 0 {
 		return nil, errors.New("multisig address not set")
@@ -653,11 +667,17 @@ func (o *Object) AddSignature(signatures ...[]byte) (SignedTransaction, error) {
 	signatureMulti := signature.(*SignatureMulti)
 	signs := make([]*Signature, 0, len(signatures))
 	for _, signature := range signatures {
-		sig, err := decodeSignature(signature)
+		decode, err := hex.DecodeString(signature)
 		if err != nil {
 			return nil, err
 		}
-		signs = append(signs, sig)
+
+		sign, err := decodeSignature(decode)
+		if err != nil {
+			return nil, err
+		}
+
+		signs = append(signs, sign)
 	}
 	signatureMulti.Signatures = append(signatureMulti.Signatures, signs...)
 	return o.setSignature(signatureMulti)

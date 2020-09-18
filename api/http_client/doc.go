@@ -3,65 +3,40 @@
 
 	Example:
 
-		import (
-			v2 "github.com/MinterTeam/minter-go-sdk/v2/api/v2"
-			""github.com/MinterTeam/minter-go-sdk/v2/api/http_client/_client/client/api_service"
-			"github.com/MinterTeam/minter-go-sdk/v2/transaction"
-			"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-			"log"
-			"math/big"
-		)
+		client, _ := http_client.New("http://node.chilinet.minter.network:28843")
+		coinSymbol := "SUPERTEST9"
+		dataCreateCoin := transaction.NewCreateCoinData().
+			SetSymbol(coinSymbol)...
+		transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
+		tx, _ := transactionsBuilder.NewTransaction(dataCreateCoin)
+		sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(privateKey)
+		encode, _ := sign.Encode()
 
-		func Example() {
-			apiv2, err := v2.New("http://68.183.211.176:8843/")
-			if err != nil {
-				panic(err)
-			}
+		res, err := client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
+		if err != nil {
+			log.Fatal(http_client.ErrorBody(err))
+		}
 
-			data := transaction.NewSendData().MustSetTo("Mxd82558ea00eb81d35f2654953598f5d51737d31d").SetCoin(0).SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
-			newTransaction, err := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
-			if err != nil {
-				panic(err)
-			}
+		txRes, err := client.Transaction(api_service.NewTransactionParams().WithHash(res.GetPayload().Hash))
+		if err != nil {
+			log.Fatal(http_client.ErrorBody(err))
+		}
 
-			seed, err := wallet.Seed("a b c d e f g h 1 2 3 4")
-			if err != nil {
-				panic(err)
-			}
+		var coinID transaction.CoinID
+		coin, _ := txRes.GetPayload().Tags["tx.coin_id"]
+		id, _ := strconv.Atoi(coin)
+		coinID = transaction.CoinID(id)
 
-			prKey, err := wallet.PrivateKeyBySeed(seed)
-			if err != nil {
-				panic(err)
-			}
+		dataSend := transaction.NewSendData().
+			SetCoin(coinID)...
 
-			sign, err := newTransaction.SetGasCoin(0).SetGasPrice(1).SetNonce(156).Sign(prKey)
-			if err != nil {
-				panic(err)
-			}
+		tx, _ = transactionsBuilder.NewTransaction(dataSend)
+		sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)
+		encode, _ = sign.Encode()
 
-			encode, err := sign.Encode()
-			if err != nil {
-				panic(err)
-			}
-
-			log.Println(encode)
-
-			res, err := apiv2.APIServiceSendTransaction(api_service.NewAPIServiceSendTransactionParams().WithTx(encode))
-			if err != nil {
-				runtimeError, ok := err.(*api_service.APIServiceSendTransactionDefault)
-				if !ok {
-					panic(err)
-				}
-
-				log.Println(runtimeError.Payload.Error.Message)
-				log.Println(runtimeError.Payload.Error.Code)
-				binary, err := runtimeError.GetPayload().MarshalBinary()
-				if err != nil {
-					panic(err)
-				}
-				log.Println(string(binary))
-				return
-			}
+		res, err = client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
+		if err != nil {
+			log.Fatal(http_client.ErrorBody(err))
 		}
 
 */

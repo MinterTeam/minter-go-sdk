@@ -26,7 +26,7 @@ type NetInfoResponsePeer struct {
 	LatestBlockHeight string `json:"latest_block_height,omitempty"`
 
 	// node info
-	NodeInfo *APIPbNodeInfo `json:"node_info,omitempty"`
+	NodeInfo *NodeInfo `json:"node_info,omitempty"`
 
 	// remote ip
 	RemoteIP string `json:"remote_ip,omitempty"`

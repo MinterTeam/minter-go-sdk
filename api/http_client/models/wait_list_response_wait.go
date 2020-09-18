@@ -17,7 +17,7 @@ import (
 type WaitListResponseWait struct {
 
 	// coin
-	Coin *APIPbCoin `json:"coin,omitempty"`
+	Coin *Coin `json:"coin,omitempty"`
 
 	// value
 	Value string `json:"value,omitempty"`

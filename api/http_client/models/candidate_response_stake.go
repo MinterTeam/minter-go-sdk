@@ -20,7 +20,7 @@ type CandidateResponseStake struct {
 	BipValue string `json:"bip_value,omitempty"`
 
 	// coin
-	Coin *APIPbCoin `json:"coin,omitempty"`
+	Coin *Coin `json:"coin,omitempty"`
 
 	// owner
 	Owner string `json:"owner,omitempty"`

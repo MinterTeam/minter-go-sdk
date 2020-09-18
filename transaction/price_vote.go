@@ -6,6 +6,10 @@ type PriceVoteData struct {
 	Price uint
 }
 
+func NewPriceVoteData() *PriceVoteData {
+	return &PriceVoteData{}
+}
+
 func (d *PriceVoteData) SetPrice(price uint) *PriceVoteData {
 	d.Price = price
 	return d

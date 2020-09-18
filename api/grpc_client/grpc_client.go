@@ -22,7 +22,7 @@ type Client struct {
 	marshaler  runtime.Marshaler
 }
 
-// New API v2 client
+// New gRPC Client
 func New(address string) (*Client, error) {
 	clientConn, err := grpc.Dial(address,
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
@@ -35,14 +35,24 @@ func New(address string) (*Client, error) {
 	return &Client{grpcClient: api_pb.NewApiServiceClient(clientConn), ctxFunc: context.Background, marshaler: &runtime.JSONPb{OrigName: true, EmitDefaults: true}}, nil
 }
 
+// WithContextFunc returns new Client with new context
+// Example:
+// 		timeout := func(c context.Context) func() context.Context {
+//			return func() context.Context {
+//				ctx, _ := context.WithTimeout(c, 10*time.Second)
+//				return ctx
+//			}
+//		}
 func (c *Client) WithContextFunc(contextFunc func(context.Context) func() context.Context) *Client {
 	return &Client{grpcClient: c.grpcClient, ctxFunc: contextFunc(c.ctxFunc())}
 }
 
+// GRPCClient return gRPC client ApiServiceClient
 func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 	return c.grpcClient
 }
 
+// ErrorBody returns error as API model
 func (c *Client) ErrorBody(err error) (int, *api_pb.ErrorBody, error) {
 	if err == nil {
 		return http.StatusOK, nil, nil
@@ -89,6 +99,7 @@ func (c *Client) ErrorBody(err error) (int, *api_pb.ErrorBody, error) {
 	return statusCode, errorBody, nil
 }
 
+// HttpError returns error as JSON API
 func (c *Client) HttpError(statusError error) (statusCode int, json string, err error) {
 	statusCode, errorBody, err := c.ErrorBody(statusError)
 	if err != nil {
@@ -107,6 +118,7 @@ func (c *Client) HttpError(statusError error) (statusCode int, json string, err 
 	return statusCode, jErr, nil
 }
 
+// Marshal returns model in JSON format
 func (c *Client) Marshal(m proto.Message) (json string, err error) {
 	marshal, err := c.marshaler.Marshal(m)
 	if err != nil {
@@ -128,17 +140,17 @@ func (c *Client) Genesis() (*api_pb.GenesisResponse, error) {
 
 // Nonce returns next transaction number (nonce) of an address.
 func (c *Client) Nonce(address string) (uint64, error) {
-	status, err := c.Address(address)
+	res, err := c.Address(address)
 	if err != nil {
 		return 0, err
 	}
 
-	transactionsCount, err := strconv.Atoi(status.TransactionCount)
+	transactionsCount, err := strconv.Atoi(res.TransactionCount)
 	if err != nil {
 		return 0, err
 	}
 
-	return uint64(transactionsCount) + 1, err
+	return uint64(transactionsCount) + 1, nil
 }
 
 // Status returns node status including pubkey, latest block.

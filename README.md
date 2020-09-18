@@ -75,15 +75,12 @@ encode, _ := signedTransaction.Encode()
 ##### Example
 
 ```go
-multisigAddress := createMultisigData.Address()
-
-symbolMNT := transaction.CoinID(1)
-data, _ := transaction.NewSendData().
-    SetCoin(symbolMNT).
-    SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-    SetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
-
-tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
+tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
+    transaction.NewSendData().
+        SetCoin(1).
+        SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+        MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
+)
 
 signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeMulti).Sign(
     multisigAddress,
@@ -93,23 +90,6 @@ signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(symbolMNT).SetSignatureT
 )
 
 encode, _ := signedTx.Encode()
-
-// or
-
-signedTx1, _ := tx.Sign(
-    multisigAddress,
-    "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63",
-)
-signedTx2, _ := signedTx1.Sign(
-    multisigAddress,
-    "b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7",
-)
-signedTx3, _ := signedTx2.Sign(
-    multisigAddress,
-    "4c8dbfb3258f383adf656c2131e5ed77ec482a36125db71fb49d29e0528ff2ba",
-)
-
-encode, _ := signedTx3.Encode()
 ```
 
 You can transfer the transaction to the remaining addresses

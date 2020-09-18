@@ -2,9 +2,10 @@ package wallet
 
 import (
 	"encoding/hex"
+	"errors"
 )
 
-// Wallet
+// Wallet of minter
 type Wallet struct {
 	*Data
 }
@@ -18,29 +19,36 @@ type Data struct {
 	Address    string
 }
 
-// Create new wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
-func Create() (*Data, error) {
+// New return new wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
+func New() (*Data, error) {
 	mnemonic, err := NewMnemonic()
 	if err != nil {
 		return nil, err
 	}
 
-	seed, err := Seed(mnemonic)
-	if err != nil {
-		return nil, err
-	}
-	data, err := NewWallet(seed)
+	data, err := Create(mnemonic, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	data.Mnemonic = mnemonic
 
-	return data.Data, nil
+	return data, nil
 }
 
-// Get wallet by exists seed
-func NewWallet(seed []byte) (*Wallet, error) {
+// Create returns wallet by exists seed or mnemonic. Note: pass only one value.
+func Create(mnemonic string, seed []byte) (*Data, error) {
+	if mnemonic != "" {
+		if len(seed) != 0 {
+			return nil, errors.New("pass only one value (seed or mnemonic")
+		}
+		var err error
+		seed, err = Seed(mnemonic)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	prKey, err := PrivateKeyBySeed(seed)
 	if err != nil {
 		return nil, err
@@ -56,28 +64,11 @@ func NewWallet(seed []byte) (*Wallet, error) {
 		return nil, err
 	}
 
-	return &Wallet{
-		Data: &Data{
-			Mnemonic:   "",
-			Seed:       hex.EncodeToString(seed),
-			PrivateKey: prKey,
-			PublicKey:  pubKey,
-			Address:    address,
-		},
+	return &Data{
+		Mnemonic:   mnemonic,
+		Seed:       hex.EncodeToString(seed),
+		PrivateKey: prKey,
+		PublicKey:  pubKey,
+		Address:    address,
 	}, nil
-}
-
-// Get address
-func (w *Wallet) Address() string {
-	return w.Data.Address
-}
-
-// Get private key
-func (w *Wallet) PrivateKey() string {
-	return w.Data.PrivateKey
-}
-
-// Get public key
-func (w *Wallet) PublicKey() string {
-	return w.Data.PublicKey
 }

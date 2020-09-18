@@ -18,12 +18,12 @@ func TestWallet_PrivateKey(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wallet, err := NewWallet(bytes)
+	wallet, err := Create("", bytes)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	privateKey := wallet.PrivateKey()
+	privateKey := wallet.PrivateKey
 	if privateKey != validPrivateKey {
 		t.Fatalf("privateKey got %s, want %s", privateKey, validPrivateKey)
 	}
@@ -34,12 +34,12 @@ func TestWallet_PublicKey(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wallet, err := NewWallet(bytes)
+	wallet, err := Create("", bytes)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	publicKey := wallet.PublicKey()
+	publicKey := wallet.PublicKey
 	if publicKey != validPublicKey {
 		t.Fatalf("publicKey got %s, want %s", publicKey, validPublicKey)
 	}
@@ -50,19 +50,19 @@ func TestWallet_Address(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	wallet, err := NewWallet(bytes)
+	wallet, err := Create("", bytes)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	address := wallet.Address()
+	address := wallet.Address
 	if address != validAddress {
 		t.Fatalf("address got %s, want %s", address, validAddress)
 	}
 }
 
 func TestCreate(t *testing.T) {
-	data, err := Create()
+	data, err := New()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,26 +86,20 @@ func TestCreate(t *testing.T) {
 }
 
 func TestWalletBugAddress(t *testing.T) {
-	seed, err := Seed("real town addict extend shoot name disagree vital turn live can tip")
-	if err != nil {
-		panic(err)
-	}
-
-	wallet, err := NewWallet(seed)
+	wallet, err := Create("real town addict extend shoot name disagree vital turn live can tip", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if wallet.PrivateKey() != "c29cd818232f40614691a58c9afcbd5518b539cb135d73b1d9e26d5f5f5dcbbe" {
-		t.Fatalf("PrivateKey got %s, want %s", wallet.PrivateKey(), "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3")
+	if wallet.PrivateKey != "c29cd818232f40614691a58c9afcbd5518b539cb135d73b1d9e26d5f5f5dcbbe" {
+		t.Fatalf("PrivateKey got %s, want %s", wallet.PrivateKey, "11c332a5107bdede093dc057b146fbb633cbe0f2c50958c9de3aee13fe6caad3")
 	}
 
-	if wallet.PublicKey() != "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57" {
-		t.Fatalf("PublicKey got %s, want %s", wallet.PublicKey(), "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57")
+	if wallet.PublicKey != "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57" {
+		t.Fatalf("PublicKey got %s, want %s", wallet.PublicKey, "Mp32721d081431dea637f8826fd58babe93ebc9648c76978e26ebf8b56e91292a832fbd62f569fefdc05139c4df7b283310162e43847dd19f2dc7499e3f18bcd57")
 	}
 
-	if wallet.Address() != "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b" {
-		t.Fatalf("Address got %s, want %s", wallet.Address(), "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b")
+	if wallet.Address != "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b" {
+		t.Fatalf("Address got %s, want %s", wallet.Address, "Mx68eb0cb118f8e9666a6d8f5ded4a3eec20fed24b")
 	}
-
 }

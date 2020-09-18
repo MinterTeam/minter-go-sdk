@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"encoding/hex"
 	"math/big"
 	"testing"
 )
@@ -411,18 +410,10 @@ func TestMultisigAddSignatures2(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sig1, err := hex.DecodeString("f8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cd")
-	if err != nil {
-		t.Fatal(err)
-	}
-	sig2, err := hex.DecodeString("f8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8")
-	if err != nil {
-		t.Fatal(err)
-	}
-	sig3, err := hex.DecodeString("f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454")
-	if err != nil {
-		t.Fatal(err)
-	}
+	sig1 := "f8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cd"
+	sig2 := "f8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8"
+	sig3 := "f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454"
+
 	signedTx0, err := signedTransaction.AddSignature(sig1, sig2, sig3)
 	if err != nil {
 		t.Fatal(err)
