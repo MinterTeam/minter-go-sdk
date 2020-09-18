@@ -7,11 +7,6 @@ import (
 
 // Wallet of minter
 type Wallet struct {
-	*Data
-}
-
-// Data of wallet
-type Data struct {
 	Mnemonic   string
 	Seed       string
 	PrivateKey string
@@ -20,7 +15,7 @@ type Data struct {
 }
 
 // New return new wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
-func New() (*Data, error) {
+func New() (*Wallet, error) {
 	mnemonic, err := NewMnemonic()
 	if err != nil {
 		return nil, err
@@ -37,7 +32,7 @@ func New() (*Data, error) {
 }
 
 // Create returns wallet by exists seed or mnemonic. Note: pass only one value.
-func Create(mnemonic string, seed []byte) (*Data, error) {
+func Create(mnemonic string, seed []byte) (*Wallet, error) {
 	if mnemonic != "" {
 		if len(seed) != 0 {
 			return nil, errors.New("pass only one value (seed or mnemonic")
@@ -64,7 +59,7 @@ func Create(mnemonic string, seed []byte) (*Data, error) {
 		return nil, err
 	}
 
-	return &Data{
+	return &Wallet{
 		Mnemonic:   mnemonic,
 		Seed:       hex.EncodeToString(seed),
 		PrivateKey: prKey,
