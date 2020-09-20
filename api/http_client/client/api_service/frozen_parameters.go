@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewFrozenParams creates a new FrozenParams object
@@ -62,8 +63,8 @@ type FrozenParams struct {
 
 	/*Address*/
 	Address string
-	/*Coin*/
-	Coin *string
+	/*CoinID*/
+	CoinID *int64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -114,15 +115,15 @@ func (o *FrozenParams) SetAddress(address string) {
 	o.Address = address
 }
 
-// WithCoin adds the coin to the frozen params
-func (o *FrozenParams) WithCoin(coin *string) *FrozenParams {
-	o.SetCoin(coin)
+// WithCoinID adds the coinID to the frozen params
+func (o *FrozenParams) WithCoinID(coinID *int64) *FrozenParams {
+	o.SetCoinID(coinID)
 	return o
 }
 
-// SetCoin adds the coin to the frozen params
-func (o *FrozenParams) SetCoin(coin *string) {
-	o.Coin = coin
+// SetCoinID adds the coinId to the frozen params
+func (o *FrozenParams) SetCoinID(coinID *int64) {
+	o.CoinID = coinID
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -138,16 +139,16 @@ func (o *FrozenParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 		return err
 	}
 
-	if o.Coin != nil {
+	if o.CoinID != nil {
 
-		// query param coin
-		var qrCoin string
-		if o.Coin != nil {
-			qrCoin = *o.Coin
+		// query param coin_id
+		var qrCoinID int64
+		if o.CoinID != nil {
+			qrCoinID = *o.CoinID
 		}
-		qCoin := qrCoin
-		if qCoin != "" {
-			if err := r.SetQueryParam("coin", qCoin); err != nil {
+		qCoinID := swag.FormatInt64(qrCoinID)
+		if qCoinID != "" {
+			if err := r.SetQueryParam("coin_id", qCoinID); err != nil {
 				return err
 			}
 		}

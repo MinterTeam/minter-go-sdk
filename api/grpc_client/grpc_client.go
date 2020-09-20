@@ -6,6 +6,7 @@ import (
 	"github.com/MinterTeam/node-grpc-gateway/api_pb"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
@@ -292,8 +293,12 @@ func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, err
 }
 
 // Frozen returns frozen balance.
-func (c *Client) Frozen(address, coin string) (*api_pb.FrozenResponse, error) {
-	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, Coin: coin})
+func (c *Client) Frozen(address, coinID string) (*api_pb.FrozenResponse, error) {
+	var coinIDRequest *wrappers.UInt32Value
+	if atoi, err := strconv.Atoi(coinID); err != nil {
+		coinIDRequest = &wrappers.UInt32Value{Value: uint32(atoi)}
+	}
+	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coinIDRequest})
 }
 
 func optionalInt(height []int) uint64 {
