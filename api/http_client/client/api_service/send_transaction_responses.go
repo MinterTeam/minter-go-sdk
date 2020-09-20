@@ -83,7 +83,7 @@ func NewSendTransactionDefault(code int) *SendTransactionDefault {
 
 /*SendTransactionDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type SendTransactionDefault struct {
 	_statusCode int

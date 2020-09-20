@@ -83,7 +83,7 @@ func NewAddressesDefault(code int) *AddressesDefault {
 
 /*AddressesDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type AddressesDefault struct {
 	_statusCode int

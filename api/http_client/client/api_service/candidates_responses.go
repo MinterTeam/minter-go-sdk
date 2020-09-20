@@ -83,7 +83,7 @@ func NewCandidatesDefault(code int) *CandidatesDefault {
 
 /*CandidatesDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type CandidatesDefault struct {
 	_statusCode int

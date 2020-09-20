@@ -83,7 +83,7 @@ func NewGenesisDefault(code int) *GenesisDefault {
 
 /*GenesisDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type GenesisDefault struct {
 	_statusCode int

@@ -83,7 +83,7 @@ func NewEstimateCoinBuyDefault(code int) *EstimateCoinBuyDefault {
 
 /*EstimateCoinBuyDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type EstimateCoinBuyDefault struct {
 	_statusCode int

@@ -85,7 +85,7 @@ func NewSubscribeDefault(code int) *SubscribeDefault {
 
 /*SubscribeDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type SubscribeDefault struct {
 	_statusCode int

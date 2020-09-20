@@ -83,7 +83,7 @@ func NewMinGasPriceDefault(code int) *MinGasPriceDefault {
 
 /*MinGasPriceDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type MinGasPriceDefault struct {
 	_statusCode int

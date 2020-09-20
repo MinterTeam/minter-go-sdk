@@ -83,7 +83,7 @@ func NewMaxGasDefault(code int) *MaxGasDefault {
 
 /*MaxGasDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type MaxGasDefault struct {
 	_statusCode int

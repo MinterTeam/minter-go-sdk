@@ -83,7 +83,7 @@ func NewEventsDefault(code int) *EventsDefault {
 
 /*EventsDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type EventsDefault struct {
 	_statusCode int

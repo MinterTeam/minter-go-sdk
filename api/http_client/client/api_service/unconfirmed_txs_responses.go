@@ -83,7 +83,7 @@ func NewUnconfirmedTxsDefault(code int) *UnconfirmedTxsDefault {
 
 /*UnconfirmedTxsDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type UnconfirmedTxsDefault struct {
 	_statusCode int

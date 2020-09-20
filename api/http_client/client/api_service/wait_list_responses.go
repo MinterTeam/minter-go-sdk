@@ -83,7 +83,7 @@ func NewWaitListDefault(code int) *WaitListDefault {
 
 /*WaitListDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type WaitListDefault struct {
 	_statusCode int

@@ -83,7 +83,7 @@ func NewStatusDefault(code int) *StatusDefault {
 
 /*StatusDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type StatusDefault struct {
 	_statusCode int

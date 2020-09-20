@@ -83,7 +83,7 @@ func NewNetInfoDefault(code int) *NetInfoDefault {
 
 /*NetInfoDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type NetInfoDefault struct {
 	_statusCode int

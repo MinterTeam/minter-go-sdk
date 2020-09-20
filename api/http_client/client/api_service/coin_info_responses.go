@@ -83,7 +83,7 @@ func NewCoinInfoDefault(code int) *CoinInfoDefault {
 
 /*CoinInfoDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type CoinInfoDefault struct {
 	_statusCode int

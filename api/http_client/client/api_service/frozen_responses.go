@@ -83,7 +83,7 @@ func NewFrozenDefault(code int) *FrozenDefault {
 
 /*FrozenDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type FrozenDefault struct {
 	_statusCode int

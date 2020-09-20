@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -22,7 +23,7 @@ type FrozenResponseFrozen struct {
 	CandidateKey string `json:"candidate_key,omitempty"`
 
 	// coin
-	Coin string `json:"coin,omitempty"`
+	Coin *Coin `json:"coin,omitempty"`
 
 	// height
 	Height string `json:"height,omitempty"`
@@ -33,6 +34,33 @@ type FrozenResponseFrozen struct {
 
 // Validate validates this frozen response frozen
 func (m *FrozenResponseFrozen) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateCoin(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *FrozenResponseFrozen) validateCoin(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Coin) { // not required
+		return nil
+	}
+
+	if m.Coin != nil {
+		if err := m.Coin.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("coin")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

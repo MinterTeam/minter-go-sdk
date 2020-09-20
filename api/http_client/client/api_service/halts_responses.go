@@ -83,7 +83,7 @@ func NewHaltsDefault(code int) *HaltsDefault {
 
 /*HaltsDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type HaltsDefault struct {
 	_statusCode int

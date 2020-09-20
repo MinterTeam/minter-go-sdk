@@ -83,7 +83,7 @@ func NewValidatorsDefault(code int) *ValidatorsDefault {
 
 /*ValidatorsDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type ValidatorsDefault struct {
 	_statusCode int

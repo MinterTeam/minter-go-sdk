@@ -83,7 +83,7 @@ func NewEstimateTxCommissionDefault(code int) *EstimateTxCommissionDefault {
 
 /*EstimateTxCommissionDefault handles this case with default header values.
 
-An unexpected error response
+An unexpected error response.
 */
 type EstimateTxCommissionDefault struct {
 	_statusCode int
