@@ -24,12 +24,11 @@ go get github.com/MinterTeam/minter-go-sdk/v2
 ## Minter API
 
 * v1 - Deprecated.
-    - [Doc](https://github.com/MinterTeam/minter-go-sdk/tree/v1.1.1#using-minterapi)
-    - [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk@v1.1.6/api?tab=doc)
-* v2 - RESTful API and gRPC. 
-    - [Github Source Code](https://github.com/MinterTeam/node-grpc-gateway)
+    - [SDK v1](https://github.com/MinterTeam/minter-go-sdk/tree/v1.1.1#using-minterapi)
+* v2 - RESTful API and gRPC.
     - [ReDoc](https://minterteam.github.io/node-gateway-api-v2-doc/)
-    - [![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Fraw.githubusercontent.com%2FMinterTeam%2Fnode-grpc-gateway%2Fmaster%2Fdocs%2Fapi.swagger.json)](https://minterteam.github.io/minter-api-v2-docs/)
+    - [Swagger UI](https://minterteam.github.io/node-grpc-gateway/)
+    - [![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https://minterteam.github.io/node-grpc-gateway/api.swagger.json)](https://minterteam.github.io/minter-api-v2-docs/)
 
 ## Using API v2
 
@@ -56,14 +55,14 @@ Returns a signed tx.
 ```go
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
     transaction.NewSendData().
-        SetCoin(1).
+        SetCoin(0).
         SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
         MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
 )
 
 signedTransaction, _ := tx.
     SetGasPrice(1).
-    SetGasCoin(1).
+    SetGasCoin(0).
     SetNonce(1).
     Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
 
@@ -77,12 +76,12 @@ encode, _ := signedTransaction.Encode()
 ```go
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
     transaction.NewSendData().
-        SetCoin(1).
+        SetCoin(0).
         SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
         MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
 )
 
-signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeMulti).Sign(
+signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(0).SetSignatureType(transaction.SignatureTypeMulti).Sign(
     multisigAddress,
     "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63",
     "b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7",
