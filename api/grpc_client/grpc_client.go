@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/MinterTeam/node-grpc-gateway/api_pb"
-	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/golang/protobuf/ptypes/wrappers"
 	"github.com/grpc-ecosystem/go-grpc-middleware/retry"
@@ -12,6 +11,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	_struct "google.golang.org/protobuf/types/known/structpb"
 	"net/http"
 	"strconv"
@@ -49,9 +49,22 @@ func (c *Client) WithContextFunc(contextFunc func(context.Context) func() contex
 	return &Client{grpcClient: c.grpcClient, ctxFunc: contextFunc(c.ctxFunc())}
 }
 
-// GRPCClient return gRPC client ApiServiceClient
+// GRPCClient return gRPC client api_pb.ApiServiceClient
 func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 	return c.grpcClient
+}
+
+// CoinID returns ID of coin symbol.
+func (c *Client) CoinID(symbol string) (uint32, error) {
+	info, err := c.CoinInfo(symbol)
+	if err != nil {
+		return 0, err
+	}
+	id, err := strconv.Atoi(info.Id)
+	if err != nil {
+		return 0, err
+	}
+	return uint32(id), err
 }
 
 // ErrorBody returns error as API model

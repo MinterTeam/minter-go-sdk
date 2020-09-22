@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-// Generate mnemonic.
+// NewMnemonic generates mnemonic.
 func NewMnemonic() (string, error) {
 	entropy := make([]byte, 16)
 	_, err := rand.Read(entropy)
@@ -22,15 +22,24 @@ func NewMnemonic() (string, error) {
 	return bip39.NewMnemonic(entropy)
 }
 
-// Get seed from mnemonic.
-func Seed(mnemonic string) ([]byte, error) {
-	return bip39.NewSeedWithErrorChecking(mnemonic, "")
+// Seed returns seed from mnemonic.
+func Seed(mnemonic string) (string, error) {
+	seed, err := bip39.NewSeedWithErrorChecking(mnemonic, "")
+	if err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(seed), nil
 }
 
-// Get private key from seed.
-func PrivateKeyBySeed(seed []byte) (string, error) {
+// PrivateKeyBySeed returns private key from seed.
+func PrivateKeyBySeed(seed string) (string, error) {
+	bytes, err := hex.DecodeString(seed)
+	if err != nil {
+		return "", err
+	}
+
 	// Generate a new master node using the seed.
-	masterKey, err := bip32.NewMasterKey(seed)
+	masterKey, err := bip32.NewMasterKey(bytes)
 	if err != nil {
 		return "", err
 	}
@@ -68,7 +77,7 @@ func PrivateKeyBySeed(seed []byte) (string, error) {
 	return hex.EncodeToString(acc44H60H0H00.Key), nil
 }
 
-// Get Minter address from public key.
+// AddressByPublicKey returns Minter address from public key.
 func AddressByPublicKey(publicKey string) (string, error) {
 	publicKey = strings.Title(strings.ToLower(publicKey))
 	if !strings.HasPrefix(publicKey, "Mp") {
@@ -83,12 +92,12 @@ func AddressByPublicKey(publicKey string) (string, error) {
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(crypto.Keccak256(decodeString)[12:]).String()), nil
 }
 
-// Convert hex value to [20]byte of address
+// BytesToAddress converts hex value to [20]byte of address
 func BytesToAddress(address [20]byte) string {
 	return addressToLowerPrefix0xToMx(common.BytesToAddress(address[:]).String())
 }
 
-// Get public key from private key.
+// PublicKeyByPrivateKey returns public key from private key.
 func PublicKeyByPrivateKey(privateKey string) (string, error) {
 	key, err := crypto.HexToECDSA(privateKey)
 	if err != nil {
@@ -101,11 +110,12 @@ func addressToLowerPrefix0xToMx(key string) string {
 	return strings.Replace(strings.ToLower(key), "0x", "Mx", 1)
 }
 
+// PubPrefix04ToMp replace "04" to "Mp"
 func PubPrefix04ToMp(key string) string {
 	return strings.Replace(key, "04", "Mp", 1)
 }
 
-// Convert string address to hex bytes
+// AddressToHex converts string address to hex bytes
 func AddressToHex(address string) ([]byte, error) {
 	address = strings.Title(strings.ToLower(address))
 	if !strings.HasPrefix(address, "Mx") {
@@ -123,7 +133,7 @@ func AddressToHex(address string) ([]byte, error) {
 	return bytes, nil
 }
 
-// Convert string public key to hex bytes
+// PublicKeyToHex converts string public key to hex bytes
 func PublicKeyToHex(key string) ([]byte, error) {
 	key = strings.Title(strings.ToLower(key))
 	if !strings.HasPrefix(key, "Mp") {
@@ -137,11 +147,8 @@ func PublicKeyToHex(key string) ([]byte, error) {
 	return hexKey, nil
 }
 
-// Check if the address is correct
+// IsValidAddress checks address for correctness
 func IsValidAddress(address string) bool {
 	_, err := AddressToHex(address)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }

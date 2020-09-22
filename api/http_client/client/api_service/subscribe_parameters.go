@@ -60,7 +60,10 @@ for the subscribe operation typically these are written to a http.Request
 */
 type SubscribeParams struct {
 
-	/*Query*/
+	/*Query
+	  tm.event = 'NewBlock' or tm.event = 'Tx'
+
+	*/
 	Query *string
 
 	timeout    time.Duration

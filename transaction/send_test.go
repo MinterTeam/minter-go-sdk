@@ -22,6 +22,10 @@ func TestTransactionSend_Sign(t *testing.T) {
 	}
 
 	addressBytes, err := hex.DecodeString(address[2:])
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if string(data.To[:]) != string(addressBytes) {
 		t.Errorf("SendData.To got %s, want %s", string(data.To[:]), string(addressBytes))
 	}

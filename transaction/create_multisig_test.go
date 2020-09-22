@@ -59,7 +59,11 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 	}
 
 	address, err := signedTx.SenderAddress()
-	if "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c" != address {
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if address != "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c" {
 		t.Errorf("Address got %s, want %s", address, "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c")
 	}
 

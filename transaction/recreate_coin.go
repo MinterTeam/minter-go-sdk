@@ -5,6 +5,7 @@ import (
 	"math/big"
 )
 
+// RecreateCoinData is a Data of Transaction for recreating new coin.
 type RecreateCoinData struct {
 	Name                 string     // Name of a coin
 	Symbol               CoinSymbol // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
@@ -14,23 +15,24 @@ type RecreateCoinData struct {
 	MaxSupply            *big.Int   // Max amount of coins that are allowed to be issued. Maximum is 1,000,000,000,000,000
 }
 
+// NewRecreateCoinData returns new RecreateCoinData of Transaction for recreating coin
 func NewRecreateCoinData() *RecreateCoinData {
 	return &RecreateCoinData{}
 }
 
-// Set name of a coin. Arbitrary string up to 64 letters length.
+// SetName sets name of a coin. Arbitrary string up to 64 letters length.
 func (d *RecreateCoinData) SetName(name string) *RecreateCoinData {
 	d.Name = name
 	return d
 }
 
-// Set symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.
+// SetSymbol sets symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.
 func (d *RecreateCoinData) SetSymbol(symbol string) *RecreateCoinData {
 	copy(d.Symbol[:], symbol)
 	return d
 }
 
-// Set initial reserve in BIP's.
+// SetInitialReserve sets initial reserve in BIP's.
 func (d *RecreateCoinData) SetInitialReserve(value *big.Int) *RecreateCoinData {
 	if big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)).Cmp(value) == -1 {
 		d.InitialReserve = value
@@ -38,32 +40,35 @@ func (d *RecreateCoinData) SetInitialReserve(value *big.Int) *RecreateCoinData {
 	return d
 }
 
-// Set amount of coins to issue. Issued coins will be available to sender account.
+// SetInitialAmount sets amount of coins to issue. Issued coins will be available to sender account.
 func (d *RecreateCoinData) SetInitialAmount(value *big.Int) *RecreateCoinData {
 	d.InitialAmount = value
 	return d
 }
 
-// Set ConstantReserveRatio (CRR), uint, should be from 10 to 100.
+// SetConstantReserveRatio sets CRR, uint, should be from 10 to 100.
 func (d *RecreateCoinData) SetConstantReserveRatio(ratio uint) *RecreateCoinData {
 	d.ConstantReserveRatio = ratio
 	return d
 }
 
-// Set maximum amount of coins that are allowed to be issued.
+// SetMaxSupply sets maximum amount of coins that are allowed to be issued.
 func (d *RecreateCoinData) SetMaxSupply(maxSupply *big.Int) *RecreateCoinData {
 	d.MaxSupply = maxSupply
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *RecreateCoinData) Type() Type {
 	return TypeRecreateCoin
 }
 
+// Fee returns commission of transaction Data
 func (d *RecreateCoinData) Fee() Fee {
 	return feeTypeRecreateCoin
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *RecreateCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

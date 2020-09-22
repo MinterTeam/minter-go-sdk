@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"encoding/hex"
 	"testing"
 )
 
@@ -12,20 +11,13 @@ func TestMnemonicBySeed(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if hex.EncodeToString(seed) != validSeed {
-		t.Fatalf("seed got %s, want %s", hex.EncodeToString(seed), validSeed)
+	if seed != validSeed {
+		t.Fatalf("seed got %s, want %s", seed, validSeed)
 	}
 }
 
 func TestPrivateKeyBySeed(t *testing.T) {
-	bytes, err := hex.DecodeString(validSeed)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	seed := bytes
-
-	prKey, err := PrivateKeyBySeed(seed)
+	prKey, err := PrivateKeyBySeed(validSeed)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,8 +54,8 @@ func TestBugAddress(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	if hex.EncodeToString(seed) != "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7" {
-		t.Fatalf("Seed got %s, want %s", hex.EncodeToString(seed), "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7")
+	if seed != "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7" {
+		t.Fatalf("Seed got %s, want %s", seed, "57fb1e450b8afb95c62afbcd49e4100d6790e0822b8905608679180ac34ca0bd45bf7ccc6c5f5218236d0eb93afc78bd117b9f02a6b7df258ea182dfaef5aad7")
 	}
 	privateKeyBySeed, err := PrivateKeyBySeed(seed)
 	if err != nil {

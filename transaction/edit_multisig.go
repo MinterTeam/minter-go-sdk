@@ -5,25 +5,25 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// Transaction data for edit multisig owners.
+// EditMultisigData is a Data of Transaction for edit multisig.
 type EditMultisigData struct {
 	Threshold uint       // Threshold for the sums of signature weights.
 	Weights   []uint     // Weights of signers
 	Addresses [][20]byte // List of signed addresses
 }
 
-// Data of transaction for edit multisig owners.
+// NewEditMultisigData returns new EditMultisigData of Transaction for edit multisig.
 func NewEditMultisigData() *EditMultisigData {
 	return &EditMultisigData{}
 }
 
-// Set threshold for the sums of signature weights.
+// SetThreshold sets threshold for the sums of signature weights.
 func (d *EditMultisigData) SetThreshold(threshold uint) *EditMultisigData {
 	d.Threshold = threshold
 	return d
 }
 
-// Set a set of signers with appropriate weights.
+// AddSigData sets a set of signers with appropriate weights.
 func (d *EditMultisigData) AddSigData(address string, weight uint) (*EditMultisigData, error) {
 	_, err := d.addAddress(address)
 	if err != nil {
@@ -35,7 +35,7 @@ func (d *EditMultisigData) AddSigData(address string, weight uint) (*EditMultisi
 	return d, nil
 }
 
-// Tries to set a set of signers with appropriate weights and panics on error.
+// MustAddSigData tries to set a set of signers with appropriate weights and panics on error.
 func (d *EditMultisigData) MustAddSigData(address string, weight uint) *EditMultisigData {
 	_, err := d.AddSigData(address, weight)
 	if err != nil {
@@ -61,14 +61,17 @@ func (d *EditMultisigData) addWeight(weight uint) *EditMultisigData {
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *EditMultisigData) Type() Type {
 	return TypeEditMultisig
 }
 
+// Fee returns commission of transaction Data
 func (d *EditMultisigData) Fee() Fee {
 	return feeEditMultisig
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *EditMultisigData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

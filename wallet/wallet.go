@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"encoding/hex"
 	"errors"
 )
 
@@ -21,7 +20,7 @@ func New() (*Wallet, error) {
 		return nil, err
 	}
 
-	data, err := Create(mnemonic, nil)
+	data, err := Create(mnemonic, "")
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +31,7 @@ func New() (*Wallet, error) {
 }
 
 // Create returns wallet by exists seed or mnemonic. Note: pass only one value.
-func Create(mnemonic string, seed []byte) (*Wallet, error) {
+func Create(mnemonic string, seed string) (*Wallet, error) {
 	if mnemonic != "" {
 		if len(seed) != 0 {
 			return nil, errors.New("pass only one value (seed or mnemonic")
@@ -61,7 +60,7 @@ func Create(mnemonic string, seed []byte) (*Wallet, error) {
 
 	return &Wallet{
 		Mnemonic:   mnemonic,
-		Seed:       hex.EncodeToString(seed),
+		Seed:       seed,
 		PrivateKey: prKey,
 		PublicKey:  pubKey,
 		Address:    address,

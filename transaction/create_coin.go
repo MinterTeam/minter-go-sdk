@@ -5,7 +5,7 @@ import (
 	"math/big"
 )
 
-// Transaction data for creating new coin in a system.
+// CreateCoinData is a Data of Transaction for creating new coin.
 type CreateCoinData struct {
 	Name                 string     // Name of a coin
 	Symbol               CoinSymbol // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
@@ -15,51 +15,53 @@ type CreateCoinData struct {
 	MaxSupply            *big.Int   // Max amount of coins that are allowed to be issued. Maximum is 1,000,000,000,000,000
 }
 
-// New data of transaction for creating new coin in a system.
+// NewCreateCoinData returns new CreateCoinData of Transaction for creating new coin.
 func NewCreateCoinData() *CreateCoinData {
 	return &CreateCoinData{}
 }
 
-// Set name of a coin. Arbitrary string up to 64 letters length.
+// SetName sets name of a coin. Arbitrary string up to 64 letters length.
 func (d *CreateCoinData) SetName(name string) *CreateCoinData {
 	d.Name = name
 	return d
 }
 
-// Set symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.
+// SetSymbol sets symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.
 func (d *CreateCoinData) SetSymbol(symbol string) *CreateCoinData {
 	copy(d.Symbol[:], symbol)
 	return d
 }
 
-// Set initial reserve in BIP's.
+// SetInitialReserve sets initial reserve in BIP's.
 func (d *CreateCoinData) SetInitialReserve(value *big.Int) *CreateCoinData {
 	d.InitialReserve = value
 	return d
 }
 
-// Set amount of coins to issue. Issued coins will be available to sender account.
+// SetInitialAmount sets amount of coins to issue. Issued coins will be available to sender account.
 func (d *CreateCoinData) SetInitialAmount(value *big.Int) *CreateCoinData {
 	d.InitialAmount = value
 	return d
 }
 
-// Set ConstantReserveRatio (CRR), uint, should be from 10 to 100.
+// SetConstantReserveRatio sets CRR, uint, should be from 10 to 100.
 func (d *CreateCoinData) SetConstantReserveRatio(ratio uint) *CreateCoinData {
 	d.ConstantReserveRatio = ratio
 	return d
 }
 
-// Set maximum amount of coins that are allowed to be issued.
+// SetMaxSupply sets maximum amount of coins that are allowed to be issued.
 func (d *CreateCoinData) SetMaxSupply(maxSupply *big.Int) *CreateCoinData {
 	d.MaxSupply = maxSupply
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *CreateCoinData) Type() Type {
 	return TypeCreateCoin
 }
 
+// Fee returns commission of transaction Data
 func (d *CreateCoinData) Fee() Fee {
 	switch len(d.Symbol.String()) {
 	case 3:
@@ -77,6 +79,7 @@ func (d *CreateCoinData) Fee() Fee {
 	}
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *CreateCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

@@ -99,7 +99,7 @@ func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
 		PathPattern:        "/address/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &AddressReader{formats: a.formats},
 		Context:            params.Context,
@@ -132,7 +132,7 @@ func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
 		PathPattern:        "/addresses",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &AddressesReader{formats: a.formats},
 		Context:            params.Context,
@@ -165,7 +165,7 @@ func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 		PathPattern:        "/block/{height}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &BlockReader{formats: a.formats},
 		Context:            params.Context,
@@ -184,7 +184,7 @@ func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 }
 
 /*
-  Candidate returns candidate s info by provided public key it will respond with 404 code if candidate is not found
+  Candidate returns candidate s info by provided public key
 */
 func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 	// TODO: Validate the params before sending
@@ -198,7 +198,7 @@ func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 		PathPattern:        "/candidate/{public_key}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &CandidateReader{formats: a.formats},
 		Context:            params.Context,
@@ -231,7 +231,7 @@ func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
 		PathPattern:        "/candidates",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &CandidatesReader{formats: a.formats},
 		Context:            params.Context,
@@ -264,7 +264,7 @@ func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
 		PathPattern:        "/coin_info/{symbol}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &CoinInfoReader{formats: a.formats},
 		Context:            params.Context,
@@ -297,7 +297,7 @@ func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, erro
 		PathPattern:        "/coin_info_by_id/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &CoinInfoByIDReader{formats: a.formats},
 		Context:            params.Context,
@@ -330,7 +330,7 @@ func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBu
 		PathPattern:        "/estimate_coin_buy",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &EstimateCoinBuyReader{formats: a.formats},
 		Context:            params.Context,
@@ -363,7 +363,7 @@ func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoin
 		PathPattern:        "/estimate_coin_sell",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &EstimateCoinSellReader{formats: a.formats},
 		Context:            params.Context,
@@ -396,7 +396,7 @@ func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*Estima
 		PathPattern:        "/estimate_coin_sell_all",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &EstimateCoinSellAllReader{formats: a.formats},
 		Context:            params.Context,
@@ -429,7 +429,7 @@ func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*Esti
 		PathPattern:        "/estimate_tx_commission/{tx}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &EstimateTxCommissionReader{formats: a.formats},
 		Context:            params.Context,
@@ -462,7 +462,7 @@ func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
 		PathPattern:        "/events/{height}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &EventsReader{formats: a.formats},
 		Context:            params.Context,
@@ -495,7 +495,7 @@ func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
 		PathPattern:        "/frozen/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &FrozenReader{formats: a.formats},
 		Context:            params.Context,
@@ -528,7 +528,7 @@ func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 		PathPattern:        "/genesis",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &GenesisReader{formats: a.formats},
 		Context:            params.Context,
@@ -547,7 +547,7 @@ func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 }
 
 /*
-  Halts halts
+  Halts returns the candidate votes for stopping the network at block
 */
 func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 	// TODO: Validate the params before sending
@@ -561,7 +561,7 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 		PathPattern:        "/halts",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &HaltsReader{formats: a.formats},
 		Context:            params.Context,
@@ -594,7 +594,7 @@ func (a *Client) MaxGas(params *MaxGasParams) (*MaxGasOK, error) {
 		PathPattern:        "/max_gas",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &MaxGasReader{formats: a.formats},
 		Context:            params.Context,
@@ -627,7 +627,7 @@ func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) 
 		PathPattern:        "/min_gas_price",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &MinGasPriceReader{formats: a.formats},
 		Context:            params.Context,
@@ -660,7 +660,7 @@ func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, erro
 		PathPattern:        "/missed_blocks/{public_key}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &MissedBlocksReader{formats: a.formats},
 		Context:            params.Context,
@@ -693,7 +693,7 @@ func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 		PathPattern:        "/net_info",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &NetInfoReader{formats: a.formats},
 		Context:            params.Context,
@@ -726,7 +726,7 @@ func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactio
 		PathPattern:        "/send_transaction/{tx}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &SendTransactionReader{formats: a.formats},
 		Context:            params.Context,
@@ -759,7 +759,7 @@ func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransact
 		PathPattern:        "/send_transaction",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &SendTransaction2Reader{formats: a.formats},
 		Context:            params.Context,
@@ -792,7 +792,7 @@ func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 		PathPattern:        "/status",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &StatusReader{formats: a.formats},
 		Context:            params.Context,
@@ -812,6 +812,8 @@ func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 
 /*
   Subscribe returns a subscription for events by query
+
+  Only supported in WS and gRPC methods
 */
 func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 	// TODO: Validate the params before sending
@@ -825,7 +827,7 @@ func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 		PathPattern:        "/subscribe",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &SubscribeReader{formats: a.formats},
 		Context:            params.Context,
@@ -858,7 +860,7 @@ func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) 
 		PathPattern:        "/transaction/{hash}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &TransactionReader{formats: a.formats},
 		Context:            params.Context,
@@ -891,7 +893,7 @@ func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, erro
 		PathPattern:        "/transactions",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &TransactionsReader{formats: a.formats},
 		Context:            params.Context,
@@ -924,7 +926,7 @@ func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK
 		PathPattern:        "/unconfirmed_txs",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &UnconfirmedTxsReader{formats: a.formats},
 		Context:            params.Context,
@@ -957,7 +959,7 @@ func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
 		PathPattern:        "/validators",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &ValidatorsReader{formats: a.formats},
 		Context:            params.Context,
@@ -990,7 +992,7 @@ func (a *Client) WaitList(params *WaitListParams) (*WaitListOK, error) {
 		PathPattern:        "/waitlist/{public_key}/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &WaitListReader{formats: a.formats},
 		Context:            params.Context,

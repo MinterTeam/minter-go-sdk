@@ -21,7 +21,7 @@ import (
 // with the default values initialized.
 func NewCandidatesParams() *CandidatesParams {
 	var (
-		statusDefault = string("_")
+		statusDefault = string("CandidateStatusUNKNOWN")
 	)
 	return &CandidatesParams{
 		Status: &statusDefault,
@@ -34,7 +34,7 @@ func NewCandidatesParams() *CandidatesParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 	var (
-		statusDefault = string("_")
+		statusDefault = string("CandidateStatusUNKNOWN")
 	)
 	return &CandidatesParams{
 		Status: &statusDefault,
@@ -47,7 +47,7 @@ func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 // with the default values initialized, and the ability to set a context for a request
 func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 	var (
-		statusDefault = string("_")
+		statusDefault = string("CandidateStatusUNKNOWN")
 	)
 	return &CandidatesParams{
 		Status: &statusDefault,
@@ -60,7 +60,7 @@ func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewCandidatesParamsWithHTTPClient(client *http.Client) *CandidatesParams {
 	var (
-		statusDefault = string("_")
+		statusDefault = string("CandidateStatusUNKNOWN")
 	)
 	return &CandidatesParams{
 		Status:     &statusDefault,

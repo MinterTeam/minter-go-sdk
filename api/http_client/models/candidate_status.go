@@ -20,8 +20,8 @@ type CandidateStatus string
 
 const (
 
-	// CandidateStatusNr captures enum value "_"
-	CandidateStatusNr CandidateStatus = "_"
+	// CandidateStatusCandidateStatusUNKNOWN captures enum value "CandidateStatusUNKNOWN"
+	CandidateStatusCandidateStatusUNKNOWN CandidateStatus = "CandidateStatusUNKNOWN"
 
 	// CandidateStatusCandidateOff captures enum value "CandidateOff"
 	CandidateStatusCandidateOff CandidateStatus = "CandidateOff"
@@ -38,7 +38,7 @@ var candidateStatusEnum []interface{}
 
 func init() {
 	var res []CandidateStatus
-	if err := json.Unmarshal([]byte(`["_","CandidateOff","CandidateOn","ValidatorOn"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["CandidateStatusUNKNOWN","CandidateOff","CandidateOn","ValidatorOn"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

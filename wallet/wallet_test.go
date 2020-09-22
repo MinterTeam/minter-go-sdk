@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"encoding/hex"
 	"strings"
 	"testing"
 )
@@ -14,11 +13,7 @@ const (
 )
 
 func TestWallet_PrivateKey(t *testing.T) {
-	bytes, err := hex.DecodeString(validSeed)
-	if err != nil {
-		t.Fatal(err)
-	}
-	wallet, err := Create("", bytes)
+	wallet, err := Create("", validSeed)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,11 +25,7 @@ func TestWallet_PrivateKey(t *testing.T) {
 }
 
 func TestWallet_PublicKey(t *testing.T) {
-	bytes, err := hex.DecodeString(validSeed)
-	if err != nil {
-		t.Fatal(err)
-	}
-	wallet, err := Create("", bytes)
+	wallet, err := Create("", validSeed)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -46,11 +37,7 @@ func TestWallet_PublicKey(t *testing.T) {
 }
 
 func TestWallet_Address(t *testing.T) {
-	bytes, err := hex.DecodeString(validSeed)
-	if err != nil {
-		t.Fatal(err)
-	}
-	wallet, err := Create("", bytes)
+	wallet, err := Create("", validSeed)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -80,13 +67,17 @@ func TestCreate(t *testing.T) {
 		t.Errorf("PublicKey len got %d, want %d", len(data.PublicKey), 130)
 	}
 	pubKeyByPrivate, err := PublicKeyByPrivateKey(data.PrivateKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if pubKeyByPrivate != data.PublicKey {
 		t.Errorf("pubKeyByPrivate len got %s, want %s", pubKeyByPrivate, data.PublicKey)
 	}
 }
 
 func TestWalletBugAddress(t *testing.T) {
-	wallet, err := Create("real town addict extend shoot name disagree vital turn live can tip", nil)
+	wallet, err := Create("real town addict extend shoot name disagree vital turn live can tip", "")
 	if err != nil {
 		t.Fatal(err)
 	}

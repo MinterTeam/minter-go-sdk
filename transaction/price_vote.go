@@ -15,14 +15,17 @@ func (d *PriceVoteData) SetPrice(price uint) *PriceVoteData {
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *PriceVoteData) Type() Type {
 	return TypePriceVote
 }
 
+// Fee returns commission of transaction Data
 func (d *PriceVoteData) Fee() Fee {
 	return feePriceVote
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *PriceVoteData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

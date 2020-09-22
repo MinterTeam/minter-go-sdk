@@ -1,43 +1,63 @@
-/*
-	ClientService is the interface for uses API v2 methods.
+/*Package http_client is the interface for uses API v2 methods.
 
-	Example:
+Example:
 
-		client, _ := http_client.New("http://localhost:8843")
-		coinSymbol := "SUPERTEST9"
-		dataCreateCoin := transaction.NewCreateCoinData().
-			SetSymbol(coinSymbol)...
-		transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
-		tx, _ := transactionsBuilder.NewTransaction(dataCreateCoin)
-		sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(privateKey)
-		encode, _ := sign.Encode()
+	client, _ := http_client.New("http://localhost:8843/v2")
+	coinSymbol := "SUPERTEST9"
+	dataCreateCoin := transaction.NewCreateCoinData().
+		SetSymbol(coinSymbol) // ...
+	transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
+	tx, _ := transactionsBuilder.NewTransaction(dataCreateCoin)
+	sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(privateKey)
+	hash, _ := sign.Hash()
+	encode, _ := sign.Encode()
 
-		res, err := client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
-		if err != nil {
-			log.Fatal(http_client.ErrorBody(err))
+	res, err := client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
+	if err != nil {
+		log.Fatal(http_client.ErrorBody(err))
+	}
+
+	subscribe, err := client.Subscribe(context.Background(), "tm.event = 'Tx'")
+	if err != nil {
+		panic(err)
+	}
+
+	for {
+		body, err := subscribe.Recv()
+		if err == io.EOF {
+			break
 		}
-
-		txRes, err := client.Transaction(api_service.NewTransactionParams().WithHash(res.GetPayload().Hash))
 		if err != nil {
-			log.Fatal(http_client.ErrorBody(err))
+			subscribe.Close()
+			return
 		}
-
-		var coinID transaction.CoinID
-		coin, _ := txRes.GetPayload().Tags["tx.coin_id"]
-		id, _ := strconv.Atoi(coin)
-		coinID = transaction.CoinID(id)
-
-		dataSend := transaction.NewSendData().
-			SetCoin(coinID)...
-
-		tx, _ = transactionsBuilder.NewTransaction(dataSend)
-		sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)
-		encode, _ = sign.Encode()
-
-		res, err = client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
-		if err != nil {
-			log.Fatal(http_client.ErrorBody(err))
+		data, _ := json.Marshal(body.Result.Data)
+		if strings.Contains(fmt.Sprintf("%s", data), strings.ToUpper(hash[2:])) {
+			break
 		}
+	}
+
+	txRes, err := client.Transaction(api_service.NewTransactionParams().WithHash(res.GetPayload().Hash))
+	if err != nil {
+		log.Fatal(http_client.ErrorBody(err))
+	}
+
+	coin, _ := txRes.GetPayload().Tags["tx.coin_id"]
+	newCoinID, _ := strconv.Atoi(coin)
+	mntID, _ := client.CoinID("MNT")
+
+	dataSell := transaction.NewSellAllCoinData().
+		SetCoinToBuy(transaction.CoinID(newCoinID)).
+		SetCoinToSell(transaction.CoinID(mntID)) // ...
+
+	tx, _ = transactionsBuilder.NewTransaction(dataSell)
+	sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)
+	encode, _ = sign.Encode()
+
+	res, err = client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
+	if err != nil {
+		log.Fatal(http_client.ErrorBody(err))
+	}
 
 */
 package http_client

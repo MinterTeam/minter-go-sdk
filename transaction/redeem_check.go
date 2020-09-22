@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// Transaction data for redeeming a check.
+// RedeemCheckData is a Data of Transaction for redeeming a check.
 // Note that maximum GasPrice is limited to 1 to prevent fraud,
 // because GasPrice is set by redeem tx sender but commission is charded from check issuer.
 type RedeemCheckData struct {
@@ -15,12 +15,12 @@ type RedeemCheckData struct {
 	Proof    [65]byte // Proof of owning a check: password signed with recipient's address
 }
 
-// New data of transaction for redeeming a check.
+// NewRedeemCheckData returns new RedeemCheckData of Transaction for redeeming a check.
 func NewRedeemCheckData() *RedeemCheckData {
 	return &RedeemCheckData{}
 }
 
-// Set check received from sender.
+// SetRawCheck sets check received from sender.
 func (d *RedeemCheckData) SetRawCheck(raw string) (*RedeemCheckData, error) {
 	raw = strings.Title(strings.ToLower(raw))
 	if !strings.HasPrefix(raw, "Mc") {
@@ -35,7 +35,7 @@ func (d *RedeemCheckData) SetRawCheck(raw string) (*RedeemCheckData, error) {
 	return d, nil
 }
 
-// Tries to set check received from sender and panics on error.
+// MustSetRawCheck tries to set check received from sender and panics on error.
 func (d *RedeemCheckData) MustSetRawCheck(raw string) *RedeemCheckData {
 	_, err := d.SetRawCheck(raw)
 	if err != nil {
@@ -44,7 +44,7 @@ func (d *RedeemCheckData) MustSetRawCheck(raw string) *RedeemCheckData {
 	return d
 }
 
-// Set proof of owning a check.
+// SetProof sets proof of owning a check.
 func (d *RedeemCheckData) SetProof(proof string) (*RedeemCheckData, error) {
 	bytes, err := hex.DecodeString(proof)
 	if err != nil {
@@ -54,7 +54,7 @@ func (d *RedeemCheckData) SetProof(proof string) (*RedeemCheckData, error) {
 	return d, nil
 }
 
-// Tries to set proof of owning a check and panics on error.
+// MustSetProof tries to set proof of owning a check and panics on error.
 func (d *RedeemCheckData) MustSetProof(proof string) *RedeemCheckData {
 	_, err := d.SetProof(proof)
 	if err != nil {
@@ -63,14 +63,17 @@ func (d *RedeemCheckData) MustSetProof(proof string) *RedeemCheckData {
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *RedeemCheckData) Type() Type {
 	return TypeRedeemCheck
 }
 
+// Fee returns commission of transaction Data
 func (d *RedeemCheckData) Fee() Fee {
 	return feeTypeRedeemCheck
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *RedeemCheckData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

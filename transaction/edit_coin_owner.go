@@ -5,20 +5,24 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// EditCoinOwnerData is a Data of Transaction for editing coin owner.
 type EditCoinOwnerData struct {
 	Symbol   CoinSymbol
 	NewOwner [20]byte
 }
 
+// NewEditCoinOwnerData returns new EditCoinOwnerData of Transaction for editing coin owner.
 func NewEditCoinOwnerData() *EditCoinOwnerData {
 	return &EditCoinOwnerData{}
 }
 
+// SetSymbol sets symbol of a coin.
 func (d *EditCoinOwnerData) SetSymbol(symbol string) *EditCoinOwnerData {
 	copy(d.Symbol[:], symbol)
 	return d
 }
 
+// SetNewOwner sets new owner address of a coin.
 func (d *EditCoinOwnerData) SetNewOwner(address string) (*EditCoinOwnerData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -28,7 +32,7 @@ func (d *EditCoinOwnerData) SetNewOwner(address string) (*EditCoinOwnerData, err
 	return d, nil
 }
 
-// Tries to set address of candidate and panics on error.
+// MustSetNewOwner tries to set address of candidate and panics on error.
 func (d *EditCoinOwnerData) MustSetNewOwner(address string) *EditCoinOwnerData {
 	_, err := d.SetNewOwner(address)
 	if err != nil {
@@ -37,14 +41,17 @@ func (d *EditCoinOwnerData) MustSetNewOwner(address string) *EditCoinOwnerData {
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *EditCoinOwnerData) Type() Type {
 	return TypeEditCoinOwner
 }
 
+// Fee returns commission of transaction Data
 func (d *EditCoinOwnerData) Fee() Fee {
 	return feeTypeEditCoinOwner
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *EditCoinOwnerData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

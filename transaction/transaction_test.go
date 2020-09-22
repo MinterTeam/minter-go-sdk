@@ -435,6 +435,10 @@ func TestDecodeMulti(t *testing.T) {
 		t.Fatal(err)
 	}
 	senderAddress, err := decode.SenderAddress()
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	validSenderAddress := "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c"
 	if senderAddress != validSenderAddress {
 		t.Fatalf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)

@@ -5,7 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// Transaction for editing existing candidate.
+// EditCandidateData is Data of Transaction for editing existing candidate.
 type EditCandidateData struct {
 	PubKey         [32]byte // Public key of a validator
 	RewardAddress  [20]byte // Address where validator’s rewards go to.
@@ -13,12 +13,12 @@ type EditCandidateData struct {
 	ControlAddress [20]byte // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
 }
 
-// New data of transaction for editing existing candidate.
+// NewEditCandidateData returns new EditCandidateData of Transaction for editing existing candidate.
 func NewEditCandidateData() *EditCandidateData {
 	return &EditCandidateData{}
 }
 
-// Set public key of a validator.
+// SetPubKey sets public key of a validator.
 func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
 	pk, err := wallet.PublicKeyToHex(key)
 	if err != nil {
@@ -30,7 +30,7 @@ func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
 	return d, nil
 }
 
-// Tries to set public key of validator and panics on error.
+// MustSetPubKey tries to set public key of validator and panics on error.
 func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
 	_, err := d.SetPubKey(key)
 	if err != nil {
@@ -39,7 +39,7 @@ func (d *EditCandidateData) MustSetPubKey(key string) *EditCandidateData {
 	return d
 }
 
-// Tries to set reward address of validator and panics on error.
+// MustSetRewardAddress tries to set reward address of validator and panics on error.
 func (d *EditCandidateData) MustSetRewardAddress(address string) *EditCandidateData {
 	_, err := d.SetRewardAddress(address)
 	if err != nil {
@@ -48,7 +48,7 @@ func (d *EditCandidateData) MustSetRewardAddress(address string) *EditCandidateD
 	return d
 }
 
-// Set address where validator’s rewards go to.
+// SetRewardAddress sets address where validator’s rewards go to.
 func (d *EditCandidateData) SetRewardAddress(address string) (*EditCandidateData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -58,7 +58,7 @@ func (d *EditCandidateData) SetRewardAddress(address string) (*EditCandidateData
 	return d, nil
 }
 
-// Tries to set owner address of validator and panics on error.
+// MustSetOwnerAddress tries to set owner address of validator and panics on error.
 func (d *EditCandidateData) MustSetOwnerAddress(address string) *EditCandidateData {
 	_, err := d.SetOwnerAddress(address)
 	if err != nil {
@@ -67,7 +67,7 @@ func (d *EditCandidateData) MustSetOwnerAddress(address string) *EditCandidateDa
 	return d
 }
 
-// Set address for managing SetCandidateOnline, SetCandidateOffline and EditCandidate data of transaction
+// SetOwnerAddress sets address for managing SetCandidateOnline, SetCandidateOffline and EditCandidate data of transaction
 func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -77,7 +77,7 @@ func (d *EditCandidateData) SetOwnerAddress(address string) (*EditCandidateData,
 	return d, nil
 }
 
-// Tries to set control address of validator and panics on error.
+// MustSetControlAddress tries to set control address of validator and panics on error.
 func (d *EditCandidateData) MustSetControlAddress(address string) *EditCandidateData {
 	_, err := d.SetControlAddress(address)
 	if err != nil {
@@ -86,7 +86,7 @@ func (d *EditCandidateData) MustSetControlAddress(address string) *EditCandidate
 	return d
 }
 
-// Set address for managing SetCandidateOnline and SetCandidateOffline data of transaction
+// SetControlAddress sets address for managing SetCandidateOnline and SetCandidateOffline data of transaction
 func (d *EditCandidateData) SetControlAddress(address string) (*EditCandidateData, error) {
 	bytes, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -96,14 +96,17 @@ func (d *EditCandidateData) SetControlAddress(address string) (*EditCandidateDat
 	return d, nil
 }
 
+// Type returns Data type of the transaction.
 func (d *EditCandidateData) Type() Type {
 	return TypeEditCandidate
 }
 
+// Fee returns commission of transaction Data
 func (d *EditCandidateData) Fee() Fee {
 	return feeTypeEditCandidate
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *EditCandidateData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

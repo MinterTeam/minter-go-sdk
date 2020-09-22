@@ -5,44 +5,47 @@ import (
 	"math/big"
 )
 
-// Transaction for selling one coin (owned by sender) in favour of another coin in a system.
+// SellAllCoinData is Data of Transaction for selling one coin (owned by sender) in favour of another coin in a system.
 type SellAllCoinData struct {
 	CoinToSell        CoinID   // ID of a coin to give
 	CoinToBuy         CoinID   // ID of a coin to get
 	MinimumValueToBuy *big.Int // Minimum value of coins to get
 }
 
-// New SellAllCoinData of transaction for selling one coin (owned by sender) in favour of another coin in a system.
+// NewSellAllCoinData returns new SellAllCoinData of Transaction for selling one coin (owned by sender) in favour of another coin in a system.
 func NewSellAllCoinData() *SellAllCoinData {
 	return &SellAllCoinData{}
 }
 
-// Set ID of a coin to give.
+// SetCoinToSell sets ID of a coin to give.
 func (d *SellAllCoinData) SetCoinToSell(id CoinID) *SellAllCoinData {
 	d.CoinToSell = id
 	return d
 }
 
-// Set ID of a coin to get.
+// SetCoinToBuy sets ID of a coin to get.
 func (d *SellAllCoinData) SetCoinToBuy(id CoinID) *SellAllCoinData {
 	d.CoinToBuy = id
 	return d
 }
 
-// Set minimum value of coins to get
+// SetMinimumValueToBuy sets minimum value of coins to get
 func (d *SellAllCoinData) SetMinimumValueToBuy(value *big.Int) *SellAllCoinData {
 	d.MinimumValueToBuy = value
 	return d
 }
 
+// Type returns Data type of the transaction.
 func (d *SellAllCoinData) Type() Type {
 	return TypeSellAllCoin
 }
 
+// Fee returns commission of transaction Data
 func (d *SellAllCoinData) Fee() Fee {
 	return feeTypeSellAllCoin
 }
 
+// Encode returns the byte representation of a transaction Data.
 func (d *SellAllCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
