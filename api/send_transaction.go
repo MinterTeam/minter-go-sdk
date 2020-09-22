@@ -60,7 +60,7 @@ func (a *Api) SendRawTransaction(tx string) (*SendTransactionResult, error) {
 }
 
 // Returns the result of sending signed tx.
-func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendTransactionResult, error) {
+func (a *Api) SendTransaction(transaction transaction.EncodeInterface) (*SendTransactionResult, error) {
 	tx, err := transaction.Encode()
 	if err != nil {
 		return nil, err

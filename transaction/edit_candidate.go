@@ -7,9 +7,10 @@ import (
 
 // Transaction for editing existing candidate.
 type EditCandidateData struct {
-	PubKey        []byte
-	RewardAddress [20]byte
-	OwnerAddress  [20]byte
+	PubKey         []byte
+	RewardAddress  [20]byte
+	OwnerAddress   [20]byte
+	ControlAddress [20]byte
 }
 
 func NewEditCandidateData() *EditCandidateData {

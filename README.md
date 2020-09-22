@@ -2,6 +2,9 @@
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/mod/github.com/MinterTeam/minter-go-sdk)
 
+# The minter-go-sdk v1 is in maintenance mode, you are encouraged to migrate to v2, which will have a stable release.
+# Check out our [v2 migration guide](https://www.minter.network/ru/docs/1-2-migrate).
+
 ## About
 
 This is a pure Go SDK for working with **Minter** blockchain

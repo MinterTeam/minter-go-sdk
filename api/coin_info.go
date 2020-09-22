@@ -13,6 +13,7 @@ type CoinInfoResponse struct {
 }
 
 type CoinInfoResult struct {
+	ID             int    `json:"id"`
 	Name           string `json:"name"`
 	Symbol         string `json:"symbol"`
 	Volume         string `json:"volume"`
