@@ -1,4 +1,4 @@
-/*Package grpc_client is used to call gRPC methods here https://pkg.go.dev/github.com/MinterTeam/node-grpc-gateway/api_pb?tab=doc.
+/*Package grpc_client is the interface for uses gRPC methods.
 
 Example:
 
