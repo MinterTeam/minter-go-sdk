@@ -24,7 +24,7 @@ go get github.com/MinterTeam/minter-go-sdk/v2
 ## Minter API
 
 * v1 - Deprecated.
-    - [SDK v1](https://github.com/MinterTeam/minter-go-sdk/tree/v1.1.1#using-minterapi)
+    - [SDK v1](https://github.com/MinterTeam/minter-go-sdk/tree/master#the-minter-go-sdk-v1-is-in-maintenance-mode-you-are-encouraged-to-migrate-to-v2-which-will-have-a-stable-release)
 * v2 - RESTful API and gRPC.
     - [ReDoc](https://minterteam.github.io/node-gateway-api-v2-doc/)
     - [Swagger UI](https://minterteam.github.io/node-grpc-gateway/)
