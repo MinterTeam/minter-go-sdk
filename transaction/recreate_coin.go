@@ -8,7 +8,7 @@ import (
 // RecreateCoinData is a Data of Transaction for recreating new coin.
 type RecreateCoinData struct {
 	Name                 string   // Name of a coin
-	Symbol               Coin     // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
+	Symbol               [20]byte // Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length
 	InitialAmount        *big.Int // Amount of coins to issue. Issued coins will be available to sender account. Should be between 1 and 1,000,000,000,000,000 coins.
 	InitialReserve       *big.Int // Initial reserve in BIP's
 	ConstantReserveRatio uint     // ConstantReserveRatio (CRR), should be from 10 to 100.
