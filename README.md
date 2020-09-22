@@ -33,7 +33,7 @@ go get github.com/MinterTeam/minter-go-sdk/v2
 
 ## Using API v2
 
-[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/v2?tab=doc)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/http_client?tab=doc)
 
 ## Using gRPC
 
