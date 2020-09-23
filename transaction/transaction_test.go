@@ -53,10 +53,12 @@ func TestTransaction_Hash2(t *testing.T) {
 }
 
 func TestTransaction_Encode(t *testing.T) {
-	transaction, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
+	decode, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	transaction := decode.GetTransaction()
 
 	if transaction.ChainID != TestNetChainID {
 		t.Errorf("ChainID got %d, want %d", transaction.ChainID, TestNetChainID)
@@ -66,12 +68,12 @@ func TestTransaction_Encode(t *testing.T) {
 		t.Errorf("Type got %d, want %d", transaction.Type, TypeSend)
 	}
 
-	signature, err := transaction.Signature()
+	signature, err := decode.Signature()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if signature.(*Signature).V.String() != big.NewInt(28).String() {
+	if signature.(*SignatureSingle).V.String() != big.NewInt(28).String() {
 		t.Errorf("signature get %+v, want signature.V %d", signature, 28)
 	}
 }
@@ -327,25 +329,25 @@ func TestMultisigAddSignatures(t *testing.T) {
 	gasPrice := uint8(1)
 
 	tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(coinID).SetMultiSignatureType()
-	transaction0 := *(tx.(*Object).Transaction)
-	tx0 := Object{Transaction: &transaction0}
+	transaction0 := *(tx.(*object).Transaction)
+	tx0 := object{Transaction: &transaction0}
 
-	transaction1 := *(tx.(*Object).Transaction)
-	tx1 := Object{Transaction: &transaction1}
+	transaction1 := *(tx.(*object).Transaction)
+	tx1 := object{Transaction: &transaction1}
 	signedTx1, err := tx1.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	transaction2 := *(tx.(*Object).Transaction)
-	tx2 := Object{Transaction: &transaction2}
+	transaction2 := *(tx.(*object).Transaction)
+	tx2 := object{Transaction: &transaction2}
 	signedTx2, err := tx2.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "38b7dfb77426247aed6081f769ed8f62aaec2ee2b38336110ac4f7484478dccb")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	transaction3 := *(tx.(*Object).Transaction)
-	tx3 := Object{Transaction: &transaction3}
+	transaction3 := *(tx.(*object).Transaction)
+	tx3 := object{Transaction: &transaction3}
 	signedTx3, err := tx3.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2", "94c0915734f92dd66acfdc48f82b1d0b208efd544fe763386160ec30c968b4af")
 	if err != nil {
 		t.Fatal(err)

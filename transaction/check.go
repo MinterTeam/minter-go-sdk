@@ -176,7 +176,7 @@ func (check *Check) EncodeBase64() (string, error) {
 }
 
 // Sign signs Check with private key
-func (check *Check) Sign(prKey string) (EncodeInterface, error) {
+func (check *Check) Sign(prKey string) (encodeInterface, error) {
 	msgHash, err := rlpHash([]interface{}{
 		check.Nonce,
 		check.ChainID,
