@@ -20,7 +20,7 @@ type GenesisResponse struct {
 	AppHash string `json:"app_hash,omitempty"`
 
 	// app state
-	AppState interface{} `json:"app_state,omitempty"`
+	AppState *GenesisResponseAppState `json:"app_state,omitempty"`
 
 	// chain id
 	ChainID string `json:"chain_id,omitempty"`
@@ -36,6 +36,10 @@ type GenesisResponse struct {
 func (m *GenesisResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateAppState(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateConsensusParams(formats); err != nil {
 		res = append(res, err)
 	}
@@ -43,6 +47,24 @@ func (m *GenesisResponse) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *GenesisResponse) validateAppState(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.AppState) { // not required
+		return nil
+	}
+
+	if m.AppState != nil {
+		if err := m.AppState.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("app_state")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

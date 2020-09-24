@@ -10,22 +10,25 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// MaxGasResponse max gas response
+// AppStateHaltBlock app state halt block
 //
-// swagger:model MaxGasResponse
-type MaxGasResponse struct {
+// swagger:model AppStateHaltBlock
+type AppStateHaltBlock struct {
 
-	// max gas
-	MaxGas string `json:"max_gas,omitempty"`
+	// candidate key
+	CandidateKey string `json:"candidate_key,omitempty"`
+
+	// height
+	Height string `json:"height,omitempty"`
 }
 
-// Validate validates this max gas response
-func (m *MaxGasResponse) Validate(formats strfmt.Registry) error {
+// Validate validates this app state halt block
+func (m *AppStateHaltBlock) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *MaxGasResponse) MarshalBinary() ([]byte, error) {
+func (m *AppStateHaltBlock) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -33,8 +36,8 @@ func (m *MaxGasResponse) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *MaxGasResponse) UnmarshalBinary(b []byte) error {
-	var res MaxGasResponse
+func (m *AppStateHaltBlock) UnmarshalBinary(b []byte) error {
+	var res AppStateHaltBlock
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

@@ -10,7 +10,7 @@ import (
 type DeclareCandidacyData struct {
 	Address    [20]byte // Address of candidate
 	PubKey     [32]byte // Public key of a validator
-	Commission uint     // Commission (from 0 to 100) from rewards which delegators will pay to validator
+	Commission uint32   // Commission (from 0 to 100) from rewards which delegators will pay to validator
 	Coin       CoinID   // ID of coin to stake
 	Stake      *big.Int // Amount of coins to stake
 }
@@ -59,7 +59,7 @@ func (d *DeclareCandidacyData) MustSetPubKey(key string) *DeclareCandidacyData {
 }
 
 // SetCommission sets commission (from 0 to 100) from rewards which delegators will pay to validator.
-func (d *DeclareCandidacyData) SetCommission(value uint) *DeclareCandidacyData {
+func (d *DeclareCandidacyData) SetCommission(value uint32) *DeclareCandidacyData {
 	d.Commission = value
 	return d
 }

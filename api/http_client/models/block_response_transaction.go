@@ -29,7 +29,7 @@ type BlockResponseTransaction struct {
 	Gas string `json:"gas,omitempty"`
 
 	// gas coin
-	GasCoin string `json:"gas_coin,omitempty"`
+	GasCoin *Coin `json:"gas_coin,omitempty"`
 
 	// gas price
 	GasPrice string `json:"gas_price,omitempty"`
@@ -69,6 +69,10 @@ func (m *BlockResponseTransaction) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateGasCoin(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -85,6 +89,24 @@ func (m *BlockResponseTransaction) validateData(formats strfmt.Registry) error {
 		if err := m.Data.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *BlockResponseTransaction) validateGasCoin(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.GasCoin) { // not required
+		return nil
+	}
+
+	if m.GasCoin != nil {
+		if err := m.GasCoin.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("gas_coin")
 			}
 			return err
 		}

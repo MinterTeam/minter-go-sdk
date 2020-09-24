@@ -14,7 +14,6 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
 // NewEstimateCoinSellParams creates a new EstimateCoinSellParams object
@@ -62,9 +61,9 @@ for the estimate coin sell operation typically these are written to a http.Reque
 type EstimateCoinSellParams struct {
 
 	/*CoinIDToBuy*/
-	CoinIDToBuy *int64
+	CoinIDToBuy *string
 	/*CoinIDToSell*/
-	CoinIDToSell *int64
+	CoinIDToSell *string
 	/*CoinToBuy*/
 	CoinToBuy *string
 	/*CoinToSell*/
@@ -113,24 +112,24 @@ func (o *EstimateCoinSellParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithCoinIDToBuy adds the coinIDToBuy to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithCoinIDToBuy(coinIDToBuy *int64) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithCoinIDToBuy(coinIDToBuy *string) *EstimateCoinSellParams {
 	o.SetCoinIDToBuy(coinIDToBuy)
 	return o
 }
 
 // SetCoinIDToBuy adds the coinIdToBuy to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetCoinIDToBuy(coinIDToBuy *int64) {
+func (o *EstimateCoinSellParams) SetCoinIDToBuy(coinIDToBuy *string) {
 	o.CoinIDToBuy = coinIDToBuy
 }
 
 // WithCoinIDToSell adds the coinIDToSell to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithCoinIDToSell(coinIDToSell *int64) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithCoinIDToSell(coinIDToSell *string) *EstimateCoinSellParams {
 	o.SetCoinIDToSell(coinIDToSell)
 	return o
 }
 
 // SetCoinIDToSell adds the coinIdToSell to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetCoinIDToSell(coinIDToSell *int64) {
+func (o *EstimateCoinSellParams) SetCoinIDToSell(coinIDToSell *string) {
 	o.CoinIDToSell = coinIDToSell
 }
 
@@ -189,11 +188,11 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if o.CoinIDToBuy != nil {
 
 		// query param coin_id_to_buy
-		var qrCoinIDToBuy int64
+		var qrCoinIDToBuy string
 		if o.CoinIDToBuy != nil {
 			qrCoinIDToBuy = *o.CoinIDToBuy
 		}
-		qCoinIDToBuy := swag.FormatInt64(qrCoinIDToBuy)
+		qCoinIDToBuy := qrCoinIDToBuy
 		if qCoinIDToBuy != "" {
 			if err := r.SetQueryParam("coin_id_to_buy", qCoinIDToBuy); err != nil {
 				return err
@@ -205,11 +204,11 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if o.CoinIDToSell != nil {
 
 		// query param coin_id_to_sell
-		var qrCoinIDToSell int64
+		var qrCoinIDToSell string
 		if o.CoinIDToSell != nil {
 			qrCoinIDToSell = *o.CoinIDToSell
 		}
-		qCoinIDToSell := swag.FormatInt64(qrCoinIDToSell)
+		qCoinIDToSell := qrCoinIDToSell
 		if qCoinIDToSell != "" {
 			if err := r.SetQueryParam("coin_id_to_sell", qCoinIDToSell); err != nil {
 				return err

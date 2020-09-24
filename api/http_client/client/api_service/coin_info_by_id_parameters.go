@@ -14,7 +14,6 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
 // NewCoinInfoByIDParams creates a new CoinInfoByIDParams object
@@ -64,7 +63,7 @@ type CoinInfoByIDParams struct {
 	/*Height*/
 	Height *string
 	/*ID*/
-	ID int64
+	ID string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -116,13 +115,13 @@ func (o *CoinInfoByIDParams) SetHeight(height *string) {
 }
 
 // WithID adds the id to the coin info by Id params
-func (o *CoinInfoByIDParams) WithID(id int64) *CoinInfoByIDParams {
+func (o *CoinInfoByIDParams) WithID(id string) *CoinInfoByIDParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the coin info by Id params
-func (o *CoinInfoByIDParams) SetID(id int64) {
+func (o *CoinInfoByIDParams) SetID(id string) {
 	o.ID = id
 }
 
@@ -151,7 +150,7 @@ func (o *CoinInfoByIDParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	}
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
 	}
 

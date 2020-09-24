@@ -55,7 +55,7 @@ type ClientService interface {
 
 	Halts(params *HaltsParams) (*HaltsOK, error)
 
-	MaxGas(params *MaxGasParams) (*MaxGasOK, error)
+	MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error)
 
 	MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error)
 
@@ -580,35 +580,35 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 }
 
 /*
-  MaxGas returns current max gas
+  MaxGasPrice returns current max gas
 */
-func (a *Client) MaxGas(params *MaxGasParams) (*MaxGasOK, error) {
+func (a *Client) MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewMaxGasParams()
+		params = NewMaxGasPriceParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "MaxGas",
+		ID:                 "MaxGasPrice",
 		Method:             "GET",
-		PathPattern:        "/max_gas",
+		PathPattern:        "/max_gas_price",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
 		Params:             params,
-		Reader:             &MaxGasReader{formats: a.formats},
+		Reader:             &MaxGasPriceReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*MaxGasOK)
+	success, ok := result.(*MaxGasPriceOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
-	unexpectedSuccess := result.(*MaxGasDefault)
+	unexpectedSuccess := result.(*MaxGasPriceDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

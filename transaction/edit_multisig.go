@@ -7,8 +7,8 @@ import (
 
 // EditMultisigData is a Data of Transaction for edit multisig.
 type EditMultisigData struct {
-	Threshold uint       // Threshold for the sums of signature weights.
-	Weights   []uint     // Weights of signers
+	Threshold uint32     // Threshold for the sums of signature weights.
+	Weights   []uint32   // Weights of signers
 	Addresses [][20]byte // List of signed addresses
 }
 
@@ -18,13 +18,13 @@ func NewEditMultisigData() *EditMultisigData {
 }
 
 // SetThreshold sets threshold for the sums of signature weights.
-func (d *EditMultisigData) SetThreshold(threshold uint) *EditMultisigData {
+func (d *EditMultisigData) SetThreshold(threshold uint32) *EditMultisigData {
 	d.Threshold = threshold
 	return d
 }
 
 // AddSigData sets a set of signers with appropriate weights.
-func (d *EditMultisigData) AddSigData(address string, weight uint) (*EditMultisigData, error) {
+func (d *EditMultisigData) AddSigData(address string, weight uint32) (*EditMultisigData, error) {
 	_, err := d.addAddress(address)
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (d *EditMultisigData) AddSigData(address string, weight uint) (*EditMultisi
 }
 
 // MustAddSigData tries to set a set of signers with appropriate weights and panics on error.
-func (d *EditMultisigData) MustAddSigData(address string, weight uint) *EditMultisigData {
+func (d *EditMultisigData) MustAddSigData(address string, weight uint32) *EditMultisigData {
 	_, err := d.AddSigData(address, weight)
 	if err != nil {
 		panic(err)
@@ -56,7 +56,7 @@ func (d *EditMultisigData) addAddress(address string) (*EditMultisigData, error)
 	return d, nil
 }
 
-func (d *EditMultisigData) addWeight(weight uint) *EditMultisigData {
+func (d *EditMultisigData) addWeight(weight uint32) *EditMultisigData {
 	d.Weights = append(d.Weights, weight)
 	return d
 }

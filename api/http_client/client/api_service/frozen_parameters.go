@@ -14,7 +14,6 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
 // NewFrozenParams creates a new FrozenParams object
@@ -64,7 +63,7 @@ type FrozenParams struct {
 	/*Address*/
 	Address string
 	/*CoinID*/
-	CoinID *int64
+	CoinID *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -116,13 +115,13 @@ func (o *FrozenParams) SetAddress(address string) {
 }
 
 // WithCoinID adds the coinID to the frozen params
-func (o *FrozenParams) WithCoinID(coinID *int64) *FrozenParams {
+func (o *FrozenParams) WithCoinID(coinID *string) *FrozenParams {
 	o.SetCoinID(coinID)
 	return o
 }
 
 // SetCoinID adds the coinId to the frozen params
-func (o *FrozenParams) SetCoinID(coinID *int64) {
+func (o *FrozenParams) SetCoinID(coinID *string) {
 	o.CoinID = coinID
 }
 
@@ -142,11 +141,11 @@ func (o *FrozenParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 	if o.CoinID != nil {
 
 		// query param coin_id
-		var qrCoinID int64
+		var qrCoinID string
 		if o.CoinID != nil {
 			qrCoinID = *o.CoinID
 		}
-		qCoinID := swag.FormatInt64(qrCoinID)
+		qCoinID := qrCoinID
 		if qCoinID != "" {
 			if err := r.SetQueryParam("coin_id", qCoinID); err != nil {
 				return err

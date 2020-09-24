@@ -17,7 +17,7 @@ Example:
 
 	res, err := client.SendTransaction(encode)
 		if err != nil {
-			log.Fatal(client.HttpError(err))
+			log.Fatal(client.HTTPError(err))
 		}
 
 	marshal, _ := client.Marshal(res)
@@ -47,7 +47,7 @@ Example:
 
 	txRes, err := client.Transaction(res.Hash)
 	if err != nil {
-		log.Fatal(client.HttpError(err))
+		log.Fatal(client.HTTPError(err))
 	}
 
 	coin, _ := txRes.Tags["tx.coin_id"]
@@ -63,7 +63,7 @@ Example:
 
 	res, err = client.SendTransaction(encode)
 	if err != nil {
-		log.Fatal(client.HttpError(err))
+		log.Fatal(client.HTTPError(err))
 	}
 
 */

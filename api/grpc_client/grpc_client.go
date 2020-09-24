@@ -60,11 +60,7 @@ func (c *Client) CoinID(symbol string) (uint32, error) {
 	if err != nil {
 		return 0, err
 	}
-	id, err := strconv.Atoi(info.Id)
-	if err != nil {
-		return 0, err
-	}
-	return uint32(id), err
+	return uint32(info.Id), err
 }
 
 // ErrorBody returns error as API model
@@ -114,8 +110,8 @@ func (c *Client) ErrorBody(err error) (int, *api_pb.ErrorBody, error) {
 	return statusCode, errorBody, nil
 }
 
-// HttpError returns error as JSON API
-func (c *Client) HttpError(statusError error) (statusCode int, json string, err error) {
+// HTTPError returns error as JSON API
+func (c *Client) HTTPError(statusError error) (statusCode int, json string, err error) {
 	statusCode, errorBody, err := c.ErrorBody(statusError)
 	if err != nil {
 		return 0, "", err
@@ -160,12 +156,7 @@ func (c *Client) Nonce(address string) (uint64, error) {
 		return 0, err
 	}
 
-	transactionsCount, err := strconv.Atoi(res.TransactionCount)
-	if err != nil {
-		return 0, err
-	}
-
-	return uint64(transactionsCount) + 1, nil
+	return res.TransactionCount + 1, nil
 }
 
 // Status returns node status including pubkey, latest block.
@@ -174,83 +165,83 @@ func (c *Client) Status() (*api_pb.StatusResponse, error) {
 }
 
 // Address returns coins list, balance and transaction count of an address.
-func (c *Client) Address(address string, optionalHeight ...int) (*api_pb.AddressResponse, error) {
+func (c *Client) Address(address string, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
 	return c.grpcClient.Address(c.ctxFunc(), &api_pb.AddressRequest{Height: optionalInt(optionalHeight), Address: address})
 }
 
 // Addresses returns list of addresses.
-func (c *Client) Addresses(addresses []string, optionalHeight ...int) (*api_pb.AddressesResponse, error) {
+func (c *Client) Addresses(addresses []string, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
 	return c.grpcClient.Addresses(c.ctxFunc(), &api_pb.AddressesRequest{Addresses: addresses, Height: optionalInt(optionalHeight)})
 }
 
 // Block returns block data at given height.
-func (c *Client) Block(height int) (*api_pb.BlockResponse, error) {
-	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: uint64(height)})
+func (c *Client) Block(height uint64) (*api_pb.BlockResponse, error) {
+	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height})
 }
 
 // Candidate returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
-func (c *Client) Candidate(publicKey string, optionalHeight ...int) (*api_pb.CandidateResponse, error) {
+func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*api_pb.CandidateResponse, error) {
 	return c.grpcClient.Candidate(c.ctxFunc(), &api_pb.CandidateRequest{Height: optionalInt(optionalHeight), PublicKey: publicKey})
 }
 
 // Candidates returns list of candidates.
-func (c *Client) Candidates(includeStakes bool, optionalHeight ...int) (*api_pb.CandidatesResponse, error) {
+func (c *Client) Candidates(includeStakes bool, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
 	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes})
 }
 
 // CoinInfoByID returns information about coin ID. Note: this method does not return information about base coins (MNT and BIP).
-func (c *Client) CoinInfoByID(id uint32, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
+func (c *Client) CoinInfoByID(id uint64, optionalHeight ...uint64) (*api_pb.CoinInfoResponse, error) {
 	return c.grpcClient.CoinInfoById(c.ctxFunc(), &api_pb.CoinIdRequest{Height: optionalInt(optionalHeight), Id: id})
 }
 
 // CoinInfo returns information about coin symbol. Note: this method does not return information about base coins (MNT and BIP).
-func (c *Client) CoinInfo(symbol string, optionalHeight ...int) (*api_pb.CoinInfoResponse, error) {
+func (c *Client) CoinInfo(symbol string, optionalHeight ...uint64) (*api_pb.CoinInfoResponse, error) {
 	return c.grpcClient.CoinInfo(c.ctxFunc(), &api_pb.CoinInfoRequest{Height: optionalInt(optionalHeight), Symbol: symbol})
 }
 
 // EstimateCoinSymbolBuy return estimate of buy coin transaction.
-func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy string, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinBuyResponse, error) {
+func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy string, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
 	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToBuy: valueToBuy})
 }
 
 // EstimateCoinSymbolSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinSellResponse, error) {
+func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
 	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy})
 }
 
 // EstimateCoinSymbolSellAll return estimate of sell all coin transaction.
-func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, valueToBuy string, gasPrice int, optionalHeight ...int) (*api_pb.EstimateCoinSellAllResponse, error) {
+func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, valueToBuy string, gasPrice int, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
 	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy, GasPrice: uint64(gasPrice)})
 }
 
 // EstimateCoinIDBuy return estimate of buy coin transaction.
-func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint32, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinBuyResponse, error) {
+func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
 	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToBuy: valueToBuy})
 }
 
 // EstimateCoinIDSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint32, valueToBuy string, optionalHeight ...int) (*api_pb.EstimateCoinSellResponse, error) {
+func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
 	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToBuy})
 }
 
-// EstimateCoinSellIDAll return estimate of sell all coin transaction.
-func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell uint32, valueToBuy string, gasPrice int, optionalHeight ...int) (*api_pb.EstimateCoinSellAllResponse, error) {
+// EstimateCoinIDSellAll return estimate of sell all coin transaction.
+func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell uint64, valueToBuy string, gasPrice int, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
 	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToBuy, GasPrice: uint64(gasPrice)})
 }
 
 // EstimateTxCommission return estimate of encoding transaction.
-func (c *Client) EstimateTxCommission(tx string, optionalHeight ...int) (*api_pb.EstimateTxCommissionResponse, error) {
+func (c *Client) EstimateTxCommission(tx string, optionalHeight ...uint64) (*api_pb.EstimateTxCommissionResponse, error) {
 	return c.grpcClient.EstimateTxCommission(c.ctxFunc(), &api_pb.EstimateTxCommissionRequest{Height: optionalInt(optionalHeight), Tx: tx})
 }
 
 // Events returns events at given height.
-func (c *Client) Events(optionalHeight ...int) (*api_pb.EventsResponse, error) {
+func (c *Client) Events(optionalHeight ...uint64) (*api_pb.EventsResponse, error) {
 	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: optionalInt(optionalHeight)})
 }
 
-// MaxGas returns current max gas.
-func (c *Client) MaxGas(optionalHeight ...int) (*api_pb.MaxGasResponse, error) {
-	return c.grpcClient.MaxGas(c.ctxFunc(), &api_pb.MaxGasRequest{Height: optionalInt(optionalHeight)})
+// MaxGasPrice returns current max gas.
+func (c *Client) MaxGasPrice(optionalHeight ...uint64) (*api_pb.MaxGasPriceResponse, error) {
+	return c.grpcClient.MaxGasPrice(c.ctxFunc(), &api_pb.MaxGasPriceRequest{Height: optionalInt(optionalHeight)})
 }
 
 // MinGasPrice returns current min gas price.
@@ -259,7 +250,7 @@ func (c *Client) MinGasPrice() (*api_pb.MinGasPriceResponse, error) {
 }
 
 // MissedBlocks returns missed blocks by validator public key.
-func (c *Client) MissedBlocks(publicKey string, optionalHeight ...int) (*api_pb.MissedBlocksResponse, error) {
+func (c *Client) MissedBlocks(publicKey string, optionalHeight ...uint64) (*api_pb.MissedBlocksResponse, error) {
 	return c.grpcClient.MissedBlocks(c.ctxFunc(), &api_pb.MissedBlocksRequest{Height: optionalInt(optionalHeight), PublicKey: publicKey})
 }
 
@@ -286,17 +277,17 @@ func (c *Client) Transactions(query string, page, perPage int) (*api_pb.Transact
 }
 
 // UnconfirmedTxs returns unconfirmed transactions.
-func (c *Client) UnconfirmedTxs(limit ...int) (*api_pb.UnconfirmedTxsResponse, error) {
+func (c *Client) UnconfirmedTxs(limit ...uint64) (*api_pb.UnconfirmedTxsResponse, error) {
 	return c.grpcClient.UnconfirmedTxs(c.ctxFunc(), &api_pb.UnconfirmedTxsRequest{Limit: int32(optionalInt(limit))})
 }
 
 // Validators returns list of active validators.
-func (c *Client) Validators(page, perPage int, limit ...int) (*api_pb.ValidatorsResponse, error) {
+func (c *Client) Validators(page, perPage int, limit ...uint64) (*api_pb.ValidatorsResponse, error) {
 	return c.grpcClient.Validators(c.ctxFunc(), &api_pb.ValidatorsRequest{Height: optionalInt(limit), Page: int32(page), PerPage: int32(perPage)})
 }
 
 // WaitList returns the list of address stakes in waitlist.
-func (c *Client) WaitList(publicKey, address string, limit ...int) (*api_pb.WaitListResponse, error) {
+func (c *Client) WaitList(publicKey, address string, limit ...uint64) (*api_pb.WaitListResponse, error) {
 	return c.grpcClient.WaitList(c.ctxFunc(), &api_pb.WaitListRequest{Height: optionalInt(limit), PublicKey: publicKey, Address: address})
 }
 
@@ -307,16 +298,16 @@ func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, err
 
 // Frozen returns frozen balance.
 func (c *Client) Frozen(address, coinID string) (*api_pb.FrozenResponse, error) {
-	var coinIDRequest *wrappers.UInt32Value
+	var coinIDRequest *wrappers.UInt64Value
 	if atoi, err := strconv.Atoi(coinID); err != nil {
-		coinIDRequest = &wrappers.UInt32Value{Value: uint32(atoi)}
+		coinIDRequest = &wrappers.UInt64Value{Value: uint64(atoi)}
 	}
 	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coinIDRequest})
 }
 
-func optionalInt(height []int) uint64 {
+func optionalInt(height []uint64) uint64 {
 	if len(height) == 1 {
-		return uint64(height[0])
+		return height[0]
 	}
 	return 0
 }

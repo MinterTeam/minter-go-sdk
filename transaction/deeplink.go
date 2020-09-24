@@ -11,8 +11,8 @@ type DeepLink struct {
 	Type     Type    // type of transaction
 	Data     []byte  // data of transaction (depends on transaction type)
 	Payload  []byte  // optional, arbitrary user-defined bytes
-	Nonce    *uint   `rlp:"nilList"` // optional, used for prevent transaction reply
-	GasPrice *uint   `rlp:"nilList"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
+	Nonce    *uint32 `rlp:"nilList"` // optional, used for prevent transaction reply
+	GasPrice *uint32 `rlp:"nilList"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
 	GasCoin  *CoinID `rlp:"nilList"` // optional, ID of a coin to pay fee, right padded with zeros
 }
 
@@ -59,13 +59,13 @@ func (d *DeepLink) SetPayload(payload []byte) *DeepLink {
 }
 
 // Set nonce of transaction
-func (d *DeepLink) SetNonce(nonce uint) *DeepLink {
+func (d *DeepLink) SetNonce(nonce uint32) *DeepLink {
 	d.Nonce = &nonce
 	return d
 }
 
 // Set fee multiplier.
-func (d *DeepLink) SetGasPrice(gasPrice uint) *DeepLink {
+func (d *DeepLink) SetGasPrice(gasPrice uint32) *DeepLink {
 	d.GasPrice = &gasPrice
 	return d
 }
