@@ -30,8 +30,8 @@ type AppStateCandidate struct {
 	// owner address
 	OwnerAddress string `json:"owner_address,omitempty"`
 
-	// pub key
-	PubKey string `json:"pub_key,omitempty"`
+	// public key
+	PublicKey string `json:"public_key,omitempty"`
 
 	// reward address
 	RewardAddress string `json:"reward_address,omitempty"`

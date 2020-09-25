@@ -712,7 +712,9 @@ func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 }
 
 /*
-  SendTransaction returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
+  SendTransaction returns the result of sending signed tx
+
+  To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
 */
 func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -745,7 +747,9 @@ func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactio
 }
 
 /*
-  SendTransaction2 returns the result of sending signed tx to ensure that transaction was successfully committed to the blockchain you need to find the transaction by the hash and ensure that the status code equals to 0
+  SendTransaction2 returns the result of sending signed tx
+
+  To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
 */
 func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error) {
 	// TODO: Validate the params before sending
@@ -989,7 +993,7 @@ func (a *Client) WaitList(params *WaitListParams) (*WaitListOK, error) {
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "WaitList",
 		Method:             "GET",
-		PathPattern:        "/waitlist/{public_key}/{address}",
+		PathPattern:        "/waitlist/{address}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},

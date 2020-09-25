@@ -18,6 +18,9 @@ import (
 // swagger:model GenesisResponseAppState
 type GenesisResponseAppState struct {
 
+	// accounts
+	Accounts []*AppStateAccount `json:"accounts"`
+
 	// candidates
 	Candidates []*AppStateCandidate `json:"candidates"`
 
@@ -56,6 +59,10 @@ type GenesisResponseAppState struct {
 func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateAccounts(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateCandidates(formats); err != nil {
 		res = append(res, err)
 	}
@@ -83,6 +90,31 @@ func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *GenesisResponseAppState) validateAccounts(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Accounts) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Accounts); i++ {
+		if swag.IsZero(m.Accounts[i]) { // not required
+			continue
+		}
+
+		if m.Accounts[i] != nil {
+			if err := m.Accounts[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("accounts" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 

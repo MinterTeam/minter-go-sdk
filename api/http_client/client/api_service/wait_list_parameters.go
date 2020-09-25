@@ -65,7 +65,7 @@ type WaitListParams struct {
 	/*Height*/
 	Height *string
 	/*PublicKey*/
-	PublicKey string
+	PublicKey *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -128,13 +128,13 @@ func (o *WaitListParams) SetHeight(height *string) {
 }
 
 // WithPublicKey adds the publicKey to the wait list params
-func (o *WaitListParams) WithPublicKey(publicKey string) *WaitListParams {
+func (o *WaitListParams) WithPublicKey(publicKey *string) *WaitListParams {
 	o.SetPublicKey(publicKey)
 	return o
 }
 
 // SetPublicKey adds the publicKey to the wait list params
-func (o *WaitListParams) SetPublicKey(publicKey string) {
+func (o *WaitListParams) SetPublicKey(publicKey *string) {
 	o.PublicKey = publicKey
 }
 
@@ -167,9 +167,20 @@ func (o *WaitListParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 	}
 
-	// path param public_key
-	if err := r.SetPathParam("public_key", o.PublicKey); err != nil {
-		return err
+	if o.PublicKey != nil {
+
+		// query param public_key
+		var qrPublicKey string
+		if o.PublicKey != nil {
+			qrPublicKey = *o.PublicKey
+		}
+		qPublicKey := qrPublicKey
+		if qPublicKey != "" {
+			if err := r.SetQueryParam("public_key", qPublicKey); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

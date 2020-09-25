@@ -21,8 +21,8 @@ type AppStateValidators struct {
 	// accum reward
 	AccumReward string `json:"accum_reward,omitempty"`
 
-	// pub key
-	PubKey string `json:"pub_key,omitempty"`
+	// public key
+	PublicKey string `json:"public_key,omitempty"`
 
 	// total bip stake
 	TotalBipStake string `json:"total_bip_stake,omitempty"`

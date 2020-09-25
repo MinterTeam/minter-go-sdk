@@ -55,7 +55,7 @@ type WaitListOK struct {
 }
 
 func (o *WaitListOK) Error() string {
-	return fmt.Sprintf("[GET /waitlist/{public_key}/{address}][%d] waitListOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /waitlist/{address}][%d] waitListOK  %+v", 200, o.Payload)
 }
 
 func (o *WaitListOK) GetPayload() *models.WaitListResponse {
@@ -97,7 +97,7 @@ func (o *WaitListDefault) Code() int {
 }
 
 func (o *WaitListDefault) Error() string {
-	return fmt.Sprintf("[GET /waitlist/{public_key}/{address}][%d] WaitList default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[GET /waitlist/{address}][%d] WaitList default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *WaitListDefault) GetPayload() *models.ErrorBody {

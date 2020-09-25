@@ -10,22 +10,25 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// HaltsResponse halts response
+// AccountBalance account balance
 //
-// swagger:model HaltsResponse
-type HaltsResponse struct {
+// swagger:model AccountBalance
+type AccountBalance struct {
 
-	// public keys
-	PublicKeys []string `json:"public_keys"`
+	// coin
+	Coin string `json:"coin,omitempty"`
+
+	// value
+	Value string `json:"value,omitempty"`
 }
 
-// Validate validates this halts response
-func (m *HaltsResponse) Validate(formats strfmt.Registry) error {
+// Validate validates this account balance
+func (m *AccountBalance) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *HaltsResponse) MarshalBinary() ([]byte, error) {
+func (m *AccountBalance) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -33,8 +36,8 @@ func (m *HaltsResponse) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *HaltsResponse) UnmarshalBinary(b []byte) error {
-	var res HaltsResponse
+func (m *AccountBalance) UnmarshalBinary(b []byte) error {
+	var res AccountBalance
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

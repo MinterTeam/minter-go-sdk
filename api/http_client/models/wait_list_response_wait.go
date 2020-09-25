@@ -19,6 +19,9 @@ type WaitListResponseWait struct {
 	// coin
 	Coin *Coin `json:"coin,omitempty"`
 
+	// public key
+	PublicKey string `json:"public_key,omitempty"`
+
 	// value
 	Value string `json:"value,omitempty"`
 }
