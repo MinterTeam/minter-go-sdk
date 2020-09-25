@@ -41,7 +41,7 @@ func ExampleObject_Sign_simple() {
 }
 
 func ExampleBuilder_NewTransaction_signMultiSignature1() {
-	coinID := transaction.CoinID(1)
+	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -65,7 +65,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature1() {
 }
 
 func ExampleBuilder_NewTransaction_signMultiSignature2() {
-	coinID := transaction.CoinID(1)
+	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
@@ -96,7 +96,7 @@ func ExampleBuilder_NewTransaction_signMultiSignature2() {
 }
 
 func ExampleSignatureMulti_Single() {
-	coinID := transaction.CoinID(1)
+	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
 		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).

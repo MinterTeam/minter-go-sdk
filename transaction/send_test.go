@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"encoding/hex"
 	"math/big"
 	"testing"
 )
@@ -18,16 +17,11 @@ func TestTransactionSend_Sign(t *testing.T) {
 	}
 
 	if data.Coin != 1 {
-		t.Errorf("SendData.CoinID got %s, want %d", data.Coin, 1)
+		t.Errorf("SendData.CoinID got %s, want %d", data.Coin.String(), 1)
 	}
 
-	addressBytes, err := hex.DecodeString(address[2:])
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if string(data.To[:]) != string(addressBytes) {
-		t.Errorf("SendData.To got %s, want %s", string(data.To[:]), string(addressBytes))
+	if data.To.String() != address {
+		t.Errorf("SendData.To got %s, want %s", data.To.String(), address)
 	}
 
 	if data.Value.String() != value.String() {
@@ -56,9 +50,8 @@ func TestTransactionSend_Sign(t *testing.T) {
 		t.Errorf("GasPrice got %d, want %d", transaction.GasPrice, gasPrice)
 	}
 
-	gasCoinBytes := CoinID(1) // MNT
-	if transaction.GasCoin != gasCoinBytes {
-		t.Errorf("GasCoin got %s, want %s", transaction.GasCoin, gasCoinBytes)
+	if transaction.GasCoin != 1 {
+		t.Errorf("GasCoin got %s, want %d", transaction.GasCoin.String(), 1)
 	}
 
 	signedTx, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")

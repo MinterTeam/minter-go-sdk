@@ -18,14 +18,14 @@ func NewSellAllCoinData() *SellAllCoinData {
 }
 
 // SetCoinToSell sets ID of a coin to give.
-func (d *SellAllCoinData) SetCoinToSell(id CoinID) *SellAllCoinData {
-	d.CoinToSell = id
+func (d *SellAllCoinData) SetCoinToSell(id uint64) *SellAllCoinData {
+	d.CoinToSell = CoinID(id)
 	return d
 }
 
 // SetCoinToBuy sets ID of a coin to get.
-func (d *SellAllCoinData) SetCoinToBuy(id CoinID) *SellAllCoinData {
-	d.CoinToBuy = id
+func (d *SellAllCoinData) SetCoinToBuy(id uint64) *SellAllCoinData {
+	d.CoinToBuy = CoinID(id)
 	return d
 }
 

@@ -9,7 +9,7 @@ import (
 func ExampleNewSendData() {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
-	coinID := transaction.CoinID(1)
+	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
 		SetValue(value).

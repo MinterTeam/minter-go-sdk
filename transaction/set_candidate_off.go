@@ -8,7 +8,7 @@ import (
 // SetCandidateOffData is a Data of Transaction for turning candidate off.
 // This transaction should be sent from ControlAddress or OwnerAddress which is set in the "Declare candidacy transaction".
 type SetCandidateOffData struct {
-	PubKey [32]byte // Public key of a validator
+	PubKey PublicKey // Public key of a validator
 }
 
 // NewSetCandidateOffData returns new SetCandidateOffData of Transaction for turning candidate off.

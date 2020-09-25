@@ -8,9 +8,9 @@ import (
 
 // DelegateData is a Data of Transaction for delegating funds to validator.
 type DelegateData struct {
-	PubKey [32]byte // Public key of a validator
-	Coin   CoinID   // ID of coin to stake
-	Value  *big.Int // Amount of coins to stake
+	PubKey PublicKey // Public key of a validator
+	Coin   CoinID    // ID of coin to stake
+	Value  *big.Int  // Amount of coins to stake
 }
 
 // NewDelegateData returns new DelegateData of Transaction for delegating funds to validator
@@ -38,8 +38,8 @@ func (d *DelegateData) MustSetPubKey(key string) *DelegateData {
 }
 
 // SetCoin sets ID of coin to stake.
-func (d *DelegateData) SetCoin(id CoinID) *DelegateData {
-	d.Coin = id
+func (d *DelegateData) SetCoin(id uint64) *DelegateData {
+	d.Coin = CoinID(id)
 	return d
 }
 

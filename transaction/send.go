@@ -9,7 +9,7 @@ import (
 // SendData is a Data of Transaction for sending arbitrary coin.
 type SendData struct {
 	Coin  CoinID   // ID of a coin
-	To    [20]byte // Recipient address
+	To    Address  // Recipient address
 	Value *big.Int // Amount of coin to send
 }
 
@@ -19,8 +19,8 @@ func NewSendData() *SendData {
 }
 
 // SetCoin sets ID of a coin.
-func (d *SendData) SetCoin(id CoinID) *SendData {
-	d.Coin = id
+func (d *SendData) SetCoin(id uint64) *SendData {
+	d.Coin = CoinID(id)
 	return d
 }
 

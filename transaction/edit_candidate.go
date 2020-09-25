@@ -8,10 +8,10 @@ import (
 // EditCandidateData is Data of Transaction for editing existing candidate.
 // This transaction should be sent from OwnerAddress which is set in the "Declare candidacy transaction".
 type EditCandidateData struct {
-	PubKey         [32]byte // Public key of a validator
-	RewardAddress  [20]byte // Address where validator’s rewards go to.
-	OwnerAddress   [20]byte // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate.
-	ControlAddress [20]byte // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
+	PubKey         PublicKey // Public key of a validator
+	RewardAddress  Address   // Address where validator’s rewards go to.
+	OwnerAddress   Address   // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate.
+	ControlAddress Address   // Address that allows one to start the validator by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
 }
 
 // NewEditCandidateData returns new EditCandidateData of Transaction for editing existing candidate.
@@ -25,7 +25,7 @@ func (d *EditCandidateData) SetPubKey(key string) (*EditCandidateData, error) {
 	if err != nil {
 		return d, err
 	}
-	var pubKey [32]byte
+	var pubKey PublicKey
 	copy(pubKey[:], pk)
 	d.PubKey = pubKey
 	return d, nil

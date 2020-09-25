@@ -5,14 +5,18 @@ import (
 )
 
 func TestTransactionSetCandidateOff_Sign(t *testing.T) {
+	pubKey := "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43"
 	data := NewSetCandidateOffData().
-		MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
+		MustSetPubKey(pubKey)
 
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	if data.PubKey.String() != pubKey {
+		t.Errorf("PubKey got %s, want %s", data.PubKey.String(), pubKey)
+	}
 	nonce := uint64(1)
 	gasPrice := uint8(1)
 

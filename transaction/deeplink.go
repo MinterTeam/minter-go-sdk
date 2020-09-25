@@ -71,8 +71,9 @@ func (d *DeepLink) SetGasPrice(gasPrice uint32) *DeepLink {
 }
 
 // Set ID of a coin to pay fee
-func (d *DeepLink) SetGasCoin(id CoinID) *DeepLink {
-	d.GasCoin = &id
+func (d *DeepLink) SetGasCoin(id uint64) *DeepLink {
+	coinId := CoinID(id)
+	d.GasCoin = &coinId
 	return d
 }
 

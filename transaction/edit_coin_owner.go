@@ -8,7 +8,7 @@ import (
 // EditCoinOwnerData is a Data of Transaction for editing coin owner.
 type EditCoinOwnerData struct {
 	Symbol   CoinSymbol
-	NewOwner [20]byte
+	NewOwner Address
 }
 
 // NewEditCoinOwnerData returns new EditCoinOwnerData of Transaction for editing coin owner.

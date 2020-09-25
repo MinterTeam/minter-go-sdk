@@ -229,7 +229,7 @@ func (check *Check) Sign(prKey string) (encodeInterface, error) {
 }
 
 type CheckAddress struct {
-	address    [20]byte
+	address    Address
 	passphrase string
 }
 

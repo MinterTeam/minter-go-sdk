@@ -59,7 +59,7 @@ func ErrorBody(err error) (int, *models.ErrorBody, error) {
 }
 
 // CoinID returns ID of coin symbol.
-func (c *Client) CoinID(symbol string) (uint32, error) {
+func (c *Client) CoinID(symbol string) (uint64, error) {
 	info, err := c.CoinInfo(api_service.NewCoinInfoParams().WithSymbol(symbol))
 	if err != nil {
 		return 0, err
@@ -69,7 +69,7 @@ func (c *Client) CoinID(symbol string) (uint32, error) {
 	if err != nil {
 		return 0, err
 	}
-	return uint32(id), nil
+	return uint64(id), nil
 }
 
 // SubscriberClient is subscriber

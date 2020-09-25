@@ -8,9 +8,9 @@ import (
 
 // UnbondData is a Data of Transaction for unbonding funds from validator's stake.
 type UnbondData struct {
-	PubKey [32]byte // Public key of a validator
-	Coin   CoinID   // ID of coin to stake
-	Value  *big.Int // Amount of coins to stake
+	PubKey PublicKey // Public key of a validator
+	Coin   CoinID    // ID of coin to stake
+	Value  *big.Int  // Amount of coins to stake
 }
 
 // NewUnbondData create data of Transaction for unbonding funds from validator's stake
@@ -38,8 +38,8 @@ func (d *UnbondData) MustSetPubKey(key string) *UnbondData {
 }
 
 // SetCoin sets ID of coin to stake
-func (d *UnbondData) SetCoin(id CoinID) *UnbondData {
-	d.Coin = id
+func (d *UnbondData) SetCoin(id uint64) *UnbondData {
+	d.Coin = CoinID(id)
 	return d
 }
 

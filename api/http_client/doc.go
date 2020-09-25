@@ -47,8 +47,8 @@ Example:
 	mntID, _ := client.CoinID("MNT")
 
 	dataSell := transaction.NewSellAllCoinData().
-		SetCoinToBuy(transaction.CoinID(newCoinID)).
-		SetCoinToSell(transaction.CoinID(mntID)) // ...
+		SetCoinToBuy(uint64(newCoinID)).
+		SetCoinToSell(mntID) // ...
 
 	tx, _ = transactionsBuilder.NewTransaction(dataSell)
 	sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)

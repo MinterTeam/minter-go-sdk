@@ -7,9 +7,9 @@ import (
 
 // EditMultisigData is a Data of Transaction for editing multisig address.
 type EditMultisigData struct {
-	Threshold uint32     // Threshold for the sums of signature weights.
-	Weights   []uint32   // Weights of signers
-	Addresses [][20]byte // List of signed addresses
+	Threshold uint32    // Threshold for the sums of signature weights.
+	Weights   []uint32  // Weights of signers
+	Addresses []Address // List of signed addresses
 }
 
 // NewEditMultisigData returns new EditMultisigData of Transaction for editing multisig address.
@@ -50,7 +50,7 @@ func (d *EditMultisigData) addAddress(address string) (*EditMultisigData, error)
 	if err != nil {
 		return d, err
 	}
-	var a [20]byte
+	var a Address
 	copy(a[:], hexAddress)
 	d.Addresses = append(d.Addresses, a)
 	return d, nil

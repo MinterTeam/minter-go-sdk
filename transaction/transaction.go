@@ -134,13 +134,25 @@ type Data interface {
 type CoinID uint32
 
 // String return CoinID as string.
-func (c CoinID) String() string { return strconv.Itoa(int(c)) }
+func (c *CoinID) String() string { return strconv.Itoa(int(*c)) }
 
 // CoinSymbol is symbol of a coin.
 type CoinSymbol [10]byte
 
 // String returns CoinSymbol as string.
-func (c CoinSymbol) String() string { return string(bytes.Trim(c[:], "\x00")) }
+func (s *CoinSymbol) String() string { return string(bytes.Trim(s[:], "\x00")) }
+
+// Address is address.
+type Address [20]byte
+
+// String returns Address as string.
+func (a *Address) String() string { return "Mx" + hex.EncodeToString(a[:]) }
+
+// PublicKey is public key.
+type PublicKey [32]byte
+
+// String returns PublicKey as string.
+func (p *PublicKey) String() string { return "Mp" + hex.EncodeToString(p[:]) }
 
 type encodeInterface interface {
 	// Encode returns string representation of a transaction.
@@ -186,7 +198,7 @@ type Interface interface {
 	// SetNonce sets nonce of transaction.
 	SetNonce(nonce uint64) Interface
 	// SetGasCoin sets ID of a coin to pay fee.
-	SetGasCoin(id CoinID) Interface
+	SetGasCoin(id uint64) Interface
 	// SetGasPrice sets fee multiplier.
 	SetGasPrice(price uint8) Interface
 	// SetPayload sets arbitrary user-defined bytes.
@@ -424,7 +436,7 @@ func (s *SignatureSingle) Single() ([]byte, error) {
 	return s.Encode()
 }
 
-func (s *SignatureSingle) signer(hash [32]byte, t SignatureType) (string, error) {
+func (s *SignatureSingle) signer(hash PublicKey, t SignatureType) (string, error) {
 	publicKey, err := crypto.Ecrecover(hash[:], s.toBytes())
 	if err != nil {
 		return "", err
@@ -464,18 +476,18 @@ func MultisigAddress(owner string, nonce uint64) string {
 		panic(err)
 	}
 
-	var ownerAddress [20]byte
+	var ownerAddress Address
 	copy(ownerAddress[:], o)
 
 	b, err := rlp.EncodeToBytes(&struct {
-		Owner [20]byte
+		Owner Address
 		Nonce uint64
 	}{Owner: ownerAddress, Nonce: nonce})
 	if err != nil {
 		panic(err)
 	}
 
-	var addr [20]byte
+	var addr Address
 	copy(addr[:], crypto.Keccak256(b)[12:])
 
 	return wallet.BytesToAddress(addr)
@@ -483,7 +495,7 @@ func MultisigAddress(owner string, nonce uint64) string {
 
 // SignatureMulti is signature of multisig address
 type SignatureMulti struct {
-	Multisig   [20]byte
+	Multisig   Address
 	Signatures []*SignatureSingle
 }
 
@@ -583,8 +595,8 @@ func (o *object) SetNonce(nonce uint64) Interface {
 }
 
 // SetGasCoin sets CoinID of a coin to pay fee.
-func (o *object) SetGasCoin(id CoinID) Interface {
-	o.GasCoin = id
+func (o *object) SetGasCoin(id uint64) Interface {
+	o.GasCoin = CoinID(id)
 	return o
 }
 
@@ -724,7 +736,7 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (Signed, error) {
 	case SignatureTypeMulti:
 		if len(o.SignatureData()) == 0 {
 			sig := &SignatureMulti{
-				Multisig:   [20]byte{},
+				Multisig:   Address{},
 				Signatures: make([]*SignatureSingle, 0, len(multisigPrKeys)),
 			}
 			addressToHex, err := wallet.AddressToHex(key)
@@ -761,7 +773,7 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (Signed, error) {
 	}
 }
 
-func newSignature(prKey string, h [32]byte) (*SignatureSingle, error) {
+func newSignature(prKey string, h PublicKey) (*SignatureSingle, error) {
 	sig, err := sign(prKey, h)
 	if err != nil {
 		return nil, err
@@ -773,7 +785,7 @@ func newSignature(prKey string, h [32]byte) (*SignatureSingle, error) {
 	}, nil
 }
 
-func sign(prKey string, h [32]byte) ([]byte, error) {
+func sign(prKey string, h PublicKey) ([]byte, error) {
 	privateKey, err := crypto.HexToECDSA(prKey)
 	if err != nil {
 		return nil, err
@@ -787,7 +799,7 @@ func sign(prKey string, h [32]byte) ([]byte, error) {
 	return sig, nil
 }
 
-func rlpHash(x interface{}) (h [32]byte, err error) {
+func rlpHash(x interface{}) (h PublicKey, err error) {
 	hw := sha3.NewLegacyKeccak256()
 	err = rlp.Encode(hw, x)
 	if err != nil {

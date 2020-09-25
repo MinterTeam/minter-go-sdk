@@ -53,11 +53,11 @@ Example:
 	coin, _ := txRes.Tags["tx.coin_id"]
 	newCoinID, _ := strconv.Atoi(coin)
 	mntID, _ := client.CoinID("MNT")
-	dataSend := transaction.NewSellAllCoinData().
-		SetCoinToSell(transaction.CoinID(newCoinID)).
-		SetCoinToSell(transaction.CoinID(mntID)) // ...
+	dataSell := transaction.NewSellAllCoinData().
+		SetCoinToSell(uint64(newCoinID)).
+		SetCoinToSell(mntID) // ...
 
-	tx, _ = transactionsBuilder.NewTransaction(dataSend)
+	tx, _ = transactionsBuilder.NewTransaction(dataSell)
 	sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)
 	encode, _ = sign.Encode()
 

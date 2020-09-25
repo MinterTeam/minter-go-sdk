@@ -7,9 +7,9 @@ import (
 
 // CreateMultisigData is a Data of Transaction for creating multisig wallet.
 type CreateMultisigData struct {
-	Threshold uint32     // Threshold for the sums of signature weights.
-	Weights   []uint32   // Weights of signers
-	Addresses [][20]byte // List of signed addresses
+	Threshold uint32    // Threshold for the sums of signature weights.
+	Weights   []uint32  // Weights of signers
+	Addresses []Address // List of signed addresses
 }
 
 // NewCreateMultisigData returns new CreateMultisigData of Transaction for creating multisig wallet.
@@ -64,7 +64,7 @@ func (d *CreateMultisigData) addAddress(address string) (*CreateMultisigData, er
 	if err != nil {
 		return d, err
 	}
-	var a [20]byte
+	var a Address
 	copy(a[:], hexAddress)
 	d.Addresses = append(d.Addresses, a)
 	return d, nil

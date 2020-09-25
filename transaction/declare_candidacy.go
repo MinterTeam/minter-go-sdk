@@ -8,11 +8,11 @@ import (
 
 // DeclareCandidacyData is a Data of Transaction for declaring new validator candidacy.
 type DeclareCandidacyData struct {
-	Address    [20]byte // Address of candidate
-	PubKey     [32]byte // Public key of a validator
-	Commission uint32   // Commission (from 0 to 100) from rewards which delegators will pay to validator
-	Coin       CoinID   // ID of coin to stake
-	Stake      *big.Int // Amount of coins to stake
+	Address    Address   // Address of candidate
+	PubKey     PublicKey // Public key of a validator
+	Commission uint32    // Commission (from 0 to 100) from rewards which delegators will pay to validator
+	Coin       CoinID    // ID of coin to stake
+	Stake      *big.Int  // Amount of coins to stake
 }
 
 // NewDeclareCandidacyData returns new DeclareCandidacyData of Transaction for declaring new validator candidacy.
@@ -65,8 +65,8 @@ func (d *DeclareCandidacyData) SetCommission(value uint32) *DeclareCandidacyData
 }
 
 // SetCoin sets ID of coin to stake.
-func (d *DeclareCandidacyData) SetCoin(id CoinID) *DeclareCandidacyData {
-	d.Coin = id
+func (d *DeclareCandidacyData) SetCoin(id uint64) *DeclareCandidacyData {
+	d.Coin = CoinID(id)
 	return d
 }
 

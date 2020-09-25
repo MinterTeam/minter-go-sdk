@@ -186,7 +186,7 @@ func TestObject_Fee_Multisend(t *testing.T) {
 func TestMultisigSig(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
-	coinID := CoinID(1)
+	coinID := uint64(1)
 	data, err := NewSendData().
 		SetCoin(coinID).
 		SetValue(value).
@@ -226,7 +226,7 @@ func TestMultisigSig(t *testing.T) {
 func TestMultisigSig1(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	coinID := CoinID(1)
+	coinID := uint64(1)
 	data, err := NewSendData().
 		SetCoin(coinID).
 		SetValue(value).
@@ -266,7 +266,7 @@ func TestMultisigSig1(t *testing.T) {
 func TestMultisigSigTwoTimeSig(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	coinID := CoinID(1)
+	coinID := uint64(1)
 	data, err := NewSendData().
 		SetCoin(coinID).
 		SetValue(value).
@@ -311,7 +311,7 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 func TestMultisigAddSignatures(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	coinID := CoinID(1)
+	coinID := uint64(1)
 	data, err := NewSendData().
 		SetCoin(coinID).
 		SetValue(value).
@@ -388,7 +388,7 @@ func TestMultisigAddSignatures(t *testing.T) {
 func TestMultisigAddSignatures2(t *testing.T) {
 	value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))
 	address := "Mxd82558ea00eb81d35f2654953598f5d51737d31d"
-	coinID := CoinID(1)
+	coinID := uint64(1)
 	data, err := NewSendData().
 		SetCoin(coinID).
 		SetValue(value).

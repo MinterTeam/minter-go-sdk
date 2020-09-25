@@ -8,8 +8,8 @@ import (
 // EditCandidatePublicKeyData is Data of Transaction for editing candidate public key.
 // This transaction should be sent from OwnerAddress which is set in the "Declare candidacy transaction".
 type EditCandidatePublicKeyData struct {
-	PubKey    [32]byte // Public key of a validator
-	NewPubKey [32]byte // New public key for change.
+	PubKey    PublicKey // Public key of a validator
+	NewPubKey PublicKey // New public key for change.
 }
 
 // NewEditCandidatePublicKeyData returns new EditCandidatePublicKeyData of Transaction for editing existing candidate.
@@ -23,7 +23,7 @@ func (d *EditCandidatePublicKeyData) SetPubKey(key string) (*EditCandidatePublic
 	if err != nil {
 		return d, err
 	}
-	var pubKey [32]byte
+	var pubKey PublicKey
 	copy(pubKey[:], pk)
 	d.PubKey = pubKey
 	return d, nil
@@ -44,7 +44,7 @@ func (d *EditCandidatePublicKeyData) SetNewPubKey(key string) (*EditCandidatePub
 	if err != nil {
 		return d, err
 	}
-	var pubKey [32]byte
+	var pubKey PublicKey
 	copy(pubKey[:], newPubKey)
 	d.NewPubKey = pubKey
 	return d, nil

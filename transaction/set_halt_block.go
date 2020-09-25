@@ -8,7 +8,7 @@ import (
 // SetHaltBlockData is a Data of Transaction for voting to stop the network on block.
 // This transaction should be sent from OwnerAddress which is set in the "Declare candidacy transaction".
 type SetHaltBlockData struct {
-	PubKey [32]byte
+	PubKey PublicKey
 	Height uint64
 }
 
