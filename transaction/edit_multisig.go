@@ -5,14 +5,14 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// EditMultisigData is a Data of Transaction for edit multisig.
+// EditMultisigData is a Data of Transaction for editing multisig address.
 type EditMultisigData struct {
 	Threshold uint32     // Threshold for the sums of signature weights.
 	Weights   []uint32   // Weights of signers
 	Addresses [][20]byte // List of signed addresses
 }
 
-// NewEditMultisigData returns new EditMultisigData of Transaction for edit multisig.
+// NewEditMultisigData returns new EditMultisigData of Transaction for editing multisig address.
 func NewEditMultisigData() *EditMultisigData {
 	return &EditMultisigData{}
 }

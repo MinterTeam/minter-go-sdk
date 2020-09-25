@@ -6,6 +6,7 @@ import (
 )
 
 // EditCandidateData is Data of Transaction for editing existing candidate.
+// This transaction should be sent from OwnerAddress which is set in the "Declare candidacy transaction".
 type EditCandidateData struct {
 	PubKey         [32]byte // Public key of a validator
 	RewardAddress  [20]byte // Address where validator’s rewards go to.

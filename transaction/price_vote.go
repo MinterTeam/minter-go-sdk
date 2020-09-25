@@ -2,14 +2,17 @@ package transaction
 
 import "github.com/ethereum/go-ethereum/rlp"
 
+// PriceVoteData is a Data of Transaction for
 type PriceVoteData struct {
 	Price uint
 }
 
+// NewPriceVoteData returns new PriceVoteData of Transaction for
 func NewPriceVoteData() *PriceVoteData {
 	return &PriceVoteData{}
 }
 
+// SetPrice sets price
 func (d *PriceVoteData) SetPrice(price uint) *PriceVoteData {
 	d.Price = price
 	return d

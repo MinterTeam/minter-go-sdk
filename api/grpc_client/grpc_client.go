@@ -55,12 +55,12 @@ func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 }
 
 // CoinID returns ID of coin symbol.
-func (c *Client) CoinID(symbol string) (uint32, error) {
+func (c *Client) CoinID(symbol string) (uint64, error) {
 	info, err := c.CoinInfo(symbol)
 	if err != nil {
 		return 0, err
 	}
-	return uint32(info.Id), err
+	return info.Id, err
 }
 
 // ErrorBody returns error as API model
@@ -139,9 +139,9 @@ func (c *Client) Marshal(m proto.Message) (json string, err error) {
 	return string(marshal), nil
 }
 
-// Halts
-func (c *Client) Halts(height int) (*api_pb.HaltsResponse, error) {
-	return c.grpcClient.Halts(c.ctxFunc(), &api_pb.HaltsRequest{Height: uint64(height)})
+// Halts returns the candidate votes for stopping the network at block.
+func (c *Client) Halts(height uint64) (*api_pb.HaltsResponse, error) {
+	return c.grpcClient.Halts(c.ctxFunc(), &api_pb.HaltsRequest{Height: height})
 }
 
 // Genesis returns genesis file.

@@ -6,6 +6,7 @@ import (
 )
 
 // EditCandidatePublicKeyData is Data of Transaction for editing candidate public key.
+// This transaction should be sent from OwnerAddress which is set in the "Declare candidacy transaction".
 type EditCandidatePublicKeyData struct {
 	PubKey    [32]byte // Public key of a validator
 	NewPubKey [32]byte // New public key for change.

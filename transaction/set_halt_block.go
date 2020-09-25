@@ -5,13 +5,14 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-// SetHaltBlockData is a Data of Transaction for
+// SetHaltBlockData is a Data of Transaction for voting to stop the network on block.
+// This transaction should be sent from OwnerAddress which is set in the "Declare candidacy transaction".
 type SetHaltBlockData struct {
 	PubKey [32]byte
 	Height uint64
 }
 
-// NewSetHaltBlockData returns new SetHaltBlockData of Transaction for
+// NewSetHaltBlockData returns new SetHaltBlockData of Transaction for voting to stop the network on block.
 func NewSetHaltBlockData() *SetHaltBlockData {
 	return &SetHaltBlockData{}
 }
