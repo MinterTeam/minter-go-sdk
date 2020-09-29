@@ -29,7 +29,8 @@ func New(address string) (*Client, error) {
 	clientConn, err := grpc.Dial(address,
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor()),
-		grpc.WithInsecure())
+		grpc.WithInsecure(),
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(-1)))
 	if err != nil {
 		return nil, err
 	}
