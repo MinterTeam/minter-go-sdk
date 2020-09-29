@@ -2,10 +2,13 @@
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/mod/github.com/MinterTeam/minter-go-sdk/v2)
 
-## About
+## Overview
 
 This is a pure Go SDK for working with **Minter** blockchain
 
+## Table of contents
+
+* [Installing](#installing)
 * [Minter API](#minter-api)
 * [Using API v2](#using-api-v2)
 * [Using gRPC](#using-grpc)
@@ -15,13 +18,13 @@ This is a pure Go SDK for working with **Minter** blockchain
         - [Multi signature](#multi-signatures)
 * [Minter Wallet](#minter-wallet)
 
-## Installing
+### Installing
 
 ```bash
 go get github.com/MinterTeam/minter-go-sdk/v2
 ```
 
-## Minter API
+### Minter API
 
 * v1 - Deprecated.
     - [SDK v1](https://github.com/MinterTeam/minter-go-sdk/tree/master#the-minter-go-sdk-v1-is-in-maintenance-mode-you-are-encouraged-to-migrate-to-v2-which-will-have-a-stable-release)
@@ -30,27 +33,27 @@ go get github.com/MinterTeam/minter-go-sdk/v2
     - [Swagger UI](https://minterteam.github.io/node-grpc-gateway/)
     - [![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https://minterteam.github.io/node-grpc-gateway/api.swagger.json)](https://minterteam.github.io/minter-api-v2-docs/)
 
-## Using API v2
+### Using API v2
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/http_client?tab=doc)
 
-## Using gRPC
+### Using gRPC
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/grpc_client?tab=doc)
 
-## Using Transactions
+### Using Transactions
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/transaction?tab=doc)
 
-### Sign transaction
+#### Sign transaction
 
 Returns a signed tx.
 
 ⚠️ After sending the transaction, to make sure that the transaction was successfully committed on the blockchain, you need to find the transaction by hash and make sure that the status code is 0.
 
-#### Single signature
+##### Single signature
 
-##### Example
+###### Example
 
 ```go
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
@@ -69,9 +72,9 @@ signedTransaction, _ := tx.
 encode, _ := signedTransaction.Encode()
 ```
 
-#### Multi signatures
+##### Multi signatures
 
-##### Example
+###### Example
 
 ```go
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
