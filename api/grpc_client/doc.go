@@ -16,9 +16,9 @@ Example:
 	defer subscribeClient.CloseSend()
 
 	res, err := client.SendTransaction(encode)
-		if err != nil {
-			log.Fatal(client.HTTPError(err))
-		}
+	if err != nil {
+		log.Fatal(client.HTTPError(err))
+	}
 
 	marshal, _ := client.Marshal(res)
 
@@ -40,7 +40,7 @@ Example:
 
 		if !strings.Contains(marshal, strings.ToUpper(hash[2:])) {
 			continue
-			}
+		}
 
 		break
 	}

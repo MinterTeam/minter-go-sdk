@@ -89,6 +89,35 @@ const (
 	TestNetChainID         // 0x02
 )
 
+// CoinID ID of a coin.
+type CoinID uint32
+
+// String return CoinID as string.
+func (c *CoinID) String() string { return strconv.Itoa(int(*c)) }
+
+// CoinSymbol is symbol of a coin.
+type CoinSymbol [10]byte
+
+// String returns CoinSymbol as string.
+func (s *CoinSymbol) String() string { return string(bytes.Trim(s[:], "\x00")) }
+
+// Address is address.
+type Address [20]byte
+
+// String returns Address as string.
+func (a *Address) String() string { return "Mx" + hex.EncodeToString(a[:]) }
+
+// PublicKey is public key.
+type PublicKey [32]byte
+
+// String returns PublicKey as string.
+func (p *PublicKey) String() string { return "Mp" + hex.EncodeToString(p[:]) }
+
+// BipToPip converts BIP to PIP (multiplies input by 1e18)
+func BipToPip(bip *big.Int) *big.Int {
+	return big.NewInt(0).Mul(big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil), bip)
+}
+
 // Builder is creator of Transaction.
 type Builder struct {
 	ChainID ChainID
@@ -129,30 +158,6 @@ type Data interface {
 	// Fee returns commission of transaction Data
 	Fee() Fee
 }
-
-// CoinID ID of a coin.
-type CoinID uint32
-
-// String return CoinID as string.
-func (c *CoinID) String() string { return strconv.Itoa(int(*c)) }
-
-// CoinSymbol is symbol of a coin.
-type CoinSymbol [10]byte
-
-// String returns CoinSymbol as string.
-func (s *CoinSymbol) String() string { return string(bytes.Trim(s[:], "\x00")) }
-
-// Address is address.
-type Address [20]byte
-
-// String returns Address as string.
-func (a *Address) String() string { return "Mx" + hex.EncodeToString(a[:]) }
-
-// PublicKey is public key.
-type PublicKey [32]byte
-
-// String returns PublicKey as string.
-func (p *PublicKey) String() string { return "Mp" + hex.EncodeToString(p[:]) }
 
 type encodeInterface interface {
 	// Encode returns string representation of a transaction.
