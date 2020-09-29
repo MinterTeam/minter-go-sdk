@@ -30,7 +30,7 @@ func New(address string) (*Client, error) {
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor()),
 		grpc.WithInsecure(),
-		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(-1)))
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(200000000))) // 200 megabytes
 	if err != nil {
 		return nil, err
 	}
