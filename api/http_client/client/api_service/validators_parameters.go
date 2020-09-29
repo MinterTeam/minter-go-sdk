@@ -14,7 +14,6 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
 // NewValidatorsParams creates a new ValidatorsParams object
@@ -63,10 +62,6 @@ type ValidatorsParams struct {
 
 	/*Height*/
 	Height *string
-	/*Page*/
-	Page *int32
-	/*PerPage*/
-	PerPage *int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -117,28 +112,6 @@ func (o *ValidatorsParams) SetHeight(height *string) {
 	o.Height = height
 }
 
-// WithPage adds the page to the validators params
-func (o *ValidatorsParams) WithPage(page *int32) *ValidatorsParams {
-	o.SetPage(page)
-	return o
-}
-
-// SetPage adds the page to the validators params
-func (o *ValidatorsParams) SetPage(page *int32) {
-	o.Page = page
-}
-
-// WithPerPage adds the perPage to the validators params
-func (o *ValidatorsParams) WithPerPage(perPage *int32) *ValidatorsParams {
-	o.SetPerPage(perPage)
-	return o
-}
-
-// SetPerPage adds the perPage to the validators params
-func (o *ValidatorsParams) SetPerPage(perPage *int32) {
-	o.PerPage = perPage
-}
-
 // WriteToRequest writes these params to a swagger request
 func (o *ValidatorsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -157,38 +130,6 @@ func (o *ValidatorsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 		qHeight := qrHeight
 		if qHeight != "" {
 			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
-	}
-
-	if o.Page != nil {
-
-		// query param page
-		var qrPage int32
-		if o.Page != nil {
-			qrPage = *o.Page
-		}
-		qPage := swag.FormatInt32(qrPage)
-		if qPage != "" {
-			if err := r.SetQueryParam("page", qPage); err != nil {
-				return err
-			}
-		}
-
-	}
-
-	if o.PerPage != nil {
-
-		// query param per_page
-		var qrPerPage int32
-		if o.PerPage != nil {
-			qrPerPage = *o.PerPage
-		}
-		qPerPage := swag.FormatInt32(qrPerPage)
-		if qPerPage != "" {
-			if err := r.SetQueryParam("per_page", qPerPage); err != nil {
 				return err
 			}
 		}

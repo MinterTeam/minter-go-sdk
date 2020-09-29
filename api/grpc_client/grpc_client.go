@@ -240,6 +240,11 @@ func (c *Client) Events(optionalHeight ...uint64) (*api_pb.EventsResponse, error
 	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: optionalInt(optionalHeight)})
 }
 
+// EventsSearch returns events at given height and compare search with delegator address or validator public key
+func (c *Client) EventsSearch(search []string, optionalHeight ...uint64) (*api_pb.EventsResponse, error) {
+	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: optionalInt(optionalHeight), Search: search})
+}
+
 // MaxGasPrice returns current max gas.
 func (c *Client) MaxGasPrice(optionalHeight ...uint64) (*api_pb.MaxGasPriceResponse, error) {
 	return c.grpcClient.MaxGasPrice(c.ctxFunc(), &api_pb.MaxGasPriceRequest{Height: optionalInt(optionalHeight)})
@@ -283,8 +288,8 @@ func (c *Client) UnconfirmedTxs(limit ...uint64) (*api_pb.UnconfirmedTxsResponse
 }
 
 // Validators returns list of active validators.
-func (c *Client) Validators(page, perPage int, limit ...uint64) (*api_pb.ValidatorsResponse, error) {
-	return c.grpcClient.Validators(c.ctxFunc(), &api_pb.ValidatorsRequest{Height: optionalInt(limit), Page: int32(page), PerPage: int32(perPage)})
+func (c *Client) Validators(optionalHeight ...uint64) (*api_pb.ValidatorsResponse, error) {
+	return c.grpcClient.Validators(c.ctxFunc(), &api_pb.ValidatorsRequest{Height: optionalInt(optionalHeight)})
 }
 
 // WaitList returns the list of address stakes in waitlist.
@@ -298,12 +303,13 @@ func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, err
 }
 
 // Frozen returns frozen balance.
-func (c *Client) Frozen(address, coinID string) (*api_pb.FrozenResponse, error) {
-	var coinIDRequest *wrappers.UInt64Value
-	if atoi, err := strconv.Atoi(coinID); err != nil {
-		coinIDRequest = &wrappers.UInt64Value{Value: uint64(atoi)}
-	}
-	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coinIDRequest})
+func (c *Client) Frozen(address string) (*api_pb.FrozenResponse, error) {
+	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address})
+}
+
+// FrozenWithCoin returns frozen balance for coinID.
+func (c *Client) FrozenWithCoin(address string, coinID uint64) (*api_pb.FrozenResponse, error) {
+	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: &wrappers.UInt64Value{Value: coinID}})
 }
 
 func optionalInt(height []uint64) uint64 {

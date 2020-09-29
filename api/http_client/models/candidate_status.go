@@ -20,17 +20,14 @@ type CandidateStatus string
 
 const (
 
-	// CandidateStatusCandidateStatusUNKNOWN captures enum value "CandidateStatusUNKNOWN"
-	CandidateStatusCandidateStatusUNKNOWN CandidateStatus = "CandidateStatusUNKNOWN"
+	// CandidateStatusAll captures enum value "all"
+	CandidateStatusAll CandidateStatus = "all"
 
-	// CandidateStatusCandidateOff captures enum value "CandidateOff"
-	CandidateStatusCandidateOff CandidateStatus = "CandidateOff"
+	// CandidateStatusOff captures enum value "off"
+	CandidateStatusOff CandidateStatus = "off"
 
-	// CandidateStatusCandidateOn captures enum value "CandidateOn"
-	CandidateStatusCandidateOn CandidateStatus = "CandidateOn"
-
-	// CandidateStatusValidatorOn captures enum value "ValidatorOn"
-	CandidateStatusValidatorOn CandidateStatus = "ValidatorOn"
+	// CandidateStatusOn captures enum value "on"
+	CandidateStatusOn CandidateStatus = "on"
 )
 
 // for schema
@@ -38,7 +35,7 @@ var candidateStatusEnum []interface{}
 
 func init() {
 	var res []CandidateStatus
-	if err := json.Unmarshal([]byte(`["CandidateStatusUNKNOWN","CandidateOff","CandidateOn","ValidatorOn"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["all","off","on"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

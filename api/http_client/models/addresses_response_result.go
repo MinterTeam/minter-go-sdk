@@ -27,7 +27,7 @@ type AddressesResponseResult struct {
 	// delegated
 	Delegated []*AddressDelegatedBalance `json:"delegated"`
 
-	// total
+	// Sum of balance and delegated by coins.
 	Total []*AddressBalance `json:"total"`
 
 	// transaction count
