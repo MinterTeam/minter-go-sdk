@@ -64,7 +64,7 @@ type SubscribeParams struct {
 	  tm.event = 'NewBlock' or tm.event = 'Tx'
 
 	*/
-	Query *string
+	Query string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -105,13 +105,13 @@ func (o *SubscribeParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithQuery adds the query to the subscribe params
-func (o *SubscribeParams) WithQuery(query *string) *SubscribeParams {
+func (o *SubscribeParams) WithQuery(query string) *SubscribeParams {
 	o.SetQuery(query)
 	return o
 }
 
 // SetQuery adds the query to the subscribe params
-func (o *SubscribeParams) SetQuery(query *string) {
+func (o *SubscribeParams) SetQuery(query string) {
 	o.Query = query
 }
 
@@ -123,20 +123,13 @@ func (o *SubscribeParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 	}
 	var res []error
 
-	if o.Query != nil {
-
-		// query param query
-		var qrQuery string
-		if o.Query != nil {
-			qrQuery = *o.Query
+	// query param query
+	qrQuery := o.Query
+	qQuery := qrQuery
+	if qQuery != "" {
+		if err := r.SetQueryParam("query", qQuery); err != nil {
+			return err
 		}
-		qQuery := qrQuery
-		if qQuery != "" {
-			if err := r.SetQueryParam("query", qQuery); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

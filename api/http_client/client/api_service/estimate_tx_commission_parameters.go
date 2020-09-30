@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewEstimateTxCommissionParams creates a new EstimateTxCommissionParams object
@@ -61,7 +62,7 @@ for the estimate tx commission operation typically these are written to a http.R
 type EstimateTxCommissionParams struct {
 
 	/*Height*/
-	Height *string
+	Height uint64
 	/*Tx*/
 	Tx string
 
@@ -104,13 +105,13 @@ func (o *EstimateTxCommissionParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the estimate tx commission params
-func (o *EstimateTxCommissionParams) WithHeight(height *string) *EstimateTxCommissionParams {
+func (o *EstimateTxCommissionParams) WithHeight(height uint64) *EstimateTxCommissionParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate tx commission params
-func (o *EstimateTxCommissionParams) SetHeight(height *string) {
+func (o *EstimateTxCommissionParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
@@ -133,20 +134,13 @@ func (o *EstimateTxCommissionParams) WriteToRequest(r runtime.ClientRequest, reg
 	}
 	var res []error
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	// path param tx

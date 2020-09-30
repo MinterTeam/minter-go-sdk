@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewEstimateCoinSellParams creates a new EstimateCoinSellParams object
@@ -61,17 +62,17 @@ for the estimate coin sell operation typically these are written to a http.Reque
 type EstimateCoinSellParams struct {
 
 	/*CoinIDToBuy*/
-	CoinIDToBuy *string
+	CoinIDToBuy *uint64
 	/*CoinIDToSell*/
-	CoinIDToSell *string
+	CoinIDToSell *uint64
 	/*CoinToBuy*/
 	CoinToBuy *string
 	/*CoinToSell*/
 	CoinToSell *string
 	/*Height*/
-	Height *string
+	Height uint64
 	/*ValueToSell*/
-	ValueToSell *string
+	ValueToSell string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -112,24 +113,24 @@ func (o *EstimateCoinSellParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithCoinIDToBuy adds the coinIDToBuy to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithCoinIDToBuy(coinIDToBuy *string) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithCoinIDToBuy(coinIDToBuy *uint64) *EstimateCoinSellParams {
 	o.SetCoinIDToBuy(coinIDToBuy)
 	return o
 }
 
 // SetCoinIDToBuy adds the coinIdToBuy to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetCoinIDToBuy(coinIDToBuy *string) {
+func (o *EstimateCoinSellParams) SetCoinIDToBuy(coinIDToBuy *uint64) {
 	o.CoinIDToBuy = coinIDToBuy
 }
 
 // WithCoinIDToSell adds the coinIDToSell to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithCoinIDToSell(coinIDToSell *string) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithCoinIDToSell(coinIDToSell *uint64) *EstimateCoinSellParams {
 	o.SetCoinIDToSell(coinIDToSell)
 	return o
 }
 
 // SetCoinIDToSell adds the coinIdToSell to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetCoinIDToSell(coinIDToSell *string) {
+func (o *EstimateCoinSellParams) SetCoinIDToSell(coinIDToSell *uint64) {
 	o.CoinIDToSell = coinIDToSell
 }
 
@@ -156,24 +157,24 @@ func (o *EstimateCoinSellParams) SetCoinToSell(coinToSell *string) {
 }
 
 // WithHeight adds the height to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithHeight(height *string) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithHeight(height uint64) *EstimateCoinSellParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetHeight(height *string) {
+func (o *EstimateCoinSellParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
 // WithValueToSell adds the valueToSell to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithValueToSell(valueToSell *string) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithValueToSell(valueToSell string) *EstimateCoinSellParams {
 	o.SetValueToSell(valueToSell)
 	return o
 }
 
 // SetValueToSell adds the valueToSell to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetValueToSell(valueToSell *string) {
+func (o *EstimateCoinSellParams) SetValueToSell(valueToSell string) {
 	o.ValueToSell = valueToSell
 }
 
@@ -188,11 +189,11 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if o.CoinIDToBuy != nil {
 
 		// query param coin_id_to_buy
-		var qrCoinIDToBuy string
+		var qrCoinIDToBuy uint64
 		if o.CoinIDToBuy != nil {
 			qrCoinIDToBuy = *o.CoinIDToBuy
 		}
-		qCoinIDToBuy := qrCoinIDToBuy
+		qCoinIDToBuy := swag.FormatUint64(qrCoinIDToBuy)
 		if qCoinIDToBuy != "" {
 			if err := r.SetQueryParam("coin_id_to_buy", qCoinIDToBuy); err != nil {
 				return err
@@ -204,11 +205,11 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if o.CoinIDToSell != nil {
 
 		// query param coin_id_to_sell
-		var qrCoinIDToSell string
+		var qrCoinIDToSell uint64
 		if o.CoinIDToSell != nil {
 			qrCoinIDToSell = *o.CoinIDToSell
 		}
-		qCoinIDToSell := qrCoinIDToSell
+		qCoinIDToSell := swag.FormatUint64(qrCoinIDToSell)
 		if qCoinIDToSell != "" {
 			if err := r.SetQueryParam("coin_id_to_sell", qCoinIDToSell); err != nil {
 				return err
@@ -249,36 +250,22 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 
 	}
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
 	}
 
-	if o.ValueToSell != nil {
-
-		// query param value_to_sell
-		var qrValueToSell string
-		if o.ValueToSell != nil {
-			qrValueToSell = *o.ValueToSell
+	// query param value_to_sell
+	qrValueToSell := o.ValueToSell
+	qValueToSell := qrValueToSell
+	if qValueToSell != "" {
+		if err := r.SetQueryParam("value_to_sell", qValueToSell); err != nil {
+			return err
 		}
-		qValueToSell := qrValueToSell
-		if qValueToSell != "" {
-			if err := r.SetQueryParam("value_to_sell", qValueToSell); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

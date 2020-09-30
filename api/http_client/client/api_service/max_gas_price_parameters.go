@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewMaxGasPriceParams creates a new MaxGasPriceParams object
@@ -61,7 +62,7 @@ for the max gas price operation typically these are written to a http.Request
 type MaxGasPriceParams struct {
 
 	/*Height*/
-	Height *string
+	Height uint64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -102,13 +103,13 @@ func (o *MaxGasPriceParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the max gas price params
-func (o *MaxGasPriceParams) WithHeight(height *string) *MaxGasPriceParams {
+func (o *MaxGasPriceParams) WithHeight(height uint64) *MaxGasPriceParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the max gas price params
-func (o *MaxGasPriceParams) SetHeight(height *string) {
+func (o *MaxGasPriceParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
@@ -120,20 +121,13 @@ func (o *MaxGasPriceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 	var res []error
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

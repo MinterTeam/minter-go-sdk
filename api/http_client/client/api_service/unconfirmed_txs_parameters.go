@@ -20,8 +20,11 @@ import (
 // NewUnconfirmedTxsParams creates a new UnconfirmedTxsParams object
 // with the default values initialized.
 func NewUnconfirmedTxsParams() *UnconfirmedTxsParams {
-	var ()
+	var (
+		limitDefault = int32(30)
+	)
 	return &UnconfirmedTxsParams{
+		Limit: limitDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -30,8 +33,11 @@ func NewUnconfirmedTxsParams() *UnconfirmedTxsParams {
 // NewUnconfirmedTxsParamsWithTimeout creates a new UnconfirmedTxsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewUnconfirmedTxsParamsWithTimeout(timeout time.Duration) *UnconfirmedTxsParams {
-	var ()
+	var (
+		limitDefault = int32(30)
+	)
 	return &UnconfirmedTxsParams{
+		Limit: limitDefault,
 
 		timeout: timeout,
 	}
@@ -40,8 +46,11 @@ func NewUnconfirmedTxsParamsWithTimeout(timeout time.Duration) *UnconfirmedTxsPa
 // NewUnconfirmedTxsParamsWithContext creates a new UnconfirmedTxsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewUnconfirmedTxsParamsWithContext(ctx context.Context) *UnconfirmedTxsParams {
-	var ()
+	var (
+		limitDefault = int32(30)
+	)
 	return &UnconfirmedTxsParams{
+		Limit: limitDefault,
 
 		Context: ctx,
 	}
@@ -50,8 +59,11 @@ func NewUnconfirmedTxsParamsWithContext(ctx context.Context) *UnconfirmedTxsPara
 // NewUnconfirmedTxsParamsWithHTTPClient creates a new UnconfirmedTxsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewUnconfirmedTxsParamsWithHTTPClient(client *http.Client) *UnconfirmedTxsParams {
-	var ()
+	var (
+		limitDefault = int32(30)
+	)
 	return &UnconfirmedTxsParams{
+		Limit:      limitDefault,
 		HTTPClient: client,
 	}
 }
@@ -62,7 +74,7 @@ for the unconfirmed txs operation typically these are written to a http.Request
 type UnconfirmedTxsParams struct {
 
 	/*Limit*/
-	Limit *int32
+	Limit int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -103,13 +115,13 @@ func (o *UnconfirmedTxsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithLimit adds the limit to the unconfirmed txs params
-func (o *UnconfirmedTxsParams) WithLimit(limit *int32) *UnconfirmedTxsParams {
+func (o *UnconfirmedTxsParams) WithLimit(limit int32) *UnconfirmedTxsParams {
 	o.SetLimit(limit)
 	return o
 }
 
 // SetLimit adds the limit to the unconfirmed txs params
-func (o *UnconfirmedTxsParams) SetLimit(limit *int32) {
+func (o *UnconfirmedTxsParams) SetLimit(limit int32) {
 	o.Limit = limit
 }
 
@@ -121,20 +133,13 @@ func (o *UnconfirmedTxsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	}
 	var res []error
 
-	if o.Limit != nil {
-
-		// query param limit
-		var qrLimit int32
-		if o.Limit != nil {
-			qrLimit = *o.Limit
+	// query param limit
+	qrLimit := o.Limit
+	qLimit := swag.FormatInt32(qrLimit)
+	if qLimit != "" {
+		if err := r.SetQueryParam("limit", qLimit); err != nil {
+			return err
 		}
-		qLimit := swag.FormatInt32(qrLimit)
-		if qLimit != "" {
-			if err := r.SetQueryParam("limit", qLimit); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

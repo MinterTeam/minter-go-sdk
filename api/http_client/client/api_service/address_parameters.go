@@ -20,8 +20,11 @@ import (
 // NewAddressParams creates a new AddressParams object
 // with the default values initialized.
 func NewAddressParams() *AddressParams {
-	var ()
+	var (
+		delegatedDefault = bool(false)
+	)
 	return &AddressParams{
+		Delegated: delegatedDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -30,8 +33,11 @@ func NewAddressParams() *AddressParams {
 // NewAddressParamsWithTimeout creates a new AddressParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewAddressParamsWithTimeout(timeout time.Duration) *AddressParams {
-	var ()
+	var (
+		delegatedDefault = bool(false)
+	)
 	return &AddressParams{
+		Delegated: delegatedDefault,
 
 		timeout: timeout,
 	}
@@ -40,8 +46,11 @@ func NewAddressParamsWithTimeout(timeout time.Duration) *AddressParams {
 // NewAddressParamsWithContext creates a new AddressParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewAddressParamsWithContext(ctx context.Context) *AddressParams {
-	var ()
+	var (
+		delegatedDefault = bool(false)
+	)
 	return &AddressParams{
+		Delegated: delegatedDefault,
 
 		Context: ctx,
 	}
@@ -50,8 +59,11 @@ func NewAddressParamsWithContext(ctx context.Context) *AddressParams {
 // NewAddressParamsWithHTTPClient creates a new AddressParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewAddressParamsWithHTTPClient(client *http.Client) *AddressParams {
-	var ()
+	var (
+		delegatedDefault = bool(false)
+	)
 	return &AddressParams{
+		Delegated:  delegatedDefault,
 		HTTPClient: client,
 	}
 }
@@ -64,9 +76,9 @@ type AddressParams struct {
 	/*Address*/
 	Address string
 	/*Delegated*/
-	Delegated *bool
+	Delegated bool
 	/*Height*/
-	Height *string
+	Height uint64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,24 +130,24 @@ func (o *AddressParams) SetAddress(address string) {
 }
 
 // WithDelegated adds the delegated to the address params
-func (o *AddressParams) WithDelegated(delegated *bool) *AddressParams {
+func (o *AddressParams) WithDelegated(delegated bool) *AddressParams {
 	o.SetDelegated(delegated)
 	return o
 }
 
 // SetDelegated adds the delegated to the address params
-func (o *AddressParams) SetDelegated(delegated *bool) {
+func (o *AddressParams) SetDelegated(delegated bool) {
 	o.Delegated = delegated
 }
 
 // WithHeight adds the height to the address params
-func (o *AddressParams) WithHeight(height *string) *AddressParams {
+func (o *AddressParams) WithHeight(height uint64) *AddressParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the address params
-func (o *AddressParams) SetHeight(height *string) {
+func (o *AddressParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
@@ -152,36 +164,22 @@ func (o *AddressParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regis
 		return err
 	}
 
-	if o.Delegated != nil {
-
-		// query param delegated
-		var qrDelegated bool
-		if o.Delegated != nil {
-			qrDelegated = *o.Delegated
+	// query param delegated
+	qrDelegated := o.Delegated
+	qDelegated := swag.FormatBool(qrDelegated)
+	if qDelegated != "" {
+		if err := r.SetQueryParam("delegated", qDelegated); err != nil {
+			return err
 		}
-		qDelegated := swag.FormatBool(qrDelegated)
-		if qDelegated != "" {
-			if err := r.SetQueryParam("delegated", qDelegated); err != nil {
-				return err
-			}
-		}
-
 	}
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

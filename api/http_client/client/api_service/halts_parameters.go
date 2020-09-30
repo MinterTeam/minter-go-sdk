@@ -61,7 +61,7 @@ for the halts operation typically these are written to a http.Request
 type HaltsParams struct {
 
 	/*Height*/
-	Height *string
+	Height string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -102,13 +102,13 @@ func (o *HaltsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the halts params
-func (o *HaltsParams) WithHeight(height *string) *HaltsParams {
+func (o *HaltsParams) WithHeight(height string) *HaltsParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the halts params
-func (o *HaltsParams) SetHeight(height *string) {
+func (o *HaltsParams) SetHeight(height string) {
 	o.Height = height
 }
 
@@ -120,20 +120,9 @@ func (o *HaltsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registr
 	}
 	var res []error
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
-		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
+	// path param height
+	if err := r.SetPathParam("height", o.Height); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

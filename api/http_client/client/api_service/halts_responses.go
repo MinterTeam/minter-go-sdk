@@ -55,7 +55,7 @@ type HaltsOK struct {
 }
 
 func (o *HaltsOK) Error() string {
-	return fmt.Sprintf("[GET /halts][%d] haltsOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /halts/{height}][%d] haltsOK  %+v", 200, o.Payload)
 }
 
 func (o *HaltsOK) GetPayload() *models.HaltsResponse {
@@ -97,7 +97,7 @@ func (o *HaltsDefault) Code() int {
 }
 
 func (o *HaltsDefault) Error() string {
-	return fmt.Sprintf("[GET /halts][%d] Halts default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[GET /halts/{height}][%d] Halts default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *HaltsDefault) GetPayload() *models.ErrorBody {

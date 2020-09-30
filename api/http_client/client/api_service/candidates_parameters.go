@@ -24,7 +24,7 @@ func NewCandidatesParams() *CandidatesParams {
 		statusDefault = string("all")
 	)
 	return &CandidatesParams{
-		Status: &statusDefault,
+		Status: statusDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -37,7 +37,7 @@ func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 		statusDefault = string("all")
 	)
 	return &CandidatesParams{
-		Status: &statusDefault,
+		Status: statusDefault,
 
 		timeout: timeout,
 	}
@@ -50,7 +50,7 @@ func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 		statusDefault = string("all")
 	)
 	return &CandidatesParams{
-		Status: &statusDefault,
+		Status: statusDefault,
 
 		Context: ctx,
 	}
@@ -63,7 +63,7 @@ func NewCandidatesParamsWithHTTPClient(client *http.Client) *CandidatesParams {
 		statusDefault = string("all")
 	)
 	return &CandidatesParams{
-		Status:     &statusDefault,
+		Status:     statusDefault,
 		HTTPClient: client,
 	}
 }
@@ -74,11 +74,11 @@ for the candidates operation typically these are written to a http.Request
 type CandidatesParams struct {
 
 	/*Height*/
-	Height *string
+	Height uint64
 	/*IncludeStakes*/
-	IncludeStakes *bool
+	IncludeStakes bool
 	/*Status*/
-	Status *string
+	Status string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,35 +119,35 @@ func (o *CandidatesParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the candidates params
-func (o *CandidatesParams) WithHeight(height *string) *CandidatesParams {
+func (o *CandidatesParams) WithHeight(height uint64) *CandidatesParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the candidates params
-func (o *CandidatesParams) SetHeight(height *string) {
+func (o *CandidatesParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
 // WithIncludeStakes adds the includeStakes to the candidates params
-func (o *CandidatesParams) WithIncludeStakes(includeStakes *bool) *CandidatesParams {
+func (o *CandidatesParams) WithIncludeStakes(includeStakes bool) *CandidatesParams {
 	o.SetIncludeStakes(includeStakes)
 	return o
 }
 
 // SetIncludeStakes adds the includeStakes to the candidates params
-func (o *CandidatesParams) SetIncludeStakes(includeStakes *bool) {
+func (o *CandidatesParams) SetIncludeStakes(includeStakes bool) {
 	o.IncludeStakes = includeStakes
 }
 
 // WithStatus adds the status to the candidates params
-func (o *CandidatesParams) WithStatus(status *string) *CandidatesParams {
+func (o *CandidatesParams) WithStatus(status string) *CandidatesParams {
 	o.SetStatus(status)
 	return o
 }
 
 // SetStatus adds the status to the candidates params
-func (o *CandidatesParams) SetStatus(status *string) {
+func (o *CandidatesParams) SetStatus(status string) {
 	o.Status = status
 }
 
@@ -159,52 +159,31 @@ func (o *CandidatesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	}
 	var res []error
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
 	}
 
-	if o.IncludeStakes != nil {
-
-		// query param include_stakes
-		var qrIncludeStakes bool
-		if o.IncludeStakes != nil {
-			qrIncludeStakes = *o.IncludeStakes
+	// query param include_stakes
+	qrIncludeStakes := o.IncludeStakes
+	qIncludeStakes := swag.FormatBool(qrIncludeStakes)
+	if qIncludeStakes != "" {
+		if err := r.SetQueryParam("include_stakes", qIncludeStakes); err != nil {
+			return err
 		}
-		qIncludeStakes := swag.FormatBool(qrIncludeStakes)
-		if qIncludeStakes != "" {
-			if err := r.SetQueryParam("include_stakes", qIncludeStakes); err != nil {
-				return err
-			}
-		}
-
 	}
 
-	if o.Status != nil {
-
-		// query param status
-		var qrStatus string
-		if o.Status != nil {
-			qrStatus = *o.Status
+	// query param status
+	qrStatus := o.Status
+	qStatus := qrStatus
+	if qStatus != "" {
+		if err := r.SetQueryParam("status", qStatus); err != nil {
+			return err
 		}
-		qStatus := qrStatus
-		if qStatus != "" {
-			if err := r.SetQueryParam("status", qStatus); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

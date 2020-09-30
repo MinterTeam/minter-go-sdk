@@ -558,7 +558,7 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "Halts",
 		Method:             "GET",
-		PathPattern:        "/halts",
+		PathPattern:        "/halts/{height}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},

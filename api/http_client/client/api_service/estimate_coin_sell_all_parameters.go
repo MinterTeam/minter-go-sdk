@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewEstimateCoinSellAllParams creates a new EstimateCoinSellAllParams object
@@ -61,19 +62,17 @@ for the estimate coin sell all operation typically these are written to a http.R
 type EstimateCoinSellAllParams struct {
 
 	/*CoinIDToBuy*/
-	CoinIDToBuy *string
+	CoinIDToBuy *uint64
 	/*CoinIDToSell*/
-	CoinIDToSell *string
+	CoinIDToSell *uint64
 	/*CoinToBuy*/
 	CoinToBuy *string
 	/*CoinToSell*/
 	CoinToSell *string
-	/*GasPrice*/
-	GasPrice *string
 	/*Height*/
-	Height *string
+	Height uint64
 	/*ValueToSell*/
-	ValueToSell *string
+	ValueToSell string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -114,24 +113,24 @@ func (o *EstimateCoinSellAllParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithCoinIDToBuy adds the coinIDToBuy to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithCoinIDToBuy(coinIDToBuy *string) *EstimateCoinSellAllParams {
+func (o *EstimateCoinSellAllParams) WithCoinIDToBuy(coinIDToBuy *uint64) *EstimateCoinSellAllParams {
 	o.SetCoinIDToBuy(coinIDToBuy)
 	return o
 }
 
 // SetCoinIDToBuy adds the coinIdToBuy to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetCoinIDToBuy(coinIDToBuy *string) {
+func (o *EstimateCoinSellAllParams) SetCoinIDToBuy(coinIDToBuy *uint64) {
 	o.CoinIDToBuy = coinIDToBuy
 }
 
 // WithCoinIDToSell adds the coinIDToSell to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithCoinIDToSell(coinIDToSell *string) *EstimateCoinSellAllParams {
+func (o *EstimateCoinSellAllParams) WithCoinIDToSell(coinIDToSell *uint64) *EstimateCoinSellAllParams {
 	o.SetCoinIDToSell(coinIDToSell)
 	return o
 }
 
 // SetCoinIDToSell adds the coinIdToSell to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetCoinIDToSell(coinIDToSell *string) {
+func (o *EstimateCoinSellAllParams) SetCoinIDToSell(coinIDToSell *uint64) {
 	o.CoinIDToSell = coinIDToSell
 }
 
@@ -157,36 +156,25 @@ func (o *EstimateCoinSellAllParams) SetCoinToSell(coinToSell *string) {
 	o.CoinToSell = coinToSell
 }
 
-// WithGasPrice adds the gasPrice to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithGasPrice(gasPrice *string) *EstimateCoinSellAllParams {
-	o.SetGasPrice(gasPrice)
-	return o
-}
-
-// SetGasPrice adds the gasPrice to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetGasPrice(gasPrice *string) {
-	o.GasPrice = gasPrice
-}
-
 // WithHeight adds the height to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithHeight(height *string) *EstimateCoinSellAllParams {
+func (o *EstimateCoinSellAllParams) WithHeight(height uint64) *EstimateCoinSellAllParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetHeight(height *string) {
+func (o *EstimateCoinSellAllParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
 // WithValueToSell adds the valueToSell to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithValueToSell(valueToSell *string) *EstimateCoinSellAllParams {
+func (o *EstimateCoinSellAllParams) WithValueToSell(valueToSell string) *EstimateCoinSellAllParams {
 	o.SetValueToSell(valueToSell)
 	return o
 }
 
 // SetValueToSell adds the valueToSell to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetValueToSell(valueToSell *string) {
+func (o *EstimateCoinSellAllParams) SetValueToSell(valueToSell string) {
 	o.ValueToSell = valueToSell
 }
 
@@ -201,11 +189,11 @@ func (o *EstimateCoinSellAllParams) WriteToRequest(r runtime.ClientRequest, reg 
 	if o.CoinIDToBuy != nil {
 
 		// query param coin_id_to_buy
-		var qrCoinIDToBuy string
+		var qrCoinIDToBuy uint64
 		if o.CoinIDToBuy != nil {
 			qrCoinIDToBuy = *o.CoinIDToBuy
 		}
-		qCoinIDToBuy := qrCoinIDToBuy
+		qCoinIDToBuy := swag.FormatUint64(qrCoinIDToBuy)
 		if qCoinIDToBuy != "" {
 			if err := r.SetQueryParam("coin_id_to_buy", qCoinIDToBuy); err != nil {
 				return err
@@ -217,11 +205,11 @@ func (o *EstimateCoinSellAllParams) WriteToRequest(r runtime.ClientRequest, reg 
 	if o.CoinIDToSell != nil {
 
 		// query param coin_id_to_sell
-		var qrCoinIDToSell string
+		var qrCoinIDToSell uint64
 		if o.CoinIDToSell != nil {
 			qrCoinIDToSell = *o.CoinIDToSell
 		}
-		qCoinIDToSell := qrCoinIDToSell
+		qCoinIDToSell := swag.FormatUint64(qrCoinIDToSell)
 		if qCoinIDToSell != "" {
 			if err := r.SetQueryParam("coin_id_to_sell", qCoinIDToSell); err != nil {
 				return err
@@ -262,52 +250,22 @@ func (o *EstimateCoinSellAllParams) WriteToRequest(r runtime.ClientRequest, reg 
 
 	}
 
-	if o.GasPrice != nil {
-
-		// query param gas_price
-		var qrGasPrice string
-		if o.GasPrice != nil {
-			qrGasPrice = *o.GasPrice
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qGasPrice := qrGasPrice
-		if qGasPrice != "" {
-			if err := r.SetQueryParam("gas_price", qGasPrice); err != nil {
-				return err
-			}
-		}
-
 	}
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param value_to_sell
+	qrValueToSell := o.ValueToSell
+	qValueToSell := qrValueToSell
+	if qValueToSell != "" {
+		if err := r.SetQueryParam("value_to_sell", qValueToSell); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
-	}
-
-	if o.ValueToSell != nil {
-
-		// query param value_to_sell
-		var qrValueToSell string
-		if o.ValueToSell != nil {
-			qrValueToSell = *o.ValueToSell
-		}
-		qValueToSell := qrValueToSell
-		if qValueToSell != "" {
-			if err := r.SetQueryParam("value_to_sell", qValueToSell); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

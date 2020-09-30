@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewCoinInfoByIDParams creates a new CoinInfoByIDParams object
@@ -61,7 +62,7 @@ for the coin info by Id operation typically these are written to a http.Request
 type CoinInfoByIDParams struct {
 
 	/*Height*/
-	Height *string
+	Height uint64
 	/*ID*/
 	ID string
 
@@ -104,13 +105,13 @@ func (o *CoinInfoByIDParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the coin info by Id params
-func (o *CoinInfoByIDParams) WithHeight(height *string) *CoinInfoByIDParams {
+func (o *CoinInfoByIDParams) WithHeight(height uint64) *CoinInfoByIDParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the coin info by Id params
-func (o *CoinInfoByIDParams) SetHeight(height *string) {
+func (o *CoinInfoByIDParams) SetHeight(height uint64) {
 	o.Height = height
 }
 
@@ -133,20 +134,13 @@ func (o *CoinInfoByIDParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	}
 	var res []error
 
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight string
-		if o.Height != nil {
-			qrHeight = *o.Height
+	// query param height
+	qrHeight := o.Height
+	qHeight := swag.FormatUint64(qrHeight)
+	if qHeight != "" {
+		if err := r.SetQueryParam("height", qHeight); err != nil {
+			return err
 		}
-		qHeight := qrHeight
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	// path param id
