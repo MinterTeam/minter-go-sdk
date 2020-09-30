@@ -28,7 +28,7 @@ type AppStateAccount struct {
 	MultisigData *AccountMultisigData `json:"multisig_data,omitempty"`
 
 	// nonce
-	Nonce string `json:"nonce,omitempty"`
+	Nonce uint64 `json:"nonce,omitempty,string"`
 }
 
 // Validate validates this app state account

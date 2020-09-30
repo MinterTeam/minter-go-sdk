@@ -19,7 +19,7 @@ import (
 type NetInfoResponse struct {
 
 	// count peers
-	CountPeers string `json:"count_peers,omitempty"`
+	CountPeers int64 `json:"count_peers,omitempty,string"`
 
 	// listeners
 	Listeners []string `json:"listeners"`

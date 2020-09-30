@@ -16,10 +16,10 @@ import (
 type CoinInfoResponse struct {
 
 	// crr
-	Crr string `json:"crr,omitempty"`
+	Crr uint64 `json:"crr,omitempty,string"`
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID uint64 `json:"id,omitempty,string"`
 
 	// max supply
 	MaxSupply string `json:"max_supply,omitempty"`

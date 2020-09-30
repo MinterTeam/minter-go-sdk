@@ -16,7 +16,7 @@ import (
 type MaxGasPriceResponse struct {
 
 	// max gas price
-	MaxGasPrice string `json:"max_gas_price,omitempty"`
+	MaxGasPrice uint64 `json:"max_gas_price,omitempty,string"`
 }
 
 // Validate validates this max gas price response

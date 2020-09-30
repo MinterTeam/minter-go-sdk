@@ -16,13 +16,13 @@ import (
 type ConsensusParamsBlock struct {
 
 	// max bytes
-	MaxBytes string `json:"max_bytes,omitempty"`
+	MaxBytes int64 `json:"max_bytes,omitempty,string"`
 
 	// max gas
-	MaxGas string `json:"max_gas,omitempty"`
+	MaxGas int64 `json:"max_gas,omitempty,string"`
 
 	// time iota ms
-	TimeIotaMs string `json:"time_iota_ms,omitempty"`
+	TimeIotaMs int64 `json:"time_iota_ms,omitempty,string"`
 }
 
 // Validate validates this consensus params block

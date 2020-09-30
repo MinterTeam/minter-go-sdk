@@ -17,7 +17,7 @@ import (
 type BlockResponseTransaction struct {
 
 	// code
-	Code string `json:"code,omitempty"`
+	Code uint64 `json:"code,omitempty,string"`
 
 	// data
 	Data *ProtobufAny `json:"data,omitempty"`
@@ -26,13 +26,13 @@ type BlockResponseTransaction struct {
 	From string `json:"from,omitempty"`
 
 	// gas
-	Gas string `json:"gas,omitempty"`
+	Gas uint64 `json:"gas,omitempty,string"`
 
 	// gas coin
 	GasCoin *Coin `json:"gas_coin,omitempty"`
 
 	// gas price
-	GasPrice string `json:"gas_price,omitempty"`
+	GasPrice uint64 `json:"gas_price,omitempty,string"`
 
 	// hash
 	Hash string `json:"hash,omitempty"`
@@ -41,7 +41,7 @@ type BlockResponseTransaction struct {
 	Log string `json:"log,omitempty"`
 
 	// nonce
-	Nonce string `json:"nonce,omitempty"`
+	Nonce uint64 `json:"nonce,omitempty,string"`
 
 	// payload
 	// Format: byte
@@ -58,7 +58,7 @@ type BlockResponseTransaction struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// type
-	Type string `json:"type,omitempty"`
+	Type uint64 `json:"type,omitempty,string"`
 }
 
 // Validate validates this block response transaction

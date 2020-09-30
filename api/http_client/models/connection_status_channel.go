@@ -16,19 +16,19 @@ import (
 type ConnectionStatusChannel struct {
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID int64 `json:"id,omitempty,string"`
 
 	// priority
-	Priority string `json:"priority,omitempty"`
+	Priority int64 `json:"priority,omitempty,string"`
 
 	// recently sent
-	RecentlySent string `json:"recently_sent,omitempty"`
+	RecentlySent int64 `json:"recently_sent,omitempty,string"`
 
 	// send queue capacity
-	SendQueueCapacity string `json:"send_queue_capacity,omitempty"`
+	SendQueueCapacity int64 `json:"send_queue_capacity,omitempty,string"`
 
 	// send queue size
-	SendQueueSize string `json:"send_queue_size,omitempty"`
+	SendQueueSize int64 `json:"send_queue_size,omitempty,string"`
 }
 
 // Validate validates this connection status channel

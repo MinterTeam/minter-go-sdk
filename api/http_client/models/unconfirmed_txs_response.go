@@ -16,13 +16,13 @@ import (
 type UnconfirmedTxsResponse struct {
 
 	// total bytes
-	TotalBytes string `json:"total_bytes,omitempty"`
+	TotalBytes uint64 `json:"total_bytes,omitempty,string"`
 
 	// total transactions
-	TotalTransactions string `json:"total_transactions,omitempty"`
+	TotalTransactions uint64 `json:"total_transactions,omitempty,string"`
 
 	// transaction count
-	TransactionCount string `json:"transaction_count,omitempty"`
+	TransactionCount uint64 `json:"transaction_count,omitempty,string"`
 
 	// transactions
 	Transactions []string `json:"transactions"`

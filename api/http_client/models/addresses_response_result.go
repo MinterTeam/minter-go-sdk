@@ -31,7 +31,7 @@ type AddressesResponseResult struct {
 	Total []*AddressBalance `json:"total"`
 
 	// transaction count
-	TransactionCount string `json:"transaction_count,omitempty"`
+	TransactionCount uint64 `json:"transaction_count,omitempty,string"`
 }
 
 // Validate validates this addresses response result

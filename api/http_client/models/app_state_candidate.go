@@ -19,13 +19,13 @@ import (
 type AppStateCandidate struct {
 
 	// commission
-	Commission string `json:"commission,omitempty"`
+	Commission uint64 `json:"commission,omitempty,string"`
 
 	// control address
 	ControlAddress string `json:"control_address,omitempty"`
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID uint64 `json:"id,omitempty,string"`
 
 	// owner address
 	OwnerAddress string `json:"owner_address,omitempty"`
@@ -40,7 +40,7 @@ type AppStateCandidate struct {
 	Stakes []*AppStateCandidateStake `json:"stakes"`
 
 	// status
-	Status string `json:"status,omitempty"`
+	Status int64 `json:"status,omitempty,string"`
 
 	// total bip stake
 	TotalBipStake string `json:"total_bip_stake,omitempty"`

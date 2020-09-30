@@ -26,7 +26,7 @@ type FrozenResponseFrozen struct {
 	Coin *Coin `json:"coin,omitempty"`
 
 	// height
-	Height string `json:"height,omitempty"`
+	Height uint64 `json:"height,omitempty,string"`
 
 	// value
 	Value string `json:"value,omitempty"`

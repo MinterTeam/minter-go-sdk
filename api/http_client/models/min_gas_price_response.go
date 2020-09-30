@@ -16,7 +16,7 @@ import (
 type MinGasPriceResponse struct {
 
 	// min gas price
-	MinGasPrice string `json:"min_gas_price,omitempty"`
+	MinGasPrice uint64 `json:"min_gas_price,omitempty,string"`
 }
 
 // Validate validates this min gas price response

@@ -23,7 +23,7 @@ type NetInfoResponsePeer struct {
 	IsOutbound bool `json:"is_outbound,omitempty"`
 
 	// latest block height
-	LatestBlockHeight string `json:"latest_block_height,omitempty"`
+	LatestBlockHeight uint64 `json:"latest_block_height,omitempty,string"`
 
 	// node info
 	NodeInfo *NodeInfo `json:"node_info,omitempty"`

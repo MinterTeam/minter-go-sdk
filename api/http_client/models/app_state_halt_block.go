@@ -19,7 +19,7 @@ type AppStateHaltBlock struct {
 	CandidateKey string `json:"candidate_key,omitempty"`
 
 	// height
-	Height string `json:"height,omitempty"`
+	Height uint64 `json:"height,omitempty,string"`
 }
 
 // Validate validates this app state halt block

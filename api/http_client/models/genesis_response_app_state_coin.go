@@ -16,10 +16,10 @@ import (
 type GenesisResponseAppStateCoin struct {
 
 	// crr
-	Crr string `json:"crr,omitempty"`
+	Crr uint64 `json:"crr,omitempty,string"`
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID uint64 `json:"id,omitempty,string"`
 
 	// max supply
 	MaxSupply string `json:"max_supply,omitempty"`
@@ -37,7 +37,7 @@ type GenesisResponseAppStateCoin struct {
 	Symbol string `json:"symbol,omitempty"`
 
 	// version
-	Version string `json:"version,omitempty"`
+	Version uint64 `json:"version,omitempty,string"`
 
 	// volume
 	Volume string `json:"volume,omitempty"`

@@ -28,7 +28,7 @@ type PeerConnectionStatus struct {
 	Channels []*ConnectionStatusChannel `json:"channels"`
 
 	// duration
-	Duration string `json:"duration,omitempty"`
+	Duration uint64 `json:"duration,omitempty,string"`
 }
 
 // Validate validates this peer connection status

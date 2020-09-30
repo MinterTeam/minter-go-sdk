@@ -19,7 +19,7 @@ type AppStateCandidateStake struct {
 	BipValue string `json:"bip_value,omitempty"`
 
 	// coin
-	Coin string `json:"coin,omitempty"`
+	Coin uint64 `json:"coin,omitempty,string"`
 
 	// owner
 	Owner string `json:"owner,omitempty"`

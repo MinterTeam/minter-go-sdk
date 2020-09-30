@@ -34,13 +34,13 @@ type GenesisResponseAppState struct {
 	HaltBlocks []*AppStateHaltBlock `json:"halt_blocks"`
 
 	// max gas
-	MaxGas string `json:"max_gas,omitempty"`
+	MaxGas uint64 `json:"max_gas,omitempty,string"`
 
 	// note
 	Note string `json:"note,omitempty"`
 
 	// start height
-	StartHeight string `json:"start_height,omitempty"`
+	StartHeight uint64 `json:"start_height,omitempty,string"`
 
 	// total slashed
 	TotalSlashed string `json:"total_slashed,omitempty"`

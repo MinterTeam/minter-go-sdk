@@ -28,7 +28,7 @@ type BlockResponse struct {
 	Hash string `json:"hash,omitempty"`
 
 	// height
-	Height string `json:"height,omitempty"`
+	Height uint64 `json:"height,omitempty,string"`
 
 	// missed
 	Missed []string `json:"missed"`
@@ -37,13 +37,13 @@ type BlockResponse struct {
 	Proposer string `json:"proposer,omitempty"`
 
 	// size
-	Size string `json:"size,omitempty"`
+	Size uint64 `json:"size,omitempty,string"`
 
 	// time
 	Time string `json:"time,omitempty"`
 
 	// transaction count
-	TransactionCount string `json:"transaction_count,omitempty"`
+	TransactionCount uint64 `json:"transaction_count,omitempty,string"`
 
 	// transactions
 	Transactions []*BlockResponseTransaction `json:"transactions"`

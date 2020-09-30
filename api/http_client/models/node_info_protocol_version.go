@@ -16,13 +16,13 @@ import (
 type NodeInfoProtocolVersion struct {
 
 	// app
-	App string `json:"app,omitempty"`
+	App uint64 `json:"app,omitempty,string"`
 
 	// block
-	Block string `json:"block,omitempty"`
+	Block uint64 `json:"block,omitempty,string"`
 
 	// p2p
-	P2p string `json:"p2p,omitempty"`
+	P2p uint64 `json:"p2p,omitempty,string"`
 }
 
 // Validate validates this node info protocol version

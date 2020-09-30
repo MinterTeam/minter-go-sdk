@@ -22,10 +22,10 @@ type AppStateFrozenFund struct {
 	CandidateKey string `json:"candidate_key,omitempty"`
 
 	// coin
-	Coin string `json:"coin,omitempty"`
+	Coin uint64 `json:"coin,omitempty,string"`
 
 	// height
-	Height string `json:"height,omitempty"`
+	Height uint64 `json:"height,omitempty,string"`
 
 	// value
 	Value string `json:"value,omitempty"`

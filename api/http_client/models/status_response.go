@@ -19,7 +19,7 @@ type StatusResponse struct {
 	CatchingUp bool `json:"catching_up,omitempty"`
 
 	// keep last states
-	KeepLastStates string `json:"keep_last_states,omitempty"`
+	KeepLastStates uint64 `json:"keep_last_states,omitempty,string"`
 
 	// latest app hash
 	LatestAppHash string `json:"latest_app_hash,omitempty"`
@@ -28,7 +28,7 @@ type StatusResponse struct {
 	LatestBlockHash string `json:"latest_block_hash,omitempty"`
 
 	// latest block height
-	LatestBlockHeight string `json:"latest_block_height,omitempty"`
+	LatestBlockHeight uint64 `json:"latest_block_height,omitempty,string"`
 
 	// latest block time
 	LatestBlockTime string `json:"latest_block_time,omitempty"`

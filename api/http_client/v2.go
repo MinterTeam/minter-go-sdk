@@ -9,7 +9,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strconv"
 )
 
 // Client HTTP
@@ -65,11 +64,7 @@ func (c *Client) CoinID(symbol string) (uint64, error) {
 		return 0, err
 	}
 
-	id, err := strconv.Atoi(info.GetPayload().ID)
-	if err != nil {
-		return 0, err
-	}
-	return uint64(id), nil
+	return info.GetPayload().ID, nil
 }
 
 // SubscriberClient is subscriber

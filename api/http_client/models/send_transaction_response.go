@@ -16,7 +16,7 @@ import (
 type SendTransactionResponse struct {
 
 	// code
-	Code string `json:"code,omitempty"`
+	Code uint64 `json:"code,omitempty,string"`
 
 	// hash
 	Hash string `json:"hash,omitempty"`

@@ -16,7 +16,7 @@ import (
 type AccountBalance struct {
 
 	// coin
-	Coin string `json:"coin,omitempty"`
+	Coin uint64 `json:"coin,omitempty,string"`
 
 	// value
 	Value string `json:"value,omitempty"`

@@ -19,7 +19,7 @@ import (
 type CandidateResponse struct {
 
 	// commission
-	Commission string `json:"commission,omitempty"`
+	Commission uint64 `json:"commission,omitempty,string"`
 
 	// control address
 	ControlAddress string `json:"control_address,omitempty"`
@@ -40,16 +40,16 @@ type CandidateResponse struct {
 	Stakes []*CandidateResponseStake `json:"stakes"`
 
 	// status
-	Status string `json:"status,omitempty"`
+	Status uint64 `json:"status,omitempty,string"`
 
 	// total stake
 	TotalStake string `json:"total_stake,omitempty"`
 
 	// uniq users
-	UniqUsers string `json:"uniq_users,omitempty"`
+	UniqUsers uint64 `json:"uniq_users,omitempty,string"`
 
 	// used slots
-	UsedSlots string `json:"used_slots,omitempty"`
+	UsedSlots uint64 `json:"used_slots,omitempty,string"`
 }
 
 // Validate validates this candidate response

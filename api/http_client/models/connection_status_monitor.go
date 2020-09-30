@@ -19,40 +19,40 @@ type ConnectionStatusMonitor struct {
 	Active bool `json:"active,omitempty"`
 
 	// avg rate
-	AvgRate string `json:"avg_rate,omitempty"`
+	AvgRate int64 `json:"avg_rate,omitempty,string"`
 
 	// bytes
-	Bytes string `json:"bytes,omitempty"`
+	Bytes int64 `json:"bytes,omitempty,string"`
 
 	// bytes rem
-	BytesRem string `json:"bytes_rem,omitempty"`
+	BytesRem int64 `json:"bytes_rem,omitempty,string"`
 
 	// cur rate
-	CurRate string `json:"cur_rate,omitempty"`
+	CurRate int64 `json:"cur_rate,omitempty,string"`
 
 	// duration
-	Duration string `json:"duration,omitempty"`
+	Duration int64 `json:"duration,omitempty,string"`
 
 	// idle
-	Idle string `json:"idle,omitempty"`
+	Idle int64 `json:"idle,omitempty,string"`
 
 	// inst rate
-	InstRate string `json:"inst_rate,omitempty"`
+	InstRate int64 `json:"inst_rate,omitempty,string"`
 
 	// peak rate
-	PeakRate string `json:"peak_rate,omitempty"`
+	PeakRate int64 `json:"peak_rate,omitempty,string"`
 
 	// progress
-	Progress string `json:"progress,omitempty"`
+	Progress uint64 `json:"progress,omitempty,string"`
 
 	// samples
-	Samples string `json:"samples,omitempty"`
+	Samples int64 `json:"samples,omitempty,string"`
 
 	// start
 	Start string `json:"start,omitempty"`
 
 	// time rem
-	TimeRem string `json:"time_rem,omitempty"`
+	TimeRem int64 `json:"time_rem,omitempty,string"`
 }
 
 // Validate validates this connection status monitor

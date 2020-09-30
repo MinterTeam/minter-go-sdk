@@ -16,7 +16,7 @@ import (
 type Coin struct {
 
 	// id
-	ID string `json:"id,omitempty"`
+	ID uint64 `json:"id,omitempty,string"`
 
 	// symbol
 	Symbol string `json:"symbol,omitempty"`

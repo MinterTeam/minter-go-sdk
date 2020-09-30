@@ -16,10 +16,10 @@ import (
 type GenesisResponseConsensusParamsEvidence struct {
 
 	// max age duration
-	MaxAgeDuration string `json:"max_age_duration,omitempty"`
+	MaxAgeDuration int64 `json:"max_age_duration,omitempty,string"`
 
 	// max age num blocks
-	MaxAgeNumBlocks string `json:"max_age_num_blocks,omitempty"`
+	MaxAgeNumBlocks int64 `json:"max_age_num_blocks,omitempty,string"`
 }
 
 // Validate validates this genesis response consensus params evidence

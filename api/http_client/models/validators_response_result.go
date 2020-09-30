@@ -19,7 +19,7 @@ type ValidatorsResponseResult struct {
 	PublicKey string `json:"public_key,omitempty"`
 
 	// voting power
-	VotingPower string `json:"voting_power,omitempty"`
+	VotingPower uint64 `json:"voting_power,omitempty,string"`
 }
 
 // Validate validates this validators response result

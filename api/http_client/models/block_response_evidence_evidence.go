@@ -22,7 +22,7 @@ type BlockResponseEvidenceEvidence struct {
 	Hash string `json:"hash,omitempty"`
 
 	// height
-	Height string `json:"height,omitempty"`
+	Height uint64 `json:"height,omitempty,string"`
 
 	// time
 	Time string `json:"time,omitempty"`

@@ -19,10 +19,10 @@ type AccountMultisigData struct {
 	Addresses []string `json:"addresses"`
 
 	// threshold
-	Threshold string `json:"threshold,omitempty"`
+	Threshold uint64 `json:"threshold,omitempty,string"`
 
 	// weights
-	Weights []string `json:"weights"`
+	Weights []uint64 `json:"weights"`
 }
 
 // Validate validates this account multisig data

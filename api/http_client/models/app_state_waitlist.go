@@ -16,10 +16,10 @@ import (
 type AppStateWaitlist struct {
 
 	// candidate id
-	CandidateID string `json:"candidate_id,omitempty"`
+	CandidateID uint64 `json:"candidate_id,omitempty,string"`
 
 	// coin
-	Coin string `json:"coin,omitempty"`
+	Coin uint64 `json:"coin,omitempty,string"`
 
 	// owner
 	Owner string `json:"owner,omitempty"`

@@ -19,7 +19,7 @@ type MissedBlocksResponse struct {
 	MissedBlocks string `json:"missed_blocks,omitempty"`
 
 	// missed blocks count
-	MissedBlocksCount string `json:"missed_blocks_count,omitempty"`
+	MissedBlocksCount int64 `json:"missed_blocks_count,omitempty,string"`
 }
 
 // Validate validates this missed blocks response
