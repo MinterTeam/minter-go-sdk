@@ -211,8 +211,8 @@ func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToBuy
 }
 
 // EstimateCoinSymbolSellAll return estimate of sell all coin transaction.
-func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
-	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy})
+func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPrice uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
+	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy, GasPrice: gasPrice})
 }
 
 // EstimateCoinIDBuy return estimate of buy coin transaction.
