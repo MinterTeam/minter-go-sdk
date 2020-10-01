@@ -24,7 +24,7 @@ type CandidateResponse struct {
 	// control address
 	ControlAddress string `json:"control_address,omitempty"`
 
-	// min stake
+	// To be completed when requesting candidate steaks
 	MinStake string `json:"min_stake,omitempty"`
 
 	// owner address
@@ -36,7 +36,7 @@ type CandidateResponse struct {
 	// reward address
 	RewardAddress string `json:"reward_address,omitempty"`
 
-	// stakes
+	// To be completed when requesting candidate steaks
 	Stakes []*CandidateResponseStake `json:"stakes"`
 
 	// status
@@ -45,7 +45,7 @@ type CandidateResponse struct {
 	// total stake
 	TotalStake string `json:"total_stake,omitempty"`
 
-	// uniq users
+	// To be completed when requesting candidate steaks
 	UniqUsers uint64 `json:"uniq_users,omitempty,string"`
 
 	// used slots

@@ -22,7 +22,7 @@ type NetInfoResponsePeer struct {
 	// is outbound
 	IsOutbound bool `json:"is_outbound,omitempty"`
 
-	// latest block height
+	// Unknown while client is in fast_syncing mode
 	LatestBlockHeight uint64 `json:"latest_block_height,omitempty,string"`
 
 	// node info

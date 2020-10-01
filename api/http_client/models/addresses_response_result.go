@@ -24,7 +24,7 @@ type AddressesResponseResult struct {
 	// bip value
 	BipValue string `json:"bip_value,omitempty"`
 
-	// delegated
+	// Filled in when requesting delegator steaks
 	Delegated []*AddressDelegatedBalance `json:"delegated"`
 
 	// Sum of balance and delegated by coins.
