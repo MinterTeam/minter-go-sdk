@@ -64,9 +64,9 @@ type WaitListParams struct {
 	/*Address*/
 	Address string
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*PublicKey*/
-	PublicKey string
+	PublicKey *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,24 +118,24 @@ func (o *WaitListParams) SetAddress(address string) {
 }
 
 // WithHeight adds the height to the wait list params
-func (o *WaitListParams) WithHeight(height uint64) *WaitListParams {
+func (o *WaitListParams) WithHeight(height *uint64) *WaitListParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the wait list params
-func (o *WaitListParams) SetHeight(height uint64) {
+func (o *WaitListParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
 // WithPublicKey adds the publicKey to the wait list params
-func (o *WaitListParams) WithPublicKey(publicKey string) *WaitListParams {
+func (o *WaitListParams) WithPublicKey(publicKey *string) *WaitListParams {
 	o.SetPublicKey(publicKey)
 	return o
 }
 
 // SetPublicKey adds the publicKey to the wait list params
-func (o *WaitListParams) SetPublicKey(publicKey string) {
+func (o *WaitListParams) SetPublicKey(publicKey *string) {
 	o.PublicKey = publicKey
 }
 
@@ -152,22 +152,36 @@ func (o *WaitListParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 		return err
 	}
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
-	// query param public_key
-	qrPublicKey := o.PublicKey
-	qPublicKey := qrPublicKey
-	if qPublicKey != "" {
-		if err := r.SetQueryParam("public_key", qPublicKey); err != nil {
-			return err
+	if o.PublicKey != nil {
+
+		// query param public_key
+		var qrPublicKey string
+		if o.PublicKey != nil {
+			qrPublicKey = *o.PublicKey
 		}
+		qPublicKey := qrPublicKey
+		if qPublicKey != "" {
+			if err := r.SetQueryParam("public_key", qPublicKey); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

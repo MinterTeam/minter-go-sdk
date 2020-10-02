@@ -25,8 +25,8 @@ func NewTransactionsParams() *TransactionsParams {
 		perPageDefault = int32(30)
 	)
 	return &TransactionsParams{
-		Page:    pageDefault,
-		PerPage: perPageDefault,
+		Page:    &pageDefault,
+		PerPage: &perPageDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -40,8 +40,8 @@ func NewTransactionsParamsWithTimeout(timeout time.Duration) *TransactionsParams
 		perPageDefault = int32(30)
 	)
 	return &TransactionsParams{
-		Page:    pageDefault,
-		PerPage: perPageDefault,
+		Page:    &pageDefault,
+		PerPage: &perPageDefault,
 
 		timeout: timeout,
 	}
@@ -55,8 +55,8 @@ func NewTransactionsParamsWithContext(ctx context.Context) *TransactionsParams {
 		perPageDefault = int32(30)
 	)
 	return &TransactionsParams{
-		Page:    pageDefault,
-		PerPage: perPageDefault,
+		Page:    &pageDefault,
+		PerPage: &perPageDefault,
 
 		Context: ctx,
 	}
@@ -70,8 +70,8 @@ func NewTransactionsParamsWithHTTPClient(client *http.Client) *TransactionsParam
 		perPageDefault = int32(30)
 	)
 	return &TransactionsParams{
-		Page:       pageDefault,
-		PerPage:    perPageDefault,
+		Page:       &pageDefault,
+		PerPage:    &perPageDefault,
 		HTTPClient: client,
 	}
 }
@@ -82,9 +82,9 @@ for the transactions operation typically these are written to a http.Request
 type TransactionsParams struct {
 
 	/*Page*/
-	Page int32
+	Page *int32
 	/*PerPage*/
-	PerPage int32
+	PerPage *int32
 	/*Query*/
 	Query string
 
@@ -127,24 +127,24 @@ func (o *TransactionsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithPage adds the page to the transactions params
-func (o *TransactionsParams) WithPage(page int32) *TransactionsParams {
+func (o *TransactionsParams) WithPage(page *int32) *TransactionsParams {
 	o.SetPage(page)
 	return o
 }
 
 // SetPage adds the page to the transactions params
-func (o *TransactionsParams) SetPage(page int32) {
+func (o *TransactionsParams) SetPage(page *int32) {
 	o.Page = page
 }
 
 // WithPerPage adds the perPage to the transactions params
-func (o *TransactionsParams) WithPerPage(perPage int32) *TransactionsParams {
+func (o *TransactionsParams) WithPerPage(perPage *int32) *TransactionsParams {
 	o.SetPerPage(perPage)
 	return o
 }
 
 // SetPerPage adds the perPage to the transactions params
-func (o *TransactionsParams) SetPerPage(perPage int32) {
+func (o *TransactionsParams) SetPerPage(perPage *int32) {
 	o.PerPage = perPage
 }
 
@@ -167,22 +167,36 @@ func (o *TransactionsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	}
 	var res []error
 
-	// query param page
-	qrPage := o.Page
-	qPage := swag.FormatInt32(qrPage)
-	if qPage != "" {
-		if err := r.SetQueryParam("page", qPage); err != nil {
-			return err
+	if o.Page != nil {
+
+		// query param page
+		var qrPage int32
+		if o.Page != nil {
+			qrPage = *o.Page
 		}
+		qPage := swag.FormatInt32(qrPage)
+		if qPage != "" {
+			if err := r.SetQueryParam("page", qPage); err != nil {
+				return err
+			}
+		}
+
 	}
 
-	// query param per_page
-	qrPerPage := o.PerPage
-	qPerPage := swag.FormatInt32(qrPerPage)
-	if qPerPage != "" {
-		if err := r.SetQueryParam("per_page", qPerPage); err != nil {
-			return err
+	if o.PerPage != nil {
+
+		// query param per_page
+		var qrPerPage int32
+		if o.PerPage != nil {
+			qrPerPage = *o.PerPage
 		}
+		qPerPage := swag.FormatInt32(qrPerPage)
+		if qPerPage != "" {
+			if err := r.SetQueryParam("per_page", qPerPage); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// query param query

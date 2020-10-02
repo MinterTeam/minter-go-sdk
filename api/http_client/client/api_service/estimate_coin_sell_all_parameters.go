@@ -24,7 +24,7 @@ func NewEstimateCoinSellAllParams() *EstimateCoinSellAllParams {
 		gasPriceDefault = uint64(1)
 	)
 	return &EstimateCoinSellAllParams{
-		GasPrice: gasPriceDefault,
+		GasPrice: &gasPriceDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -37,7 +37,7 @@ func NewEstimateCoinSellAllParamsWithTimeout(timeout time.Duration) *EstimateCoi
 		gasPriceDefault = uint64(1)
 	)
 	return &EstimateCoinSellAllParams{
-		GasPrice: gasPriceDefault,
+		GasPrice: &gasPriceDefault,
 
 		timeout: timeout,
 	}
@@ -50,7 +50,7 @@ func NewEstimateCoinSellAllParamsWithContext(ctx context.Context) *EstimateCoinS
 		gasPriceDefault = uint64(1)
 	)
 	return &EstimateCoinSellAllParams{
-		GasPrice: gasPriceDefault,
+		GasPrice: &gasPriceDefault,
 
 		Context: ctx,
 	}
@@ -63,7 +63,7 @@ func NewEstimateCoinSellAllParamsWithHTTPClient(client *http.Client) *EstimateCo
 		gasPriceDefault = uint64(1)
 	)
 	return &EstimateCoinSellAllParams{
-		GasPrice:   gasPriceDefault,
+		GasPrice:   &gasPriceDefault,
 		HTTPClient: client,
 	}
 }
@@ -82,9 +82,9 @@ type EstimateCoinSellAllParams struct {
 	/*CoinToSell*/
 	CoinToSell *string
 	/*GasPrice*/
-	GasPrice uint64
+	GasPrice *uint64
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*ValueToSell*/
 	ValueToSell string
 
@@ -171,24 +171,24 @@ func (o *EstimateCoinSellAllParams) SetCoinToSell(coinToSell *string) {
 }
 
 // WithGasPrice adds the gasPrice to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithGasPrice(gasPrice uint64) *EstimateCoinSellAllParams {
+func (o *EstimateCoinSellAllParams) WithGasPrice(gasPrice *uint64) *EstimateCoinSellAllParams {
 	o.SetGasPrice(gasPrice)
 	return o
 }
 
 // SetGasPrice adds the gasPrice to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetGasPrice(gasPrice uint64) {
+func (o *EstimateCoinSellAllParams) SetGasPrice(gasPrice *uint64) {
 	o.GasPrice = gasPrice
 }
 
 // WithHeight adds the height to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) WithHeight(height uint64) *EstimateCoinSellAllParams {
+func (o *EstimateCoinSellAllParams) WithHeight(height *uint64) *EstimateCoinSellAllParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate coin sell all params
-func (o *EstimateCoinSellAllParams) SetHeight(height uint64) {
+func (o *EstimateCoinSellAllParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -275,22 +275,36 @@ func (o *EstimateCoinSellAllParams) WriteToRequest(r runtime.ClientRequest, reg 
 
 	}
 
-	// query param gas_price
-	qrGasPrice := o.GasPrice
-	qGasPrice := swag.FormatUint64(qrGasPrice)
-	if qGasPrice != "" {
-		if err := r.SetQueryParam("gas_price", qGasPrice); err != nil {
-			return err
+	if o.GasPrice != nil {
+
+		// query param gas_price
+		var qrGasPrice uint64
+		if o.GasPrice != nil {
+			qrGasPrice = *o.GasPrice
 		}
+		qGasPrice := swag.FormatUint64(qrGasPrice)
+		if qGasPrice != "" {
+			if err := r.SetQueryParam("gas_price", qGasPrice); err != nil {
+				return err
+			}
+		}
+
 	}
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// query param value_to_sell

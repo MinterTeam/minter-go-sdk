@@ -62,7 +62,7 @@ for the coin info operation typically these are written to a http.Request
 type CoinInfoParams struct {
 
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*Symbol*/
 	Symbol string
 
@@ -105,13 +105,13 @@ func (o *CoinInfoParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the coin info params
-func (o *CoinInfoParams) WithHeight(height uint64) *CoinInfoParams {
+func (o *CoinInfoParams) WithHeight(height *uint64) *CoinInfoParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the coin info params
-func (o *CoinInfoParams) SetHeight(height uint64) {
+func (o *CoinInfoParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -134,13 +134,20 @@ func (o *CoinInfoParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	}
 	var res []error
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// path param symbol

@@ -66,7 +66,7 @@ type AddressesParams struct {
 	/*Delegated*/
 	Delegated *bool
 	/*Height*/
-	Height uint64
+	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -129,13 +129,13 @@ func (o *AddressesParams) SetDelegated(delegated *bool) {
 }
 
 // WithHeight adds the height to the addresses params
-func (o *AddressesParams) WithHeight(height uint64) *AddressesParams {
+func (o *AddressesParams) WithHeight(height *uint64) *AddressesParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the addresses params
-func (o *AddressesParams) SetHeight(height uint64) {
+func (o *AddressesParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -171,13 +171,20 @@ func (o *AddressesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 
 	}
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

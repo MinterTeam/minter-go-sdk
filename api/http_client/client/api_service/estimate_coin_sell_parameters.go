@@ -70,7 +70,7 @@ type EstimateCoinSellParams struct {
 	/*CoinToSell*/
 	CoinToSell *string
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*ValueToSell*/
 	ValueToSell string
 
@@ -157,13 +157,13 @@ func (o *EstimateCoinSellParams) SetCoinToSell(coinToSell *string) {
 }
 
 // WithHeight adds the height to the estimate coin sell params
-func (o *EstimateCoinSellParams) WithHeight(height uint64) *EstimateCoinSellParams {
+func (o *EstimateCoinSellParams) WithHeight(height *uint64) *EstimateCoinSellParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate coin sell params
-func (o *EstimateCoinSellParams) SetHeight(height uint64) {
+func (o *EstimateCoinSellParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -250,13 +250,20 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 
 	}
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// query param value_to_sell

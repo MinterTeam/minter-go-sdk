@@ -62,7 +62,7 @@ for the validators operation typically these are written to a http.Request
 type ValidatorsParams struct {
 
 	/*Height*/
-	Height uint64
+	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -103,13 +103,13 @@ func (o *ValidatorsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the validators params
-func (o *ValidatorsParams) WithHeight(height uint64) *ValidatorsParams {
+func (o *ValidatorsParams) WithHeight(height *uint64) *ValidatorsParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the validators params
-func (o *ValidatorsParams) SetHeight(height uint64) {
+func (o *ValidatorsParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -121,13 +121,20 @@ func (o *ValidatorsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	}
 	var res []error
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

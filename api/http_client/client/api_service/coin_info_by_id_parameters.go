@@ -62,7 +62,7 @@ for the coin info by Id operation typically these are written to a http.Request
 type CoinInfoByIDParams struct {
 
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*ID*/
 	ID string
 
@@ -105,13 +105,13 @@ func (o *CoinInfoByIDParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the coin info by Id params
-func (o *CoinInfoByIDParams) WithHeight(height uint64) *CoinInfoByIDParams {
+func (o *CoinInfoByIDParams) WithHeight(height *uint64) *CoinInfoByIDParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the coin info by Id params
-func (o *CoinInfoByIDParams) SetHeight(height uint64) {
+func (o *CoinInfoByIDParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -134,13 +134,20 @@ func (o *CoinInfoByIDParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	}
 	var res []error
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// path param id

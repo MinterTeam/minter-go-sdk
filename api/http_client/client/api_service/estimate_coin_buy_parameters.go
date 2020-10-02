@@ -70,9 +70,9 @@ type EstimateCoinBuyParams struct {
 	/*CoinToSell*/
 	CoinToSell *string
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*ValueToBuy*/
-	ValueToBuy string
+	ValueToBuy *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -157,24 +157,24 @@ func (o *EstimateCoinBuyParams) SetCoinToSell(coinToSell *string) {
 }
 
 // WithHeight adds the height to the estimate coin buy params
-func (o *EstimateCoinBuyParams) WithHeight(height uint64) *EstimateCoinBuyParams {
+func (o *EstimateCoinBuyParams) WithHeight(height *uint64) *EstimateCoinBuyParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate coin buy params
-func (o *EstimateCoinBuyParams) SetHeight(height uint64) {
+func (o *EstimateCoinBuyParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
 // WithValueToBuy adds the valueToBuy to the estimate coin buy params
-func (o *EstimateCoinBuyParams) WithValueToBuy(valueToBuy string) *EstimateCoinBuyParams {
+func (o *EstimateCoinBuyParams) WithValueToBuy(valueToBuy *string) *EstimateCoinBuyParams {
 	o.SetValueToBuy(valueToBuy)
 	return o
 }
 
 // SetValueToBuy adds the valueToBuy to the estimate coin buy params
-func (o *EstimateCoinBuyParams) SetValueToBuy(valueToBuy string) {
+func (o *EstimateCoinBuyParams) SetValueToBuy(valueToBuy *string) {
 	o.ValueToBuy = valueToBuy
 }
 
@@ -250,22 +250,36 @@ func (o *EstimateCoinBuyParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 	}
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
-	// query param value_to_buy
-	qrValueToBuy := o.ValueToBuy
-	qValueToBuy := qrValueToBuy
-	if qValueToBuy != "" {
-		if err := r.SetQueryParam("value_to_buy", qValueToBuy); err != nil {
-			return err
+	if o.ValueToBuy != nil {
+
+		// query param value_to_buy
+		var qrValueToBuy string
+		if o.ValueToBuy != nil {
+			qrValueToBuy = *o.ValueToBuy
 		}
+		qValueToBuy := qrValueToBuy
+		if qValueToBuy != "" {
+			if err := r.SetQueryParam("value_to_buy", qValueToBuy); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

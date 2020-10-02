@@ -21,10 +21,12 @@ import (
 // with the default values initialized.
 func NewCandidatesParams() *CandidatesParams {
 	var (
-		statusDefault = string("all")
+		includeStakesDefault = bool(false)
+		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
-		Status: statusDefault,
+		IncludeStakes: &includeStakesDefault,
+		Status:        &statusDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -34,10 +36,12 @@ func NewCandidatesParams() *CandidatesParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 	var (
-		statusDefault = string("all")
+		includeStakesDefault = bool(false)
+		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
-		Status: statusDefault,
+		IncludeStakes: &includeStakesDefault,
+		Status:        &statusDefault,
 
 		timeout: timeout,
 	}
@@ -47,10 +51,12 @@ func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 // with the default values initialized, and the ability to set a context for a request
 func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 	var (
-		statusDefault = string("all")
+		includeStakesDefault = bool(false)
+		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
-		Status: statusDefault,
+		IncludeStakes: &includeStakesDefault,
+		Status:        &statusDefault,
 
 		Context: ctx,
 	}
@@ -60,11 +66,13 @@ func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewCandidatesParamsWithHTTPClient(client *http.Client) *CandidatesParams {
 	var (
-		statusDefault = string("all")
+		includeStakesDefault = bool(false)
+		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
-		Status:     statusDefault,
-		HTTPClient: client,
+		IncludeStakes: &includeStakesDefault,
+		Status:        &statusDefault,
+		HTTPClient:    client,
 	}
 }
 
@@ -74,11 +82,11 @@ for the candidates operation typically these are written to a http.Request
 type CandidatesParams struct {
 
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*IncludeStakes*/
-	IncludeStakes bool
+	IncludeStakes *bool
 	/*Status*/
-	Status string
+	Status *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,35 +127,35 @@ func (o *CandidatesParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the candidates params
-func (o *CandidatesParams) WithHeight(height uint64) *CandidatesParams {
+func (o *CandidatesParams) WithHeight(height *uint64) *CandidatesParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the candidates params
-func (o *CandidatesParams) SetHeight(height uint64) {
+func (o *CandidatesParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
 // WithIncludeStakes adds the includeStakes to the candidates params
-func (o *CandidatesParams) WithIncludeStakes(includeStakes bool) *CandidatesParams {
+func (o *CandidatesParams) WithIncludeStakes(includeStakes *bool) *CandidatesParams {
 	o.SetIncludeStakes(includeStakes)
 	return o
 }
 
 // SetIncludeStakes adds the includeStakes to the candidates params
-func (o *CandidatesParams) SetIncludeStakes(includeStakes bool) {
+func (o *CandidatesParams) SetIncludeStakes(includeStakes *bool) {
 	o.IncludeStakes = includeStakes
 }
 
 // WithStatus adds the status to the candidates params
-func (o *CandidatesParams) WithStatus(status string) *CandidatesParams {
+func (o *CandidatesParams) WithStatus(status *string) *CandidatesParams {
 	o.SetStatus(status)
 	return o
 }
 
 // SetStatus adds the status to the candidates params
-func (o *CandidatesParams) SetStatus(status string) {
+func (o *CandidatesParams) SetStatus(status *string) {
 	o.Status = status
 }
 
@@ -159,31 +167,52 @@ func (o *CandidatesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	}
 	var res []error
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
-	// query param include_stakes
-	qrIncludeStakes := o.IncludeStakes
-	qIncludeStakes := swag.FormatBool(qrIncludeStakes)
-	if qIncludeStakes != "" {
-		if err := r.SetQueryParam("include_stakes", qIncludeStakes); err != nil {
-			return err
+	if o.IncludeStakes != nil {
+
+		// query param include_stakes
+		var qrIncludeStakes bool
+		if o.IncludeStakes != nil {
+			qrIncludeStakes = *o.IncludeStakes
 		}
+		qIncludeStakes := swag.FormatBool(qrIncludeStakes)
+		if qIncludeStakes != "" {
+			if err := r.SetQueryParam("include_stakes", qIncludeStakes); err != nil {
+				return err
+			}
+		}
+
 	}
 
-	// query param status
-	qrStatus := o.Status
-	qStatus := qrStatus
-	if qStatus != "" {
-		if err := r.SetQueryParam("status", qStatus); err != nil {
-			return err
+	if o.Status != nil {
+
+		// query param status
+		var qrStatus string
+		if o.Status != nil {
+			qrStatus = *o.Status
 		}
+		qStatus := qrStatus
+		if qStatus != "" {
+			if err := r.SetQueryParam("status", qStatus); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

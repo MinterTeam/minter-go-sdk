@@ -62,7 +62,7 @@ for the candidate operation typically these are written to a http.Request
 type CandidateParams struct {
 
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*PublicKey*/
 	PublicKey string
 
@@ -105,13 +105,13 @@ func (o *CandidateParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the candidate params
-func (o *CandidateParams) WithHeight(height uint64) *CandidateParams {
+func (o *CandidateParams) WithHeight(height *uint64) *CandidateParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the candidate params
-func (o *CandidateParams) SetHeight(height uint64) {
+func (o *CandidateParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -134,13 +134,20 @@ func (o *CandidateParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 	}
 	var res []error
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// path param public_key

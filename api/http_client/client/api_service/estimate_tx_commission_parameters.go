@@ -62,7 +62,7 @@ for the estimate tx commission operation typically these are written to a http.R
 type EstimateTxCommissionParams struct {
 
 	/*Height*/
-	Height uint64
+	Height *uint64
 	/*Tx*/
 	Tx string
 
@@ -105,13 +105,13 @@ func (o *EstimateTxCommissionParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithHeight adds the height to the estimate tx commission params
-func (o *EstimateTxCommissionParams) WithHeight(height uint64) *EstimateTxCommissionParams {
+func (o *EstimateTxCommissionParams) WithHeight(height *uint64) *EstimateTxCommissionParams {
 	o.SetHeight(height)
 	return o
 }
 
 // SetHeight adds the height to the estimate tx commission params
-func (o *EstimateTxCommissionParams) SetHeight(height uint64) {
+func (o *EstimateTxCommissionParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
@@ -134,13 +134,20 @@ func (o *EstimateTxCommissionParams) WriteToRequest(r runtime.ClientRequest, reg
 	}
 	var res []error
 
-	// query param height
-	qrHeight := o.Height
-	qHeight := swag.FormatUint64(qrHeight)
-	if qHeight != "" {
-		if err := r.SetQueryParam("height", qHeight); err != nil {
-			return err
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
 		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	// path param tx
