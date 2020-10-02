@@ -27,11 +27,9 @@ Example:
 		if err == io.EOF {
 			break
 		}
-		if err != nil {
-			if statusError, ok := status.FromError(err); ok {
-				if statusError.Code() == codes.DeadlineExceeded || statusError.Code() == codes.Canceled {
-					break
-				}
+		if code := status.Code(err); code != codes.OK {
+			if code == codes.DeadlineExceeded || code == codes.Canceled {
+				break
 			}
 			log.Fatal(err)
 		}
