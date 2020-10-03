@@ -7,7 +7,7 @@ Example:
 	data := transaction.NewSendData().SetCoin(0).SetValue(big.NewInt(1)).MustSetTo(w.Address)
 	transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
 	tx, _ := transactionsBuilder.NewTransaction(data)
-	sign, _ := tx.SetNonce(4).SetGasPrice(1).Sign(w.PrivateKey)
+	sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(w.PrivateKey)
 	encode, _ := sign.Encode()
 	hash, _ := sign.Hash()
 	subscribeClient, _ := client.Subscribe(context.Background(), fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
