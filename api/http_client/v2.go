@@ -75,8 +75,8 @@ type SubscriberClient struct {
 	closed bool
 }
 
-// Close closes connection.
-func (s *SubscriberClient) Close() error {
+// CloseSend closes the send direction of the stream.
+func (s *SubscriberClient) CloseSend() error {
 	if s.closed {
 		return nil
 	}
@@ -93,13 +93,13 @@ func (s *SubscriberClient) Recv() (*api_service.SubscribeOKBody, error) {
 
 	select {
 	case <-s.ctx.Done():
-		s.Close()
+		s.CloseSend()
 		return nil, io.EOF
 	default:
 		var recv api_service.SubscribeOKBody
 		err := s.conn.ReadJSON(&recv)
 		if websocket.IsCloseError(err, websocket.CloseAbnormalClosure, websocket.CloseNormalClosure, websocket.CloseNoStatusReceived) {
-			s.Close()
+			s.CloseSend()
 			err = io.EOF
 		}
 

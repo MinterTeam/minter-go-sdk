@@ -3,60 +3,34 @@
 Example:
 
 	client, _ := http_client.New("http://localhost:8843/v2")
-	coinSymbol := "SUPERTEST9"
-	dataCreateCoin := transaction.NewCreateCoinData().
-		SetSymbol(coinSymbol) // ...
+	w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
+	data := transaction.NewSendData().SetCoin(0).SetValue(big.NewInt(1)).MustSetTo(w.Address)
 	transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
-	tx, _ := transactionsBuilder.NewTransaction(dataCreateCoin)
-	sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(privateKey)
-	hash, _ := sign.Hash()
+	tx, _ := transactionsBuilder.NewTransaction(data)
+	sign, _ := tx.SetNonce(4).SetGasPrice(1).Sign(w.PrivateKey)
 	encode, _ := sign.Encode()
+	hash, _ := sign.Hash()
+	subscribeClient, _ := client.Subscribe(context.Background(), fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
+	defer subscribeClient.CloseSend()
 
-	res, err := client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
-	if err != nil {
-		log.Fatal(http_client.ErrorBody(err))
-	}
-
-	subscribe, err := client.Subscribe(context.Background(), "tm.event = 'Tx'")
-	if err != nil {
-		panic(err)
+	res, _ := client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
+	if res.Payload.Code != 0 {
+		panic(res.Payload.Log)
 	}
 
 	for {
-		body, err := subscribe.Recv()
+		recv, err := subscribeClient.Recv()
 		if err == io.EOF {
 			break
 		}
-		if err != nil {
-			subscribe.Close()
-			return
+		if code := status.Code(err); code != codes.OK {
+			if code == codes.DeadlineExceeded || code == codes.Canceled {
+				break
+			}
+			panic(err)
 		}
-		data, _ := json.Marshal(body.Result.Data)
-		if strings.Contains(fmt.Sprintf("%s", data), strings.ToUpper(hash[2:])) {
-			break
-		}
-	}
-
-	txRes, err := client.Transaction(api_service.NewTransactionParams().WithHash(res.GetPayload().Hash))
-	if err != nil {
-		log.Fatal(http_client.ErrorBody(err))
-	}
-
-	coin, _ := txRes.GetPayload().Tags["tx.coin_id"]
-	newCoinID, _ := strconv.Atoi(coin)
-	mntID, _ := client.CoinID("MNT")
-
-	dataSell := transaction.NewSellAllCoinData().
-		SetCoinToBuy(uint64(newCoinID)).
-		SetCoinToSell(mntID) // ...
-
-	tx, _ = transactionsBuilder.NewTransaction(dataSell)
-	sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)
-	encode, _ = sign.Encode()
-
-	res, err = client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
-	if err != nil {
-		log.Fatal(http_client.ErrorBody(err))
+		log.Println("OK", recv.Result)
+		break
 	}
 
 */

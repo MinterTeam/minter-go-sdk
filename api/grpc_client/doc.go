@@ -3,24 +3,20 @@
 Example:
 
 	client, _ := grpc_client.New("localhost:8842")
-	coinSymbol := "SUPERTEST9"
-	dataCreateCoin := transaction.NewCreateCoinData().
-		SetSymbol(coinSymbol) // ...
+	w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
+	data := transaction.NewSendData().SetCoin(0).SetValue(big.NewInt(1)).MustSetTo(w.Address)
 	transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
-	tx, _ := transactionsBuilder.NewTransaction(dataCreateCoin)
-	sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(privateKey)
-	hash, _ := sign.Hash()
+	tx, _ := transactionsBuilder.NewTransaction(data)
+	sign, _ := tx.SetNonce(1).SetGasPrice(1).Sign(w.PrivateKey)
 	encode, _ := sign.Encode()
-
-	subscribeClient, _ := client.Subscribe("tm.event = 'Tx'")
+	hash, _ := sign.Hash()
+	subscribeClient, _ := client.Subscribe(fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
 	defer subscribeClient.CloseSend()
 
-	res, err := client.SendTransaction(encode)
-	if err != nil {
-		log.Fatal(client.HTTPError(err))
+	res, _ := client.SendTransaction(encode)
+	if res.Code != 0 {
+		panic(res.Log)
 	}
-
-	marshal, _ := client.Marshal(res)
 
 	for {
 		recv, err := subscribeClient.Recv()
@@ -31,37 +27,11 @@ Example:
 			if code == codes.DeadlineExceeded || code == codes.Canceled {
 				break
 			}
-			log.Fatal(err)
+			panic(err)
 		}
-
 		marshal, _ := client.Marshal(recv)
-
-		if !strings.Contains(marshal, strings.ToUpper(hash[2:])) {
-			continue
-		}
-
+		log.Println("OK", marshal)
 		break
-	}
-
-	txRes, err := client.Transaction(res.Hash)
-	if err != nil {
-		log.Fatal(client.HTTPError(err))
-	}
-
-	coin, _ := txRes.Tags["tx.coin_id"]
-	newCoinID, _ := strconv.Atoi(coin)
-	mntID, _ := client.CoinID("MNT")
-	dataSell := transaction.NewSellAllCoinData().
-		SetCoinToSell(uint64(newCoinID)).
-		SetCoinToSell(mntID) // ...
-
-	tx, _ = transactionsBuilder.NewTransaction(dataSell)
-	sign, _ = tx.SetNonce(2).SetGasPrice(1).Sign(privateKey)
-	encode, _ = sign.Encode()
-
-	res, err = client.SendTransaction(encode)
-	if err != nil {
-		log.Fatal(client.HTTPError(err))
 	}
 
 */
