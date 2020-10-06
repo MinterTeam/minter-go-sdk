@@ -128,7 +128,7 @@ func NewBuilder(chainID ChainID) *Builder {
 	return &Builder{ChainID: chainID}
 }
 
-// NewTransaction returns new transaction from data.
+// NewTransaction returns new transaction with Data.
 func (b *Builder) NewTransaction(data Data) (Interface, error) {
 	dataBytes, err := data.Encode()
 	if err != nil {
