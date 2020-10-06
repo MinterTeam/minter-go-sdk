@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleBuilder_NewTransaction_Sign_SingleSignature() {
+func Example_sign_SingleSignature() {
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
 		transaction.NewSendData().
 			SetCoin(1).
@@ -40,7 +40,7 @@ func ExampleBuilder_NewTransaction_Sign_SingleSignature() {
 
 }
 
-func ExampleBuilder_NewTransaction_Sign_MultiSignature_simultaneous_adding_private_keys() {
+func ExampleSign_multiSignature_simultaneous_adding_private_keys() {
 	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
@@ -65,7 +65,7 @@ func ExampleBuilder_NewTransaction_Sign_MultiSignature_simultaneous_adding_priva
 }
 
 // You can transfer the transaction to the remaining addresses.
-func ExampleBuilder_NewTransaction_Sign_MultiSignature_dynamically_adding_private_keys() {
+func ExampleSign_multiSignature_dynamically_adding_private_keys() {
 	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
@@ -97,7 +97,7 @@ func ExampleBuilder_NewTransaction_Sign_MultiSignature_dynamically_adding_privat
 }
 
 // ou can collect all signatures in one place without revealing the private key
-func ExampleBuilder_NewTransaction_Sign_MultiSignature_AddSignature() {
+func ExampleSign_multiSignature_addSignature() {
 	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
@@ -131,10 +131,14 @@ func ExampleSigned_Signers_multi() {
 		fmt.Println(signer)
 	}
 
+	address, _ := decode.SenderAddress()
+	fmt.Println(address)
+
 	// Output:
 	// Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c
 	// Mx6bf192730d01a19739b5030cdb6a60c992712a59
 	// Mx823bb524d5702addbe13086082f7f0310e07d176
+	// Mx0023aa9371e0779189ef5a7434456fc21a938945
 }
 
 func ExampleSigned_Signers_single() {
