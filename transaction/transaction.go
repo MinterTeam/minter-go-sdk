@@ -188,7 +188,7 @@ type Signed interface {
 	// Signers returns set of signers.
 	Signers() ([]string, error)
 	// Sign signs transaction with a private key.
-	Sign(prKey string, multisigPrKeys ...string) (Signed, error)
+	Sign(prKey string, prKeys ...string) (Signed, error)
 	// Clone returns copy of the transaction.
 	Clone() Interface
 }
@@ -715,7 +715,7 @@ func (o *object) AddSignature(signatures ...string) (Signed, error) {
 }
 
 // Sign signs transaction with a private key.
-func (o *object) Sign(key string, multisigPrKeys ...string) (Signed, error) {
+func (o *object) Sign(key string, prKeys ...string) (Signed, error) {
 	h, err := rlpHash([]interface{}{
 		o.Transaction.Nonce,
 		o.Transaction.ChainID,
@@ -742,7 +742,7 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (Signed, error) {
 		if len(o.SignatureData()) == 0 {
 			sig := &SignatureMulti{
 				Multisig:   Address{},
-				Signatures: make([]*SignatureSingle, 0, len(multisigPrKeys)),
+				Signatures: make([]*SignatureSingle, 0, len(prKeys)),
 			}
 			addressToHex, err := wallet.AddressToHex(key)
 			if err != nil {
@@ -759,11 +759,11 @@ func (o *object) Sign(key string, multisigPrKeys ...string) (Signed, error) {
 			return nil, err
 		}
 
-		if len(multisigPrKeys) == 0 {
+		if len(prKeys) == 0 {
 			return o, nil
 		}
-		signatures := make([]*SignatureSingle, 0, len(multisigPrKeys))
-		for _, prKey := range multisigPrKeys {
+		signatures := make([]*SignatureSingle, 0, len(prKeys))
+		for _, prKey := range prKeys {
 			signature, err := newSignature(prKey, h)
 			if err != nil {
 				return nil, err

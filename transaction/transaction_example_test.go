@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func ExampleBuilder_NewTransaction_SignSingleSignature_simple() {
+func ExampleBuilder_NewTransaction_signSingleSignature_simple() {
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
 		transaction.NewSendData().
 			SetCoin(1).
@@ -40,7 +40,7 @@ func ExampleBuilder_NewTransaction_SignSingleSignature_simple() {
 
 }
 
-func ExampleBuilder_NewTransaction_SignMultiSignature_simultaneous_adding_private_keys() {
+func ExampleBuilder_NewTransaction_signMultiSignature_simultaneous_adding_private_keys() {
 	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
@@ -65,7 +65,7 @@ func ExampleBuilder_NewTransaction_SignMultiSignature_simultaneous_adding_privat
 }
 
 // You can transfer the transaction to the remaining addresses.
-func ExampleBuilder_NewTransaction_SignMultiSignature_dynamically_adding_private_keys() {
+func ExampleBuilder_NewTransaction_signMultiSignature_dynamically_adding_private_keys() {
 	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
@@ -97,7 +97,7 @@ func ExampleBuilder_NewTransaction_SignMultiSignature_dynamically_adding_private
 }
 
 // You can collect all signatures in one place without revealing the private key.
-func ExampleBuilder_NewTransaction_SignMultiSignature_addSignature() {
+func ExampleBuilder_NewTransaction_signMultiSignatureAddSignature() {
 	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
 		SetCoin(coinID).
@@ -124,7 +124,7 @@ func ExampleBuilder_NewTransaction_SignMultiSignature_addSignature() {
 
 }
 
-func ExampleDecode_signers_of_multiSignature() {
+func Example_signersOfMultiSignature() {
 	decode, _ := transaction.Decode("0xf901130102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808002b8e8f8e6940023aa9371e0779189ef5a7434456fc21a938945f8cff8431ca07dd407fa5d2a161581d03cdeb7c94fcd5ade47d376af75f2c92d1483f821fe2ca00d16b6cdbceaadcd0fd72bd39ee17841871da333a571535fccfbcf6285881c2af8431ba07c2d063126024a1e19363e7e254312ca9ab37795b06102da25bd1c0dec81a934a043b7bec83db41c594ac7a8d416fca2f83f0e65ada1221fe659ba4dbe1f3c921af8431ba09318e56a242c39c10ce87ab51d10322cc62cf23885867bc89a24e8c3fa8483e9a04c82c1224d1b4efa7fba06623da2896745ce444d35ed77973759e6404b66bb95")
 	signers, _ := decode.Signers()
 	for _, signer := range signers {
@@ -141,7 +141,7 @@ func ExampleDecode_signers_of_multiSignature() {
 	// Mx0023aa9371e0779189ef5a7434456fc21a938945
 }
 
-func ExampleDecode_signers_of_singleSignature() {
+func ExampleDecode_signersOfSingleSignature() {
 	decode, _ := transaction.Decode("0xf8700102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ba0fffc3f503ace8a5d0c87efe50cf33ad41e3475459120d9c6fd75bd796b192313a0243d643a799e844ad82382d41cee98137a1d0c5888ff13951919e5e241ab89e0")
 	signers, _ := decode.Signers()
 	for _, signer := range signers {
