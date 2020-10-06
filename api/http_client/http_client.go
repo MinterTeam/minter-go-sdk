@@ -94,7 +94,7 @@ func (s *SubscriberClient) Recv() (*api_service.SubscribeOKBody, error) {
 	select {
 	case <-s.ctx.Done():
 		s.CloseSend()
-		return nil, io.EOF
+		return nil, s.ctx.Err()
 	default:
 		var recv api_service.SubscribeOKBody
 		err := s.conn.ReadJSON(&recv)

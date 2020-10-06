@@ -37,8 +37,8 @@ func Example() {
 		if err == io.EOF {
 			break
 		}
-		if code := status.Code(err); code != codes.OK {
-			if code == codes.DeadlineExceeded || code == codes.Canceled {
+		if s := status.FromContextError(err); s != nil {
+			if s.Code() == codes.DeadlineExceeded || s.Code() == codes.Canceled {
 				break
 			}
 			panic(err)
