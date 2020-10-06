@@ -13,7 +13,7 @@ func ExampleNewCheck() {
 		transaction.TestNetChainID,
 		999999,
 		1,
-		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+		transaction.BipToPip(big.NewInt(10)),
 		1,
 	).SetPassphrase("pass")
 

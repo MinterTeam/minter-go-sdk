@@ -34,7 +34,7 @@ func (d *RecreateCoinData) SetSymbol(symbol string) *RecreateCoinData {
 
 // SetInitialReserve sets initial reserve in BIP's.
 func (d *RecreateCoinData) SetInitialReserve(value *big.Int) *RecreateCoinData {
-	if big.NewInt(0).Mul(big.NewInt(10000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)).Cmp(value) == -1 {
+	if BipToPip(big.NewInt(10000)).Cmp(value) == -1 {
 		d.InitialReserve = value
 	}
 	return d

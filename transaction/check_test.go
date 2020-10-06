@@ -13,7 +13,7 @@ func TestCheck_Sign(t *testing.T) {
 		TestNetChainID,
 		999999,
 		1,
-		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+		BipToPip(big.NewInt(10)),
 		1,
 	).SetPassphrase("pass")
 
@@ -39,7 +39,7 @@ func TestCheck_Sign1(t *testing.T) {
 		MainNetChainID,
 		999999,
 		1,
-		big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
+		BipToPip(big.NewInt(10)),
 		1,
 	).SetPassphrase("pass")
 

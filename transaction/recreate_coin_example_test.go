@@ -9,10 +9,10 @@ import (
 func ExampleNewRecreateCoinData() {
 	data := transaction.NewRecreateCoinData().
 		SetSymbol("SPRTEST").
-		SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-		SetInitialReserve(big.NewInt(0).Mul(big.NewInt(20000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetInitialAmount(transaction.BipToPip(big.NewInt(100))).
+		SetInitialReserve(transaction.BipToPip(big.NewInt(20000))).
 		SetConstantReserveRatio(10).
-		SetMaxSupply(big.NewInt(0).Mul(big.NewInt(1000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+		SetMaxSupply(transaction.BipToPip(big.NewInt(1000)))
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
 

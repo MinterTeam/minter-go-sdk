@@ -34,7 +34,7 @@ func TestDeepLink_CreateLinkSend(t *testing.T) {
 		NewSendData().
 			MustSetTo("Mx7633980c000139dd3bd24a3f54e06474fa941e16").
 			SetCoin(1).
-			SetValue(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))),
+			SetValue(BipToPip(big.NewInt(10))),
 	)
 	if err != nil {
 		t.Fatal(err)

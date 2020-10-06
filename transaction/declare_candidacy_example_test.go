@@ -11,7 +11,7 @@ func ExampleNewDeclareCandidacyData() {
 		MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
 		SetCommission(10).
 		SetCoin(1).
-		SetStake(big.NewInt(0).Mul(big.NewInt(5), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetStake(transaction.BipToPip(big.NewInt(5))).
 		SetAddress("Mx9f7fd953c2c69044b901426831ed03ee0bd0597a")
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)

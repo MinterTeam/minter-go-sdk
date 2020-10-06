@@ -9,10 +9,10 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 	data := NewCreateCoinData().
 		SetName("SUPER TEST").
 		SetSymbol("SPRTEST").
-		SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-		SetInitialReserve(big.NewInt(0).Mul(big.NewInt(20000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetInitialAmount(BipToPip(big.NewInt(100))).
+		SetInitialReserve(BipToPip(big.NewInt(20000))).
 		SetConstantReserveRatio(10).
-		SetMaxSupply(big.NewInt(0).Mul(big.NewInt(1000), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+		SetMaxSupply(BipToPip(big.NewInt(1000)))
 
 	tx, err := NewBuilder(TestNetChainID).NewTransaction(data)
 	if err != nil {
