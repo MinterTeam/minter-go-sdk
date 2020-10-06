@@ -9,9 +9,9 @@ import (
 func ExampleNewBuyCoinData() {
 	data := transaction.NewBuyCoinData().
 		SetCoinToBuy(2).
-		SetValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetValueToBuy(transaction.BipToPip(big.NewInt(1))).
 		SetCoinToSell(1).
-		SetMaximumValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+		SetMaximumValueToSell(transaction.BipToPip(big.NewInt(1)))
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
 

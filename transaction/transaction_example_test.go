@@ -10,7 +10,7 @@ func ExampleBuilder_NewTransaction_signSingleSignature_simple() {
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
 		transaction.NewSendData().
 			SetCoin(1).
-			SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+			SetValue(transaction.BipToPip(big.NewInt(1))).
 			MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
 	)
 
@@ -41,15 +41,14 @@ func ExampleBuilder_NewTransaction_signSingleSignature_simple() {
 }
 
 func ExampleBuilder_NewTransaction_signMultiSignature_simultaneous_adding_private_keys() {
-	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
-		SetCoin(coinID).
-		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetCoin(1).
+		SetValue(transaction.BipToPip(big.NewInt(1))).
 		SetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
 
-	signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(coinID).SetSignatureType(transaction.SignatureTypeMulti).Sign(
+	signedTx, _ := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(1).SetSignatureType(transaction.SignatureTypeMulti).Sign(
 		"Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2",
 		"ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63",
 		"b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7",
@@ -66,14 +65,13 @@ func ExampleBuilder_NewTransaction_signMultiSignature_simultaneous_adding_privat
 
 // You can transfer the transaction to the remaining addresses.
 func ExampleBuilder_NewTransaction_signMultiSignature_dynamically_adding_private_keys() {
-	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
-		SetCoin(coinID).
-		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetCoin(1).
+		SetValue(transaction.BipToPip(big.NewInt(1))).
 		SetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
-	tx.SetNonce(1).SetGasPrice(1).SetGasCoin(coinID).SetSignatureType(transaction.SignatureTypeMulti)
+	tx.SetNonce(1).SetGasPrice(1).SetGasCoin(1).SetSignatureType(transaction.SignatureTypeMulti)
 
 	msigAddress := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
 	signedTx1, _ := tx.Sign(
@@ -98,14 +96,13 @@ func ExampleBuilder_NewTransaction_signMultiSignature_dynamically_adding_private
 
 // You can collect all signatures in one place without revealing the private key.
 func ExampleBuilder_NewTransaction_signMultiSignatureAddSignature() {
-	coinID := uint64(1)
 	data, _ := transaction.NewSendData().
-		SetCoin(coinID).
-		SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+		SetCoin(1).
+		SetValue(transaction.BipToPip(big.NewInt(1))).
 		SetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
 
 	tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(data)
-	tx.SetNonce(1).SetGasPrice(1).SetGasCoin(coinID).SetSignatureType(transaction.SignatureTypeMulti)
+	tx.SetNonce(1).SetGasPrice(1).SetGasCoin(1).SetSignatureType(transaction.SignatureTypeMulti)
 
 	msigAddress := "Mx0023aa9371e0779189ef5a7434456fc21a938945"
 	signedTx1, _ := tx.Clone().Sign(msigAddress, "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")

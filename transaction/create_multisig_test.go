@@ -16,10 +16,7 @@ func TestCreateMultisigData_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	nonce := uint64(11)
-	gasPrice := uint8(1)
-
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1).SetSignatureType(SignatureTypeSingle)
+	transaction := tx.SetNonce(11).SetGasPrice(1).SetGasCoin(1).SetSignatureType(SignatureTypeSingle)
 
 	signedTx, err := transaction.Sign("ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
 	if err != nil {
@@ -48,10 +45,7 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	nonce := uint64(1)
-	gasPrice := uint8(1)
-
-	transaction := tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(1).SetSignatureType(SignatureTypeSingle)
+	transaction := tx.SetNonce(1).SetGasPrice(1).SetGasCoin(1).SetSignatureType(SignatureTypeSingle)
 
 	signedTx, err := transaction.Sign("bc3503cae8c8561df5eadc4a9eda21d32c252a6c94cfae55b5310bf6085c8582")
 	if err != nil {
