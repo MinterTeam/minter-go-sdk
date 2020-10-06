@@ -211,7 +211,7 @@ type Interface interface {
 	// SetServiceData sets ServiceData field.
 	SetServiceData(serviceData []byte) Interface
 	// Sign signs transaction with a private key.
-	Sign(key string, multisigPrKeys ...string) (Signed, error)
+	Sign(key string, prKeys ...string) (Signed, error)
 	// Clone returns copy of the transaction.
 	Clone() Interface
 
@@ -291,7 +291,7 @@ func (o *object) Signature() (Signature, error) {
 	return signature, nil
 }
 
-// Decode returns object with Transaction and Data.
+// Decode returns Signed model with Transaction and Data.
 func Decode(tx string) (Signed, error) {
 	if !strings.HasPrefix(tx, "0x") {
 		return nil, errors.New("transaction don't has prefix '0x'")
