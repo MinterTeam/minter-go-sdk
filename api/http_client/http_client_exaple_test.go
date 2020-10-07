@@ -7,8 +7,6 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"math/big"
@@ -37,10 +35,10 @@ func Example() {
 		if err == io.EOF {
 			break
 		}
-		if s := status.FromContextError(err); s != nil {
-			if s.Code() == codes.DeadlineExceeded || s.Code() == codes.Canceled {
-				break
-			}
+		if err == context.Canceled || err == context.DeadlineExceeded {
+			break
+		}
+		if err != nil {
 			panic(err)
 		}
 		log.Println("OK", recv.Result)

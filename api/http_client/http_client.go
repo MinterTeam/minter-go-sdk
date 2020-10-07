@@ -93,14 +93,18 @@ func (s *SubscriberClient) Recv() (*api_service.SubscribeOKBody, error) {
 
 	select {
 	case <-s.ctx.Done():
-		s.CloseSend()
+		_ = s.CloseSend()
 		return nil, s.ctx.Err()
 	default:
 		var recv api_service.SubscribeOKBody
 		err := s.conn.ReadJSON(&recv)
-		if websocket.IsCloseError(err, websocket.CloseAbnormalClosure, websocket.CloseNormalClosure, websocket.CloseNoStatusReceived) {
-			s.CloseSend()
+		if websocket.IsCloseError(err, websocket.CloseNormalClosure) {
+			_ = s.CloseSend()
 			err = io.EOF
+		}
+		if websocket.IsCloseError(err, websocket.CloseAbnormalClosure) {
+			_ = s.CloseSend()
+			err = context.Canceled
 		}
 
 		return &recv, err
