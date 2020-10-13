@@ -17,8 +17,10 @@ type CoinInfoResult struct {
 	Name           string `json:"name"`
 	Symbol         string `json:"symbol"`
 	Volume         string `json:"volume"`
-	Crr            string `json:"crr"`
+	Crr            int    `json:"crr"`
 	ReserveBalance string `json:"reserve_balance"`
+	MaxSupply      string `json:"max_supply"`
+	OwnerAddress   string `json:"owner_address,omitempty"`
 }
 
 // Returns information about coin. Note: this method does not return information about base coins (MNT and BIP).

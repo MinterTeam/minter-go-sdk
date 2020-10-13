@@ -14,9 +14,9 @@ type AddressesResponse struct {
 }
 
 type AddressesResult struct {
-	Address          string            `json:"address"`
-	Balance          map[string]string `json:"balance"`
-	TransactionCount string            `json:"transaction_count"`
+	Address          string    `json:"address"`
+	Balance          []Balance `json:"balance"`
+	TransactionCount string    `json:"transaction_count"`
 }
 
 func (a *Api) Addresses(addresses []string, height int) ([]*AddressesResult, error) {

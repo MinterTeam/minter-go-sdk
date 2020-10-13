@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
 type SendTransactionResponse struct {
@@ -60,7 +59,7 @@ func (a *Api) SendRawTransaction(tx string) (*SendTransactionResult, error) {
 }
 
 // Returns the result of sending signed tx.
-func (a *Api) SendTransaction(transaction transaction.EncodeInterface) (*SendTransactionResult, error) {
+func (a *Api) SendTransaction(transaction interface{ Encode() (string, error) }) (*SendTransactionResult, error) {
 	tx, err := transaction.Encode()
 	if err != nil {
 		return nil, err

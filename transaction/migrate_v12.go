@@ -2,21 +2,23 @@ package transaction
 
 import (
 	"encoding/json"
-	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client"
+	"github.com/MinterTeam/minter-go-sdk/api"
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/go-resty/resty/v2"
 	"os"
 	"reflect"
+	"time"
 )
 
-var httpClient *http_client.Client
+var httpClient *api.Api
 
 func coinID(symbol string) (transaction.CoinID, error) {
-	coinID, err := httpClient.CoinID(symbol)
+	coinID, err := httpClient.CoinInfo(symbol)
 	if err != nil {
 		return 0, err
 	}
-	return transaction.CoinID(coinID), nil
+	return transaction.CoinID(coinID.ID), nil
 }
 
 func (o *object) sign(key string, multisigPrKeys ...string) (SignedTransaction, error) {
@@ -108,13 +110,9 @@ func (o *object) EncodeDataReflect() (bytes []byte, err error) {
 }
 
 func init() {
-	nodeApiUrl := os.Getenv("NODE_API_V2")
+	nodeApiUrl := os.Getenv("NODE_API")
 	if nodeApiUrl == "" {
-		panic("set env 'NODE_API_V2'")
+		panic("set env 'NODE_API'")
 	}
-	client, err := http_client.New(nodeApiUrl)
-	if err != nil {
-		panic(err)
-	}
-	httpClient = client
+	httpClient = api.NewApiWithClient(nodeApiUrl, resty.New().SetTimeout(time.Minute).EnableTrace().SetDebug(true))
 }

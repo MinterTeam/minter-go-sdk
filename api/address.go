@@ -11,10 +11,15 @@ type AddressResponse struct {
 	Result  *AddressResult `json:"result,omitempty"`
 	Error   *Error         `json:"error,omitempty"`
 }
+type Balance struct {
+	ID     string `json:"coin_id"`
+	Symbol string `json:"symbol"`
+	Value  string `json:"value"`
+}
 
 type AddressResult struct {
-	Balance          map[string]string `json:"balance"`
-	TransactionCount string            `json:"transaction_count"`
+	Balance          []Balance `json:"balances"`
+	TransactionCount string    `json:"transaction_count"`
 }
 
 // Returns coins list, balance and transaction count (for nonce) of an address.
@@ -53,12 +58,12 @@ func (a *Api) AddressAtHeight(address string, height int) (*AddressResult, error
 }
 
 // Returns balance of an address.
-func (a *Api) Balance(address string) (map[string]string, error) {
+func (a *Api) Balance(address string) ([]Balance, error) {
 	return a.BalanceAtHeight(address, LatestBlockHeight)
 }
 
 // Returns balance of an address.
-func (a *Api) BalanceAtHeight(address string, height int) (map[string]string, error) {
+func (a *Api) BalanceAtHeight(address string, height int) ([]Balance, error) {
 	response, err := a.AddressAtHeight(address, height)
 	if err != nil {
 		return nil, err

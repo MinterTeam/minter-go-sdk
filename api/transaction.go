@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
 type TransactionResponse struct {
@@ -11,6 +10,11 @@ type TransactionResponse struct {
 	ID      string             `json:"id,omitempty"`
 	Result  *TransactionResult `json:"result,omitempty"`
 	Error   *Error             `json:"error,omitempty"`
+}
+
+type Coin struct {
+	ID     string `json:"id"`
+	Symbol string `json:"symbol"`
 }
 
 type TransactionResult struct {
@@ -22,7 +26,7 @@ type TransactionResult struct {
 	Nonce       string          `json:"nonce"`
 	Gas         string          `json:"gas"`
 	GasPrice    int             `json:"gas_price"`
-	GasCoin     string          `json:"gas_coin"`
+	GasCoin     Coin            `json:"gas_coin"`
 	Type        int             `json:"type"`
 	Data        transactionData `json:"data"`
 	Payload     []byte          `json:"payload"`
@@ -34,7 +38,8 @@ type TransactionResult struct {
 		TxType            string `json:"tx.type,omitempty"`
 		TxFrom            string `json:"tx.from,omitempty"`
 		TxTo              string `json:"tx.to,omitempty"`
-		TxCoin            string `json:"tx.coin,omitempty"`
+		TxCoinID          string `json:"tx.coin_id,omitempty"`
+		TxCoinSymbol      string `json:"tx.coin_symbol,omitempty"`
 		TxSellAmount      string `json:"tx.sell_amount,omitempty"`
 		TxCreatedMultisig string `json:"tx.created_multisig,omitempty"`
 	} `json:"tags,omitempty"`
@@ -68,34 +73,34 @@ func (t *TransactionResult) ErrorLog() error {
 func (t *TransactionResult) DataStruct() (tdi, error) {
 
 	var data tdi
-	switch transaction.Type(t.Type) {
-	case transaction.TypeSend:
+	switch t.Type {
+	case 1:
 		data = &SendData{}
-	case transaction.TypeSellCoin:
+	case 2:
 		data = &SellCoinData{}
-	case transaction.TypeSellAllCoin:
+	case 3:
 		data = &SellAllCoinData{}
-	case transaction.TypeBuyCoin:
+	case 4:
 		data = &BuyCoinData{}
-	case transaction.TypeCreateCoin:
+	case 5:
 		data = &CreateCoinData{}
-	case transaction.TypeDeclareCandidacy:
+	case 6:
 		data = &DeclareCandidacyData{}
-	case transaction.TypeDelegate:
+	case 7:
 		data = &DelegateData{}
-	case transaction.TypeUnbond:
+	case 8:
 		data = &UnbondData{}
-	case transaction.TypeRedeemCheck:
+	case 9:
 		data = &RedeemCheckData{}
-	case transaction.TypeSetCandidateOnline:
+	case 10:
 		data = &SetCandidateOnData{}
-	case transaction.TypeSetCandidateOffline:
+	case 11:
 		data = &SetCandidateOffData{}
-	case transaction.TypeCreateMultisig:
+	case 12:
 		data = &CreateMultisigData{}
-	case transaction.TypeMultisend:
+	case 13:
 		data = &MultisendData{}
-	case transaction.TypeEditCandidate:
+	case 14:
 		data = &EditCandidateData{}
 	default:
 		return nil, errors.New("unknown transaction type")
@@ -109,7 +114,7 @@ type tdi interface {
 }
 
 type SendData struct {
-	Coin  string `json:"coin"`
+	Coin  Coin   `json:"coin"`
 	To    string `json:"to"`
 	Value string `json:"value"`
 }
@@ -119,9 +124,9 @@ func (s *SendData) fill(b []byte) error {
 }
 
 type SellCoinData struct {
-	CoinToSell        string `json:"coin_to_sell"`
+	CoinToSell        Coin   `json:"coin_to_sell"`
 	ValueToSell       string `json:"value_to_sell"`
-	CoinToBuy         string `json:"coin_to_buy"`
+	CoinToBuy         Coin   `json:"coin_to_buy"`
 	MinimumValueToBuy string `json:"minimum_value_to_buy"`
 }
 
@@ -130,8 +135,8 @@ func (s *SellCoinData) fill(b []byte) error {
 }
 
 type SellAllCoinData struct {
-	CoinToSell        string `json:"coin_to_sell"`
-	CoinToBuy         string `json:"coin_to_buy"`
+	CoinToSell        Coin   `json:"coin_to_sell"`
+	CoinToBuy         Coin   `json:"coin_to_buy"`
 	MinimumValueToBuy string `json:"minimum_value_to_buy"`
 }
 
@@ -140,9 +145,9 @@ func (s *SellAllCoinData) fill(b []byte) error {
 }
 
 type BuyCoinData struct {
-	CoinToBuy          string `json:"coin_to_buy"`
+	CoinToBuy          Coin   `json:"coin_to_buy"`
 	ValueToBuy         string `json:"value_to_buy"`
-	CoinToSell         string `json:"coin_to_sell"`
+	CoinToSell         Coin   `json:"coin_to_sell"`
 	MaximumValueToSell string `json:"maximum_value_to_sell"`
 }
 
@@ -167,7 +172,7 @@ type DeclareCandidacyData struct {
 	Address    string `json:"address"`
 	PubKey     string `json:"pub_key"`
 	Commission string `json:"commission"`
-	Coin       string `json:"coin"`
+	Coin       Coin   `json:"coin"`
 	Stake      string `json:"stake"`
 }
 
@@ -177,7 +182,7 @@ func (s *DeclareCandidacyData) fill(b []byte) error {
 
 type DelegateData struct {
 	PubKey string `json:"pub_key"`
-	Coin   string `json:"coin"`
+	Coin   Coin   `json:"coin"`
 	Value  string `json:"value"`
 }
 
@@ -187,9 +192,11 @@ func (s *DelegateData) fill(b []byte) error {
 
 type UnbondData struct {
 	PubKey string `json:"pub_key"`
-	Coin   string `json:"coin"`
+	Coin   Coin   `json:"coin"`
 	Value  string `json:"value"`
 }
+
+// todo add more types
 
 func (s *UnbondData) fill(b []byte) error {
 	return json.Unmarshal(b, s)

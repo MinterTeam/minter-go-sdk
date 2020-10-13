@@ -20,7 +20,7 @@ type CandidateResult struct {
 	Commission    string `json:"commission"`
 	Stakes        []struct {
 		Owner    string `json:"owner"`
-		Coin     string `json:"coin"`
+		Coin     Coin   `json:"coin"`
 		Value    string `json:"value"`
 		BipValue string `json:"bip_value"`
 	} `json:"stakes"`

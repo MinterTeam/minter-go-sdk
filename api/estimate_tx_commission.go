@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
 )
 
 type EstimateTxCommissionResponse struct {
@@ -18,7 +17,7 @@ type EstimateTxCommissionResult struct {
 }
 
 // Return estimate of transaction.
-func (a *Api) EstimateTxCommission(transaction transaction.EncodeInterface) (*EstimateTxCommissionResult, error) {
+func (a *Api) EstimateTxCommission(transaction interface{ Encode() (string, error) }) (*EstimateTxCommissionResult, error) {
 	bytes, err := transaction.Encode()
 	if err != nil {
 		return nil, err
