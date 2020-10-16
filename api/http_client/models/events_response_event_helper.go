@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"github.com/MinterTeam/minter-go-sdk/v2/api"
 )
 
 // EventItem is the structure of the EventsResponse view of list items
@@ -11,45 +12,37 @@ type EventItem struct {
 }
 
 // NewEventItem returns an EventItem from the EventsResponse list item
-func NewEventItem(i interface{}) *EventItem {
+func NewEventItem(i interface{}) (*EventItem, error) {
 	marshal, err := json.Marshal(i)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var event EventItem
 	err = json.Unmarshal(marshal, &event)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	return &event
+	return &event, nil
 }
 
-// Events
-type (
-	RewardEvent struct {
-		Role            string `json:"role"`
-		Address         string `json:"address"`
-		Amount          string `json:"amount"`
-		ValidatorPubKey string `json:"validator_pub_key"`
+// ConvertStructToEvent returns api.Event
+func ConvertStructToEvent(data interface{}) (api.Event, error) {
+	str, err := NewEventItem(data)
+	if err != nil {
+		return nil, err
 	}
-	SlashEvent struct {
-		Address         string `json:"address"`
-		Amount          string `json:"amount"`
-		Coin            string `json:"coin"`
-		ValidatorPubKey string `json:"validator_pub_key"`
+
+	b, err := json.Marshal(str.Value)
+	if err != nil {
+		return nil, err
 	}
-	UnbondEvent struct {
-		Address         string `json:"address"`
-		Amount          string `json:"amount"`
-		Coin            string `json:"coin"`
-		ValidatorPubKey string `json:"validator_pub_key"`
+
+	event, err := api.ConvertToEvent(str.Type, b)
+	if err != nil {
+		return nil, err
 	}
-	StakeKickEvent struct {
-		Address         string `json:"address"`
-		Amount          string `json:"amount"`
-		Coin            string `json:"coin"`
-		ValidatorPubKey string `json:"validator_pub_key"`
-	}
-)
+
+	return event, nil
+}
