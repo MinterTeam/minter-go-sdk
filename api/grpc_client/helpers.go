@@ -7,12 +7,12 @@ import (
 
 // ConvertStructToEvent returns
 func ConvertStructToEvent(str *_struct.Struct) (api.Event, error) {
-	json, err := str.Fields["value"].GetStructValue().MarshalJSON()
+	value, err := str.Fields["value"].GetStructValue().MarshalJSON()
 	if err != nil {
 		return nil, err
 	}
 
-	event, err := api.ConvertToEvent(str.Fields["type"].GetStringValue(), json)
+	event, err := api.ConvertToEvent(str.Fields["type"].GetStringValue(), value)
 	if err != nil {
 		return nil, err
 	}

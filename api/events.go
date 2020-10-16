@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // Event type names
@@ -100,10 +101,14 @@ var em = map[string]Event{
 	TypeStakeKickEvent: &StakeKickEvent{},
 }
 
-func ConvertToEvent(typeName string, data []byte) (Event, error) {
-	clone := em[typeName].clone()
+func ConvertToEvent(typeName string, value []byte) (Event, error) {
+	eventStruct, ok := em[typeName]
+	if !ok {
+		return nil, fmt.Errorf("event type unknown: %s", typeName)
+	}
 
-	err := json.Unmarshal(data, clone)
+	clone := eventStruct.clone()
+	err := json.Unmarshal(value, clone)
 	if err != nil {
 		return nil, err
 	}

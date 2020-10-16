@@ -34,12 +34,12 @@ func ConvertStructToEvent(data interface{}) (api.Event, error) {
 		return nil, err
 	}
 
-	b, err := json.Marshal(str.Value)
+	value, err := json.Marshal(str.Value)
 	if err != nil {
 		return nil, err
 	}
 
-	event, err := api.ConvertToEvent(str.Type, b)
+	event, err := api.ConvertToEvent(str.Type, value)
 	if err != nil {
 		return nil, err
 	}
