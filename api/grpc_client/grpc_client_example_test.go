@@ -30,19 +30,16 @@ func Example() {
 		panic(res.Log)
 	}
 
-	for {
-		recv, err := subscribeClient.Recv()
-		if err == io.EOF {
-			break
-		}
-		if code := status.Code(err); code != codes.OK {
-			if code == codes.DeadlineExceeded || code == codes.Canceled {
-				break
-			}
-			panic(err)
-		}
-		marshal, _ := client.Marshal(recv)
-		log.Println("OK", marshal)
-		break
+	recv, err := subscribeClient.Recv()
+	if err == io.EOF {
+		return
 	}
+	if code := status.Code(err); code != codes.OK {
+		if code == codes.DeadlineExceeded || code == codes.Canceled {
+			return
+		}
+		panic(err)
+	}
+	marshal, _ := client.Marshal(recv)
+	log.Println("OK", marshal)
 }

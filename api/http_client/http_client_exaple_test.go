@@ -30,18 +30,15 @@ func Example() {
 		panic(res.Payload.Log)
 	}
 
-	for {
-		recv, err := subscribeClient.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err == context.Canceled || err == context.DeadlineExceeded {
-			break
-		}
-		if err != nil {
-			panic(err)
-		}
-		log.Println("OK", recv.Result)
-		break
+	recv, err := subscribeClient.Recv()
+	if err == io.EOF {
+		return
 	}
+	if err == context.Canceled || err == context.DeadlineExceeded {
+		return
+	}
+	if err != nil {
+		panic(err)
+	}
+	log.Println("OK", recv.Result)
 }

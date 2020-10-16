@@ -26,7 +26,7 @@ type Client struct {
 }
 
 // New returns gRPC Client
-func New(address string) (*Client, error) {
+func New(address string, _ ...string) (*Client, error) {
 	clientConn, err := grpc.Dial(address,
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor()),
