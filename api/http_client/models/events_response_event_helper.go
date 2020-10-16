@@ -26,14 +26,6 @@ func NewEventItem(i interface{}) *EventItem {
 	return &event
 }
 
-// Event type names
-const (
-	TypeRewardEvent    = "minter/RewardEvent"
-	TypeSlashEvent     = "minter/SlashEvent"
-	TypeUnbondEvent    = "minter/UnbondEvent"
-	TypeStakeKickEvent = "minter/StakeKickEvent"
-)
-
 // Events
 type (
 	RewardEvent struct {
