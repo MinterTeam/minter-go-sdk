@@ -1,35 +1,29 @@
 package models
 
-// ValueAsMap return map from Value
-func (m *EventsResponseEvent) ValueAsMap() map[string]string {
-	result := map[string]string{}
-	for k, v := range m.Value.(map[string]interface{}) {
-		result[k] = v.(string)
+import (
+	"encoding/json"
+)
+
+// EventItem is the structure of the EventsResponse view of list items
+type EventItem struct {
+	Type  string
+	Value map[string]string
+}
+
+// NewEventItem returns an EventItem from the EventsResponse list item
+func NewEventItem(i interface{}) *EventItem {
+	marshal, err := json.Marshal(i)
+	if err != nil {
+		return nil
 	}
-	return result
-}
 
-type event struct {
-	address         string
-	validatorPubKey string
-}
-
-func (e *event) Address() string {
-	return e.address
-}
-func (e *event) ValidatorPubKey() string {
-	return e.validatorPubKey
-}
-
-// ValueAsEventInterface return map from Value
-func (m *EventsResponseEvent) ValueAsEventInterface() interface {
-	Address() string
-	ValidatorPubKey() string
-} {
-	return &event{
-		address:         m.ValueAsMap()["address"],
-		validatorPubKey: m.ValueAsMap()["validator_pub_key"],
+	var event EventItem
+	err = json.Unmarshal(marshal, &event)
+	if err != nil {
+		return nil
 	}
+
+	return &event
 }
 
 // Event type names
