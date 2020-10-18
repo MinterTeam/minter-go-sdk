@@ -5,7 +5,7 @@ import (
 	_struct "google.golang.org/protobuf/types/known/structpb"
 )
 
-// ConvertStructToEvent returns
+// ConvertStructToEvent returns Event model
 func ConvertStructToEvent(str *_struct.Struct) (api.Event, error) {
 	value, err := str.Fields["value"].GetStructValue().MarshalJSON()
 	if err != nil {

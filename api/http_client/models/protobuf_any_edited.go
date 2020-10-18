@@ -36,3 +36,16 @@ func (m *ProtobufAny) UnmarshalBinary(b []byte) error {
 
 	return nil
 }
+
+func (m *ProtobufAny) UnmarshalTo(i interface{}) error {
+	binary, err := m.MarshalBinary()
+	if err != nil {
+		return err
+	}
+
+	if err := swag.ReadJSON(binary, i); err != nil {
+		return err
+	}
+
+	return nil
+}

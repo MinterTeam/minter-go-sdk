@@ -46,10 +46,10 @@ type CandidateResponse struct {
 	TotalStake string `json:"total_stake,omitempty"`
 
 	// To be completed when requesting candidate steaks
-	UniqUsers uint64 `json:"uniq_users,omitempty"`
+	UniqUsers uint64 `json:"uniq_users,omitempty,string"`
 
 	// To be completed when requesting candidate steaks
-	UsedSlots uint64 `json:"used_slots,omitempty"`
+	UsedSlots uint64 `json:"used_slots,omitempty,string"`
 }
 
 // Validate validates this candidate response
