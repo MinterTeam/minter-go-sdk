@@ -18,6 +18,9 @@ type AppStateFrozenFund struct {
 	// address
 	Address string `json:"address,omitempty"`
 
+	// candidate id
+	CandidateID uint64 `json:"candidate_id,omitempty,string"`
+
 	// candidate key
 	CandidateKey string `json:"candidate_key,omitempty"`
 
