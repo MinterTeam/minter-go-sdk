@@ -189,7 +189,7 @@ func (c *Client) Block(height uint64) (*api_pb.BlockResponse, error) {
 	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height}, c.opts...)
 }
 
-// Candidate returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
+// Candidate returns candidate’s info by provided public_key.
 func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*api_pb.CandidateResponse, error) {
 	return c.grpcClient.Candidate(c.ctxFunc(), &api_pb.CandidateRequest{Height: optionalInt(optionalHeight), PublicKey: publicKey}, c.opts...)
 }

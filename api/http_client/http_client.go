@@ -134,7 +134,7 @@ func (c *Concise) Block(height uint64) (*models.BlockResponse, error) {
 	return res.GetPayload(), nil
 }
 
-// Candidate returns candidate’s res by provided public_key. It will respond with 404 code if candidate is not found.
+// Candidate returns candidate’s res by provided public_key.
 func (c *Concise) Candidate(publicKey string, optionalHeight ...uint64) (*models.CandidateResponse, error) {
 	res, err := c.ClientService.Candidate(api_service.NewCandidateParams().WithPublicKey(publicKey).WithHeight(optionalInt(optionalHeight)).WithTimeout(c.timeout))
 	if err != nil {
