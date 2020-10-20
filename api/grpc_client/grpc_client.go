@@ -2,6 +2,7 @@ package grpc_client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/MinterTeam/node-grpc-gateway/api_pb"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -214,13 +215,13 @@ func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy string, valueToBuy 
 }
 
 // EstimateCoinSymbolSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy}, c.opts...)
+func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToSell string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToSell}, c.opts...)
 }
 
 // EstimateCoinSymbolSellAll return estimate of sell all coin transaction.
-func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPrice uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
-	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToBuy, GasPrice: gasPrice}, c.opts...)
+func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPrice uint64, valueToSell string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
+	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToSell, GasPrice: gasPrice}, c.opts...)
 }
 
 // EstimateCoinIDBuy return estimate of buy coin transaction.
@@ -229,13 +230,13 @@ func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy stri
 }
 
 // EstimateCoinIDSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToBuy}, c.opts...)
+func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToSell}, c.opts...)
 }
 
 // EstimateCoinIDSellAll return estimate of sell all coin transaction.
-func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
-	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToBuy}, c.opts...)
+func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell uint64, gasPrice uint64, valueToSell string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellAllResponse, error) {
+	return c.grpcClient.EstimateCoinSellAll(c.ctxFunc(), &api_pb.EstimateCoinSellAllRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellAllRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellAllRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToSell, GasPrice: gasPrice}, c.opts...)
 }
 
 // EstimateTxCommission return estimate of encoding transaction.
@@ -244,13 +245,8 @@ func (c *Client) EstimateTxCommission(tx string, optionalHeight ...uint64) (*api
 }
 
 // Events returns events at given height.
-func (c *Client) Events(optionalHeight ...uint64) (*api_pb.EventsResponse, error) {
-	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: optionalInt(optionalHeight)}, c.opts...)
-}
-
-// EventsSearch returns events at given height and compare search with delegator address or validator public key
-func (c *Client) EventsSearch(search []string, optionalHeight ...uint64) (*api_pb.EventsResponse, error) {
-	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: optionalInt(optionalHeight), Search: search}, c.opts...)
+func (c *Client) Events(height uint64, search ...string) (*api_pb.EventsResponse, error) {
+	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: height, Search: search}, c.opts...)
 }
 
 // MaxGasPrice returns current max gas.
@@ -285,7 +281,7 @@ func (c *Client) Transaction(hash string) (*api_pb.TransactionResponse, error) {
 	return c.grpcClient.Transaction(c.ctxFunc(), &api_pb.TransactionRequest{Hash: hash}, c.opts...)
 }
 
-// Transactions return transactions by query.
+// Transactions returns transactions by query.
 func (c *Client) Transactions(query string, page, perPage int) (*api_pb.TransactionsResponse, error) {
 	return c.grpcClient.Transactions(c.ctxFunc(), &api_pb.TransactionsRequest{Query: query, Page: int32(page), PerPage: int32(perPage)}, c.opts...)
 }
@@ -301,8 +297,8 @@ func (c *Client) Validators(optionalHeight ...uint64) (*api_pb.ValidatorsRespons
 }
 
 // WaitList returns the list of address stakes in waitlist.
-func (c *Client) WaitList(publicKey, address string, limit ...uint64) (*api_pb.WaitListResponse, error) {
-	return c.grpcClient.WaitList(c.ctxFunc(), &api_pb.WaitListRequest{Height: optionalInt(limit), PublicKey: publicKey, Address: address}, c.opts...)
+func (c *Client) WaitList(publicKey, address string, height ...uint64) (*api_pb.WaitListResponse, error) {
+	return c.grpcClient.WaitList(c.ctxFunc(), &api_pb.WaitListRequest{Height: optionalInt(height), PublicKey: publicKey, Address: address}, c.opts...)
 }
 
 // Subscribe returns a subscription for events by query.
@@ -311,13 +307,16 @@ func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, err
 }
 
 // Frozen returns frozen balance.
-func (c *Client) Frozen(address string) (*api_pb.FrozenResponse, error) {
-	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address}, c.opts...)
-}
+func (c *Client) Frozen(address string, optionalCoinID ...uint64) (*api_pb.FrozenResponse, error) {
+	if len(optionalCoinID) > 1 {
+		return nil, errors.New("CoinID needed single value") // todo: change message
+	}
 
-// FrozenWithCoin returns frozen balance for coinID.
-func (c *Client) FrozenWithCoin(address string, coinID uint64) (*api_pb.FrozenResponse, error) {
-	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: wrapperspb.UInt64(coinID)}, c.opts...)
+	var coin *wrapperspb.UInt64Value
+	if len(optionalCoinID) == 1 {
+		coin = wrapperspb.UInt64(optionalInt(optionalCoinID))
+	}
+	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coin}, c.opts...)
 }
 
 func optionalInt(height []uint64) uint64 {
