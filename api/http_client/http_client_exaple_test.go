@@ -13,7 +13,7 @@ import (
 )
 
 func Example() {
-	client, _ := http_client.New("http://localhost:8843/v2")
+	client, _ := http_client.NewConcise("http://localhost:8843/v2")
 	w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
 	data := transaction.NewSendData().SetCoin(0).SetValue(big.NewInt(1)).MustSetTo(w.Address)
 	transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
