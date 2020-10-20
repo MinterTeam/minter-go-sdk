@@ -24,7 +24,7 @@ func NewUnconfirmedTxsParams() *UnconfirmedTxsParams {
 		limitDefault = int32(30)
 	)
 	return &UnconfirmedTxsParams{
-		Limit: limitDefault,
+		Limit: &limitDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -37,7 +37,7 @@ func NewUnconfirmedTxsParamsWithTimeout(timeout time.Duration) *UnconfirmedTxsPa
 		limitDefault = int32(30)
 	)
 	return &UnconfirmedTxsParams{
-		Limit: limitDefault,
+		Limit: &limitDefault,
 
 		timeout: timeout,
 	}
@@ -50,7 +50,7 @@ func NewUnconfirmedTxsParamsWithContext(ctx context.Context) *UnconfirmedTxsPara
 		limitDefault = int32(30)
 	)
 	return &UnconfirmedTxsParams{
-		Limit: limitDefault,
+		Limit: &limitDefault,
 
 		Context: ctx,
 	}
@@ -63,7 +63,7 @@ func NewUnconfirmedTxsParamsWithHTTPClient(client *http.Client) *UnconfirmedTxsP
 		limitDefault = int32(30)
 	)
 	return &UnconfirmedTxsParams{
-		Limit:      limitDefault,
+		Limit:      &limitDefault,
 		HTTPClient: client,
 	}
 }
@@ -74,7 +74,7 @@ for the unconfirmed txs operation typically these are written to a http.Request
 type UnconfirmedTxsParams struct {
 
 	/*Limit*/
-	Limit int32
+	Limit *int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -115,13 +115,13 @@ func (o *UnconfirmedTxsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithLimit adds the limit to the unconfirmed txs params
-func (o *UnconfirmedTxsParams) WithLimit(limit int32) *UnconfirmedTxsParams {
+func (o *UnconfirmedTxsParams) WithLimit(limit *int32) *UnconfirmedTxsParams {
 	o.SetLimit(limit)
 	return o
 }
 
 // SetLimit adds the limit to the unconfirmed txs params
-func (o *UnconfirmedTxsParams) SetLimit(limit int32) {
+func (o *UnconfirmedTxsParams) SetLimit(limit *int32) {
 	o.Limit = limit
 }
 
@@ -133,13 +133,20 @@ func (o *UnconfirmedTxsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	}
 	var res []error
 
-	// query param limit
-	qrLimit := o.Limit
-	qLimit := swag.FormatInt32(qrLimit)
-	if qLimit != "" {
-		if err := r.SetQueryParam("limit", qLimit); err != nil {
-			return err
+	if o.Limit != nil {
+
+		// query param page
+		var qrLimit int32
+		if o.Limit != nil {
+			qrLimit = *o.Limit
 		}
+		qLimit := swag.FormatInt32(qrLimit)
+		if qLimit != "" {
+			if err := r.SetQueryParam("limit", qLimit); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {
