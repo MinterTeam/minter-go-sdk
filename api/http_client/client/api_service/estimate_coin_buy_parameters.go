@@ -72,7 +72,7 @@ type EstimateCoinBuyParams struct {
 	/*Height*/
 	Height *uint64
 	/*ValueToBuy*/
-	ValueToBuy *string
+	ValueToBuy string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -168,13 +168,13 @@ func (o *EstimateCoinBuyParams) SetHeight(height *uint64) {
 }
 
 // WithValueToBuy adds the valueToBuy to the estimate coin buy params
-func (o *EstimateCoinBuyParams) WithValueToBuy(valueToBuy *string) *EstimateCoinBuyParams {
+func (o *EstimateCoinBuyParams) WithValueToBuy(valueToBuy string) *EstimateCoinBuyParams {
 	o.SetValueToBuy(valueToBuy)
 	return o
 }
 
 // SetValueToBuy adds the valueToBuy to the estimate coin buy params
-func (o *EstimateCoinBuyParams) SetValueToBuy(valueToBuy *string) {
+func (o *EstimateCoinBuyParams) SetValueToBuy(valueToBuy string) {
 	o.ValueToBuy = valueToBuy
 }
 
@@ -266,20 +266,13 @@ func (o *EstimateCoinBuyParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 	}
 
-	if o.ValueToBuy != nil {
-
-		// query param value_to_buy
-		var qrValueToBuy string
-		if o.ValueToBuy != nil {
-			qrValueToBuy = *o.ValueToBuy
+	// query param value_to_buy
+	qrValueToBuy := o.ValueToBuy
+	qValueToBuy := qrValueToBuy
+	if qValueToBuy != "" {
+		if err := r.SetQueryParam("value_to_buy", qValueToBuy); err != nil {
+			return err
 		}
-		qValueToBuy := qrValueToBuy
-		if qValueToBuy != "" {
-			if err := r.SetQueryParam("value_to_buy", qValueToBuy); err != nil {
-				return err
-			}
-		}
-
 	}
 
 	if len(res) > 0 {

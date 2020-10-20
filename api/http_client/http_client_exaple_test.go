@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client"
-	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"io"
@@ -25,9 +24,9 @@ func Example() {
 	subscribeClient, _ := client.Subscribe(context.Background(), fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
 	defer subscribeClient.CloseSend()
 
-	res, _ := client.SendTransaction(api_service.NewSendTransactionParams().WithTx(encode))
-	if res.Payload.Code != 0 {
-		panic(res.Payload.Log)
+	res, _ := client.SendTransaction(encode)
+	if res.Code != 0 {
+		panic(res.Log)
 	}
 
 	recv, err := subscribeClient.Recv()
