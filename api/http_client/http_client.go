@@ -480,7 +480,7 @@ func ErrorBody(err error) (int, *models.ErrorBody, error) {
 }
 
 func optionalInt(height []uint64) *uint64 {
-	if len(height) == 1 {
+	if len(height) == 0 {
 		return nil
 	}
 	return &height[0]
