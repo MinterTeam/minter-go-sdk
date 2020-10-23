@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const txCreateCoin = "0xf8870102010105b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a043c33c19375648000000a893635c9adc5dea00000808001b845f8431ba034615f080a026ee579395aeb4c2eac974a14c091f1bb112629b2b5be0a82628da07f3347c71fa0668d01126dfae49d2b402067275878e4ffd26fd42a73cdf01950"
+
 func TestTransactionCreateCoin_Sign(t *testing.T) {
 	data := NewCreateCoinData().
 		SetName("SUPER TEST").
@@ -26,23 +28,57 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf8870102010105b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a043c33c19375648000000a893635c9adc5dea00000808001b845f8431ba034615f080a026ee579395aeb4c2eac974a14c091f1bb112629b2b5be0a82628da07f3347c71fa0668d01126dfae49d2b402067275878e4ffd26fd42a73cdf01950"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if encode != validSignature {
-		t.Errorf("EncodeTx got %s, want %s", encode, validSignature)
+	if encode != txCreateCoin {
+		t.Errorf("EncodeTx got %s, want %s", encode, txCreateCoin)
 	}
 }
 
-func TestEncode_CreateCoinData(t *testing.T) {
-	decode, err := Decode("0xf8870102010105b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a021e19e0c9bab24000000a893635c9adc5dea00000808001b845f8431ca0c51fc88e44ab23c5da31264bc749ac513e8817701727a1e037d6d9b3708b11aaa059e7b32a726a87f31d92c7eeb0c4624fbf270de77f77c46bbd99232c2043c49a")
+func TestDecode_createCoin(t *testing.T) {
+	decode, err := Decode(txCreateCoin)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if decode.Data().(*CreateCoinData).MaxSupply.String() != "1000000000000000000000" {
-		t.Errorf("MaxSupply got %s, want %s", decode.Data().(*CreateCoinData).MaxSupply.String(), "1000000000000000000000")
+	if decode.Fee().String() != "100000000000000000000" {
+		t.Error("create coin transaction fee is invalid", decode.Fee().String())
+	}
+}
+
+func TestCreateCoinData_Fee(t *testing.T) {
+	data := NewCreateCoinData().SetSymbol("AAA")
+	if data.Fee() != 1000000000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAAB")
+	if data.Fee() != 100000000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAABC")
+	if data.Fee() != 10000000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAABCD")
+	if data.Fee() != 1000000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAABCDE")
+	if data.Fee() != 100000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAABCDEF")
+	if data.Fee() != 100000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAABCDEFG")
+	if data.Fee() != 100000 {
+		t.Error("create coin data fee is invalid", data.Fee())
+	}
+	data = NewCreateCoinData().SetSymbol("AAABCDEFGH")
+	if data.Fee() != 100000 {
+		t.Error("create coin data fee is invalid", data.Fee())
 	}
 }

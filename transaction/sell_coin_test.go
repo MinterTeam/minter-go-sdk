@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const txSellCoin = "0xf865010201010295d401880de0b6b3a764000002880de0b6b3a7640000808001b845f8431ca01552ab0503f8173bef46f2336d48ef6e1fae7bb5aa8b51ec7332b720a8a2f15ca0166970c5d209bac8b5ffae32047f1e4e868c5a20f522aeebb0bc523ae16c64fa"
+
 func TestTransactionSellCoin_Sign(t *testing.T) {
 	data := NewSellCoinData().
 		SetCoinToSell(1).
@@ -24,12 +26,21 @@ func TestTransactionSellCoin_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf865010201010295d401880de0b6b3a764000002880de0b6b3a7640000808001b845f8431ca01552ab0503f8173bef46f2336d48ef6e1fae7bb5aa8b51ec7332b720a8a2f15ca0166970c5d209bac8b5ffae32047f1e4e868c5a20f522aeebb0bc523ae16c64fa"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if encode != validSignature {
-		t.Errorf("EncodeTx got %s, want %s", string(encode), validSignature)
+	if encode != txSellCoin {
+		t.Errorf("EncodeTx got %s, want %s", string(encode), txSellCoin)
+	}
+}
+func TestDecode_sellCoin(t *testing.T) {
+	decode, err := Decode(txSellCoin)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if decode.Fee().String() != "100000000000000000" {
+		t.Error("sell coin transaction fee is invalid", decode.Fee().String())
 	}
 }

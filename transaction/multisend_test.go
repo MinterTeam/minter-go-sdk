@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const txMultisend = "0xf895010201010db844f842f840df0194fe60014a6e9ac91618f5d1cab3fd58cded61ee9988016345785d8a0000df0194ddab6281766ad86497741ff91b6b48fe85012e3c8802c68af0bb140000808001b845f8431ba0718f10b4468989919adabd215f5a6e83bd70eb1358d725541c2661122f66350ba05ab9e5e28107612f89ce56f4d7846edcbf272e8929eaf0c7c945e2530f40b667"
+
 func TestTransactionMultisend_Sign(t *testing.T) {
 	data := NewMultisendData().AddItem(
 		NewSendData().
@@ -30,12 +32,22 @@ func TestTransactionMultisend_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf895010201010db844f842f840df0194fe60014a6e9ac91618f5d1cab3fd58cded61ee9988016345785d8a0000df0194ddab6281766ad86497741ff91b6b48fe85012e3c8802c68af0bb140000808001b845f8431ba0718f10b4468989919adabd215f5a6e83bd70eb1358d725541c2661122f66350ba05ab9e5e28107612f89ce56f4d7846edcbf272e8929eaf0c7c945e2530f40b667"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if encode != validSignature {
-		t.Errorf("EncodeTx got %s, want %s", string(encode), validSignature)
+	if encode != txMultisend {
+		t.Errorf("EncodeTx got %s, want %s", string(encode), txMultisend)
+	}
+}
+
+func TestDecode_multisend(t *testing.T) {
+	decode, err := Decode(txMultisend)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if decode.Fee().String() != "15000000000000000" {
+		t.Error("multisend transaction fee is invalid", decode.Fee().String())
 	}
 }

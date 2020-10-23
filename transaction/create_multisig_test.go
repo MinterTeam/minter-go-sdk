@@ -4,6 +4,8 @@ import (
 	"testing"
 )
 
+const txCreateMultisig = "0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988"
+
 func TestCreateMultisigData_Sign(t *testing.T) {
 	data := NewCreateMultisigData().
 		MustAddSigData("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 1).
@@ -23,7 +25,7 @@ func TestCreateMultisigData_Sign(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf8990b0201010cb848f84607c3010305f83f9408d920c5d93dbf23038fe1a54bbb34f41f77677c94772fd5bd06356250e5efe572b6ae615860ee0c17949c7f68ff71b5819c41e8f87cc99bdf6359da3d75808001b845f8431ba0dfc662df298edef48a1a9623a735b55b3acd32023c24a40efc90a85d37209d04a06c2bcd518c2e47ac102941776a68f3ada206260828354e76e2080396bf18f2b1"
+	const validSignature = "0xf8990b0201010cb848f84607c3010305f83f9408d920c5d93dbf23038fe1a54bbb34f41f77677c94772fd5bd06356250e5efe572b6ae615860ee0c17949c7f68ff71b5819c41e8f87cc99bdf6359da3d75808001b845f8431ba0dfc662df298edef48a1a9623a735b55b3acd32023c24a40efc90a85d37209d04a06c2bcd518c2e47ac102941776a68f3ada206260828354e76e2080396bf18f2b1"
 	encode, err := signedTx.Encode()
 	if err != nil {
 		t.Fatal(err)
@@ -66,19 +68,18 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	validSignature := "0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988"
-	if encode != validSignature {
-		t.Errorf("EncodeTx got %s, want %s", encode, validSignature)
+	if encode != txCreateMultisig {
+		t.Errorf("EncodeTx got %s, want %s", encode, txCreateMultisig)
 	}
 }
 
-func TestDecodeCreateMultisig(t *testing.T) {
-	decode, err := Decode("0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988")
+func TestDecode_createMultisig(t *testing.T) {
+	decode, err := Decode(txCreateMultisig)
 	if err != nil {
 		t.Fatal(err)
 	}
-	data := decode.Data().(*CreateMultisigData)
-	if data.Threshold != 7 {
-		t.Errorf("Threshold got %d, want %d", data.Threshold, 1)
+
+	if decode.Fee().String() != "100000000000000000" {
+		t.Error("send transaction fee is invalid", decode.Fee().String())
 	}
 }

@@ -344,6 +344,10 @@ func Decode(tx string) (Signed, error) {
 		data = &RecreateCoinData{}
 	case TypeEditCoinOwner:
 		data = &EditCoinOwnerData{}
+	case TypeEditMultisig:
+		data = &EditMultisigData{}
+	case TypePriceVote:
+		data = &PriceVoteData{}
 	case TypeEditCandidatePublicKey:
 		data = &EditCandidatePublicKeyData{}
 	default:

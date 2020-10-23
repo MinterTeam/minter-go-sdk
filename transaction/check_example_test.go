@@ -65,7 +65,7 @@ func ExampleDecodeCheck() {
 	fmt.Println(hex.EncodeToString(data.S.Bytes()))
 	// Result: 47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df
 
-	sender, _ := data.Sender()
+	sender := data.MustSender()
 	fmt.Println(sender)
 	// Result: Mxce931863b9c94a526d94acd8090c1c5955a6eb4b
 
@@ -115,7 +115,7 @@ func ExampleDecodeRawCheck() {
 	fmt.Println(hex.EncodeToString(data.S.Bytes()))
 	// Result: 47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df
 
-	sender, _ := data.Sender()
+	sender := data.MustSender()
 	fmt.Println(sender)
 	// Result: Mxce931863b9c94a526d94acd8090c1c5955a6eb4b
 

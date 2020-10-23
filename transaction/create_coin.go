@@ -64,7 +64,7 @@ func (d *CreateCoinData) Type() Type {
 // Fee returns commission of transaction Data
 func (d *CreateCoinData) Fee() Fee {
 	switch len(d.Symbol.String()) {
-	case 3:
+	case 0, 1, 2, 3:
 		return 1000000 * feeTypeCreateCoin
 	case 4:
 		return 100000 * feeTypeCreateCoin
@@ -72,10 +72,8 @@ func (d *CreateCoinData) Fee() Fee {
 		return 10000 * feeTypeCreateCoin
 	case 6:
 		return 1000 * feeTypeCreateCoin
-	case 7, 8, 9, 10:
-		return 100 * feeTypeCreateCoin
 	default:
-		return feeTypeCreateCoin
+		return 100 * feeTypeCreateCoin
 	}
 }
 
