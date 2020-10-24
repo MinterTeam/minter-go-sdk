@@ -21,9 +21,11 @@ import (
 // with the default values initialized.
 func NewAddressParams() *AddressParams {
 	var (
+		bipValueDefault  = bool(false)
 		delegatedDefault = bool(false)
 	)
 	return &AddressParams{
+		BipValue:  &bipValueDefault,
 		Delegated: &delegatedDefault,
 
 		timeout: cr.DefaultTimeout,
@@ -34,9 +36,11 @@ func NewAddressParams() *AddressParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewAddressParamsWithTimeout(timeout time.Duration) *AddressParams {
 	var (
+		bipValueDefault  = bool(false)
 		delegatedDefault = bool(false)
 	)
 	return &AddressParams{
+		BipValue:  &bipValueDefault,
 		Delegated: &delegatedDefault,
 
 		timeout: timeout,
@@ -47,9 +51,11 @@ func NewAddressParamsWithTimeout(timeout time.Duration) *AddressParams {
 // with the default values initialized, and the ability to set a context for a request
 func NewAddressParamsWithContext(ctx context.Context) *AddressParams {
 	var (
+		bipValueDefault  = bool(false)
 		delegatedDefault = bool(false)
 	)
 	return &AddressParams{
+		BipValue:  &bipValueDefault,
 		Delegated: &delegatedDefault,
 
 		Context: ctx,
@@ -60,9 +66,11 @@ func NewAddressParamsWithContext(ctx context.Context) *AddressParams {
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewAddressParamsWithHTTPClient(client *http.Client) *AddressParams {
 	var (
+		bipValueDefault  = bool(false)
 		delegatedDefault = bool(false)
 	)
 	return &AddressParams{
+		BipValue:   &bipValueDefault,
 		Delegated:  &delegatedDefault,
 		HTTPClient: client,
 	}
@@ -75,6 +83,8 @@ type AddressParams struct {
 
 	/*Address*/
 	Address string
+	/*BipValue*/
+	BipValue *bool
 	/*Delegated*/
 	Delegated *bool
 	/*Height*/
@@ -129,6 +139,17 @@ func (o *AddressParams) SetAddress(address string) {
 	o.Address = address
 }
 
+// WithBipValue adds the bipValue to the address params
+func (o *AddressParams) WithBipValue(bipValue *bool) *AddressParams {
+	o.SetBipValue(bipValue)
+	return o
+}
+
+// SetBipValue adds the bipValue to the address params
+func (o *AddressParams) SetBipValue(bipValue *bool) {
+	o.BipValue = bipValue
+}
+
 // WithDelegated adds the delegated to the address params
 func (o *AddressParams) WithDelegated(delegated *bool) *AddressParams {
 	o.SetDelegated(delegated)
@@ -162,6 +183,22 @@ func (o *AddressParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regis
 	// path param address
 	if err := r.SetPathParam("address", o.Address); err != nil {
 		return err
+	}
+
+	if o.BipValue != nil {
+
+		// query param bip_value
+		var qrBipValue bool
+		if o.BipValue != nil {
+			qrBipValue = *o.BipValue
+		}
+		qBipValue := swag.FormatBool(qrBipValue)
+		if qBipValue != "" {
+			if err := r.SetQueryParam("bip_value", qBipValue); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if o.Delegated != nil {

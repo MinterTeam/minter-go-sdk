@@ -129,7 +129,27 @@ func (c *Concise) Nonce(address string, optionalHeight ...uint64) (uint64, error
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.AddressResponse, error) {
-	res, err := c.ClientService.Address(api_service.NewAddressParamsWithTimeout(c.timeout).WithAddress(address).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	res, err := c.AddressWithMoreInfo(address, false, false, optionalHeight...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// Addresses returns list of addresses.
+func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
+	res, err := c.AddressesWithMoreInfo(addresses, false, false, optionalHeight...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// AddressWithMoreInfo returns coins list with bipValue, balance, delegated and transaction count of an address.
+func (c *Concise) AddressWithMoreInfo(address string, bipValue, delegated bool, optionalHeight ...uint64) (*models.AddressResponse, error) {
+	res, err := c.ClientService.Address(api_service.NewAddressParamsWithTimeout(c.timeout).WithAddress(address).WithHeight(optionalInt(optionalHeight)).WithBipValue(&bipValue).WithDelegated(&delegated).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -137,9 +157,9 @@ func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.Add
 	return res.GetPayload(), nil
 }
 
-// Addresses returns list of addresses.
-func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
-	res, err := c.ClientService.Addresses(api_service.NewAddressesParamsWithTimeout(c.timeout).WithAddresses(addresses).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+// AddressesWithMoreInfo returns list of addresses with bipValue and delegated.
+func (c *Concise) AddressesWithMoreInfo(addresses []string, bipValue, delegated bool, optionalHeight ...uint64) (*models.AddressesResponse, error) {
+	res, err := c.ClientService.Addresses(api_service.NewAddressesParamsWithTimeout(c.timeout).WithAddresses(addresses).WithHeight(optionalInt(optionalHeight)).WithBipValue(&bipValue).WithDelegated(&delegated).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}

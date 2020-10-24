@@ -176,12 +176,22 @@ func (c *Client) Status() (*api_pb.StatusResponse, error) {
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Client) Address(address string, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
-	return c.grpcClient.Address(c.ctxFunc(), &api_pb.AddressRequest{Height: optionalInt(optionalHeight), Address: address}, c.opts...)
+	return c.AddressWithMoreInfo(address, false, false, optionalHeight...)
 }
 
 // Addresses returns list of addresses.
 func (c *Client) Addresses(addresses []string, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
-	return c.grpcClient.Addresses(c.ctxFunc(), &api_pb.AddressesRequest{Addresses: addresses, Height: optionalInt(optionalHeight)}, c.opts...)
+	return c.AddressesWithMoreInfo(addresses, false, false, optionalHeight...)
+}
+
+// AddressWithMoreInfo returns coins list with bipValue, balance, delegated and transaction count of an address.
+func (c *Client) AddressWithMoreInfo(address string, bipValue, delegated bool, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
+	return c.grpcClient.Address(c.ctxFunc(), &api_pb.AddressRequest{Height: optionalInt(optionalHeight), Address: address, BipValue: bipValue, Delegated: delegated}, c.opts...)
+}
+
+// AddressesWithMoreInfo returns list of addresses with bipValue and delegated.
+func (c *Client) AddressesWithMoreInfo(addresses []string, bipValue, delegated bool, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
+	return c.grpcClient.Addresses(c.ctxFunc(), &api_pb.AddressesRequest{Addresses: addresses, Height: optionalInt(optionalHeight), BipValue: bipValue, Delegated: delegated}, c.opts...)
 }
 
 // Block returns block data at given height.

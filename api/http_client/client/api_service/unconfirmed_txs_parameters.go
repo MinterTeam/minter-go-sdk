@@ -135,7 +135,7 @@ func (o *UnconfirmedTxsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 	if o.Limit != nil {
 
-		// query param page
+		// query param limit
 		var qrLimit int32
 		if o.Limit != nil {
 			qrLimit = *o.Limit
