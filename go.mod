@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec // indirect
-	github.com/MinterTeam/node-grpc-gateway v1.2.1-0.20201019072706-326f69c6e526
+	github.com/MinterTeam/node-grpc-gateway v1.2.1-0.20201024103100-bfb15cd1cbda
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect
@@ -28,7 +28,6 @@ require (
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0
 	golang.org/x/net v0.0.0-20201002202402-0a1ea396d57c // indirect
 	golang.org/x/sys v0.0.0-20201005065044-765f4ea38db3 // indirect
-	google.golang.org/genproto v0.0.0-20201002142447-3860012362da // indirect
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.25.0
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
