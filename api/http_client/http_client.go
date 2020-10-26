@@ -129,7 +129,7 @@ func (c *Concise) Nonce(address string, optionalHeight ...uint64) (uint64, error
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.AddressResponse, error) {
-	res, err := c.AddressWithMoreInfo(address, false, false, optionalHeight...)
+	res, err := c.AddressWithMoreInfo(address, true, false, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.Add
 
 // Addresses returns list of addresses.
 func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
-	res, err := c.AddressesWithMoreInfo(addresses, false, false, optionalHeight...)
+	res, err := c.AddressesWithMoreInfo(addresses, true, false, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}
