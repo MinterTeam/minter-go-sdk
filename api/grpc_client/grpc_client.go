@@ -7,10 +7,11 @@ import (
 	"github.com/MinterTeam/node-grpc-gateway/api_pb"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/grpc-ecosystem/go-grpc-middleware/retry"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	_struct "google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -39,7 +40,17 @@ func New(address string, _ ...string) (*Client, error) {
 		return nil, err
 	}
 
-	return &Client{grpcClient: api_pb.NewApiServiceClient(clientConn), ctxFunc: context.Background, marshaler: &runtime.JSONPb{OrigName: true, EmitDefaults: true}}, nil
+	return &Client{grpcClient: api_pb.NewApiServiceClient(clientConn), ctxFunc: context.Background,
+		marshaler: &runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				UseProtoNames:   true,
+				EmitUnpopulated: true,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		},
+	}, nil
 }
 
 // WithContextFunc returns new Client with new context
