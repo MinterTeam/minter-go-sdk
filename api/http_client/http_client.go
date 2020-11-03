@@ -6,6 +6,10 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
+	"github.com/go-openapi/runtime"
+	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/runtime/logger"
+	"github.com/go-openapi/strfmt"
 	"github.com/gorilla/websocket"
 	"io"
 	"net/http"
@@ -22,6 +26,9 @@ type Concise struct {
 	ssl     bool
 	timeout time.Duration
 	ctxFunc func() context.Context
+	debug   bool
+	logger  logger.Logger
+	headers map[string][]string
 }
 
 // NewConcise returns concise HTTP client, with wrapper over go-swagger methods
@@ -31,31 +38,104 @@ func NewConcise(address string) (*Concise, error) {
 		return nil, err
 	}
 
-	return &Concise{
-		ClientService: client.NewHTTPClientWithConfig(nil,
-			client.DefaultTransportConfig().
-				WithHost(parseAddress.Host).
-				WithBasePath(parseAddress.Path).
-				WithSchemes([]string{parseAddress.Scheme}),
-		).APIService,
+	concise := &Concise{
 		host:    parseAddress.Host,
 		path:    parseAddress.Path,
 		ssl:     parseAddress.Scheme == "https",
 		timeout: 10 * time.Second,
 		ctxFunc: context.Background,
-	}, nil
+		logger:  logger.StandardLogger{},
+		debug:   logger.DebugEnabled(),
+		headers: map[string][]string{},
+	}
+
+	return concise.setClientService(nil), nil
+}
+
+func (c *Concise) setClientService(clientService api_service.ClientService) *Concise {
+	if clientService == nil {
+		r := httptransport.New(c.host, c.path, []string{c.getHTTPProtocol()})
+		r.SetDebug(c.debug)
+		r.SetLogger(c.logger)
+
+		r.DefaultAuthentication = clientAuthInfoWriterFunc(c.headers)
+		clientService = client.New(r, nil).APIService
+	}
+	c.ClientService = clientService
+	return c
+}
+
+func clientAuthInfoWriterFunc(headers map[string][]string) runtime.ClientAuthInfoWriterFunc {
+	return func(req runtime.ClientRequest, reg strfmt.Registry) error {
+		for key, value := range headers {
+			err := req.SetHeaderParam(key, value...)
+			if err != nil {
+				return err
+			}
+		}
+
+		return nil
+	}
 }
 
 // WithTimeout returns copy of Concise with timeout.
 func (c *Concise) WithTimeout(timeout time.Duration) *Concise {
-	return &Concise{
-		ClientService: c.ClientService,
-		host:          c.host,
-		path:          c.path,
-		ssl:           c.ssl,
-		timeout:       timeout,
-		ctxFunc:       c.ctxFunc,
+	concise := &Concise{
+		host:    c.host,
+		path:    c.path,
+		ssl:     c.ssl,
+		timeout: timeout,
+		ctxFunc: c.ctxFunc,
+		debug:   c.debug,
+		logger:  c.logger,
+		headers: c.headers,
 	}
+	return concise.setClientService(nil)
+}
+
+// WithHeaders returns copy of Concise with custom headers.
+func (c *Concise) WithHeaders(headers map[string][]string) *Concise {
+	concise := &Concise{
+		host:    c.host,
+		path:    c.path,
+		ssl:     c.ssl,
+		timeout: c.timeout,
+		ctxFunc: c.ctxFunc,
+		debug:   c.debug,
+		logger:  c.logger,
+		headers: headers,
+	}
+	return concise.setClientService(nil)
+}
+
+// WithDebug returns copy of Concise with debug.
+func (c *Concise) WithDebug(debug bool) *Concise {
+	concise := &Concise{
+		host:    c.host,
+		path:    c.path,
+		ssl:     c.ssl,
+		timeout: c.timeout,
+		ctxFunc: c.ctxFunc,
+		debug:   debug,
+		logger:  c.logger,
+		headers: c.headers,
+	}
+	return concise.setClientService(nil)
+}
+
+// WithLogger returns copy of Concise with debug.
+func (c *Concise) WithLogger(logger logger.Logger) *Concise {
+	concise := &Concise{
+		host:    c.host,
+		path:    c.path,
+		ssl:     c.ssl,
+		timeout: c.timeout,
+		ctxFunc: c.ctxFunc,
+		debug:   c.debug,
+		logger:  logger,
+		headers: c.headers,
+	}
+	return concise.setClientService(nil)
 }
 
 // WithContextFunc returns new Concise client with new context
@@ -67,14 +147,17 @@ func (c *Concise) WithTimeout(timeout time.Duration) *Concise {
 //			}
 //		}
 func (c *Concise) WithContextFunc(contextFunc func(context.Context) func() context.Context) *Concise {
-	return &Concise{
-		ClientService: c.ClientService,
-		host:          c.host,
-		path:          c.path,
-		ssl:           c.ssl,
-		timeout:       c.timeout,
-		ctxFunc:       contextFunc(c.ctxFunc()),
+	concise := &Concise{
+		host:    c.host,
+		path:    c.path,
+		ssl:     c.ssl,
+		timeout: c.timeout,
+		ctxFunc: contextFunc(c.ctxFunc()),
+		debug:   c.debug,
+		logger:  c.logger,
+		headers: c.headers,
 	}
+	return concise.setClientService(nil)
 }
 
 // CoinID returns ID of coin symbol.
@@ -466,10 +549,7 @@ func (c *Concise) Subscribe(ctx context.Context, query string) (*SubscriberClien
 	subClient := &SubscriberClient{}
 
 	subClient.ctx, subClient.cancel = context.WithCancel(ctx)
-	scheme := "ws"
-	if c.ssl {
-		scheme += "s"
-	}
+	scheme := c.getWSProtocol()
 	u := url.URL{Scheme: scheme, Host: c.host, Path: c.path + "/subscribe", RawQuery: "query=" + url.QueryEscape(query)}
 
 	var err error
@@ -479,6 +559,20 @@ func (c *Concise) Subscribe(ctx context.Context, query string) (*SubscriberClien
 	}
 
 	return subClient, nil
+}
+
+func (c *Concise) getWSProtocol() string {
+	if c.ssl {
+		return "wss"
+	}
+	return "ws"
+}
+
+func (c *Concise) getHTTPProtocol() string {
+	if c.ssl {
+		return "https"
+	}
+	return "http"
 }
 
 type defaultError interface {
