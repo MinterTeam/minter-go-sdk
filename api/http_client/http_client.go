@@ -123,7 +123,7 @@ func (c *Concise) WithDebug(debug bool) *Concise {
 	return concise.setClientService(nil)
 }
 
-// WithLogger returns copy of Concise with debug.
+// WithLogger returns copy of Concise with custom logger.
 func (c *Concise) WithLogger(logger logger.Logger) *Concise {
 	concise := &Concise{
 		host:    c.host,
