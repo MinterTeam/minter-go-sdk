@@ -59,7 +59,7 @@ Returns a signed tx.
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
     transaction.NewSendData().
         SetCoin(0).
-        SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+        SetValue(transaction.BipToPip(big.NewInt(1))).
         MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
 )
 
@@ -80,7 +80,7 @@ encode, _ := signedTransaction.Encode()
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
     transaction.NewSendData().
         SetCoin(0).
-        SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
+        SetValue(transaction.BipToPip(big.NewInt(1))).
         MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
 )
 
