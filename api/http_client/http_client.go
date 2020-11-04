@@ -162,12 +162,12 @@ func (c *Concise) WithContextFunc(contextFunc func(context.Context) func() conte
 
 // CoinID returns ID of coin symbol.
 func (c *Concise) CoinID(symbol string, optionalHeight ...uint64) (uint64, error) {
-	res, err := c.ClientService.CoinInfo(api_service.NewCoinInfoParamsWithTimeout(c.timeout).WithSymbol(symbol).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	res, err := c.CoinInfo(symbol, optionalHeight...)
 	if err != nil {
 		return 0, err
 	}
 
-	return res.GetPayload().ID, nil
+	return res.ID, nil
 }
 
 // Halts returns the candidate votes for stopping the network at block.
@@ -212,7 +212,7 @@ func (c *Concise) Nonce(address string, optionalHeight ...uint64) (uint64, error
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.AddressResponse, error) {
-	res, err := c.AddressWithMoreInfo(address, true, false, optionalHeight...)
+	res, err := c.AddressExtended(address, true, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.Add
 
 // Addresses returns list of addresses.
 func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
-	res, err := c.AddressesWithMoreInfo(addresses, true, false, optionalHeight...)
+	res, err := c.AddressesExtended(addresses, true, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}
@@ -230,9 +230,9 @@ func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*mode
 	return res, nil
 }
 
-// AddressWithMoreInfo returns coins list with bipValue, balance, delegated and transaction count of an address.
-func (c *Concise) AddressWithMoreInfo(address string, bipValue, delegated bool, optionalHeight ...uint64) (*models.AddressResponse, error) {
-	res, err := c.ClientService.Address(api_service.NewAddressParamsWithTimeout(c.timeout).WithAddress(address).WithHeight(optionalInt(optionalHeight)).WithBipValue(&bipValue).WithDelegated(&delegated).WithContext(c.ctxFunc()))
+// AddressExtended returns coins list with bipValue, balance, delegated and transaction count of an address.
+func (c *Concise) AddressExtended(address string, delegated bool, optionalHeight ...uint64) (*models.AddressResponse, error) {
+	res, err := c.ClientService.Address(api_service.NewAddressParamsWithTimeout(c.timeout).WithAddress(address).WithHeight(optionalInt(optionalHeight)).WithDelegated(&delegated).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -240,9 +240,9 @@ func (c *Concise) AddressWithMoreInfo(address string, bipValue, delegated bool, 
 	return res.GetPayload(), nil
 }
 
-// AddressesWithMoreInfo returns list of addresses with bipValue and delegated.
-func (c *Concise) AddressesWithMoreInfo(addresses []string, bipValue, delegated bool, optionalHeight ...uint64) (*models.AddressesResponse, error) {
-	res, err := c.ClientService.Addresses(api_service.NewAddressesParamsWithTimeout(c.timeout).WithAddresses(addresses).WithHeight(optionalInt(optionalHeight)).WithBipValue(&bipValue).WithDelegated(&delegated).WithContext(c.ctxFunc()))
+// AddressesExtended returns list of addresses with bipValue and delegated.
+func (c *Concise) AddressesExtended(addresses []string, delegated bool, optionalHeight ...uint64) (*models.AddressesResponse, error) {
+	res, err := c.ClientService.Addresses(api_service.NewAddressesParamsWithTimeout(c.timeout).WithAddresses(addresses).WithHeight(optionalInt(optionalHeight)).WithDelegated(&delegated).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -262,12 +262,12 @@ func (c *Concise) Block(height uint64) (*models.BlockResponse, error) {
 
 // Candidate returns candidate’s res by provided public_key.
 func (c *Concise) Candidate(publicKey string, optionalHeight ...uint64) (*models.CandidateResponse, error) {
-	res, err := c.ClientService.Candidate(api_service.NewCandidateParamsWithTimeout(c.timeout).WithPublicKey(publicKey).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	res, err := c.CandidateExtended(publicKey, false, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}
 
-	return res.GetPayload(), nil
+	return res, nil
 }
 
 // Candidates returns list of candidates.
@@ -275,7 +275,30 @@ func (c *Concise) Candidates(includeStakes bool, status string, optionalHeight .
 	if status == "" {
 		status = "all"
 	}
-	res, err := c.ClientService.Candidates(api_service.NewCandidatesParamsWithTimeout(c.timeout).WithIncludeStakes(&includeStakes).WithStatus(&status).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	res, err := c.CandidatesExtended(includeStakes, true, "", optionalHeight...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// CandidateExtended returns candidate’s res by provided public_key.
+func (c *Concise) CandidateExtended(publicKey string, notShowStakes bool, optionalHeight ...uint64) (*models.CandidateResponse, error) {
+	res, err := c.ClientService.Candidate(api_service.NewCandidateParamsWithTimeout(c.timeout).WithNotShowStakes(&notShowStakes).WithPublicKey(publicKey).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// CandidatesExtended returns list of candidates.
+func (c *Concise) CandidatesExtended(includeStakes, notShowStakes bool, status string, optionalHeight ...uint64) (*models.CandidatesResponse, error) {
+	if status == "" {
+		status = "all"
+	}
+	res, err := c.ClientService.Candidates(api_service.NewCandidatesParamsWithTimeout(c.timeout).WithIncludeStakes(&includeStakes).WithNotShowStakes(&notShowStakes).WithStatus(&status).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}

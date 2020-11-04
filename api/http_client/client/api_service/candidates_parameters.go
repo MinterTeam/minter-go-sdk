@@ -22,10 +22,12 @@ import (
 func NewCandidatesParams() *CandidatesParams {
 	var (
 		includeStakesDefault = bool(false)
+		notShowStakesDefault = bool(false)
 		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
 		IncludeStakes: &includeStakesDefault,
+		NotShowStakes: &notShowStakesDefault,
 		Status:        &statusDefault,
 
 		timeout: cr.DefaultTimeout,
@@ -37,10 +39,12 @@ func NewCandidatesParams() *CandidatesParams {
 func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 	var (
 		includeStakesDefault = bool(false)
+		notShowStakesDefault = bool(false)
 		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
 		IncludeStakes: &includeStakesDefault,
+		NotShowStakes: &notShowStakesDefault,
 		Status:        &statusDefault,
 
 		timeout: timeout,
@@ -52,10 +56,12 @@ func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
 func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 	var (
 		includeStakesDefault = bool(false)
+		notShowStakesDefault = bool(false)
 		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
 		IncludeStakes: &includeStakesDefault,
+		NotShowStakes: &notShowStakesDefault,
 		Status:        &statusDefault,
 
 		Context: ctx,
@@ -67,10 +73,12 @@ func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
 func NewCandidatesParamsWithHTTPClient(client *http.Client) *CandidatesParams {
 	var (
 		includeStakesDefault = bool(false)
+		notShowStakesDefault = bool(false)
 		statusDefault        = string("all")
 	)
 	return &CandidatesParams{
 		IncludeStakes: &includeStakesDefault,
+		NotShowStakes: &notShowStakesDefault,
 		Status:        &statusDefault,
 		HTTPClient:    client,
 	}
@@ -81,10 +89,21 @@ for the candidates operation typically these are written to a http.Request
 */
 type CandidatesParams struct {
 
-	/*Height*/
+	/*Height
+	  Blockchain state height for the current request. Optional, the last default state of the node is used.
+
+	*/
 	Height *uint64
-	/*IncludeStakes*/
+	/*IncludeStakes
+	  Calculate field values used_slots, uniq_users, min_stake.
+
+	*/
 	IncludeStakes *bool
+	/*NotShowStakes
+	  Do not display the list of stakes, the include_stakes flag is also required to display. Note: used_slots, uniq_users, min_stake will still be filled if include_stakes flag is used.
+
+	*/
+	NotShowStakes *bool
 	/*Status*/
 	Status *string
 
@@ -148,6 +167,17 @@ func (o *CandidatesParams) SetIncludeStakes(includeStakes *bool) {
 	o.IncludeStakes = includeStakes
 }
 
+// WithNotShowStakes adds the notShowStakes to the candidates params
+func (o *CandidatesParams) WithNotShowStakes(notShowStakes *bool) *CandidatesParams {
+	o.SetNotShowStakes(notShowStakes)
+	return o
+}
+
+// SetNotShowStakes adds the notShowStakes to the candidates params
+func (o *CandidatesParams) SetNotShowStakes(notShowStakes *bool) {
+	o.NotShowStakes = notShowStakes
+}
+
 // WithStatus adds the status to the candidates params
 func (o *CandidatesParams) WithStatus(status *string) *CandidatesParams {
 	o.SetStatus(status)
@@ -193,6 +223,22 @@ func (o *CandidatesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 		qIncludeStakes := swag.FormatBool(qrIncludeStakes)
 		if qIncludeStakes != "" {
 			if err := r.SetQueryParam("include_stakes", qIncludeStakes); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.NotShowStakes != nil {
+
+		// query param not_show_stakes
+		var qrNotShowStakes bool
+		if o.NotShowStakes != nil {
+			qrNotShowStakes = *o.NotShowStakes
+		}
+		qNotShowStakes := swag.FormatBool(qrNotShowStakes)
+		if qNotShowStakes != "" {
+			if err := r.SetQueryParam("not_show_stakes", qNotShowStakes); err != nil {
 				return err
 			}
 		}

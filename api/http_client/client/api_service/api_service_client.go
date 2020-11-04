@@ -71,6 +71,8 @@ type ClientService interface {
 
 	Subscribe(params *SubscribeParams) (*SubscribeOK, error)
 
+	TestBlock(params *TestBlockParams) (*TestBlockOK, error)
+
 	Transaction(params *TransactionParams) (*TransactionOK, error)
 
 	Transactions(params *TransactionsParams) (*TransactionsOK, error)
@@ -85,7 +87,9 @@ type ClientService interface {
 }
 
 /*
-  Address returns coins list balance and transaction count of an address
+  Address addresses
+
+  Address returns coins list, balance and transaction count of an address.
 */
 func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
 	// TODO: Validate the params before sending
@@ -118,7 +122,9 @@ func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
 }
 
 /*
-  Addresses returns list of addresses
+  Addresses addresses
+
+  Addresses returns list of addresses.
 */
 func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
 	// TODO: Validate the params before sending
@@ -151,7 +157,9 @@ func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
 }
 
 /*
-  Block returns block data at given height
+  Block blocks
+
+  Block returns block data at given height.
 */
 func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 	// TODO: Validate the params before sending
@@ -184,7 +192,25 @@ func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 }
 
 /*
-  Candidate returns candidate s info by provided public key
+  Candidate candidates
+
+  Candidate returns candidate’s info by provided public key.
+
+## Fields of response
+| Name      | Description                  |
+| --------- | ---------------------------- |
+| reward_address | Address where validator’s rewards go to. |
+| owner_address | Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate. |
+| control_address | Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. |
+| total_stake | Total stake of a candidate |
+| public_key | Public key of a candidate |
+| commission | Commission (from 0 to 100) from rewards which delegators will pay to validator |
+| used_slots | Number of occupied steak slots. Note: filled in when request includes_stakes |
+| uniq_users | Number of unique wallets in steaks. Note: filled in when request includes_stakes |
+| min_stake | Smallest steak size. Note: filled in when request includes_stakes |
+| stakes | List of stakes. Note: filled in when request includes_stakes |
+| status | Candidate status. Available values: offline = 1, online = 2 |
+| validator | Is a validator at the current height |
 */
 func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 	// TODO: Validate the params before sending
@@ -217,7 +243,9 @@ func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 }
 
 /*
-  Candidates returns list of candidates
+  Candidates candidates
+
+  Candidates returns list of candidates.
 */
 func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
 	// TODO: Validate the params before sending
@@ -250,7 +278,9 @@ func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
 }
 
 /*
-  CoinInfo returns information about coin symbol
+  CoinInfo coins info
+
+  CoinInfo returns information about coin symbol.
 */
 func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
 	// TODO: Validate the params before sending
@@ -283,7 +313,9 @@ func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
 }
 
 /*
-  CoinInfoByID returns information about coin ID
+  CoinInfoByID coins info by Id
+
+  CoinInfoById returns information about coin ID.
 */
 func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, error) {
 	// TODO: Validate the params before sending
@@ -316,7 +348,9 @@ func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, erro
 }
 
 /*
-  EstimateCoinBuy returns estimate of buy coin transaction
+  EstimateCoinBuy estimates coin buy
+
+  EstimateCoinBuy returns estimate of buy coin transaction.
 */
 func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBuyOK, error) {
 	// TODO: Validate the params before sending
@@ -349,7 +383,9 @@ func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBu
 }
 
 /*
-  EstimateCoinSell returns estimate of sell coin transaction
+  EstimateCoinSell estimates coin sell
+
+  EstimateCoinSell returns estimate of sell coin transaction.
 */
 func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoinSellOK, error) {
 	// TODO: Validate the params before sending
@@ -382,7 +418,9 @@ func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoin
 }
 
 /*
-  EstimateCoinSellAll returns estimate of sell all coin transaction
+  EstimateCoinSellAll estimates coin sell all
+
+  EstimateCoinSellAll returns estimate of sell all coin transaction.
 */
 func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*EstimateCoinSellAllOK, error) {
 	// TODO: Validate the params before sending
@@ -415,7 +453,9 @@ func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*Estima
 }
 
 /*
-  EstimateTxCommission returns estimate of transaction
+  EstimateTxCommission estimates tx commission
+
+  EstimateTxCommission returns estimate of transaction.
 */
 func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*EstimateTxCommissionOK, error) {
 	// TODO: Validate the params before sending
@@ -448,7 +488,9 @@ func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*Esti
 }
 
 /*
-  Events returns events at given height
+  Events events
+
+  Events returns events at given height.
 */
 func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
 	// TODO: Validate the params before sending
@@ -481,7 +523,9 @@ func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
 }
 
 /*
-  Frozen returns frozen balance
+  Frozen frozens
+
+  Frozen returns frozen balance.
 */
 func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
 	// TODO: Validate the params before sending
@@ -514,7 +558,9 @@ func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
 }
 
 /*
-  Genesis returns genesis file
+  Genesis geneses
+
+  Genesis returns genesis file.
 */
 func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 	// TODO: Validate the params before sending
@@ -547,7 +593,9 @@ func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 }
 
 /*
-  Halts returns the candidate votes for stopping the network at block
+  Halts halts
+
+  Halts returns the candidate votes for stopping the network at block.
 */
 func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 	// TODO: Validate the params before sending
@@ -580,7 +628,9 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 }
 
 /*
-  MaxGasPrice returns current max gas
+  MaxGasPrice maxes gas price
+
+  MaxGasPrice returns current max gas.
 */
 func (a *Client) MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error) {
 	// TODO: Validate the params before sending
@@ -613,7 +663,9 @@ func (a *Client) MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error) 
 }
 
 /*
-  MinGasPrice returns current min gas price
+  MinGasPrice mins gas price
+
+  MinGasPrice returns current min gas price.
 */
 func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) {
 	// TODO: Validate the params before sending
@@ -646,7 +698,9 @@ func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) 
 }
 
 /*
-  MissedBlocks returns missed blocks by validator public key
+  MissedBlocks misseds blocks
+
+  MissedBlocks returns missed blocks by validator public key.
 */
 func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, error) {
 	// TODO: Validate the params before sending
@@ -679,6 +733,8 @@ func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, erro
 }
 
 /*
+  NetInfo nets info
+
   NetInfo returns network info
 */
 func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
@@ -712,9 +768,9 @@ func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 }
 
 /*
-  SendTransaction returns the result of sending signed tx
+  SendTransaction sends transaction
 
-  To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
+  SendTransaction returns the result of sending signed tx. To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
 */
 func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -747,9 +803,9 @@ func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactio
 }
 
 /*
-  SendTransaction2 returns the result of sending signed tx
+  SendTransaction2 sends transaction
 
-  To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
+  SendTransaction returns the result of sending signed tx. To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
 */
 func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error) {
 	// TODO: Validate the params before sending
@@ -782,7 +838,9 @@ func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransact
 }
 
 /*
-  Status returns node status including pubkey latest block
+  Status statuses
+
+  Status returns node status including pubkey, latest block.
 */
 func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 	// TODO: Validate the params before sending
@@ -815,9 +873,9 @@ func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 }
 
 /*
-  Subscribe returns a subscription for events by query
+  Subscribe subscribes
 
-  Only supported in WS and gRPC methods
+  Subscribe returns a subscription for events by query. Only supported in WS and gRPC methods.
 */
 func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 	// TODO: Validate the params before sending
@@ -850,7 +908,44 @@ func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 }
 
 /*
-  Transaction returns transaction info
+  TestBlock tests block
+
+  TestBlock returns the list of example transactions in block. Available only testnet mode.
+*/
+func (a *Client) TestBlock(params *TestBlockParams) (*TestBlockOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewTestBlockParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "TestBlock",
+		Method:             "GET",
+		PathPattern:        "/test/block",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &TestBlockReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*TestBlockOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*TestBlockDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  Transaction transactions
+
+  Transaction returns transaction info.
 */
 func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) {
 	// TODO: Validate the params before sending
@@ -883,7 +978,9 @@ func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) 
 }
 
 /*
-  Transactions returns transactions by query
+  Transactions transactions
+
+  Transactions returns transactions by query.
 */
 func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, error) {
 	// TODO: Validate the params before sending
@@ -916,7 +1013,9 @@ func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, erro
 }
 
 /*
-  UnconfirmedTxs returns unconfirmed transactions
+  UnconfirmedTxs unconfirmeds txs
+
+  UnconfirmedTxs returns unconfirmed transactions.
 */
 func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK, error) {
 	// TODO: Validate the params before sending
@@ -949,7 +1048,9 @@ func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK
 }
 
 /*
-  Validators returns list of active validators
+  Validators validators
+
+  Validators returns list of active validators.
 */
 func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
 	// TODO: Validate the params before sending
@@ -982,7 +1083,9 @@ func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
 }
 
 /*
-  WaitList returns the list of address stakes in waitlist
+  WaitList waits list
+
+  WaitList returns the list of address stakes in waitlist.
 */
 func (a *Client) WaitList(params *WaitListParams) (*WaitListOK, error) {
 	// TODO: Validate the params before sending

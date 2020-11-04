@@ -20,8 +20,11 @@ import (
 // NewCandidateParams creates a new CandidateParams object
 // with the default values initialized.
 func NewCandidateParams() *CandidateParams {
-	var ()
+	var (
+		notShowStakesDefault = bool(false)
+	)
 	return &CandidateParams{
+		NotShowStakes: &notShowStakesDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -30,8 +33,11 @@ func NewCandidateParams() *CandidateParams {
 // NewCandidateParamsWithTimeout creates a new CandidateParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewCandidateParamsWithTimeout(timeout time.Duration) *CandidateParams {
-	var ()
+	var (
+		notShowStakesDefault = bool(false)
+	)
 	return &CandidateParams{
+		NotShowStakes: &notShowStakesDefault,
 
 		timeout: timeout,
 	}
@@ -40,8 +46,11 @@ func NewCandidateParamsWithTimeout(timeout time.Duration) *CandidateParams {
 // NewCandidateParamsWithContext creates a new CandidateParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewCandidateParamsWithContext(ctx context.Context) *CandidateParams {
-	var ()
+	var (
+		notShowStakesDefault = bool(false)
+	)
 	return &CandidateParams{
+		NotShowStakes: &notShowStakesDefault,
 
 		Context: ctx,
 	}
@@ -50,9 +59,12 @@ func NewCandidateParamsWithContext(ctx context.Context) *CandidateParams {
 // NewCandidateParamsWithHTTPClient creates a new CandidateParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewCandidateParamsWithHTTPClient(client *http.Client) *CandidateParams {
-	var ()
+	var (
+		notShowStakesDefault = bool(false)
+	)
 	return &CandidateParams{
-		HTTPClient: client,
+		NotShowStakes: &notShowStakesDefault,
+		HTTPClient:    client,
 	}
 }
 
@@ -61,9 +73,20 @@ for the candidate operation typically these are written to a http.Request
 */
 type CandidateParams struct {
 
-	/*Height*/
+	/*Height
+	  Blockchain state height for the current request. Optional, the last default state of the node is used.
+
+	*/
 	Height *uint64
-	/*PublicKey*/
+	/*NotShowStakes
+	  Do not display a list of steaks. Note: used_slots, uniq_users, min_stake will be filled.
+
+	*/
+	NotShowStakes *bool
+	/*PublicKey
+	  Public key of a candidate
+
+	*/
 	PublicKey string
 
 	timeout    time.Duration
@@ -115,6 +138,17 @@ func (o *CandidateParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
+// WithNotShowStakes adds the notShowStakes to the candidate params
+func (o *CandidateParams) WithNotShowStakes(notShowStakes *bool) *CandidateParams {
+	o.SetNotShowStakes(notShowStakes)
+	return o
+}
+
+// SetNotShowStakes adds the notShowStakes to the candidate params
+func (o *CandidateParams) SetNotShowStakes(notShowStakes *bool) {
+	o.NotShowStakes = notShowStakes
+}
+
 // WithPublicKey adds the publicKey to the candidate params
 func (o *CandidateParams) WithPublicKey(publicKey string) *CandidateParams {
 	o.SetPublicKey(publicKey)
@@ -144,6 +178,22 @@ func (o *CandidateParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
 			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.NotShowStakes != nil {
+
+		// query param not_show_stakes
+		var qrNotShowStakes bool
+		if o.NotShowStakes != nil {
+			qrNotShowStakes = *o.NotShowStakes
+		}
+		qNotShowStakes := swag.FormatBool(qrNotShowStakes)
+		if qNotShowStakes != "" {
+			if err := r.SetQueryParam("not_show_stakes", qNotShowStakes); err != nil {
 				return err
 			}
 		}

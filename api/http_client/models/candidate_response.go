@@ -18,38 +18,41 @@ import (
 // swagger:model CandidateResponse
 type CandidateResponse struct {
 
-	// commission
+	// Commission (from 0 to 100) from rewards which delegators will pay to validator
 	Commission uint64 `json:"commission,omitempty,string"`
 
-	// control address
+	// Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
 	ControlAddress string `json:"control_address,omitempty"`
 
-	// To be completed when requesting candidate steaks
+	// Smallest steak size. Note: filled in when request includes_stakes
 	MinStake string `json:"min_stake,omitempty"`
 
-	// owner address
+	// Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate.
 	OwnerAddress string `json:"owner_address,omitempty"`
 
-	// public key
+	// Public key of a candidate
 	PublicKey string `json:"public_key,omitempty"`
 
-	// reward address
+	// Address where validator’s rewards go to.
 	RewardAddress string `json:"reward_address,omitempty"`
 
-	// To be completed when requesting candidate steaks
+	// List of stakes. Note: filled in when request includes_stakes
 	Stakes []*CandidateResponseStake `json:"stakes"`
 
-	// status
+	// Candidate status. Available values: offline = 1, online = 2
 	Status uint64 `json:"status,omitempty,string"`
 
-	// total stake
+	// Total stake of a candidate
 	TotalStake string `json:"total_stake,omitempty"`
 
-	// To be completed when requesting candidate steaks
+	// Number of unique wallets in steaks. Note: filled in when request includes_stakes
 	UniqUsers uint64 `json:"uniq_users,omitempty,string"`
 
-	// To be completed when requesting candidate steaks
+	// Number of occupied steak slots. Note: filled in when request includes_stakes
 	UsedSlots uint64 `json:"used_slots,omitempty,string"`
+
+	// Is a validator at the current height
+	Validator bool `json:"validator,omitempty"`
 }
 
 // Validate validates this candidate response

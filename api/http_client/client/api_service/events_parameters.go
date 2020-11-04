@@ -63,7 +63,10 @@ type EventsParams struct {
 
 	/*Height*/
 	Height string
-	/*Search*/
+	/*Search
+	  Array of public keys of validators and wallet addresses of validators for filtering.
+
+	*/
 	Search []string
 
 	timeout    time.Duration

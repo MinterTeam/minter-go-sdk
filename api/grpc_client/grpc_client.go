@@ -76,8 +76,8 @@ func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 }
 
 // CoinID returns ID of coin symbol.
-func (c *Client) CoinID(symbol string) (uint64, error) {
-	info, err := c.CoinInfo(symbol)
+func (c *Client) CoinID(symbol string, optionalHeight ...uint64) (uint64, error) {
+	info, err := c.CoinInfo(symbol, optionalHeight...)
 	if err != nil {
 		return 0, err
 	}
@@ -187,22 +187,22 @@ func (c *Client) Status() (*api_pb.StatusResponse, error) {
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Client) Address(address string, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
-	return c.AddressWithMoreInfo(address, true, false, optionalHeight...)
+	return c.AddressExtended(address, true, optionalHeight...)
 }
 
 // Addresses returns list of addresses.
 func (c *Client) Addresses(addresses []string, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
-	return c.AddressesWithMoreInfo(addresses, true, false, optionalHeight...)
+	return c.AddressesExtended(addresses, true, optionalHeight...)
 }
 
-// AddressWithMoreInfo returns coins list with bipValue, balance, delegated and transaction count of an address.
-func (c *Client) AddressWithMoreInfo(address string, bipValue, delegated bool, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
-	return c.grpcClient.Address(c.ctxFunc(), &api_pb.AddressRequest{Height: optionalInt(optionalHeight), Address: address, BipValue: bipValue, Delegated: delegated}, c.opts...)
+// AddressExtended returns coins list with balance, delegated and transaction count of an address.
+func (c *Client) AddressExtended(address string, delegated bool, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
+	return c.grpcClient.Address(c.ctxFunc(), &api_pb.AddressRequest{Height: optionalInt(optionalHeight), Address: address, Delegated: delegated}, c.opts...)
 }
 
-// AddressesWithMoreInfo returns list of addresses with bipValue and delegated.
-func (c *Client) AddressesWithMoreInfo(addresses []string, bipValue, delegated bool, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
-	return c.grpcClient.Addresses(c.ctxFunc(), &api_pb.AddressesRequest{Addresses: addresses, Height: optionalInt(optionalHeight), BipValue: bipValue, Delegated: delegated}, c.opts...)
+// AddressesExtended returns list of addresses with bipValue and delegated.
+func (c *Client) AddressesExtended(addresses []string, delegated bool, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
+	return c.grpcClient.Addresses(c.ctxFunc(), &api_pb.AddressesRequest{Addresses: addresses, Height: optionalInt(optionalHeight), Delegated: delegated}, c.opts...)
 }
 
 // Block returns block data at given height.
@@ -212,12 +212,22 @@ func (c *Client) Block(height uint64) (*api_pb.BlockResponse, error) {
 
 // Candidate returns candidate’s info by provided public_key.
 func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*api_pb.CandidateResponse, error) {
-	return c.grpcClient.Candidate(c.ctxFunc(), &api_pb.CandidateRequest{Height: optionalInt(optionalHeight), PublicKey: publicKey}, c.opts...)
+	return c.CandidateExtended(publicKey, false, optionalHeight...)
 }
 
 // Candidates returns list of candidates.
-func (c *Client) Candidates(includeStakes bool, status api_pb.CandidatesRequest_CandidateStatus, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
-	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes, Status: status}, c.opts...)
+func (c *Client) Candidates(includeStakes bool, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
+	return c.CandidatesExtended(includeStakes, true, 0, optionalHeight...)
+}
+
+// CandidateExtended returns candidate’s info by provided public_key.
+func (c *Client) CandidateExtended(publicKey string, notShowStakes bool, optionalHeight ...uint64) (*api_pb.CandidateResponse, error) {
+	return c.grpcClient.Candidate(c.ctxFunc(), &api_pb.CandidateRequest{Height: optionalInt(optionalHeight), PublicKey: publicKey, NotShowStakes: notShowStakes}, c.opts...)
+}
+
+// CandidatesExtended returns list of candidates.
+func (c *Client) CandidatesExtended(includeStakes, notShowStakes bool, status api_pb.CandidatesRequest_CandidateStatus, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
+	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes, NotShowStakes: notShowStakes, Status: status}, c.opts...)
 }
 
 // CoinInfoByID returns information about coin ID.
