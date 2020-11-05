@@ -79,46 +79,9 @@ type SetCandidateOffData struct {
 }
 
 type CreateMultisigData struct {
-	Threshold uint64   `json:"threshold,string,omitempty"`
-	Weights   []uint64 `json:"weights,omitempty"`
-	Addresses []string `json:"addresses,omitempty"`
-}
-
-func (d *CreateMultisigData) UnmarshalJSON(data []byte) error {
-	type Alias CreateMultisigData
-	adx := struct {
-		Weights []string `json:"weights"`
-		*Alias
-	}{
-		Alias: (*Alias)(d),
-	}
-	if err := json.Unmarshal(data, &adx); err != nil {
-		return err
-	}
-
-	d.Weights = make([]uint64, 0, len(adx.Weights))
-	for _, strWeight := range adx.Weights {
-		weight, _ := strconv.Atoi(strWeight)
-		d.Weights = append(d.Weights, uint64(weight))
-	}
-
-	return nil
-}
-
-func (d *CreateMultisigData) MarshalJSON() ([]byte, error) {
-	type Alias CreateMultisigData
-
-	var weights []string
-	for _, weight := range d.Weights {
-		weights = append(weights, strconv.Itoa(int(weight)))
-	}
-	return json.Marshal(&struct {
-		Weights []string `json:"weights"`
-		*Alias
-	}{
-		Weights: weights,
-		Alias:   (*Alias)(d),
-	})
+	Threshold uint64        `json:"threshold,string,omitempty"`
+	Weights   intsAsStrings `json:"weights,omitempty"`
+	Addresses []string      `json:"addresses,omitempty"`
 }
 
 type MultiSendData struct {
@@ -152,42 +115,6 @@ type EditCoinOwnerData struct {
 }
 
 type EditMultisigData CreateMultisigData
-
-func (d *EditMultisigData) UnmarshalJSON(data []byte) error {
-	type Alias EditMultisigData
-	adx := struct {
-		Weights []string `json:"weights"`
-		*Alias
-	}{
-		Alias: (*Alias)(d),
-	}
-	if err := json.Unmarshal(data, &adx); err != nil {
-		return err
-	}
-
-	d.Weights = make([]uint64, 0, len(adx.Weights))
-	for _, strWeight := range adx.Weights {
-		weight, _ := strconv.Atoi(strWeight)
-		d.Weights = append(d.Weights, uint64(weight))
-	}
-	return nil
-}
-
-func (d *EditMultisigData) MarshalJSON() ([]byte, error) {
-	type Alias EditMultisigData
-
-	var weights []string
-	for _, weight := range d.Weights {
-		weights = append(weights, strconv.Itoa(int(weight)))
-	}
-	return json.Marshal(&struct {
-		Weights []string `json:"weights"`
-		*Alias
-	}{
-		Weights: weights,
-		Alias:   (*Alias)(d),
-	})
-}
 
 type PriceVoteData struct {
 	Price string `json:"price,omitempty"`
@@ -316,4 +243,29 @@ func ConvertToData(t uint64, value *ProtobufAny) (Data, error) {
 	}
 
 	return clone, nil
+}
+
+type intsAsStrings []uint64
+
+func (d *intsAsStrings) MarshalJSON() ([]byte, error) {
+	var weights []string
+	for _, weight := range *d {
+		weights = append(weights, strconv.Itoa(int(weight)))
+	}
+	return json.Marshal(weights)
+}
+
+func (d *intsAsStrings) UnmarshalJSON(data []byte) error {
+	var adx []string
+	if err := json.Unmarshal(data, &adx); err != nil {
+		return err
+	}
+
+	weights := make([]uint64, 0, len(adx))
+	for _, strWeight := range adx {
+		weight, _ := strconv.Atoi(strWeight)
+		weights = append(weights, uint64(weight))
+	}
+	*d = weights
+	return nil
 }

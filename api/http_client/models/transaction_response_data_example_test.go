@@ -16,11 +16,10 @@ func ExampleConvertToData() {
 		},
 	}
 	data, _ := models.ConvertToData(transactionResponse.Type, transactionResponse.Data)
-
 	editMultisigData := data.(*models.EditMultisigData)
 
 	fmt.Printf("%T %[1]v\n", editMultisigData.Threshold)
-	fmt.Printf("%T %[1]v\n", editMultisigData.Weights)
+	fmt.Printf("%T %[1]v\n", []uint64(editMultisigData.Weights))
 	fmt.Printf("%T %[1]v\n", editMultisigData.Addresses)
 
 	marshal, _ := json.Marshal(editMultisigData)
@@ -30,6 +29,6 @@ func ExampleConvertToData() {
 	// uint64 5
 	// []uint64 [1 2 3]
 	// []string [Mx0 Mx1 Mx2]
-	// {"weights":["1","2","3"],"threshold":"5","addresses":["Mx0","Mx1","Mx2"]}
+	// {"threshold":"5","weights":["1","2","3"],"addresses":["Mx0","Mx1","Mx2"]}
 
 }
