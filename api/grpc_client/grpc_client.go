@@ -217,7 +217,7 @@ func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*api_pb.
 
 // Candidates returns list of candidates.
 func (c *Client) Candidates(includeStakes bool, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
-	return c.CandidatesExtended(includeStakes, true, 0, optionalHeight...)
+	return c.CandidatesExtended(includeStakes, true, "", optionalHeight...)
 }
 
 // CandidateExtended returns candidate’s info by provided public_key.
@@ -226,8 +226,8 @@ func (c *Client) CandidateExtended(publicKey string, notShowStakes bool, optiona
 }
 
 // CandidatesExtended returns list of candidates.
-func (c *Client) CandidatesExtended(includeStakes, notShowStakes bool, status api_pb.CandidatesRequest_CandidateStatus, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
-	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes, NotShowStakes: notShowStakes, Status: status}, c.opts...)
+func (c *Client) CandidatesExtended(includeStakes, notShowStakes bool, status string, optionalHeight ...uint64) (*api_pb.CandidatesResponse, error) {
+	return c.grpcClient.Candidates(c.ctxFunc(), &api_pb.CandidatesRequest{Height: optionalInt(optionalHeight), IncludeStakes: includeStakes, NotShowStakes: notShowStakes, Status: api_pb.CandidatesRequest_CandidateStatus(api_pb.CandidatesRequest_CandidateStatus_value[status])}, c.opts...)
 }
 
 // CoinInfoByID returns information about coin ID.
