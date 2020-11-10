@@ -125,27 +125,27 @@ type EditCandidatePublicKeyData struct {
 	NewPubKey string `json:"new_pub_key,omitempty"`
 }
 
-var data = map[uint64]Data{
-	1:  &SendData{},
-	2:  &SellCoinData{},
-	3:  &SellAllCoinData{},
-	4:  &BuyCoinData{},
-	5:  &CreateCoinData{},
-	6:  &DeclareCandidacyData{},
-	7:  &DelegateData{},
-	8:  &UnbondData{},
-	9:  &RedeemCheckData{},
-	10: &SetCandidateOnData{},
-	11: &SetCandidateOffData{},
-	12: &CreateMultisigData{},
-	13: &MultiSendData{},
-	14: &EditCandidateData{},
-	15: &SetHaltBlockData{},
-	16: &RecreateCoinData{},
-	17: &EditCoinOwnerData{},
-	18: &EditMultisigData{},
-	19: &PriceVoteData{},
-	20: &EditCandidatePublicKeyData{},
+var data = map[string]Data{
+	"type.googleapis.com/api_pb.SendData":                   &SendData{},
+	"type.googleapis.com/api_pb.SellCoinData":               &SellCoinData{},
+	"type.googleapis.com/api_pb.SellAllCoinData":            &SellAllCoinData{},
+	"type.googleapis.com/api_pb.BuyCoinData":                &BuyCoinData{},
+	"type.googleapis.com/api_pb.CreateCoinData":             &CreateCoinData{},
+	"type.googleapis.com/api_pb.DeclareCandidacyData":       &DeclareCandidacyData{},
+	"type.googleapis.com/api_pb.DelegateData":               &DelegateData{},
+	"type.googleapis.com/api_pb.UnbondData":                 &UnbondData{},
+	"type.googleapis.com/api_pb.RedeemCheckData":            &RedeemCheckData{},
+	"type.googleapis.com/api_pb.SetCandidateOnData":         &SetCandidateOnData{},
+	"type.googleapis.com/api_pb.SetCandidateOffData":        &SetCandidateOffData{},
+	"type.googleapis.com/api_pb.CreateMultisigData":         &CreateMultisigData{},
+	"type.googleapis.com/api_pb.MultiSendData":              &MultiSendData{},
+	"type.googleapis.com/api_pb.EditCandidateData":          &EditCandidateData{},
+	"type.googleapis.com/api_pb.SetHaltBlockData":           &SetHaltBlockData{},
+	"type.googleapis.com/api_pb.RecreateCoinData":           &RecreateCoinData{},
+	"type.googleapis.com/api_pb.EditCoinOwnerData":          &EditCoinOwnerData{},
+	"type.googleapis.com/api_pb.EditMultisigData":           &EditMultisigData{},
+	"type.googleapis.com/api_pb.PriceVoteData":              &PriceVoteData{},
+	"type.googleapis.com/api_pb.EditCandidatePublicKeyData": &EditCandidatePublicKeyData{},
 }
 
 func (e *SendData) clone() Data {
@@ -229,14 +229,16 @@ func (e *EditCandidatePublicKeyData) clone() Data {
 	return &c
 }
 
-// ConvertToData returns Transaction Data model
-func ConvertToData(t uint64, value *ProtobufAny) (Data, error) {
-	eventStruct, ok := data[t]
+// convertToData returns Transaction Data model
+func convertToData(value *ProtobufAny) (Data, error) {
+	var v map[string]interface{} = *value
+	t := v["@type"].(string)
+	data, ok := data[t]
 	if !ok {
-		return nil, fmt.Errorf("data type unknown: %d", t)
+		return nil, fmt.Errorf("data type unknown: %s", t)
 	}
 
-	clone := eventStruct.clone()
+	clone := data.clone()
 	err := value.UnmarshalTo(clone)
 	if err != nil {
 		return nil, err

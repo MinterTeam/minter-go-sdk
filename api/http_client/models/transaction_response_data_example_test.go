@@ -6,16 +6,17 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
 )
 
-func ExampleConvertToData() {
+func ExampleProtobufAny_UnmarshalNew() {
 	transactionResponse := models.TransactionResponse{
 		Type: 18,
 		Data: &models.ProtobufAny{
+			"@type":     "type.googleapis.com/api_pb.EditMultisigData",
 			"threshold": "5",
 			"weights":   []string{"1", "2", "3"},
 			"addresses": []string{"Mx0", "Mx1", "Mx2"},
 		},
 	}
-	data, _ := models.ConvertToData(transactionResponse.Type, transactionResponse.Data)
+	data, _ := transactionResponse.Data.UnmarshalNew()
 	editMultisigData := data.(*models.EditMultisigData)
 
 	fmt.Printf("%T %[1]v\n", editMultisigData.Threshold)
