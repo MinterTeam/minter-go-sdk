@@ -7,7 +7,7 @@ import (
 )
 
 type Data interface {
-	clone() Data
+	data()
 }
 
 type SendData struct {
@@ -125,126 +125,89 @@ type EditCandidatePublicKeyData struct {
 	NewPubKey string `json:"new_pub_key,omitempty"`
 }
 
-var data = map[string]Data{
-	"type.googleapis.com/api_pb.SendData":                   &SendData{},
-	"type.googleapis.com/api_pb.SellCoinData":               &SellCoinData{},
-	"type.googleapis.com/api_pb.SellAllCoinData":            &SellAllCoinData{},
-	"type.googleapis.com/api_pb.BuyCoinData":                &BuyCoinData{},
-	"type.googleapis.com/api_pb.CreateCoinData":             &CreateCoinData{},
-	"type.googleapis.com/api_pb.DeclareCandidacyData":       &DeclareCandidacyData{},
-	"type.googleapis.com/api_pb.DelegateData":               &DelegateData{},
-	"type.googleapis.com/api_pb.UnbondData":                 &UnbondData{},
-	"type.googleapis.com/api_pb.RedeemCheckData":            &RedeemCheckData{},
-	"type.googleapis.com/api_pb.SetCandidateOnData":         &SetCandidateOnData{},
-	"type.googleapis.com/api_pb.SetCandidateOffData":        &SetCandidateOffData{},
-	"type.googleapis.com/api_pb.CreateMultisigData":         &CreateMultisigData{},
-	"type.googleapis.com/api_pb.MultiSendData":              &MultiSendData{},
-	"type.googleapis.com/api_pb.EditCandidateData":          &EditCandidateData{},
-	"type.googleapis.com/api_pb.SetHaltBlockData":           &SetHaltBlockData{},
-	"type.googleapis.com/api_pb.RecreateCoinData":           &RecreateCoinData{},
-	"type.googleapis.com/api_pb.EditCoinOwnerData":          &EditCoinOwnerData{},
-	"type.googleapis.com/api_pb.EditMultisigData":           &EditMultisigData{},
-	"type.googleapis.com/api_pb.PriceVoteData":              &PriceVoteData{},
-	"type.googleapis.com/api_pb.EditCandidatePublicKeyData": &EditCandidatePublicKeyData{},
+func newData(t string) Data {
+	switch t {
+	case "type.googleapis.com/api_pb.SendData":
+		return &SendData{}
+	case "type.googleapis.com/api_pb.SellCoinData":
+		return &SellCoinData{}
+	case "type.googleapis.com/api_pb.SellAllCoinData":
+		return &SellAllCoinData{}
+	case "type.googleapis.com/api_pb.BuyCoinData":
+		return &BuyCoinData{}
+	case "type.googleapis.com/api_pb.CreateCoinData":
+		return &CreateCoinData{}
+	case "type.googleapis.com/api_pb.DeclareCandidacyData":
+		return &DeclareCandidacyData{}
+	case "type.googleapis.com/api_pb.DelegateData":
+		return &DelegateData{}
+	case "type.googleapis.com/api_pb.UnbondData":
+		return &UnbondData{}
+	case "type.googleapis.com/api_pb.RedeemCheckData":
+		return &RedeemCheckData{}
+	case "type.googleapis.com/api_pb.SetCandidateOnData":
+		return &SetCandidateOnData{}
+	case "type.googleapis.com/api_pb.SetCandidateOffData":
+		return &SetCandidateOffData{}
+	case "type.googleapis.com/api_pb.CreateMultisigData":
+		return &CreateMultisigData{}
+	case "type.googleapis.com/api_pb.MultiSendData":
+		return &MultiSendData{}
+	case "type.googleapis.com/api_pb.EditCandidateData":
+		return &EditCandidateData{}
+	case "type.googleapis.com/api_pb.SetHaltBlockData":
+		return &SetHaltBlockData{}
+	case "type.googleapis.com/api_pb.RecreateCoinData":
+		return &RecreateCoinData{}
+	case "type.googleapis.com/api_pb.EditCoinOwnerData":
+		return &EditCoinOwnerData{}
+	case "type.googleapis.com/api_pb.EditMultisigData":
+		return &EditMultisigData{}
+	case "type.googleapis.com/api_pb.PriceVoteData":
+		return &PriceVoteData{}
+	case "type.googleapis.com/api_pb.EditCandidatePublicKeyData":
+		return &EditCandidatePublicKeyData{}
+	default:
+		return nil
+	}
 }
 
-func (e *SendData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *SellCoinData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *SellAllCoinData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *BuyCoinData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *CreateCoinData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *DeclareCandidacyData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *DelegateData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *UnbondData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *RedeemCheckData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *SetCandidateOnData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *SetCandidateOffData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *CreateMultisigData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *MultiSendData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *EditCandidateData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *SetHaltBlockData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *RecreateCoinData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *EditCoinOwnerData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *EditMultisigData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *PriceVoteData) clone() Data {
-	c := *e
-	return &c
-}
-func (e *EditCandidatePublicKeyData) clone() Data {
-	c := *e
-	return &c
-}
+func (e *SendData) data()                   {}
+func (e *SellCoinData) data()               {}
+func (e *SellAllCoinData) data()            {}
+func (e *BuyCoinData) data()                {}
+func (e *CreateCoinData) data()             {}
+func (e *DeclareCandidacyData) data()       {}
+func (e *DelegateData) data()               {}
+func (e *UnbondData) data()                 {}
+func (e *RedeemCheckData) data()            {}
+func (e *SetCandidateOnData) data()         {}
+func (e *SetCandidateOffData) data()        {}
+func (e *CreateMultisigData) data()         {}
+func (e *MultiSendData) data()              {}
+func (e *EditCandidateData) data()          {}
+func (e *SetHaltBlockData) data()           {}
+func (e *RecreateCoinData) data()           {}
+func (e *EditCoinOwnerData) data()          {}
+func (e *EditMultisigData) data()           {}
+func (e *PriceVoteData) data()              {}
+func (e *EditCandidatePublicKeyData) data() {}
 
 // convertToData returns Transaction Data model
 func convertToData(value *ProtobufAny) (Data, error) {
 	var v map[string]interface{} = *value
 	t := v["@type"].(string)
-	data, ok := data[t]
-	if !ok {
+	data := newData(t)
+	if data == nil {
 		return nil, fmt.Errorf("data type unknown: %s", t)
 	}
 
-	clone := data.clone()
-	err := value.UnmarshalTo(clone)
+	err := value.UnmarshalTo(data)
 	if err != nil {
 		return nil, err
 	}
 
-	return clone, nil
+	return data, nil
 }
 
 type intsAsStrings []uint64

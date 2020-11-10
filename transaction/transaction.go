@@ -308,49 +308,8 @@ func Decode(tx string) (Signed, error) {
 		return nil, err
 	}
 
-	var data Data
-	switch transaction.Type {
-	case TypeSend:
-		data = &SendData{}
-	case TypeSellCoin:
-		data = &SellCoinData{}
-	case TypeSellAllCoin:
-		data = &SellAllCoinData{}
-	case TypeBuyCoin:
-		data = &BuyCoinData{}
-	case TypeCreateCoin:
-		data = &CreateCoinData{}
-	case TypeDeclareCandidacy:
-		data = &DeclareCandidacyData{}
-	case TypeDelegate:
-		data = &DelegateData{}
-	case TypeUnbond:
-		data = &UnbondData{}
-	case TypeRedeemCheck:
-		data = &RedeemCheckData{}
-	case TypeSetCandidateOnline:
-		data = &SetCandidateOnData{}
-	case TypeSetCandidateOffline:
-		data = &SetCandidateOffData{}
-	case TypeCreateMultisig:
-		data = &CreateMultisigData{}
-	case TypeMultisend:
-		data = &MultisendData{}
-	case TypeEditCandidate:
-		data = &EditCandidateData{}
-	case TypeSetHaltBlock:
-		data = &SetHaltBlockData{}
-	case TypeRecreateCoin:
-		data = &RecreateCoinData{}
-	case TypeEditCoinOwner:
-		data = &EditCoinOwnerData{}
-	case TypeEditMultisig:
-		data = &EditMultisigData{}
-	case TypePriceVote:
-		data = &PriceVoteData{}
-	case TypeEditCandidatePublicKey:
-		data = &EditCandidatePublicKeyData{}
-	default:
+	data := newData(transaction.Type)
+	if data == nil {
 		return nil, errors.New("unknown transaction type")
 	}
 
@@ -364,6 +323,53 @@ func Decode(tx string) (Signed, error) {
 		data:        data,
 	}
 	return result, nil
+}
+
+func newData(t Type) Data {
+	switch t {
+	case TypeSend:
+		return &SendData{}
+	case TypeSellCoin:
+		return &SellCoinData{}
+	case TypeSellAllCoin:
+		return &SellAllCoinData{}
+	case TypeBuyCoin:
+		return &BuyCoinData{}
+	case TypeCreateCoin:
+		return &CreateCoinData{}
+	case TypeDeclareCandidacy:
+		return &DeclareCandidacyData{}
+	case TypeDelegate:
+		return &DelegateData{}
+	case TypeUnbond:
+		return &UnbondData{}
+	case TypeRedeemCheck:
+		return &RedeemCheckData{}
+	case TypeSetCandidateOnline:
+		return &SetCandidateOnData{}
+	case TypeSetCandidateOffline:
+		return &SetCandidateOffData{}
+	case TypeCreateMultisig:
+		return &CreateMultisigData{}
+	case TypeMultisend:
+		return &MultisendData{}
+	case TypeEditCandidate:
+		return &EditCandidateData{}
+	case TypeSetHaltBlock:
+		return &SetHaltBlockData{}
+	case TypeRecreateCoin:
+		return &RecreateCoinData{}
+	case TypeEditCoinOwner:
+		return &EditCoinOwnerData{}
+	case TypeEditMultisig:
+		return &EditMultisigData{}
+	case TypePriceVote:
+		return &PriceVoteData{}
+	case TypeEditCandidatePublicKey:
+		return &EditCandidatePublicKeyData{}
+	default:
+		return nil
+	}
 }
 
 // SenderAddress returns sender addresses.

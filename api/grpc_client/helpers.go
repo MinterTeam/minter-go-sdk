@@ -12,7 +12,7 @@ func ConvertStructToEvent(str *_struct.Struct) (api.Event, error) {
 		return nil, err
 	}
 
-	event, err := api.ConvertToEvent(str.Fields["type"].GetStringValue(), value)
+	event, err := api.ConvertToEvent(api.EventType(str.Fields["type"].GetStringValue()), value)
 	if err != nil {
 		return nil, err
 	}

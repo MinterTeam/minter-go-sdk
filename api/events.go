@@ -5,22 +5,27 @@ import (
 	"fmt"
 )
 
+// EventType is string name of events
+type EventType string
+
 // Event type names
 const (
-	TypeRewardEvent    = "minter/RewardEvent"
-	TypeSlashEvent     = "minter/SlashEvent"
-	TypeUnbondEvent    = "minter/UnbondEvent"
-	TypeStakeKickEvent = "minter/StakeKickEvent"
+	TypeRewardEvent    EventType = "minter/RewardEvent"
+	TypeSlashEvent     EventType = "minter/SlashEvent"
+	TypeUnbondEvent    EventType = "minter/UnbondEvent"
+	TypeStakeKickEvent EventType = "minter/StakeKickEvent"
 )
 
 // Event interface
 type Event interface {
+	// GetAddress return owner address
 	GetAddress() string
+	// GetValidatorPublicKey return validator public key
 	GetValidatorPublicKey() string
-	clone() Event
+	event()
 }
 
-// Events
+// RewardEvent is the payment of rewards
 type RewardEvent struct {
 	Role            string `json:"role"`
 	Address         string `json:"address"`
@@ -28,18 +33,18 @@ type RewardEvent struct {
 	ValidatorPubKey string `json:"validator_pub_key"`
 }
 
-func (e *RewardEvent) clone() Event {
-	c := *e
-	return &c
-}
-
+// GetAddress return owner address
 func (e *RewardEvent) GetAddress() string {
 	return e.Address
 }
+
+// GetValidatorPublicKey return validator public key
 func (e *RewardEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
+func (e *RewardEvent) event() {}
 
+// SlashEvent is the payment of the validator's penalty by this stake
 type SlashEvent struct {
 	Address         string `json:"address"`
 	Amount          string `json:"amount"`
@@ -47,17 +52,18 @@ type SlashEvent struct {
 	ValidatorPubKey string `json:"validator_pub_key"`
 }
 
-func (e *SlashEvent) clone() Event {
-	c := *e
-	return &c
-}
+// GetAddress return owner address
 func (e *SlashEvent) GetAddress() string {
 	return e.Address
 }
+
+// GetValidatorPublicKey return validator public key
 func (e *SlashEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
+func (e *SlashEvent) event() {}
 
+// UnbondEvent is the unbinding a stake from a validator
 type UnbondEvent struct {
 	Address         string `json:"address"`
 	Amount          string `json:"amount"`
@@ -65,17 +71,18 @@ type UnbondEvent struct {
 	ValidatorPubKey string `json:"validator_pub_key"`
 }
 
-func (e *UnbondEvent) clone() Event {
-	c := *e
-	return &c
-}
+// GetAddress return owner address
 func (e *UnbondEvent) GetAddress() string {
 	return e.Address
 }
+
+// GetValidatorPublicKey return validator public key
 func (e *UnbondEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
+func (e *UnbondEvent) event() {}
 
+// StakeKickEvent is the knocking out a stake to the waiting list
 type StakeKickEvent struct {
 	Address         string `json:"address"`
 	Amount          string `json:"amount"`
@@ -83,35 +90,43 @@ type StakeKickEvent struct {
 	ValidatorPubKey string `json:"validator_pub_key"`
 }
 
-func (e *StakeKickEvent) clone() Event {
-	c := *e
-	return &c
-}
+// GetAddress return owner address
 func (e *StakeKickEvent) GetAddress() string {
 	return e.Address
 }
+
+// GetValidatorPublicKey return validator public key
 func (e *StakeKickEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
+func (e *StakeKickEvent) event() {}
 
-var em = map[string]Event{
-	TypeRewardEvent:    &RewardEvent{},
-	TypeSlashEvent:     &SlashEvent{},
-	TypeUnbondEvent:    &UnbondEvent{},
-	TypeStakeKickEvent: &StakeKickEvent{},
+func newEvent(t EventType) Event {
+	switch t {
+	case TypeRewardEvent:
+		return &RewardEvent{}
+	case TypeSlashEvent:
+		return &SlashEvent{}
+	case TypeUnbondEvent:
+		return &UnbondEvent{}
+	case TypeStakeKickEvent:
+		return &StakeKickEvent{}
+	default:
+		return nil
+	}
 }
 
-func ConvertToEvent(typeName string, value []byte) (Event, error) {
-	eventStruct, ok := em[typeName]
-	if !ok {
+// ConvertToEvent returns interface of Event
+func ConvertToEvent(typeName EventType, value []byte) (Event, error) {
+	eventStruct := newEvent(typeName)
+	if eventStruct == nil {
 		return nil, fmt.Errorf("event type unknown: %s", typeName)
 	}
 
-	clone := eventStruct.clone()
-	err := json.Unmarshal(value, clone)
+	err := json.Unmarshal(value, eventStruct)
 	if err != nil {
 		return nil, err
 	}
 
-	return clone, nil
+	return eventStruct, nil
 }

@@ -39,7 +39,7 @@ func ConvertStructToEvent(data interface{}) (api.Event, error) {
 		return nil, err
 	}
 
-	event, err := api.ConvertToEvent(str.Type, value)
+	event, err := api.ConvertToEvent(api.EventType(str.Type), value)
 	if err != nil {
 		return nil, err
 	}
