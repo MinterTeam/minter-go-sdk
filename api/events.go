@@ -5,6 +5,14 @@ import (
 	"fmt"
 )
 
+var (
+	// DAOAddress is DAO's address for charging a 10% commission on all rewards
+	DAOAddress = "Mx7f0fc21d932f38ca9444f61703174569066cfa50"
+
+	// DevelopersAddress is developers' address for charging a 10% commission on all rewards
+	DevelopersAddress = "Mx688568d9d70c57e71d0b9de6480afb0d317f885c"
+)
+
 // EventType is string name of events
 type EventType string
 
