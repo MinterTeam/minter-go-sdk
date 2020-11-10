@@ -49,3 +49,7 @@ func (m *ProtobufAny) UnmarshalTo(i interface{}) error {
 
 	return nil
 }
+
+func (m *ProtobufAny) UnmarshalNew(t uint64) (Data, error) {
+	return ConvertToData(t, m)
+}
