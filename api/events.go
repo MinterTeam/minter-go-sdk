@@ -12,6 +12,19 @@ var (
 	// DevelopersAddress is developers' address for charging a 10% commission on all rewards
 	DevelopersAddress = "Mx688568d9d70c57e71d0b9de6480afb0d317f885c"
 )
+var (
+	// RoleValidator is validator role
+	RoleValidator = "Validator"
+
+	// RoleDelegator is delegator role
+	RoleDelegator = "Delegator"
+
+	// RoleDAO is DAO role
+	RoleDAO = "DAO"
+
+	// RoleDevelopers is developers role
+	RoleDevelopers = "Developers"
+)
 
 // EventType is string name of events
 type EventType string
