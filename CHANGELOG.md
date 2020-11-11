@@ -1,0 +1,23 @@
+# Change Log
+
+## Unreleased
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.0...v2)
+
+## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0) (2020-11-21)
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.0.3...v2.1.0)
+
+### Added
+- Autotests to Github Actions.
+- More documentation and examples for API clients.
+- Telegram [channel](https://t.me/MinterGoSDK) with notifications and discussions.
+- **WithDebug** method for *http_client*.
+- **WithLogger** method for *http_client*.
+- **WithHeaders** method for *http_client*.
+- **AddressExtended** method with `delegated` flag support in request for *http_client* and *grpc_client*
+- **AddressesExtended** method with `delegated` flag support in request for *http_client* and *grpc_client*
+- **CandidateExtended** method with `not_show_stakes` flag support in request for *http_client* and *grpc_client*
+- **CandidatesExtended** method with `not_show_stakes` flag support in request for *http_client* and *grpc_client*
+- **CheckVersion** method for *http_client* and *grpc_client*
+
+### Changed
+- Remove `status` parameter from **Candidates** method for *http_client* and *grpc_client*
