@@ -115,7 +115,7 @@ func (p *PublicKey) String() string { return "Mp" + hex.EncodeToString(p[:]) }
 
 // BipToPip converts BIP to PIP (multiplies input by 1e18)
 func BipToPip(bip *big.Int) *big.Int {
-	return big.NewInt(0).Mul(big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil), bip)
+	return big.NewInt(0).Mul(bip, big.NewInt(1e18))
 }
 
 // Builder is creator of Transaction.
