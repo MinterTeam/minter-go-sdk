@@ -17,6 +17,7 @@ import (
 	"google.golang.org/protobuf/types/known/wrapperspb"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // Client gRPC
@@ -73,6 +74,24 @@ func (c *Client) WithCallOption(opts ...grpc.CallOption) *Client {
 // GRPCClient return gRPC client api_pb.ApiServiceClient
 func (c *Client) GRPCClient() api_pb.ApiServiceClient {
 	return c.grpcClient
+}
+
+// CheckVersion compares the prefix in the version name and checks the testnet mode
+func (c *Client) CheckVersion(version string, isTestnet bool) error {
+	response, err := c.Status()
+	if err != nil {
+		return err
+	}
+	if len(response.Version) < len(version) {
+		return fmt.Errorf("node version is %s", response.Version)
+	}
+	if !strings.HasPrefix(response.Version, version) {
+		return fmt.Errorf("node version is %s", response.Version[:len(version)])
+	}
+	if isTestnet != strings.HasSuffix(response.Version, "testnet") {
+		return errors.New("node version is not testnet")
+	}
+	return nil
 }
 
 // CoinID returns ID of coin symbol.

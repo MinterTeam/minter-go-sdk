@@ -15,6 +15,7 @@ import (
 
 func Example() {
 	client, _ := grpc_client.New("localhost:8842")
+	_ = client.CheckVersion("1.2", true)
 	coinID, _ := client.CoinID("SYMBOL")
 	w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
 	data := transaction.NewSendData().SetCoin(coinID).SetValue(transaction.BipToPip(big.NewInt(1))).MustSetTo(w.Address)

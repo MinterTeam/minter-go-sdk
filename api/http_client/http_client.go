@@ -3,6 +3,7 @@ package http_client
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
@@ -15,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -596,6 +598,24 @@ func (c *Concise) getHTTPProtocol() string {
 		return "https"
 	}
 	return "http"
+}
+
+// CheckVersion compares the prefix in the version name and checks the testnet mode
+func (c *Concise) CheckVersion(version string, isTestnet bool) error {
+	response, err := c.Status()
+	if err != nil {
+		return err
+	}
+	if len(response.Version) < len(version) {
+		return fmt.Errorf("node version is %s", response.Version)
+	}
+	if !strings.HasPrefix(response.Version, version) {
+		return fmt.Errorf("node version is %s", response.Version[:len(version)])
+	}
+	if isTestnet != strings.HasSuffix(response.Version, "testnet") {
+		return errors.New("node version is not testnet")
+	}
+	return nil
 }
 
 type defaultError interface {
