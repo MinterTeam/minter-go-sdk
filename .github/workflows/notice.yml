@@ -23,12 +23,10 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
-          disable_web_page_preview: true
           message: |
             🥳 *NEW RELEASE!!!* 🥳
 
             [github.com/MinterTeam/minter-go-sdk](https://github.com/MinterTeam/minter-go-sdk) is *released* with tag [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }}).
             `go get github.com/MinterTeam/minter-go-sdk/v2@${{ github.event.release.tag_name }}`
 
-            *Release Description:*
-            ${{ github.event.release.body }}
+            [Changelog](https://github.com/MinterTeam/minter-go-sdk/blob/${{ github.event.release.tag_name }}/CHANGELOG.md)

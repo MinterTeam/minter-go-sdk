@@ -27,12 +27,15 @@ func Example() {
 	subscribeClient, _ := client.Subscribe(fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
 	defer subscribeClient.CloseSend()
 
-	res, _ := client.SendTransaction(encode)
+	res, err := client.SendTransaction(encode)
+	if err != nil {
+		_, _, _ = client.ErrorBody(err)
+	}
 	if res.Code != 0 {
 		panic(res.Log)
 	}
 
-	_, err := subscribeClient.Recv()
+	_, err = subscribeClient.Recv()
 	if err == io.EOF {
 		return
 	}
@@ -44,6 +47,7 @@ func Example() {
 	}
 
 	response, _ := client.Transaction(hash)
+	_, _ = client.Marshal(response)
 	sendData := new(api_pb.SendData)
 	_ = response.Data.UnmarshalTo(sendData)
 }

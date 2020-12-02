@@ -3,7 +3,7 @@
 ## Unreleased
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.0...v2)
 
-## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0) (2020-11-12)
+## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0)
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.0.3...v2.1.0)
 
 ### Added

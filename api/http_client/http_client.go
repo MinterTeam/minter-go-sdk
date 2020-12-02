@@ -618,6 +618,16 @@ func (c *Concise) CheckVersion(version string, isTestnet bool) error {
 	return nil
 }
 
+// Marshal returns model in JSON format
+func Marshal(m interface{ MarshalBinary() ([]byte, error) }) (json string, err error) {
+	marshal, err := m.MarshalBinary()
+	if err != nil {
+		return "", err
+	}
+
+	return string(marshal), nil
+}
+
 type defaultError interface {
 	Code() int
 	GetPayload() *models.ErrorBody

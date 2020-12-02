@@ -43,9 +43,12 @@ const (
 	TypeEditCandidatePublicKey      // 0x14
 )
 
+//go:generate stringer -type=Type
+
 // Fee is the commission that the sender must pay for sending the transaction. Fees are measured in "units". Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
 type Fee uint
 
+// Fee of Types
 const (
 	feeTypeSend                Fee = 10
 	feeTypeSellCoin            Fee = 100
@@ -79,6 +82,8 @@ const (
 	SignatureTypeMulti                // 0x02
 )
 
+//go:generate stringer -type=SignatureType
+
 // ChainID is network identifier  (1 - MainNetChainID, 2 - TestNetChainID)
 type ChainID byte
 
@@ -88,6 +93,8 @@ const (
 	MainNetChainID         // 0x01
 	TestNetChainID         // 0x02
 )
+
+//go:generate stringer -type=ChainID
 
 // CoinID ID of a coin.
 type CoinID uint32
