@@ -41,6 +41,13 @@ const (
 	TypeEditMultisig                // 0x12
 	TypePriceVote                   // 0x13
 	TypeEditCandidatePublicKey      // 0x14
+	TypeAddSwapPool                 // 0x15
+	TypeRemoveSwapPool              // 0x16
+	TypeSellSwapPool                // 0x17
+	TypeBuySwapPool                 // 0x18
+	TypeSellAllSwapPool             // 0x19
+	TypeEditCommission              // 0x20
+	TypeMoveStake                   // 0x21
 )
 
 //go:generate stringer -type=Type
@@ -68,8 +75,12 @@ const (
 	feeTypeSetHaltBlock           Fee = 1000
 	feeTypeRecreateCoin           Fee = 10000000
 	feeTypeEditCoinOwner          Fee = 10000000
-	feeEditMultisig               Fee = 1000
-	feePriceVote                  Fee = 10
+	feeTypeEditMultisig           Fee = 1000
+	feeTypePriceVote              Fee = 10
+	feeTypeAddSwapPoolData        Fee = 100
+	feeTypeRemoveSwapPoolData     Fee = 100
+	feeTypeEditCommissionData     Fee = 10000
+	feeTypeMoveStake                  = feeTypeDelegate * 3
 )
 
 // SignatureType is type of signature (1 - SignatureTypeSingle, 2 - SignatureTypeMulti)
@@ -374,6 +385,20 @@ func newData(t Type) Data {
 		return &PriceVoteData{}
 	case TypeEditCandidatePublicKey:
 		return &EditCandidatePublicKeyData{}
+	case TypeAddSwapPool:
+		return &AddSwapPoolData{}
+	case TypeRemoveSwapPool:
+		return &RemoveSwapPoolData{}
+	case TypeMoveStake:
+		return &MoveStakeData{}
+	case TypeSellSwapPool:
+		return &SellSwapPoolData{}
+	case TypeSellAllSwapPool:
+		return &SellAllSwapPoolData{}
+	case TypeBuySwapPool:
+		return &BuySwapPoolData{}
+	case TypeEditCommission:
+		return &EditCommissionData{}
 	default:
 		return nil
 	}

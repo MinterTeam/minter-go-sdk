@@ -25,7 +25,7 @@ func (d *PriceVoteData) Type() Type {
 
 // Fee returns commission of transaction Data
 func (d *PriceVoteData) Fee() Fee {
-	return feePriceVote
+	return feeTypePriceVote
 }
 
 // Encode returns the byte representation of a transaction Data.
