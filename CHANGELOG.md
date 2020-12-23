@@ -1,12 +1,15 @@
 # Change Log
 
 ## Unreleased
+
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.0...v2)
 
-## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0)
+## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0) (2020-12-23)
+
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.0.3...v2.1.0)
 
-### Added
+**Added:**
+
 - Autotests to Github Actions.
 - More documentation and examples for API clients.
 - Telegram channel with release notifications and discussions.
@@ -20,7 +23,7 @@
 - **CandidatesExtended** method with `not_show_stakes` flag support in request for *http_client* and *grpc_client*
 - **CheckVersion** method for *http_client* and *grpc_client*
 
-### Changed
+**Changed:**
 
 - Remove `status` parameter from **Candidates** method for *http_client* and *grpc_client*, flag `not_show_stakes` sets
   as default.
