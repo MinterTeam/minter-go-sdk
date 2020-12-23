@@ -38,7 +38,7 @@ func TestDecode_redeemCheck(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "30000000000000000" {
+	if decode.Fee().String() != "3000000000000000000" {
 		t.Error("redeem check transaction fee is invalid", decode.Fee().String())
 	}
 }

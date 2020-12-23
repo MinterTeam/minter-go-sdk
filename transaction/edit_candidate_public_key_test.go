@@ -12,7 +12,7 @@ func TestDecode_editCandidatePublicKey(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000000000" {
+	if decode.Fee().String() != "10000000000000000000000000" {
 		t.Error("edit candidate public key transaction fee is invalid", decode.Fee().String())
 	}
 }

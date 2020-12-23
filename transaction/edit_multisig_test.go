@@ -12,7 +12,7 @@ func TestDecode_editMultisig(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "1000000000000000000" {
+	if decode.Fee().String() != "100000000000000000000" {
 		t.Error("edit multisig transaction fee is invalid", decode.Fee().String())
 	}
 }

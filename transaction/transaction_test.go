@@ -105,8 +105,8 @@ func TestObject_Fee_Send(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if signedTransaction.Fee().String() != "10000000000000000" {
-		t.Errorf("Fee want %s, got %s", "10000000000000000", signedTransaction.Fee().String())
+	if signedTransaction.Fee().String() != "1000000000000000000" {
+		t.Errorf("Fee want %s, got %s", "1000000000000000000", signedTransaction.Fee().String())
 	}
 }
 
@@ -121,8 +121,8 @@ func TestObject_Fee_Payload(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if signedTransaction.Fee().String() != "16000000000000000" {
-		t.Errorf("Fee want %s, got %s", "16000000000000000", signedTransaction.Fee().String())
+	if signedTransaction.Fee().String() != "1006000000000000000" {
+		t.Errorf("Fee want %s, got %s", "1006000000000000000", signedTransaction.Fee().String())
 	}
 }
 
@@ -137,8 +137,8 @@ func TestObject_Fee_PayloadUTF8(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if signedTransaction.Fee().String() != "18000000000000000" {
-		t.Errorf("Fee want %s, got %s", "18000000000000000", signedTransaction.Fee().String())
+	if signedTransaction.Fee().String() != "1008000000000000000" {
+		t.Errorf("Fee want %s, got %s", "1008000000000000000", signedTransaction.Fee().String())
 	}
 }
 
@@ -153,8 +153,8 @@ func TestCreateCoinData_Fee_3symbol(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if signedTransaction.Fee().String() != "1000000000000000000000000" {
-		t.Errorf("Fee want %s, got %s", "1000000000000000000000000", signedTransaction.Fee().String())
+	if signedTransaction.Fee().String() != "100000000000000000000000000" {
+		t.Errorf("Fee want %s, got %s", "100000000000000000000000000", signedTransaction.Fee().String())
 	}
 }
 
@@ -177,9 +177,9 @@ func TestObject_Fee_Multisend(t *testing.T) {
 	}
 
 	fee := signedTransaction.Fee().String()
-	feeValid := big.NewInt(0).Mul(big.NewInt(30), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-3), nil)).String()
+	feeValid := big.NewInt(0).Mul(big.NewInt(30), big.NewInt(1e17)).String()
 	if fee != feeValid {
-		t.Errorf("Fee want %s, got %s", fee, feeValid)
+		t.Errorf("Fee want %s, got %s", feeValid, fee)
 	}
 }
 

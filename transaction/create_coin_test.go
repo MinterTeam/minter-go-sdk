@@ -42,8 +42,10 @@ func TestDecode_createCoin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	if decode.Fee().String() != "100000000000000000000" {
+	if decode.GetTransaction().Type != TypeCreateCoin {
+		t.Error("create coin transaction type is invalid", decode.GetTransaction().Type)
+	}
+	if decode.Fee().String() != "10000000000000000000000" {
 		t.Error("create coin transaction fee is invalid", decode.Fee().String())
 	}
 }

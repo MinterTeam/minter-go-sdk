@@ -12,7 +12,7 @@ func TestDecode_priceVote(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "10000000000000000" {
+	if decode.Fee().String() != "1000000000000000000" {
 		t.Error("price vote transaction fee is invalid", decode.Fee().String())
 	}
 }

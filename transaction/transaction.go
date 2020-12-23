@@ -233,7 +233,7 @@ type object struct {
 
 // Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
 func (o *object) Fee() *big.Int {
-	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(1000000000000000))
+	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(10e16))
 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
 	return big.NewInt(0).Add(gasPrice, commission)
 }

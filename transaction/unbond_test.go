@@ -40,7 +40,7 @@ func TestDecode_unbond(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "200000000000000000" {
+	if decode.Fee().String() != "20000000000000000000" {
 		t.Error("unbond transaction fee is invalid", decode.Fee().String())
 	}
 }

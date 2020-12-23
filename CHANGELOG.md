@@ -9,7 +9,8 @@
 ### Added
 - Autotests to Github Actions.
 - More documentation and examples for API clients.
-- Telegram [channel](https://t.me/MinterGoSDK) with notifications and discussions.
+- Telegram channel with release notifications and discussions.
+- Increase your commission multiplier to 10e16
 - **WithDebug** method for *http_client*.
 - **WithLogger** method for *http_client*.
 - **WithHeaders** method for *http_client*.
@@ -20,4 +21,6 @@
 - **CheckVersion** method for *http_client* and *grpc_client*
 
 ### Changed
-- Remove `status` parameter from **Candidates** method for *http_client* and *grpc_client*
+
+- Remove `status` parameter from **Candidates** method for *http_client* and *grpc_client*, flag `not_show_stakes` sets
+  as default.
