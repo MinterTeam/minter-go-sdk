@@ -2,7 +2,15 @@
 
 ## Unreleased
 
-[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.0...v2)
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.1...v2)
+
+## [v2.1.1](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.1) (2020-12-24)
+
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.0...v2.1.1)
+
+**Fixed:**
+
+- Calculate commissions
 
 ## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0) (2020-12-23)
 
