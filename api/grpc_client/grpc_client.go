@@ -381,14 +381,14 @@ func (c *Client) WaitList(publicKey, address string, height ...uint64) (*api_pb.
 	return c.grpcClient.WaitList(c.ctxFunc(), &api_pb.WaitListRequest{Height: optionalInt(height), PublicKey: publicKey, Address: address}, c.opts...)
 }
 
-// PairSwapPool returns todo.
+// PairSwapPool returns total supply and reserves.
 func (c *Client) PairSwapPool(coin0, coin1 uint64, height ...uint64) (*api_pb.SwapPoolResponse, error) {
 	return c.grpcClient.SwapPool(c.ctxFunc(), &api_pb.SwapPoolRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1}, c.opts...)
 }
 
-// SwapPoolProvider returns todo.
-func (c *Client) SwapPoolProvider(coin0, coin1 uint64, height ...uint64) (*api_pb.SwapPoolProviderResponse, error) {
-	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1}, c.opts...)
+// SwapPoolProvider returns reserves and liquidity balance of provider.
+func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, height ...uint64) (*api_pb.SwapPoolProviderResponse, error) {
+	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1, Provider: provider}, c.opts...)
 }
 
 // Subscribe returns a subscription for events by query.
