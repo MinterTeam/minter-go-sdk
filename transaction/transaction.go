@@ -144,6 +144,7 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 
 	transaction := &Transaction{
 		ChainID:       b.ChainID,
+		GasPrice:      1,
 		SignatureType: SignatureTypeSingle,
 		Data:          dataBytes,
 	}
@@ -233,9 +234,7 @@ type object struct {
 
 // Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
 func (o *object) Fee() *big.Int {
-	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(10e16))
-	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
-	return big.NewInt(0).Add(gasPrice, commission)
+	return big.NewInt(0).Mul(big.NewInt(10e16), big.NewInt(int64(int(o.GasPrice)*(int(o.data.Fee())+(len(o.Payload))*2+len(o.ServiceData)*2))))
 }
 
 // Data returns Data of Transaction.
