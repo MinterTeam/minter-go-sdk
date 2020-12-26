@@ -94,6 +94,9 @@ func (check *CheckData) PublicKey() (string, error) {
 	return wallet.PubPrefix04ToMp(hex.EncodeToString(pub)), nil
 }
 
+// Check is like an ordinary bank check.
+// Each user of network can issue check with any amount of coins and pass it to another person.
+// Receiver will be able to cash a check from arbitrary account.
 type Check struct {
 	*CheckData
 	passphrase string
@@ -228,11 +231,13 @@ func (check *Check) Sign(prKey string) (encodeInterface, error) {
 	return check, nil
 }
 
+// CheckAddress is hijacking protection
 type CheckAddress struct {
 	address    Address
 	passphrase string
 }
 
+// NewCheckAddress sets special passphrase to protect checks from hijacking by another person in the moment of activation
 func NewCheckAddress(address string, passphrase string) (*CheckAddress, error) {
 	toHex, err := wallet.AddressToHex(address)
 	if err != nil {
@@ -245,7 +250,7 @@ func NewCheckAddress(address string, passphrase string) (*CheckAddress, error) {
 	return check, nil
 }
 
-// Proof Check
+// Proof returns hash of this passphrase is used as private key in ECDSA to prove that sender is the one who owns the check.
 func (check *CheckAddress) Proof() (string, error) {
 
 	passphraseSum256 := sha256.Sum256([]byte(check.passphrase))
