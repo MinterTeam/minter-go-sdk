@@ -3,7 +3,7 @@ package transaction
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"net/url"
 )
 

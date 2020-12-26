@@ -1,8 +1,8 @@
 package transaction
 
 import (
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // EditCoinOwnerData is a Data of Transaction for editing coin owner.

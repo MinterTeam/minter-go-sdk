@@ -1,6 +1,6 @@
 package transaction
 
-import "github.com/ethereum/go-ethereum/rlp"
+import "github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 
 // PriceVoteData is a Data of Transaction for
 type PriceVoteData struct {

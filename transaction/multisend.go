@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 // MultisendData is a Data of Transaction for sending coins to multiple addresses.

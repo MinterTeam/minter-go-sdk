@@ -5,10 +5,10 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto"
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto/secp256k1"
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 	"strings"
 )

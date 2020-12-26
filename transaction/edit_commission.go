@@ -1,6 +1,6 @@
 package transaction
 
-import "github.com/ethereum/go-ethereum/rlp"
+import "github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 
 type EditCommissionData struct {
 	PubKey     PublicKey
