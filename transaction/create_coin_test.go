@@ -8,6 +8,7 @@ import (
 const txCreateCoin = "0xf8870102010105b7f68a535550455220544553548a5350525445535400000089056bc75e2d631000008a043c33c19375648000000a893635c9adc5dea00000808001b845f8431ba034615f080a026ee579395aeb4c2eac974a14c091f1bb112629b2b5be0a82628da07f3347c71fa0668d01126dfae49d2b402067275878e4ffd26fd42a73cdf01950"
 
 func TestTransactionCreateCoin_Sign(t *testing.T) {
+	t.Parallel()
 	data := NewCreateCoinData().
 		SetName("SUPER TEST").
 		SetSymbol("SPRTEST").
@@ -38,6 +39,7 @@ func TestTransactionCreateCoin_Sign(t *testing.T) {
 }
 
 func TestDecode_createCoin(t *testing.T) {
+	t.Parallel()
 	decode, err := Decode(txCreateCoin)
 	if err != nil {
 		t.Fatal(err)
@@ -49,6 +51,7 @@ func TestDecode_createCoin(t *testing.T) {
 }
 
 func TestCreateCoinData_Fee(t *testing.T) {
+	t.Parallel()
 	data := NewCreateCoinData().SetSymbol("AAA")
 	if data.Fee() != 1000000000 {
 		t.Error("create coin data fee is invalid", data.Fee())

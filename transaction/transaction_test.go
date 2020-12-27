@@ -6,6 +6,7 @@ import (
 )
 
 func TestTransaction_Hash(t *testing.T) {
+	t.Parallel()
 	signedTransaction, err := Decode("0xf872010201010aa2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43808001b845f8431ba0efff777e61a78141ceeab311776dfd0bfc6745f125c688db86ccfa350d3d3b84a074419c32dd0d1d2ebdc1c5bfdffb238d2ef88a618e28a2ce2410880264d3b3cc")
 	if err != nil {
 		t.Fatal(err)
@@ -23,6 +24,7 @@ func TestTransaction_Hash(t *testing.T) {
 }
 
 func TestTransaction_Hash2(t *testing.T) {
+	t.Parallel()
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData().
 		SetCoin(1).
 		SetValue(BipToPip(big.NewInt(1))).
@@ -53,6 +55,7 @@ func TestTransaction_Hash2(t *testing.T) {
 }
 
 func TestTransaction_Encode(t *testing.T) {
+	t.Parallel()
 	decode, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
 	if err != nil {
 		t.Fatal(err)
@@ -79,6 +82,7 @@ func TestTransaction_Encode(t *testing.T) {
 }
 
 func TestObject_SenderAddress(t *testing.T) {
+	t.Parallel()
 	transaction, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
 	if err != nil {
 		t.Fatal(err)
@@ -95,6 +99,7 @@ func TestObject_SenderAddress(t *testing.T) {
 }
 
 func TestObject_Fee_Send(t *testing.T) {
+	t.Parallel()
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
 	if err != nil {
 		t.Fatal(err)
@@ -111,6 +116,7 @@ func TestObject_Fee_Send(t *testing.T) {
 }
 
 func TestObject_Fee_Payload(t *testing.T) {
+	t.Parallel()
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
 	if err != nil {
 		t.Fatal(err)
@@ -127,6 +133,7 @@ func TestObject_Fee_Payload(t *testing.T) {
 }
 
 func TestObject_Fee_PayloadUTF8(t *testing.T) {
+	t.Parallel()
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
 	if err != nil {
 		t.Fatal(err)
@@ -143,6 +150,7 @@ func TestObject_Fee_PayloadUTF8(t *testing.T) {
 }
 
 func TestCreateCoinData_Fee_3symbol(t *testing.T) {
+	t.Parallel()
 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewCreateCoinData().SetSymbol("ABC"))
 	if err != nil {
 		t.Fatal(err)
@@ -159,6 +167,7 @@ func TestCreateCoinData_Fee_3symbol(t *testing.T) {
 }
 
 func TestObject_Fee_Multisend(t *testing.T) {
+	t.Parallel()
 	data := NewMultisendData().
 		AddItem(NewSendData()).
 		AddItem(NewSendData()).
@@ -184,6 +193,7 @@ func TestObject_Fee_Multisend(t *testing.T) {
 }
 
 func TestMultisigSig(t *testing.T) {
+	t.Parallel()
 	data, err := NewSendData().
 		SetCoin(1).
 		SetValue(BipToPip(big.NewInt(1))).
@@ -218,6 +228,7 @@ func TestMultisigSig(t *testing.T) {
 }
 
 func TestMultisigSig1(t *testing.T) {
+	t.Parallel()
 	data, err := NewSendData().
 		SetCoin(1).
 		SetValue(BipToPip(big.NewInt(1))).
@@ -252,6 +263,7 @@ func TestMultisigSig1(t *testing.T) {
 }
 
 func TestMultisigSigTwoTimeSig(t *testing.T) {
+	t.Parallel()
 	data, err := NewSendData().
 		SetCoin(1).
 		SetValue(BipToPip(big.NewInt(1))).
@@ -291,6 +303,7 @@ func TestMultisigSigTwoTimeSig(t *testing.T) {
 }
 
 func TestMultisigAddSignatures(t *testing.T) {
+	t.Parallel()
 	data, err := NewSendData().
 		SetCoin(1).
 		SetValue(BipToPip(big.NewInt(1))).
@@ -362,6 +375,7 @@ func TestMultisigAddSignatures(t *testing.T) {
 }
 
 func TestMultisigAddSignatures2(t *testing.T) {
+	t.Parallel()
 	data, err := NewSendData().
 		SetCoin(1).
 		SetValue(BipToPip(big.NewInt(1))).
@@ -402,6 +416,7 @@ func TestMultisigAddSignatures2(t *testing.T) {
 }
 
 func TestDecodeMulti(t *testing.T) {
+	t.Parallel()
 	decode, err := Decode("0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988")
 	if err != nil {
 		t.Fatal(err)

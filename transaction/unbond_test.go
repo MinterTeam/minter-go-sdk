@@ -8,6 +8,7 @@ import (
 const txUnbond = "0xf87c0102010108aceba00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a4301888ac7230489e80000808001b845f8431ca0f5b9273c522c6b948523ae922594389619fd5c21846361bec6c72ee2c45b9a21a00dbeed5293f74a0a7924f2a3459f57270358d8621e092f66da38d0dbab9055e1"
 
 func TestTransactionUnbond_Sign(t *testing.T) {
+	t.Parallel()
 	data := NewUnbondData().
 		MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
 		SetCoin(1).
@@ -35,6 +36,7 @@ func TestTransactionUnbond_Sign(t *testing.T) {
 }
 
 func TestDecode_unbond(t *testing.T) {
+	t.Parallel()
 	decode, err := Decode(txUnbond)
 	if err != nil {
 		t.Fatal(err)
