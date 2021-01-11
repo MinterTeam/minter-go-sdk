@@ -36,6 +36,7 @@ const (
 	TypeSlashEvent     EventType = "minter/SlashEvent"
 	TypeUnbondEvent    EventType = "minter/UnbondEvent"
 	TypeStakeKickEvent EventType = "minter/StakeKickEvent"
+	TypeStakeMoveEvent EventType = "minter/StakeMoveEvent"
 )
 
 // Event interface
@@ -46,6 +47,26 @@ type Event interface {
 	GetValidatorPublicKey() string
 	event()
 }
+
+// StakeMoveEvent ...
+type StakeMoveEvent struct {
+	Address         string `json:"address"`
+	Amount          string `json:"amount"`
+	Coin            string `json:"coin"`
+	ValidatorPubKey string `json:"validator_pub_key"`
+	WaitList        bool   `json:"waitlist"`
+}
+
+// GetAddress return owner address
+func (e *StakeMoveEvent) GetAddress() string {
+	return e.Address
+}
+
+// GetValidatorPublicKey return validator public key
+func (e *StakeMoveEvent) GetValidatorPublicKey() string {
+	return e.ValidatorPubKey
+}
+func (e *StakeMoveEvent) event() {}
 
 // RewardEvent is the payment of rewards
 type RewardEvent struct {
@@ -133,6 +154,8 @@ func newEvent(t EventType) Event {
 		return &UnbondEvent{}
 	case TypeStakeKickEvent:
 		return &StakeKickEvent{}
+	case TypeStakeMoveEvent:
+		return &StakeMoveEvent{}
 	default:
 		return nil
 	}
