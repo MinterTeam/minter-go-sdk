@@ -21,14 +21,8 @@ type RuntimeStreamError struct {
 	// details
 	Details []*ProtobufAny `json:"details"`
 
-	// grpc code
-	GrpcCode int32 `json:"grpc_code,omitempty"`
-
-	// http code
-	HTTPCode int32 `json:"http_code,omitempty"`
-
-	// http status
-	HTTPStatus string `json:"http_status,omitempty"`
+	// code
+	Code int32 `json:"code,omitempty"`
 
 	// message
 	Message string `json:"message,omitempty"`
