@@ -2,22 +2,22 @@ package transaction
 
 import "github.com/ethereum/go-ethereum/rlp"
 
-type EditCommissionData struct {
+type EditCandidateCommissionData struct {
 	PubKey     PublicKey
 	Commission uint32
 }
 
 // Type returns Data type of the transaction.
-func (d *EditCommissionData) Type() Type {
-	return TypeEditCommission
+func (d *EditCandidateCommissionData) Type() Type {
+	return TypeEditCommissionCandidate
 }
 
 // Fee returns commission of transaction Data
-func (d *EditCommissionData) Fee() Fee {
-	return feeTypeEditCommissionData
+func (d *EditCandidateCommissionData) Fee() Fee {
+	return feeTypeEditCandidateCommissionData
 }
 
 // Encode returns the byte representation of a transaction Data.
-func (d *EditCommissionData) Encode() ([]byte, error) {
+func (d *EditCandidateCommissionData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

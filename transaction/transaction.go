@@ -20,38 +20,38 @@ type Type byte
 
 // Types of Data
 const (
-	_                          Type = iota
-	TypeSend                        // 0x01
-	TypeSellCoin                    // 0x02
-	TypeSellAllCoin                 // 0x03
-	TypeBuyCoin                     // 0x04
-	TypeCreateCoin                  // 0x05
-	TypeDeclareCandidacy            // 0x06
-	TypeDelegate                    // 0x07
-	TypeUnbond                      // 0x08
-	TypeRedeemCheck                 // 0x09
-	TypeSetCandidateOnline          // 0x0A
-	TypeSetCandidateOffline         // 0x0B
-	TypeCreateMultisig              // 0x0C
-	TypeMultisend                   // 0x0D
-	TypeEditCandidate               // 0x0E
-	TypeSetHaltBlock                // 0x0F
-	TypeRecreateCoin                // 0x10
-	TypeEditCoinOwner               // 0x11
-	TypeEditMultisig                // 0x12
-	TypePriceVote                   // 0x13
-	TypeEditCandidatePublicKey      // 0x14
-	TypeAddSwapPool                 // 0x15
-	TypeRemoveSwapPool              // 0x16
-	TypeSellSwapPool                // 0x17
-	TypeBuySwapPool                 // 0x18
-	TypeSellAllSwapPool             // 0x19
-	TypeEditCommission              // 0x20
-	TypeMoveStake                   // 0x21
-	TypeMintToken                   // 0x22
-	TypeBurnToken                   // 0x23
-	TypeCreateToken                 // 0x24
-	TypeRecreateToken               // 0x25
+	_                           Type = iota
+	TypeSend                         // 0x01
+	TypeSellCoin                     // 0x02
+	TypeSellAllCoin                  // 0x03
+	TypeBuyCoin                      // 0x04
+	TypeCreateCoin                   // 0x05
+	TypeDeclareCandidacy             // 0x06
+	TypeDelegate                     // 0x07
+	TypeUnbond                       // 0x08
+	TypeRedeemCheck                  // 0x09
+	TypeSetCandidateOnline           // 0x0A
+	TypeSetCandidateOffline          // 0x0B
+	TypeCreateMultisig               // 0x0C
+	TypeMultisend                    // 0x0D
+	TypeEditCandidate                // 0x0E
+	TypeSetHaltBlock                 // 0x0F
+	TypeRecreateCoin                 // 0x10
+	TypeEditCoinOwner                // 0x11
+	TypeEditMultisig                 // 0x12
+	TypePriceVote                    // 0x13
+	TypeEditCandidatePublicKey       // 0x14
+	TypeAddSwapPool                  // 0x15
+	TypeRemoveSwapPool               // 0x16
+	TypeSellSwapPool                 // 0x17
+	TypeBuySwapPool                  // 0x18
+	TypeSellAllSwapPool              // 0x19
+	TypeEditCommissionCandidate      // 0x20
+	TypeMoveStake                    // 0x21
+	TypeMintToken                    // 0x22
+	TypeBurnToken                    // 0x23
+	TypeCreateToken                  // 0x24
+	TypeRecreateToken                // 0x25
 )
 
 //go:generate stringer -type=Type
@@ -74,18 +74,18 @@ const (
 	feeTypeSetCandidateOffline Fee = 100
 	feeTypeCreateMultisig      Fee = 100
 	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate          Fee = 100000
-	feeTypeEditCandidatePublicKey Fee = 100000000
-	feeTypeSetHaltBlock           Fee = 1000
-	feeTypeRecreateCoin           Fee = 10000000
-	feeTypeEditCoinOwner          Fee = 10000000
-	feeTypeEditMultisig           Fee = 1000
-	feeTypePriceVote              Fee = 10
-	feeTypeAddSwapPoolData        Fee = 100
-	feeTypeRemoveSwapPoolData     Fee = 100
-	feeTypeEditCommissionData     Fee = 10000
-	feeTypeMoveStake                  = feeTypeDelegate * 3
-	feeTypeEditEmissionData       Fee = 100
+	feeTypeEditCandidate               Fee = 100000
+	feeTypeEditCandidatePublicKey      Fee = 100000000
+	feeTypeSetHaltBlock                Fee = 1000
+	feeTypeRecreateCoin                Fee = 10000000
+	feeTypeEditCoinOwner               Fee = 10000000
+	feeTypeEditMultisig                Fee = 1000
+	feeTypePriceVote                   Fee = 10
+	feeTypeAddSwapPoolData             Fee = 100
+	feeTypeRemoveSwapPoolData          Fee = 100
+	feeTypeEditCandidateCommissionData Fee = 10000
+	feeTypeMoveStake                       = feeTypeDelegate * 3
+	feeTypeEditEmissionData            Fee = 100
 )
 
 // SignatureType is type of signature (1 - SignatureTypeSingle, 2 - SignatureTypeMulti)
@@ -402,8 +402,8 @@ func newData(t Type) Data {
 		return &SellAllSwapPoolData{}
 	case TypeBuySwapPool:
 		return &BuySwapPoolData{}
-	case TypeEditCommission:
-		return &EditCommissionData{}
+	case TypeEditCommissionCandidate:
+		return &EditCandidateCommissionData{}
 	case TypeBurnToken:
 		return &BurnTokenData{}
 	case TypeMintToken:

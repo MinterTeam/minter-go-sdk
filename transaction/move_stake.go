@@ -9,7 +9,7 @@ type MoveStakeData struct {
 	From,
 	To PublicKey
 	Coin  CoinID
-	Value *big.Int
+	Stake *big.Int
 }
 
 // Type returns Data type of the transaction.
