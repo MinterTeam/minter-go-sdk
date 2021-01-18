@@ -387,7 +387,7 @@ func (c *Client) PairSwapPool(coin0, coin1 uint64, height ...uint64) (*api_pb.Sw
 }
 
 // SwapPoolProvider returns reserves and liquidity balance of provider.
-func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, height ...uint64) (*api_pb.SwapPoolProviderResponse, error) {
+func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, height ...uint64) (*api_pb.SwapPoolResponse, error) {
 	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1, Provider: provider}, c.opts...)
 }
 
