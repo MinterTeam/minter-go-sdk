@@ -41,8 +41,8 @@ const (
 	TypeEditMultisig                 // 0x12
 	TypePriceVote                    // 0x13
 	TypeEditCandidatePublicKey       // 0x14
-	TypeAddSwapPool                  // 0x15
-	TypeRemoveSwapPool               // 0x16
+	TypeAddLiquidity                 // 0x15
+	TypeRemoveLiquidity              // 0x16
 	TypeSellSwapPool                 // 0x17
 	TypeBuySwapPool                  // 0x18
 	TypeSellAllSwapPool              // 0x19
@@ -81,8 +81,8 @@ const (
 	feeTypeEditCoinOwner               Fee = 10000000
 	feeTypeEditMultisig                Fee = 1000
 	feeTypePriceVote                   Fee = 10
-	feeTypeAddSwapPoolData             Fee = 100
-	feeTypeRemoveSwapPoolData          Fee = 100
+	feeTypeAddLiquidityData            Fee = 100
+	feeTypeRemoveLiquidity             Fee = 100
 	feeTypeEditCandidateCommissionData Fee = 10000
 	feeTypeMoveStake                       = feeTypeDelegate * 3
 	feeTypeEditEmissionData            Fee = 100
@@ -390,10 +390,10 @@ func newData(t Type) Data {
 		return &PriceVoteData{}
 	case TypeEditCandidatePublicKey:
 		return &EditCandidatePublicKeyData{}
-	case TypeAddSwapPool:
-		return &AddSwapPoolData{}
-	case TypeRemoveSwapPool:
-		return &RemoveSwapPoolData{}
+	case TypeAddLiquidity:
+		return &AddLiquidityData{}
+	case TypeRemoveLiquidity:
+		return &RemoveLiquidityData{}
 	case TypeMoveStake:
 		return &MoveStakeData{}
 	case TypeSellSwapPool:

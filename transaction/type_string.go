@@ -28,8 +28,8 @@ func _() {
 	_ = x[TypeEditMultisig-18]
 	_ = x[TypePriceVote-19]
 	_ = x[TypeEditCandidatePublicKey-20]
-	_ = x[TypeAddSwapPool-21]
-	_ = x[TypeRemoveSwapPool-22]
+	_ = x[TypeAddLiquidity-21]
+	_ = x[TypeRemoveLiquidity-22]
 	_ = x[TypeSellSwapPool-23]
 	_ = x[TypeBuySwapPool-24]
 	_ = x[TypeSellAllSwapPool-25]
@@ -41,9 +41,9 @@ func _() {
 	_ = x[TypeRecreateToken-31]
 }
 
-const _Type_name = "TypeSendTypeSellCoinTypeSellAllCoinTypeBuyCoinTypeCreateCoinTypeDeclareCandidacyTypeDelegateTypeUnbondTypeRedeemCheckTypeSetCandidateOnlineTypeSetCandidateOfflineTypeCreateMultisigTypeMultisendTypeEditCandidateTypeSetHaltBlockTypeRecreateCoinTypeEditCoinOwnerTypeEditMultisigTypePriceVoteTypeEditCandidatePublicKeyTypeAddSwapPoolTypeRemoveSwapPoolTypeSellSwapPoolTypeBuySwapPoolTypeSellAllSwapPoolTypeEditCommissionCandidateTypeMoveStakeTypeMintTokenTypeBurnTokenTypeCreateTokenTypeRecreateToken"
+const _Type_name = "TypeSendTypeSellCoinTypeSellAllCoinTypeBuyCoinTypeCreateCoinTypeDeclareCandidacyTypeDelegateTypeUnbondTypeRedeemCheckTypeSetCandidateOnlineTypeSetCandidateOfflineTypeCreateMultisigTypeMultisendTypeEditCandidateTypeSetHaltBlockTypeRecreateCoinTypeEditCoinOwnerTypeEditMultisigTypePriceVoteTypeEditCandidatePublicKeyTypeAddLiquidityTypeRemoveLiquidityTypeSellSwapPoolTypeBuySwapPoolTypeSellAllSwapPoolTypeEditCommissionCandidateTypeMoveStakeTypeMintTokenTypeBurnTokenTypeCreateTokenTypeRecreateToken"
 
-var _Type_index = [...]uint16{0, 8, 20, 35, 46, 60, 80, 92, 102, 117, 139, 162, 180, 193, 210, 226, 242, 259, 275, 288, 314, 329, 347, 363, 378, 397, 424, 437, 450, 463, 478, 495}
+var _Type_index = [...]uint16{0, 8, 20, 35, 46, 60, 80, 92, 102, 117, 139, 162, 180, 193, 210, 226, 242, 259, 275, 288, 314, 330, 349, 365, 380, 399, 426, 439, 452, 465, 480, 497}
 
 func (i Type) String() string {
 	i -= 1

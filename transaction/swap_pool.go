@@ -5,7 +5,7 @@ import (
 	"math/big"
 )
 
-type AddSwapPoolData struct {
+type AddLiquidityData struct {
 	Coin0          CoinID
 	Coin1          CoinID
 	Volume0        *big.Int
@@ -13,21 +13,21 @@ type AddSwapPoolData struct {
 }
 
 // Type returns Data type of the transaction.
-func (d *AddSwapPoolData) Type() Type {
-	return TypeAddSwapPool
+func (d *AddLiquidityData) Type() Type {
+	return TypeAddLiquidity
 }
 
 // Fee returns commission of transaction Data
-func (d *AddSwapPoolData) Fee() Fee {
-	return feeTypeAddSwapPoolData
+func (d *AddLiquidityData) Fee() Fee {
+	return feeTypeAddLiquidityData
 }
 
 // Encode returns the byte representation of a transaction Data.
-func (d *AddSwapPoolData) Encode() ([]byte, error) {
+func (d *AddLiquidityData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-type RemoveSwapPoolData struct {
+type RemoveLiquidityData struct {
 	Coin0          CoinID
 	Coin1          CoinID
 	Liquidity      *big.Int
@@ -36,17 +36,17 @@ type RemoveSwapPoolData struct {
 }
 
 // Type returns Data type of the transaction.
-func (d *RemoveSwapPoolData) Type() Type {
-	return TypeRemoveSwapPool
+func (d *RemoveLiquidityData) Type() Type {
+	return TypeRemoveLiquidity
 }
 
 // Fee returns commission of transaction Data
-func (d *RemoveSwapPoolData) Fee() Fee {
-	return feeTypeRemoveSwapPoolData
+func (d *RemoveLiquidityData) Fee() Fee {
+	return feeTypeRemoveLiquidity
 }
 
 // Encode returns the byte representation of a transaction Data.
-func (d *RemoveSwapPoolData) Encode() ([]byte, error) {
+func (d *RemoveLiquidityData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
