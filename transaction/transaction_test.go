@@ -431,3 +431,38 @@ func TestDecodeMulti(t *testing.T) {
 		t.Fatalf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
 	}
 }
+
+//
+// func TestTxType(t *testing.T) {
+// 	t.Log(TypeSend )                        // 0x01
+// 	t.Log(TypeSellCoin)                     // 0x02
+// 	t.Log(TypeSellAllCoin)                  // 0x03
+// 	t.Log(TypeBuyCoin)                      // 0x04
+// 	t.Log(TypeCreateCoin)                   // 0x05
+// 	t.Log(TypeDeclareCandidacy)             // 0x06
+// 	t.Log(TypeDelegate)                     // 0x07
+// 	t.Log(TypeUnbond)                       // 0x08
+// 	t.Log(TypeRedeemCheck)                  // 0x09
+// 	t.Log(TypeSetCandidateOnline)           // 0x0A
+// 	t.Log(TypeSetCandidateOffline)          // 0x0B
+// 	t.Log(TypeCreateMultisig)               // 0x0C
+// 	t.Log(TypeMultisend)                    // 0x0D
+// 	t.Log(TypeEditCandidate)                // 0x0E
+// 	t.Log(TypeSetHaltBlock)                 // 0x0F
+// 	t.Log(TypeRecreateCoin)                 // 0x10
+// 	t.Log(TypeEditCoinOwner)                // 0x11
+// 	t.Log(TypeEditMultisig)                 // 0x12
+// 	t.Log(TypePriceVote)                    // 0x13
+// 	t.Log(TypeEditCandidatePublicKey)       // 0x14
+// 	t.Log(TypeAddLiquidity)                 // 0x15
+// 	t.Log(TypeRemoveLiquidity)              // 0x16
+// 	t.Log(TypeSellSwapPool)                 // 0x17
+// 	t.Log(TypeBuySwapPool)                  // 0x18
+// 	t.Log(TypeSellAllSwapPool)              // 0x19
+// 	t.Log(TypeEditCommissionCandidate)      // 0x20
+// 	t.Log(TypeMoveStake)                    // 0x21
+// 	t.Log(TypeMintToken)                    // 0x22
+// 	t.Log(TypeBurnToken)                    // 0x23
+// 	t.Log(TypeCreateToken)                  // 0x24
+// 	t.Log(TypeRecreateToken)                // 0x25
+// }

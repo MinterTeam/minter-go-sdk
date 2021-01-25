@@ -391,6 +391,16 @@ func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, height .
 	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1, Provider: provider}, c.opts...)
 }
 
+// PriceCommission returns ...
+func (c *Client) PriceCommission(height ...uint64) (*api_pb.PriceCommissionResponse, error) {
+	return c.grpcClient.PriceCommission(c.ctxFunc(), &api_pb.PriceCommissionRequest{Height: optionalInt(height)}, c.opts...)
+}
+
+// PriceVotes returns ...
+func (c *Client) PriceVotes(height ...uint64) (*api_pb.PriceVotesResponse, error) {
+	return c.grpcClient.PriceVotes(c.ctxFunc(), &api_pb.PriceVotesRequest{Height: optionalInt(height)}, c.opts...)
+}
+
 // Subscribe returns a subscription for events by query.
 func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, error) {
 	return c.grpcClient.Subscribe(c.ctxFunc(), &api_pb.SubscribeRequest{Query: query}, c.opts...)

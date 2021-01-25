@@ -32,21 +32,68 @@ type EventType string
 
 // Event type names
 const (
-	TypeRewardEvent    EventType = "minter/RewardEvent"
-	TypeSlashEvent     EventType = "minter/SlashEvent"
-	TypeUnbondEvent    EventType = "minter/UnbondEvent"
-	TypeStakeKickEvent EventType = "minter/StakeKickEvent"
-	TypeStakeMoveEvent EventType = "minter/StakeMoveEvent"
+	TypeRewardEvent            EventType = "minter/RewardEvent"
+	TypeSlashEvent             EventType = "minter/SlashEvent"
+	TypeUnbondEvent            EventType = "minter/UnbondEvent"
+	TypeStakeKickEvent         EventType = "minter/StakeKickEvent"
+	TypeStakeMoveEvent         EventType = "minter/StakeMoveEvent"
+	TypeUpdateNetworkEvent     EventType = "minter/UpdateNetworkEvent"
+	TypeUpdateCommissionsEvent EventType = "minter/UpdateCommissionsEvent"
 )
 
 // Event interface
-type Event interface {
+type StakeEvent interface {
 	// GetAddress return owner address
 	GetAddress() string
 	// GetValidatorPublicKey return validator public key
 	GetValidatorPublicKey() string
-	event()
 }
+
+// Event interface
+type Event interface {
+	Type() EventType
+}
+
+type UpdateCommissionsEvent struct {
+	Coin                    uint64 `json:"coin"`
+	PayloadByte             string `json:"payload_byte"`
+	Send                    string `json:"send"`
+	Convert                 string `json:"convert"`
+	CreateTicker3           string `json:"create_ticker3"`
+	CreateTicker4           string `json:"create_ticker4"`
+	CreateTicker5           string `json:"create_ticker5"`
+	CreateTicker6           string `json:"create_ticker6"`
+	CreateTicker7_10        string `json:"create_ticker7_10"`
+	RecreateTicker          string `json:"recreate_ticker"`
+	DeclareCandidacy        string `json:"declare_candidacy"`
+	Delegate                string `json:"delegate"`
+	Unbond                  string `json:"unbond"`
+	RedeemCheck             string `json:"redeem_check"`
+	ToggleCandidateStatus   string `json:"toggle_candidate_status"`
+	CreateMultisig          string `json:"create_multisig"`
+	MultisendDelta          string `json:"multisend_delta"`
+	EditCandidate           string `json:"edit_candidate"`
+	SetHaltBlock            string `json:"set_halt_block"`
+	EditTickerOwner         string `json:"edit_ticker_owner"`
+	EditMultisig            string `json:"edit_multisig"`
+	PriceVote               string `json:"price_vote"`
+	EditCandidatePublicKey  string `json:"edit_candidate_public_key"`
+	AddLiquidity            string `json:"add_liquidity"`
+	RemoveLiquidity         string `json:"remove_liquidity"`
+	EditCandidateCommission string `json:"edit_candidate_commission"`
+	MoveStake               string `json:"move_stake"`
+	EditTokenEmission       string `json:"edit_token_emission"`
+	PriceCommission         string `json:"price_commission"`
+	UpdateNetwork           string `json:"update_network"`
+}
+
+func (e *UpdateCommissionsEvent) Type() EventType { return TypeUpdateCommissionsEvent }
+
+type UpdateNetworkEvent struct {
+	Version string `json:"version"`
+}
+
+func (e *UpdateNetworkEvent) Type() EventType { return TypeUpdateNetworkEvent }
 
 // StakeMoveEvent ...
 type StakeMoveEvent struct {
@@ -66,7 +113,7 @@ func (e *StakeMoveEvent) GetAddress() string {
 func (e *StakeMoveEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
-func (e *StakeMoveEvent) event() {}
+func (e *StakeMoveEvent) Type() EventType { return TypeStakeMoveEvent }
 
 // RewardEvent is the payment of rewards
 type RewardEvent struct {
@@ -85,7 +132,7 @@ func (e *RewardEvent) GetAddress() string {
 func (e *RewardEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
-func (e *RewardEvent) event() {}
+func (e *RewardEvent) Type() EventType { return TypeRewardEvent }
 
 // SlashEvent is the payment of the validator's penalty by this stake
 type SlashEvent struct {
@@ -104,7 +151,7 @@ func (e *SlashEvent) GetAddress() string {
 func (e *SlashEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
-func (e *SlashEvent) event() {}
+func (e *SlashEvent) Type() EventType { return TypeSlashEvent }
 
 // UnbondEvent is the unbinding a stake from a validator
 type UnbondEvent struct {
@@ -123,7 +170,7 @@ func (e *UnbondEvent) GetAddress() string {
 func (e *UnbondEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
-func (e *UnbondEvent) event() {}
+func (e *UnbondEvent) Type() EventType { return TypeUnbondEvent }
 
 // StakeKickEvent is the knocking out a stake to the waiting list
 type StakeKickEvent struct {
@@ -142,7 +189,7 @@ func (e *StakeKickEvent) GetAddress() string {
 func (e *StakeKickEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
-func (e *StakeKickEvent) event() {}
+func (e *StakeKickEvent) Type() EventType { return TypeStakeKickEvent }
 
 func newEvent(t EventType) Event {
 	switch t {
@@ -156,6 +203,10 @@ func newEvent(t EventType) Event {
 		return &StakeKickEvent{}
 	case TypeStakeMoveEvent:
 		return &StakeMoveEvent{}
+	case TypeUpdateCommissionsEvent:
+		return &UpdateCommissionsEvent{}
+	case TypeUpdateNetworkEvent:
+		return &UpdateNetworkEvent{}
 	default:
 		return nil
 	}
@@ -165,7 +216,7 @@ func newEvent(t EventType) Event {
 func ConvertToEvent(typeName EventType, value []byte) (Event, error) {
 	eventStruct := newEvent(typeName)
 	if eventStruct == nil {
-		return nil, fmt.Errorf("event type unknown: %s", typeName)
+		return nil, fmt.Errorf("Type type unknown: %s", typeName)
 	}
 
 	err := json.Unmarshal(value, eventStruct)

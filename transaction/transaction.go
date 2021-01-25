@@ -46,15 +46,15 @@ const (
 	TypeSellSwapPool                 // 0x17
 	TypeBuySwapPool                  // 0x18
 	TypeSellAllSwapPool              // 0x19
-	TypeEditCommissionCandidate      // 0x20
-	TypeMoveStake                    // 0x21
-	TypeMintToken                    // 0x22
-	TypeBurnToken                    // 0x23
-	TypeCreateToken                  // 0x24
-	TypeRecreateToken                // 0x25
+	TypeEditCommissionCandidate      // 0x1A
+	TypeMoveStake                    // 0x1B
+	TypeMintToken                    // 0x1C
+	TypeBurnToken                    // 0x1D
+	TypeCreateToken                  // 0x1E
+	TypeRecreateToken                // 0x1F
+	TypePriceCommission              // 0x20
+	TypeUpdateNetwork                // 0x21
 )
-
-//go:generate stringer -type=Type
 
 // Fee is the commission that the sender must pay for sending the transaction. Fees are measured in "units". Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
 type Fee uint
@@ -98,8 +98,6 @@ const (
 	SignatureTypeMulti                // 0x02
 )
 
-//go:generate stringer -type=SignatureType
-
 // ChainID is network identifier  (1 - MainNetChainID, 2 - TestNetChainID)
 type ChainID byte
 
@@ -109,8 +107,6 @@ const (
 	MainNetChainID         // 0x01
 	TestNetChainID         // 0x02
 )
-
-//go:generate stringer -type=ChainID
 
 // CoinID ID of a coin.
 type CoinID uint32
@@ -412,6 +408,10 @@ func newData(t Type) Data {
 		return &CreateTokenData{}
 	case TypeRecreateToken:
 		return &RecreateTokenData{}
+	case TypeUpdateNetwork:
+		return &UpdateNetworkData{}
+	case TypePriceCommission:
+		return &PriceCommissionData{}
 	default:
 		return nil
 	}
