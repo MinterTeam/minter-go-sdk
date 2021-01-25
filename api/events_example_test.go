@@ -13,13 +13,12 @@ func ExampleConvertToEvent() {
         "validator_pub_key": "Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5"
       }`
 	event, _ := api.ConvertToEvent("minter/RewardEvent", []byte(eventValueJSON))
-	fmt.Println(event.GetAddress())
-	fmt.Println(event.GetValidatorPublicKey())
+	if event.Type() != api.TypeRewardEvent {
+		return
+	}
 	fmt.Printf("%#v", event.(*api.RewardEvent))
 
 	// Output:
-	// Mx7f0fc21d932f38ca9444f61703174569066cfa50
-	// Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5
 	// &api.RewardEvent{Role:"DAO", Address:"Mx7f0fc21d932f38ca9444f61703174569066cfa50", Amount:"3962700000000000000000", ValidatorPubKey:"Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5"}
 
 }
