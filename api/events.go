@@ -55,7 +55,7 @@ type Event interface {
 }
 
 type UpdateCommissionsEvent struct {
-	Coin                    uint64 `json:"coin"`
+	Coin                    string `json:"coin"`
 	PayloadByte             string `json:"payload_byte"`
 	Send                    string `json:"send"`
 	Convert                 string `json:"convert"`
