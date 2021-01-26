@@ -188,8 +188,10 @@ type Signed interface {
 	encodeInterface
 	// GetTransaction returns Transaction struct
 	GetTransaction() *Transaction
+
 	// Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-	Fee() *big.Int
+	// Fee() *big.Int
+
 	// Hash returns hash of Transaction.
 	Hash() (string, error)
 	// Data returns Data of the Transaction.
