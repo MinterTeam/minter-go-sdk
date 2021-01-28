@@ -14,7 +14,7 @@ type CreateSwapPoolData struct {
 
 // Type returns Data type of the transaction.
 func (d *CreateSwapPoolData) Type() Type {
-	return TypeAddLiquidity
+	return TypeCreateSwapPool
 }
 
 // Fee returns commission of transaction Data
