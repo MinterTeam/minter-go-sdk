@@ -52,8 +52,9 @@ const (
 	TypeBurnToken                    // 0x1D
 	TypeCreateToken                  // 0x1E
 	TypeRecreateToken                // 0x1F
-	TypePriceCommission              // 0x20
-	TypeUpdateNetwork                // 0x21
+	TypeVoteCommission               // 0x20
+	TypeVoteUpdate                   // 0x21
+	TypeCreateSwapPool               // 0x22
 )
 
 // Fee is the commission that the sender must pay for sending the transaction. Fees are measured in "units". Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
@@ -410,10 +411,12 @@ func newData(t Type) Data {
 		return &CreateTokenData{}
 	case TypeRecreateToken:
 		return &RecreateTokenData{}
-	case TypeUpdateNetwork:
-		return &UpdateNetworkData{}
-	case TypePriceCommission:
-		return &PriceCommissionData{}
+	case TypeVoteUpdate:
+		return &VoteUpdateData{}
+	case TypeVoteCommission:
+		return &VoteCommissionData{}
+	case TypeCreateSwapPool:
+		return &CreateSwapPoolData{}
 	default:
 		return nil
 	}

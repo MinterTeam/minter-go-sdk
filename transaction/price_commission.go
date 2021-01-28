@@ -5,7 +5,7 @@ import (
 	"math/big"
 )
 
-type PriceCommissionData struct {
+type VoteCommissionData struct {
 	PubKey                  PublicKey
 	Height                  uint64
 	Coin                    CoinID
@@ -53,16 +53,16 @@ type PriceCommissionData struct {
 }
 
 // Type returns Data type of the transaction.
-func (d *PriceCommissionData) Type() Type {
-	return TypePriceCommission
+func (d *VoteCommissionData) Type() Type {
+	return TypeVoteCommission
 }
 
 // Fee returns commission of transaction Data
-func (d *PriceCommissionData) Fee() Fee {
+func (d *VoteCommissionData) Fee() Fee {
 	return 0 // todo
 }
 
 // Encode returns the byte representation of a transaction Data.
-func (d *PriceCommissionData) Encode() ([]byte, error) {
+func (d *VoteCommissionData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

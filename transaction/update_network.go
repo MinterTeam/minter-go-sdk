@@ -4,23 +4,23 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
-type UpdateNetworkData struct {
+type VoteUpdateData struct {
 	Version string
 	PubKey  PublicKey
 	Height  uint64
 }
 
 // Type returns Data type of the transaction.
-func (d *UpdateNetworkData) Type() Type {
-	return TypeUpdateNetwork
+func (d *VoteUpdateData) Type() Type {
+	return TypeVoteUpdate
 }
 
 // Fee returns commission of transaction Data
-func (d *UpdateNetworkData) Fee() Fee {
+func (d *VoteUpdateData) Fee() Fee {
 	return 0 // todo
 }
 
 // Encode returns the byte representation of a transaction Data.
-func (d *UpdateNetworkData) Encode() ([]byte, error) {
+func (d *VoteUpdateData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

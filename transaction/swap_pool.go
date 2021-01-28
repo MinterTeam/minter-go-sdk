@@ -5,6 +5,28 @@ import (
 	"math/big"
 )
 
+type CreateSwapPoolData struct {
+	Coin0   CoinID
+	Coin1   CoinID
+	Volume0 *big.Int
+	Volume1 *big.Int
+}
+
+// Type returns Data type of the transaction.
+func (d *CreateSwapPoolData) Type() Type {
+	return TypeAddLiquidity
+}
+
+// Fee returns commission of transaction Data
+func (d *CreateSwapPoolData) Fee() Fee {
+	return feeTypeAddLiquidityData
+}
+
+// Encode returns the byte representation of a transaction Data.
+func (d *CreateSwapPoolData) Encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
+}
+
 type AddLiquidityData struct {
 	Coin0          CoinID
 	Coin1          CoinID
