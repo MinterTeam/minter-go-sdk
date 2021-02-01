@@ -229,6 +229,15 @@ func (c *Client) Block(height uint64) (*api_pb.BlockResponse, error) {
 	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height}, c.opts...)
 }
 
+// BlockExtended returns block data at given height by filtered data.
+func (c *Client) BlockExtended(height uint64, failedTxs bool, fieldsBlock ...string) (*api_pb.BlockResponse, error) {
+	var fields []api_pb.BlockRequest_Field = nil
+	for _, field := range fieldsBlock {
+		fields = append(fields, api_pb.BlockRequest_Field(api_pb.BlockRequest_Field_value[field]))
+	}
+	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height, FailedTxs: failedTxs, Fields: fields}, c.opts...)
+}
+
 // Candidate returns candidate’s info by provided public_key.
 func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*api_pb.CandidateResponse, error) {
 	return c.CandidateExtended(publicKey, false, optionalHeight...)
