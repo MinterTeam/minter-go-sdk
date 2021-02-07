@@ -159,6 +159,7 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 		ChainID:       b.ChainID,
 		SignatureType: SignatureTypeSingle,
 		Data:          dataBytes,
+		GasPrice:      1,
 	}
 
 	object := &object{

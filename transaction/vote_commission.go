@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
 )
@@ -51,6 +52,40 @@ type VoteCommissionData struct {
 	VoteCommission          *big.Int
 	VoteUpdate              *big.Int
 	_                       []*big.Int `rlp:"tail"`
+}
+
+func NewVoteCommissionData() *VoteCommissionData {
+	return &VoteCommissionData{}
+}
+
+func (d *VoteCommissionData) SetCoin(id uint64) *VoteCommissionData {
+	d.Coin = CoinID(id)
+	return d
+}
+
+// SetPubKey sets public key.
+func (d *VoteCommissionData) SetPubKey(key string) (*VoteCommissionData, error) {
+	pubKey, err := wallet.PublicKeyToHex(key)
+	if err != nil {
+		return d, err
+	}
+	copy(d.PubKey[:], pubKey)
+	return d, nil
+}
+
+// MustSetPubKey tries to set public key and panics on error.
+func (d *VoteCommissionData) MustSetPubKey(key string) *VoteCommissionData {
+	_, err := d.SetPubKey(key)
+	if err != nil {
+		panic(err)
+	}
+	return d
+}
+
+// SetHeight sets height
+func (d *VoteCommissionData) SetHeight(height uint64) *VoteCommissionData {
+	d.Height = height
+	return d
 }
 
 // Type returns Data type of the transaction.
