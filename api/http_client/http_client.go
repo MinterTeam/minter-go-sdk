@@ -20,8 +20,8 @@ import (
 	"time"
 )
 
-// Concise http concise HTTP client, with wrapper over go-swagger Client methods
-type Concise struct {
+// Client http concise HTTP client, with wrapper over go-swagger SwagClient methods
+type Client struct {
 	api_service.ClientService
 	host    string
 	path    string
@@ -33,14 +33,20 @@ type Concise struct {
 	headers map[string][]string
 }
 
+// NewConcise returns concise HTTP client, with wrapper over go-swagger methods
+// Deprecated: Use New
+func NewConcise(address string) (*Client, error) {
+	return New(address)
+}
+
 // New returns concise HTTP client, with wrapper over go-swagger methods
-func New(address string) (*Concise, error) {
+func New(address string) (*Client, error) {
 	parseAddress, err := url.Parse(address)
 	if err != nil {
 		return nil, err
 	}
 
-	concise := &Concise{
+	c := &Client{
 		host:    parseAddress.Host,
 		path:    parseAddress.Path,
 		ssl:     parseAddress.Scheme == "https",
@@ -51,10 +57,10 @@ func New(address string) (*Concise, error) {
 		headers: map[string][]string{},
 	}
 
-	return concise.setClientService(nil), nil
+	return c.setClientService(nil), nil
 }
 
-func (c *Concise) setClientService(clientService api_service.ClientService) *Concise {
+func (c *Client) setClientService(clientService api_service.ClientService) *Client {
 	if clientService == nil {
 		r := httptransport.New(c.host, c.path, []string{c.getHTTPProtocol()})
 		r.SetDebug(c.debug)
@@ -80,9 +86,9 @@ func clientAuthInfoWriterFunc(headers map[string][]string) runtime.ClientAuthInf
 	}
 }
 
-// WithTimeout returns copy of Concise with timeout.
-func (c *Concise) WithTimeout(timeout time.Duration) *Concise {
-	concise := &Concise{
+// WithTimeout returns copy of Client with timeout.
+func (c *Client) WithTimeout(timeout time.Duration) *Client {
+	concise := &Client{
 		host:    c.host,
 		path:    c.path,
 		ssl:     c.ssl,
@@ -95,9 +101,9 @@ func (c *Concise) WithTimeout(timeout time.Duration) *Concise {
 	return concise.setClientService(nil)
 }
 
-// WithHeaders returns copy of Concise with custom headers.
-func (c *Concise) WithHeaders(headers map[string][]string) *Concise {
-	concise := &Concise{
+// WithHeaders returns copy of Client with custom headers.
+func (c *Client) WithHeaders(headers map[string][]string) *Client {
+	concise := &Client{
 		host:    c.host,
 		path:    c.path,
 		ssl:     c.ssl,
@@ -110,9 +116,9 @@ func (c *Concise) WithHeaders(headers map[string][]string) *Concise {
 	return concise.setClientService(nil)
 }
 
-// WithDebug returns copy of Concise with debug.
-func (c *Concise) WithDebug(debug bool) *Concise {
-	concise := &Concise{
+// WithDebug returns copy of Client with debug.
+func (c *Client) WithDebug(debug bool) *Client {
+	concise := &Client{
 		host:    c.host,
 		path:    c.path,
 		ssl:     c.ssl,
@@ -125,9 +131,9 @@ func (c *Concise) WithDebug(debug bool) *Concise {
 	return concise.setClientService(nil)
 }
 
-// WithLogger returns copy of Concise with custom logger.
-func (c *Concise) WithLogger(logger logger.Logger) *Concise {
-	concise := &Concise{
+// WithLogger returns copy of Client with custom logger.
+func (c *Client) WithLogger(logger logger.Logger) *Client {
+	concise := &Client{
 		host:    c.host,
 		path:    c.path,
 		ssl:     c.ssl,
@@ -140,7 +146,7 @@ func (c *Concise) WithLogger(logger logger.Logger) *Concise {
 	return concise.setClientService(nil)
 }
 
-// WithContextFunc returns new Concise client with new context
+// WithContextFunc returns new Client client with new context
 // Example:
 // 		timeout := func(c context.Context) func() context.Context {
 //			return func() context.Context {
@@ -148,8 +154,8 @@ func (c *Concise) WithLogger(logger logger.Logger) *Concise {
 //				return ctx
 //			}
 //		}
-func (c *Concise) WithContextFunc(contextFunc func(context.Context) func() context.Context) *Concise {
-	concise := &Concise{
+func (c *Client) WithContextFunc(contextFunc func(context.Context) func() context.Context) *Client {
+	concise := &Client{
 		host:    c.host,
 		path:    c.path,
 		ssl:     c.ssl,
@@ -163,7 +169,7 @@ func (c *Concise) WithContextFunc(contextFunc func(context.Context) func() conte
 }
 
 // CoinID returns ID of coin symbol.
-func (c *Concise) CoinID(symbol string, optionalHeight ...uint64) (uint64, error) {
+func (c *Client) CoinID(symbol string, optionalHeight ...uint64) (uint64, error) {
 	res, err := c.CoinInfo(symbol, optionalHeight...)
 	if err != nil {
 		return 0, err
@@ -173,7 +179,7 @@ func (c *Concise) CoinID(symbol string, optionalHeight ...uint64) (uint64, error
 }
 
 // Halts returns the candidate votes for stopping the network at block.
-func (c *Concise) Halts(height uint64) (*models.HaltsResponse, error) {
+func (c *Client) Halts(height uint64) (*models.HaltsResponse, error) {
 	res, err := c.ClientService.Halts(api_service.NewHaltsParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -183,7 +189,7 @@ func (c *Concise) Halts(height uint64) (*models.HaltsResponse, error) {
 }
 
 // Genesis returns genesis file.
-func (c *Concise) Genesis() (*models.GenesisResponse, error) {
+func (c *Client) Genesis() (*models.GenesisResponse, error) {
 	res, err := c.ClientService.Genesis(api_service.NewGenesisParamsWithTimeout(c.timeout).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -193,7 +199,7 @@ func (c *Concise) Genesis() (*models.GenesisResponse, error) {
 }
 
 // Status returns node status including pubkey, latest block.
-func (c *Concise) Status() (*models.StatusResponse, error) {
+func (c *Client) Status() (*models.StatusResponse, error) {
 	res, err := c.ClientService.Status(api_service.NewStatusParamsWithTimeout(c.timeout).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -203,7 +209,7 @@ func (c *Concise) Status() (*models.StatusResponse, error) {
 }
 
 // Nonce returns next transaction number (nonce) of an address.
-func (c *Concise) Nonce(address string, optionalHeight ...uint64) (uint64, error) {
+func (c *Client) Nonce(address string, optionalHeight ...uint64) (uint64, error) {
 	res, err := c.Address(address, optionalHeight...)
 	if err != nil {
 		return 0, err
@@ -213,7 +219,7 @@ func (c *Concise) Nonce(address string, optionalHeight ...uint64) (uint64, error
 }
 
 // Address returns coins list, balance and transaction count of an address.
-func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.AddressResponse, error) {
+func (c *Client) Address(address string, optionalHeight ...uint64) (*models.AddressResponse, error) {
 	res, err := c.AddressExtended(address, true, optionalHeight...)
 	if err != nil {
 		return nil, err
@@ -223,7 +229,7 @@ func (c *Concise) Address(address string, optionalHeight ...uint64) (*models.Add
 }
 
 // Addresses returns list of addresses.
-func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
+func (c *Client) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
 	res, err := c.AddressesExtended(addresses, true, optionalHeight...)
 	if err != nil {
 		return nil, err
@@ -233,7 +239,7 @@ func (c *Concise) Addresses(addresses []string, optionalHeight ...uint64) (*mode
 }
 
 // AddressExtended returns coins list with bipValue, balance, delegated and transaction count of an address.
-func (c *Concise) AddressExtended(address string, delegated bool, optionalHeight ...uint64) (*models.AddressResponse, error) {
+func (c *Client) AddressExtended(address string, delegated bool, optionalHeight ...uint64) (*models.AddressResponse, error) {
 	res, err := c.ClientService.Address(api_service.NewAddressParamsWithTimeout(c.timeout).WithAddress(address).WithHeight(optionalInt(optionalHeight)).WithDelegated(&delegated).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -243,7 +249,7 @@ func (c *Concise) AddressExtended(address string, delegated bool, optionalHeight
 }
 
 // AddressesExtended returns list of addresses with bipValue and delegated.
-func (c *Concise) AddressesExtended(addresses []string, delegated bool, optionalHeight ...uint64) (*models.AddressesResponse, error) {
+func (c *Client) AddressesExtended(addresses []string, delegated bool, optionalHeight ...uint64) (*models.AddressesResponse, error) {
 	res, err := c.ClientService.Addresses(api_service.NewAddressesParamsWithTimeout(c.timeout).WithAddresses(addresses).WithHeight(optionalInt(optionalHeight)).WithDelegated(&delegated).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -253,7 +259,7 @@ func (c *Concise) AddressesExtended(addresses []string, delegated bool, optional
 }
 
 // Block returns block data at given height.
-func (c *Concise) Block(height uint64) (*models.BlockResponse, error) {
+func (c *Client) Block(height uint64) (*models.BlockResponse, error) {
 	res, err := c.ClientService.Block(api_service.NewBlockParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -263,7 +269,7 @@ func (c *Concise) Block(height uint64) (*models.BlockResponse, error) {
 }
 
 // Candidate returns candidate’s res by provided public_key.
-func (c *Concise) Candidate(publicKey string, optionalHeight ...uint64) (*models.CandidateResponse, error) {
+func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*models.CandidateResponse, error) {
 	res, err := c.CandidateExtended(publicKey, false, optionalHeight...)
 	if err != nil {
 		return nil, err
@@ -273,7 +279,7 @@ func (c *Concise) Candidate(publicKey string, optionalHeight ...uint64) (*models
 }
 
 // Candidates returns list of candidates.
-func (c *Concise) Candidates(includeStakes bool, status string, optionalHeight ...uint64) (*models.CandidatesResponse, error) {
+func (c *Client) Candidates(includeStakes bool, status string, optionalHeight ...uint64) (*models.CandidatesResponse, error) {
 	if status == "" {
 		status = "all"
 	}
@@ -286,7 +292,7 @@ func (c *Concise) Candidates(includeStakes bool, status string, optionalHeight .
 }
 
 // CandidateExtended returns candidate’s res by provided public_key.
-func (c *Concise) CandidateExtended(publicKey string, notShowStakes bool, optionalHeight ...uint64) (*models.CandidateResponse, error) {
+func (c *Client) CandidateExtended(publicKey string, notShowStakes bool, optionalHeight ...uint64) (*models.CandidateResponse, error) {
 	res, err := c.ClientService.Candidate(api_service.NewCandidateParamsWithTimeout(c.timeout).WithNotShowStakes(&notShowStakes).WithPublicKey(publicKey).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -296,7 +302,7 @@ func (c *Concise) CandidateExtended(publicKey string, notShowStakes bool, option
 }
 
 // CandidatesExtended returns list of candidates.
-func (c *Concise) CandidatesExtended(includeStakes, notShowStakes bool, status string, optionalHeight ...uint64) (*models.CandidatesResponse, error) {
+func (c *Client) CandidatesExtended(includeStakes, notShowStakes bool, status string, optionalHeight ...uint64) (*models.CandidatesResponse, error) {
 	if status == "" {
 		status = "all"
 	}
@@ -309,7 +315,7 @@ func (c *Concise) CandidatesExtended(includeStakes, notShowStakes bool, status s
 }
 
 // CoinInfoByID returns information about coin ID.
-func (c *Concise) CoinInfoByID(id uint64, optionalHeight ...uint64) (*models.CoinInfoResponse, error) {
+func (c *Client) CoinInfoByID(id uint64, optionalHeight ...uint64) (*models.CoinInfoResponse, error) {
 	res, err := c.ClientService.CoinInfoByID(api_service.NewCoinInfoByIDParamsWithTimeout(c.timeout).WithID(strconv.Itoa(int(id))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -319,7 +325,7 @@ func (c *Concise) CoinInfoByID(id uint64, optionalHeight ...uint64) (*models.Coi
 }
 
 // CoinInfo returns information about coin symbol.
-func (c *Concise) CoinInfo(symbol string, optionalHeight ...uint64) (*models.CoinInfoResponse, error) {
+func (c *Client) CoinInfo(symbol string, optionalHeight ...uint64) (*models.CoinInfoResponse, error) {
 	res, err := c.ClientService.CoinInfo(api_service.NewCoinInfoParamsWithTimeout(c.timeout).WithSymbol(symbol).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -329,7 +335,7 @@ func (c *Concise) CoinInfo(symbol string, optionalHeight ...uint64) (*models.Coi
 }
 
 // EstimateCoinSymbolBuy return estimate of buy coin transaction.
-func (c *Concise) EstimateCoinSymbolBuy(coinToSell, coinToBuy, valueToBuy string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy, valueToBuy string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
 	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -339,7 +345,7 @@ func (c *Concise) EstimateCoinSymbolBuy(coinToSell, coinToBuy, valueToBuy string
 }
 
 // EstimateCoinSymbolSell return estimate of sell coin transaction.
-func (c *Concise) EstimateCoinSymbolSell(coinToBuy, coinToSell, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
 	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -349,7 +355,7 @@ func (c *Concise) EstimateCoinSymbolSell(coinToBuy, coinToSell, valueToSell stri
 }
 
 // EstimateCoinSymbolSellAll return estimate of sell all coin transaction.
-func (c *Concise) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPrice uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellAllResponse, error) {
+func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPrice uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellAllResponse, error) {
 	res, err := c.ClientService.EstimateCoinSellAll(api_service.NewEstimateCoinSellAllParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithGasPrice(&gasPrice).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -359,7 +365,7 @@ func (c *Concise) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPri
 }
 
 // EstimateCoinIDBuy return estimate of buy coin transaction.
-func (c *Concise) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
 	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -369,7 +375,7 @@ func (c *Concise) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy str
 }
 
 // EstimateCoinIDSell return estimate of sell coin transaction.
-func (c *Concise) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
 	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -379,7 +385,7 @@ func (c *Concise) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell s
 }
 
 // EstimateCoinIDSellAll return estimate of sell all coin transaction.
-func (c *Concise) EstimateCoinIDSellAll(coinToBuy, coinToSell, gasPrice uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellAllResponse, error) {
+func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell, gasPrice uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellAllResponse, error) {
 	res, err := c.ClientService.EstimateCoinSellAll(api_service.NewEstimateCoinSellAllParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithGasPrice(&gasPrice).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -389,7 +395,7 @@ func (c *Concise) EstimateCoinIDSellAll(coinToBuy, coinToSell, gasPrice uint64, 
 }
 
 // EstimateTxCommission return estimate of encoding transaction.
-func (c *Concise) EstimateTxCommission(tx string, optionalHeight ...uint64) (*models.EstimateTxCommissionResponse, error) {
+func (c *Client) EstimateTxCommission(tx string, optionalHeight ...uint64) (*models.EstimateTxCommissionResponse, error) {
 	res, err := c.ClientService.EstimateTxCommission(api_service.NewEstimateTxCommissionParamsWithTimeout(c.timeout).WithTx(tx).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -399,7 +405,7 @@ func (c *Concise) EstimateTxCommission(tx string, optionalHeight ...uint64) (*mo
 }
 
 // Events returns events at given height.
-func (c *Concise) Events(height uint64, search ...string) (*models.EventsResponse, error) {
+func (c *Client) Events(height uint64, search ...string) (*models.EventsResponse, error) {
 	res, err := c.ClientService.Events(api_service.NewEventsParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithSearch(search).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -409,7 +415,7 @@ func (c *Concise) Events(height uint64, search ...string) (*models.EventsRespons
 }
 
 // MaxGasPrice returns current max gas.
-func (c *Concise) MaxGasPrice(optionalHeight ...uint64) (*models.MaxGasPriceResponse, error) {
+func (c *Client) MaxGasPrice(optionalHeight ...uint64) (*models.MaxGasPriceResponse, error) {
 	res, err := c.ClientService.MaxGasPrice(api_service.NewMaxGasPriceParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -419,7 +425,7 @@ func (c *Concise) MaxGasPrice(optionalHeight ...uint64) (*models.MaxGasPriceResp
 }
 
 // MinGasPrice returns current min gas price.
-func (c *Concise) MinGasPrice() (*models.MinGasPriceResponse, error) {
+func (c *Client) MinGasPrice() (*models.MinGasPriceResponse, error) {
 	res, err := c.ClientService.MinGasPrice(api_service.NewMinGasPriceParamsWithTimeout(c.timeout).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -429,7 +435,7 @@ func (c *Concise) MinGasPrice() (*models.MinGasPriceResponse, error) {
 }
 
 // MissedBlocks returns missed blocks by validator public key.
-func (c *Concise) MissedBlocks(publicKey string, optionalHeight ...uint64) (*models.MissedBlocksResponse, error) {
+func (c *Client) MissedBlocks(publicKey string, optionalHeight ...uint64) (*models.MissedBlocksResponse, error) {
 	res, err := c.ClientService.MissedBlocks(api_service.NewMissedBlocksParamsWithTimeout(c.timeout).WithPublicKey(publicKey).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -439,7 +445,7 @@ func (c *Concise) MissedBlocks(publicKey string, optionalHeight ...uint64) (*mod
 }
 
 // NetInfo returns network res
-func (c *Concise) NetInfo() (*models.NetInfoResponse, error) {
+func (c *Client) NetInfo() (*models.NetInfoResponse, error) {
 	res, err := c.ClientService.NetInfo(api_service.NewNetInfoParamsWithTimeout(c.timeout).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -451,7 +457,7 @@ func (c *Concise) NetInfo() (*models.NetInfoResponse, error) {
 // SendTransaction returns the result of sending signed tx.
 // To ensure that transaction was successfully committed to the blockchain,
 // you need to find the transaction by the hash and ensure that the status code equals to 0.
-func (c *Concise) SendTransaction(tx string) (*models.SendTransactionResponse, error) {
+func (c *Client) SendTransaction(tx string) (*models.SendTransactionResponse, error) {
 	res, err := c.ClientService.SendTransaction(api_service.NewSendTransactionParamsWithTimeout(c.timeout).WithTx(tx).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -461,7 +467,7 @@ func (c *Concise) SendTransaction(tx string) (*models.SendTransactionResponse, e
 }
 
 // Transaction returns transaction res.
-func (c *Concise) Transaction(hash string) (*models.TransactionResponse, error) {
+func (c *Client) Transaction(hash string) (*models.TransactionResponse, error) {
 	res, err := c.ClientService.Transaction(api_service.NewTransactionParamsWithTimeout(c.timeout).WithHash(hash).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -471,7 +477,7 @@ func (c *Concise) Transaction(hash string) (*models.TransactionResponse, error) 
 }
 
 // Transactions returns transactions by query.
-func (c *Concise) Transactions(query string, page, perPage int32) (*models.TransactionsResponse, error) {
+func (c *Client) Transactions(query string, page, perPage int32) (*models.TransactionsResponse, error) {
 	res, err := c.ClientService.Transactions(api_service.NewTransactionsParamsWithTimeout(c.timeout).WithQuery(query).WithPage(&page).WithPerPage(&perPage).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -481,7 +487,7 @@ func (c *Concise) Transactions(query string, page, perPage int32) (*models.Trans
 }
 
 // UnconfirmedTxs returns unconfirmed transactions.
-func (c *Concise) UnconfirmedTxs(limit int32) (*models.UnconfirmedTxsResponse, error) {
+func (c *Client) UnconfirmedTxs(limit int32) (*models.UnconfirmedTxsResponse, error) {
 	res, err := c.ClientService.UnconfirmedTxs(api_service.NewUnconfirmedTxsParamsWithTimeout(c.timeout).WithLimit(&limit).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -491,7 +497,7 @@ func (c *Concise) UnconfirmedTxs(limit int32) (*models.UnconfirmedTxsResponse, e
 }
 
 // Validators returns list of active validators.
-func (c *Concise) Validators(optionalHeight ...uint64) (*models.ValidatorsResponse, error) {
+func (c *Client) Validators(optionalHeight ...uint64) (*models.ValidatorsResponse, error) {
 	res, err := c.ClientService.Validators(api_service.NewValidatorsParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -501,7 +507,7 @@ func (c *Concise) Validators(optionalHeight ...uint64) (*models.ValidatorsRespon
 }
 
 // WaitList returns the list of address stakes in waitlist.
-func (c *Concise) WaitList(publicKey, address string, optionalHeight ...uint64) (*models.WaitListResponse, error) {
+func (c *Client) WaitList(publicKey, address string, optionalHeight ...uint64) (*models.WaitListResponse, error) {
 	res, err := c.ClientService.WaitList(api_service.NewWaitListParamsWithTimeout(c.timeout).WithAddress(address).WithPublicKey(&publicKey).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
@@ -511,7 +517,7 @@ func (c *Concise) WaitList(publicKey, address string, optionalHeight ...uint64) 
 }
 
 // Frozen returns frozen balance.
-func (c *Concise) Frozen(address string, optionalCoinID ...uint64) (*models.FrozenResponse, error) {
+func (c *Client) Frozen(address string, optionalCoinID ...uint64) (*models.FrozenResponse, error) {
 	if len(optionalCoinID) > 1 {
 		return nil, errors.New("CoinID needed single value") // todo: change message
 	}
@@ -569,7 +575,7 @@ func (s *SubscriberClient) Recv() (*api_service.SubscribeOKBody, error) {
 }
 
 // Subscribe returns a subscription for events by query.
-func (c *Concise) Subscribe(query string) (*SubscriberClient, error) {
+func (c *Client) Subscribe(query string) (*SubscriberClient, error) {
 
 	subClient := &SubscriberClient{}
 
@@ -586,14 +592,14 @@ func (c *Concise) Subscribe(query string) (*SubscriberClient, error) {
 	return subClient, nil
 }
 
-func (c *Concise) getWSProtocol() string {
+func (c *Client) getWSProtocol() string {
 	if c.ssl {
 		return "wss"
 	}
 	return "ws"
 }
 
-func (c *Concise) getHTTPProtocol() string {
+func (c *Client) getHTTPProtocol() string {
 	if c.ssl {
 		return "https"
 	}
@@ -601,7 +607,7 @@ func (c *Concise) getHTTPProtocol() string {
 }
 
 // CheckVersion compares the prefix in the version name and checks the testnet mode
-func (c *Concise) CheckVersion(version string, isTestnet bool) error {
+func (c *Client) CheckVersion(version string, isTestnet bool) error {
 	response, err := c.Status()
 	if err != nil {
 		return err
@@ -653,19 +659,19 @@ func optionalInt(height []uint64) *uint64 {
 	return &height[0]
 }
 
-// Client is go-swagger HTTP client
-type Client struct {
+// SwagClient is go-swagger HTTP client
+type SwagClient struct {
 	api_service.ClientService
 }
 
 // NewSwag returns HTTP client from go-swagger generator
-func NewSwag(address string) (*Client, error) {
+func NewSwag(address string) (*SwagClient, error) {
 	parseAddress, err := url.Parse(address)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Client{
+	return &SwagClient{
 		ClientService: client.NewHTTPClientWithConfig(nil,
 			client.DefaultTransportConfig().
 				WithHost(parseAddress.Host).
@@ -676,7 +682,7 @@ func NewSwag(address string) (*Client, error) {
 }
 
 // CoinID returns ID of coin symbol.
-func (c *Client) CoinID(symbol string, optionalHeight ...uint64) (uint64, error) {
+func (c *SwagClient) CoinID(symbol string, optionalHeight ...uint64) (uint64, error) {
 	res, err := c.ClientService.CoinInfo(api_service.NewCoinInfoParams().WithSymbol(symbol).WithHeight(optionalInt(optionalHeight)))
 	if err != nil {
 		return 0, err
@@ -686,7 +692,7 @@ func (c *Client) CoinID(symbol string, optionalHeight ...uint64) (uint64, error)
 }
 
 // Nonce returns next transaction number (nonce) of an address.
-func (c *Client) Nonce(address string, optionalHeight ...uint64) (uint64, error) {
+func (c *SwagClient) Nonce(address string, optionalHeight ...uint64) (uint64, error) {
 	res, err := c.ClientService.Address(api_service.NewAddressParams().WithAddress(address).WithHeight(optionalInt(optionalHeight)))
 	if err != nil {
 		return 0, err
