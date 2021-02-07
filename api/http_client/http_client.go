@@ -33,8 +33,8 @@ type Concise struct {
 	headers map[string][]string
 }
 
-// NewConcise returns concise HTTP client, with wrapper over go-swagger methods
-func NewConcise(address string) (*Concise, error) {
+// New returns concise HTTP client, with wrapper over go-swagger methods
+func New(address string) (*Concise, error) {
 	parseAddress, err := url.Parse(address)
 	if err != nil {
 		return nil, err
@@ -539,7 +539,7 @@ func (s *SubscriberClient) CloseSend() error {
 	}
 	s.cancel()
 	s.closed = true
-	return s.conn.Close()
+	return s.conn.CloseHandler()(websocket.CloseNormalClosure, "")
 }
 
 // Recv returns message SubscribeOKBody.
@@ -569,11 +569,11 @@ func (s *SubscriberClient) Recv() (*api_service.SubscribeOKBody, error) {
 }
 
 // Subscribe returns a subscription for events by query.
-func (c *Concise) Subscribe(ctx context.Context, query string) (*SubscriberClient, error) {
+func (c *Concise) Subscribe(query string) (*SubscriberClient, error) {
 
 	subClient := &SubscriberClient{}
 
-	subClient.ctx, subClient.cancel = context.WithCancel(ctx)
+	subClient.ctx, subClient.cancel = context.WithCancel(c.ctxFunc())
 	scheme := c.getWSProtocol()
 	u := url.URL{Scheme: scheme, Host: c.host, Path: c.path + "/subscribe", RawQuery: "query=" + url.QueryEscape(query)}
 
@@ -658,8 +658,8 @@ type Client struct {
 	api_service.ClientService
 }
 
-// New returns HTTP client from go-swagger generator
-func New(address string) (*Client, error) {
+// NewSwag returns HTTP client from go-swagger generator
+func NewSwag(address string) (*Client, error) {
 	parseAddress, err := url.Parse(address)
 	if err != nil {
 		return nil, err
