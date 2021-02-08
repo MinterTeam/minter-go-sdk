@@ -56,6 +56,10 @@ type TransactionResponse struct {
 	// raw tx
 	RawTx string `json:"raw_tx,omitempty"`
 
+	// service data
+	// Format: byte
+	ServiceData strfmt.Base64 `json:"service_data,omitempty"`
+
 	// tags
 	Tags map[string]string `json:"tags,omitempty"`
 

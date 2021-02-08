@@ -20,8 +20,11 @@ import (
 // NewBlockParams creates a new BlockParams object
 // with the default values initialized.
 func NewBlockParams() *BlockParams {
-	var ()
+	var (
+		failedTxsDefault = bool(false)
+	)
 	return &BlockParams{
+		FailedTxs: &failedTxsDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -30,8 +33,11 @@ func NewBlockParams() *BlockParams {
 // NewBlockParamsWithTimeout creates a new BlockParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewBlockParamsWithTimeout(timeout time.Duration) *BlockParams {
-	var ()
+	var (
+		failedTxsDefault = bool(false)
+	)
 	return &BlockParams{
+		FailedTxs: &failedTxsDefault,
 
 		timeout: timeout,
 	}
@@ -40,8 +46,11 @@ func NewBlockParamsWithTimeout(timeout time.Duration) *BlockParams {
 // NewBlockParamsWithContext creates a new BlockParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewBlockParamsWithContext(ctx context.Context) *BlockParams {
-	var ()
+	var (
+		failedTxsDefault = bool(false)
+	)
 	return &BlockParams{
+		FailedTxs: &failedTxsDefault,
 
 		Context: ctx,
 	}
@@ -50,8 +59,11 @@ func NewBlockParamsWithContext(ctx context.Context) *BlockParams {
 // NewBlockParamsWithHTTPClient creates a new BlockParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewBlockParamsWithHTTPClient(client *http.Client) *BlockParams {
-	var ()
+	var (
+		failedTxsDefault = bool(false)
+	)
 	return &BlockParams{
+		FailedTxs:  &failedTxsDefault,
 		HTTPClient: client,
 	}
 }
@@ -61,6 +73,8 @@ for the block operation typically these are written to a http.Request
 */
 type BlockParams struct {
 
+	/*FailedTxs*/
+	FailedTxs *bool
 	/*Fields*/
 	Fields []string
 	/*Height*/
@@ -104,6 +118,17 @@ func (o *BlockParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithFailedTxs adds the failedTxs to the block params
+func (o *BlockParams) WithFailedTxs(failedTxs *bool) *BlockParams {
+	o.SetFailedTxs(failedTxs)
+	return o
+}
+
+// SetFailedTxs adds the failedTxs to the block params
+func (o *BlockParams) SetFailedTxs(failedTxs *bool) {
+	o.FailedTxs = failedTxs
+}
+
 // WithFields adds the fields to the block params
 func (o *BlockParams) WithFields(fields []string) *BlockParams {
 	o.SetFields(fields)
@@ -133,6 +158,22 @@ func (o *BlockParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registr
 		return err
 	}
 	var res []error
+
+	if o.FailedTxs != nil {
+
+		// query param failed_txs
+		var qrFailedTxs bool
+		if o.FailedTxs != nil {
+			qrFailedTxs = *o.FailedTxs
+		}
+		qFailedTxs := swag.FormatBool(qrFailedTxs)
+		if qFailedTxs != "" {
+			if err := r.SetQueryParam("failed_txs", qFailedTxs); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	valuesFields := o.Fields
 

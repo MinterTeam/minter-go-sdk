@@ -46,7 +46,7 @@ type BlockResponse struct {
 	TransactionCount uint64 `json:"transaction_count,omitempty,string"`
 
 	// transactions
-	Transactions []*BlockResponseTransaction `json:"transactions"`
+	Transactions []*TransactionResponse `json:"transactions"`
 
 	// validators
 	Validators []*BlockResponseValidator `json:"validators"`

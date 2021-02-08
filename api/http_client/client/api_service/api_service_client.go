@@ -63,6 +63,10 @@ type ClientService interface {
 
 	NetInfo(params *NetInfoParams) (*NetInfoOK, error)
 
+	PriceCommission(params *PriceCommissionParams) (*PriceCommissionOK, error)
+
+	PriceVotes(params *PriceVotesParams) (*PriceVotesOK, error)
+
 	SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error)
 
 	SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error)
@@ -70,6 +74,10 @@ type ClientService interface {
 	Status(params *StatusParams) (*StatusOK, error)
 
 	Subscribe(params *SubscribeParams) (*SubscribeOK, error)
+
+	SwapPool(params *SwapPoolParams) (*SwapPoolOK, error)
+
+	SwapPoolProvider(params *SwapPoolProviderParams) (*SwapPoolProviderOK, error)
 
 	TestBlock(params *TestBlockParams) (*TestBlockOK, error)
 
@@ -768,6 +776,72 @@ func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 }
 
 /*
+  PriceCommission prices commission
+*/
+func (a *Client) PriceCommission(params *PriceCommissionParams) (*PriceCommissionOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPriceCommissionParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "PriceCommission",
+		Method:             "GET",
+		PathPattern:        "/price_commissions",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &PriceCommissionReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*PriceCommissionOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*PriceCommissionDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  PriceVotes prices votes
+*/
+func (a *Client) PriceVotes(params *PriceVotesParams) (*PriceVotesOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPriceVotesParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "PriceVotes",
+		Method:             "GET",
+		PathPattern:        "/price_votes/{height}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &PriceVotesReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*PriceVotesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*PriceVotesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
   SendTransaction sends transaction
 
   SendTransaction returns the result of sending signed tx. To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
@@ -904,6 +978,72 @@ func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*SubscribeDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  SwapPool swaps pool
+*/
+func (a *Client) SwapPool(params *SwapPoolParams) (*SwapPoolOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSwapPoolParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "SwapPool",
+		Method:             "GET",
+		PathPattern:        "/swap_pool/{coin0}/{coin1}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &SwapPoolReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SwapPoolOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*SwapPoolDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  SwapPoolProvider swaps pool provider
+*/
+func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams) (*SwapPoolProviderOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSwapPoolProviderParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "SwapPoolProvider",
+		Method:             "GET",
+		PathPattern:        "/swap_pool/{coin0}/{coin1}/{provider}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &SwapPoolProviderReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SwapPoolProviderOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*SwapPoolProviderDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

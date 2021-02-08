@@ -30,6 +30,9 @@ type GenesisResponse struct {
 
 	// genesis time
 	GenesisTime string `json:"genesis_time,omitempty"`
+
+	// initial height
+	InitialHeight uint64 `json:"initial_height,omitempty,string"`
 }
 
 // Validate validates this genesis response

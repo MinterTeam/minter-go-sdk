@@ -22,9 +22,11 @@ import (
 func NewEstimateCoinSellAllParams() *EstimateCoinSellAllParams {
 	var (
 		gasPriceDefault = uint64(1)
+		swapFromDefault = string("optimal")
 	)
 	return &EstimateCoinSellAllParams{
 		GasPrice: &gasPriceDefault,
+		SwapFrom: &swapFromDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -35,9 +37,11 @@ func NewEstimateCoinSellAllParams() *EstimateCoinSellAllParams {
 func NewEstimateCoinSellAllParamsWithTimeout(timeout time.Duration) *EstimateCoinSellAllParams {
 	var (
 		gasPriceDefault = uint64(1)
+		swapFromDefault = string("optimal")
 	)
 	return &EstimateCoinSellAllParams{
 		GasPrice: &gasPriceDefault,
+		SwapFrom: &swapFromDefault,
 
 		timeout: timeout,
 	}
@@ -48,9 +52,11 @@ func NewEstimateCoinSellAllParamsWithTimeout(timeout time.Duration) *EstimateCoi
 func NewEstimateCoinSellAllParamsWithContext(ctx context.Context) *EstimateCoinSellAllParams {
 	var (
 		gasPriceDefault = uint64(1)
+		swapFromDefault = string("optimal")
 	)
 	return &EstimateCoinSellAllParams{
 		GasPrice: &gasPriceDefault,
+		SwapFrom: &swapFromDefault,
 
 		Context: ctx,
 	}
@@ -61,9 +67,11 @@ func NewEstimateCoinSellAllParamsWithContext(ctx context.Context) *EstimateCoinS
 func NewEstimateCoinSellAllParamsWithHTTPClient(client *http.Client) *EstimateCoinSellAllParams {
 	var (
 		gasPriceDefault = uint64(1)
+		swapFromDefault = string("optimal")
 	)
 	return &EstimateCoinSellAllParams{
 		GasPrice:   &gasPriceDefault,
+		SwapFrom:   &swapFromDefault,
 		HTTPClient: client,
 	}
 }
@@ -85,6 +93,8 @@ type EstimateCoinSellAllParams struct {
 	GasPrice *uint64
 	/*Height*/
 	Height *uint64
+	/*SwapFrom*/
+	SwapFrom *string
 	/*ValueToSell*/
 	ValueToSell string
 
@@ -190,6 +200,17 @@ func (o *EstimateCoinSellAllParams) WithHeight(height *uint64) *EstimateCoinSell
 // SetHeight adds the height to the estimate coin sell all params
 func (o *EstimateCoinSellAllParams) SetHeight(height *uint64) {
 	o.Height = height
+}
+
+// WithSwapFrom adds the swapFrom to the estimate coin sell all params
+func (o *EstimateCoinSellAllParams) WithSwapFrom(swapFrom *string) *EstimateCoinSellAllParams {
+	o.SetSwapFrom(swapFrom)
+	return o
+}
+
+// SetSwapFrom adds the swapFrom to the estimate coin sell all params
+func (o *EstimateCoinSellAllParams) SetSwapFrom(swapFrom *string) {
+	o.SwapFrom = swapFrom
 }
 
 // WithValueToSell adds the valueToSell to the estimate coin sell all params
@@ -301,6 +322,22 @@ func (o *EstimateCoinSellAllParams) WriteToRequest(r runtime.ClientRequest, reg 
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
 			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.SwapFrom != nil {
+
+		// query param swap_from
+		var qrSwapFrom string
+		if o.SwapFrom != nil {
+			qrSwapFrom = *o.SwapFrom
+		}
+		qSwapFrom := qrSwapFrom
+		if qSwapFrom != "" {
+			if err := r.SetQueryParam("swap_from", qSwapFrom); err != nil {
 				return err
 			}
 		}
