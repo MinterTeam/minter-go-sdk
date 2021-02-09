@@ -39,9 +39,6 @@ type GenesisResponseAppState struct {
 	// note
 	Note string `json:"note,omitempty"`
 
-	// start height
-	StartHeight uint64 `json:"start_height,omitempty,string"`
-
 	// total slashed
 	TotalSlashed string `json:"total_slashed,omitempty"`
 
