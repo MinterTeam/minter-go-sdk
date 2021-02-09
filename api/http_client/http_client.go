@@ -268,6 +268,16 @@ func (c *Client) Block(height uint64) (*models.BlockResponse, error) {
 	return res.GetPayload(), nil
 }
 
+// Block returns block data at given height.
+func (c *Client) BlockExtended(height uint64, failedTxs bool, fieldsBlock ...string) (*models.BlockResponse, error) {
+	res, err := c.ClientService.Block(api_service.NewBlockParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithFailedTxs(&failedTxs).WithFields(fieldsBlock).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
 // Candidate returns candidate’s res by provided public_key.
 func (c *Client) Candidate(publicKey string, optionalHeight ...uint64) (*models.CandidateResponse, error) {
 	res, err := c.CandidateExtended(publicKey, false, optionalHeight...)
@@ -394,6 +404,66 @@ func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell, gasPrice uint64, v
 	return res.GetPayload(), nil
 }
 
+// EstimateCoinSymbolBuyFrom return estimate of buy coin transaction with choice of the exchange source.
+func (c *Client) EstimateCoinSymbolBuyFrom(coinToSell, coinToBuy, valueToBuy string, swapFrom string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// EstimateCoinSymbolSellFrom return estimate of sell coin transaction with choice of the exchange source.
+func (c *Client) EstimateCoinSymbolSellFrom(coinToBuy, coinToSell, valueToSell string, swapFrom string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// EstimateCoinSymbolSellAllFrom return estimate of sell all coin transaction with choice of the exchange source.
+func (c *Client) EstimateCoinSymbolSellAllFrom(coinToBuy, coinToSell string, gasPrice uint64, valueToSell string, swapFrom string, optionalHeight ...uint64) (*models.EstimateCoinSellAllResponse, error) {
+	res, err := c.ClientService.EstimateCoinSellAll(api_service.NewEstimateCoinSellAllParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithGasPrice(&gasPrice).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// EstimateCoinIDBuyFrom return estimate of buy coin transaction with choice of the exchange source.
+func (c *Client) EstimateCoinIDBuyFrom(coinToSell, coinToBuy uint64, valueToBuy string, swapFrom string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// EstimateCoinIDSellFrom return estimate of sell coin transaction with choice of the exchange source.
+func (c *Client) EstimateCoinIDSellFrom(coinToBuy, coinToSell uint64, valueToSell string, swapFrom string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// EstimateCoinIDSellAllFrom return estimate of sell all coin transaction with choice of the exchange source.
+func (c *Client) EstimateCoinIDSellAllFrom(coinToBuy, coinToSell, gasPrice uint64, valueToSell string, swapFrom string, optionalHeight ...uint64) (*models.EstimateCoinSellAllResponse, error) {
+	res, err := c.ClientService.EstimateCoinSellAll(api_service.NewEstimateCoinSellAllParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithGasPrice(&gasPrice).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
 // EstimateTxCommission return estimate of encoding transaction.
 func (c *Client) EstimateTxCommission(tx string, optionalHeight ...uint64) (*models.EstimateTxCommissionResponse, error) {
 	res, err := c.ClientService.EstimateTxCommission(api_service.NewEstimateTxCommissionParamsWithTimeout(c.timeout).WithTx(tx).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
@@ -509,6 +579,46 @@ func (c *Client) Validators(optionalHeight ...uint64) (*models.ValidatorsRespons
 // WaitList returns the list of address stakes in waitlist.
 func (c *Client) WaitList(publicKey, address string, optionalHeight ...uint64) (*models.WaitListResponse, error) {
 	res, err := c.ClientService.WaitList(api_service.NewWaitListParamsWithTimeout(c.timeout).WithAddress(address).WithPublicKey(&publicKey).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// SwapPool returns total supply and reserves.
+func (c *Client) SwapPool(coin0, coin1 uint64, optionalHeight ...uint64) (*models.SwapPoolResponse, error) {
+	res, err := c.ClientService.SwapPool(api_service.NewSwapPoolParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithCoin0(strconv.Itoa(int(coin0))).WithCoin1(strconv.Itoa(int(coin1))).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// SwapPoolProvider returns reserves and liquidity balance of provider.
+func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, optionalHeight ...uint64) (*models.SwapPoolResponse, error) {
+	res, err := c.ClientService.SwapPoolProvider(api_service.NewSwapPoolProviderParamsWithTimeout(c.timeout).WithProvider(provider).WithCoin0(strconv.Itoa(int(coin0))).WithCoin1(strconv.Itoa(int(coin1))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// PriceCommission returns ...
+func (c *Client) PriceCommission(optionalHeight ...uint64) (*models.PriceCommissionResponse, error) {
+	res, err := c.ClientService.PriceCommission(api_service.NewPriceCommissionParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// PriceVotes returns ...
+func (c *Client) PriceVotes(height uint64) (*models.PriceVotesResponse, error) {
+	res, err := c.ClientService.PriceVotes(api_service.NewPriceVotesParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
