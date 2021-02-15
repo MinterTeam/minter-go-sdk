@@ -73,6 +73,10 @@ for the estimate coin buy operation typically these are written to a http.Reques
 */
 type EstimateCoinBuyParams struct {
 
+	/*CoinCommission*/
+	CoinCommission *string
+	/*CoinIDCommission*/
+	CoinIDCommission *uint64
 	/*CoinIDToBuy*/
 	CoinIDToBuy *uint64
 	/*CoinIDToSell*/
@@ -124,6 +128,28 @@ func (o *EstimateCoinBuyParams) WithHTTPClient(client *http.Client) *EstimateCoi
 // SetHTTPClient adds the HTTPClient to the estimate coin buy params
 func (o *EstimateCoinBuyParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
+}
+
+// WithCoinCommission adds the coinCommission to the estimate coin buy params
+func (o *EstimateCoinBuyParams) WithCoinCommission(coinCommission *string) *EstimateCoinBuyParams {
+	o.SetCoinCommission(coinCommission)
+	return o
+}
+
+// SetCoinCommission adds the coinCommission to the estimate coin buy params
+func (o *EstimateCoinBuyParams) SetCoinCommission(coinCommission *string) {
+	o.CoinCommission = coinCommission
+}
+
+// WithCoinIDCommission adds the coinIDCommission to the estimate coin buy params
+func (o *EstimateCoinBuyParams) WithCoinIDCommission(coinIDCommission *uint64) *EstimateCoinBuyParams {
+	o.SetCoinIDCommission(coinIDCommission)
+	return o
+}
+
+// SetCoinIDCommission adds the coinIdCommission to the estimate coin buy params
+func (o *EstimateCoinBuyParams) SetCoinIDCommission(coinIDCommission *uint64) {
+	o.CoinIDCommission = coinIDCommission
 }
 
 // WithCoinIDToBuy adds the coinIDToBuy to the estimate coin buy params
@@ -210,6 +236,38 @@ func (o *EstimateCoinBuyParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		return err
 	}
 	var res []error
+
+	if o.CoinCommission != nil {
+
+		// query param coin_commission
+		var qrCoinCommission string
+		if o.CoinCommission != nil {
+			qrCoinCommission = *o.CoinCommission
+		}
+		qCoinCommission := qrCoinCommission
+		if qCoinCommission != "" {
+			if err := r.SetQueryParam("coin_commission", qCoinCommission); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.CoinIDCommission != nil {
+
+		// query param coin_id_commission
+		var qrCoinIDCommission uint64
+		if o.CoinIDCommission != nil {
+			qrCoinIDCommission = *o.CoinIDCommission
+		}
+		qCoinIDCommission := swag.FormatUint64(qrCoinIDCommission)
+		if qCoinIDCommission != "" {
+			if err := r.SetQueryParam("coin_id_commission", qCoinIDCommission); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	if o.CoinIDToBuy != nil {
 

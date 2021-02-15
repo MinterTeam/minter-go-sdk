@@ -142,9 +142,8 @@ func (d *RemoveLiquidityData) Encode() ([]byte, error) {
 }
 
 type BuySwapPoolData struct {
-	CoinToBuy          CoinID
+	Coins              []CoinID
 	ValueToBuy         *big.Int
-	CoinToSell         CoinID
 	MaximumValueToSell *big.Int
 }
 
@@ -152,15 +151,9 @@ func NewBuySwapPoolData() *BuySwapPoolData {
 	return &BuySwapPoolData{}
 }
 
-// SetCoinToSell sets ID of a coin to get.
-func (d *BuySwapPoolData) SetCoinToSell(id uint64) *BuySwapPoolData {
-	d.CoinToSell = CoinID(id)
-	return d
-}
-
-// SetCoinToBuy sets ID of a coin to give.
-func (d *BuySwapPoolData) SetCoinToBuy(id uint64) *BuySwapPoolData {
-	d.CoinToBuy = CoinID(id)
+// AddCoin sets ID of a coin in exchanging route.
+func (d *BuySwapPoolData) AddCoin(id uint64) *BuySwapPoolData {
+	d.Coins = append(d.Coins, CoinID(id))
 	return d
 }
 
@@ -192,8 +185,7 @@ func (d *BuySwapPoolData) Encode() ([]byte, error) {
 }
 
 type SellAllSwapPoolData struct {
-	CoinToSell        CoinID
-	CoinToBuy         CoinID
+	Coins             []CoinID
 	MinimumValueToBuy *big.Int
 }
 
@@ -201,15 +193,9 @@ func NewSellAllSwapPoolData() *SellAllSwapPoolData {
 	return &SellAllSwapPoolData{}
 }
 
-// SetCoinToSell sets ID of a coin to give.
-func (d *SellAllSwapPoolData) SetCoinToSell(id uint64) *SellAllSwapPoolData {
-	d.CoinToSell = CoinID(id)
-	return d
-}
-
-// SetCoinToBuy sets ID of a coin to get.
-func (d *SellAllSwapPoolData) SetCoinToBuy(id uint64) *SellAllSwapPoolData {
-	d.CoinToBuy = CoinID(id)
+// AddCoin sets ID of a coin in exchanging route.
+func (d *SellAllSwapPoolData) AddCoin(id uint64) *SellAllSwapPoolData {
+	d.Coins = append(d.Coins, CoinID(id))
 	return d
 }
 
@@ -235,9 +221,8 @@ func (d *SellAllSwapPoolData) Encode() ([]byte, error) {
 }
 
 type SellSwapPoolData struct {
-	CoinToSell        CoinID
+	Coins             []CoinID
 	ValueToSell       *big.Int
-	CoinToBuy         CoinID
 	MinimumValueToBuy *big.Int
 }
 
@@ -245,15 +230,9 @@ func NewSellSwapPoolData() *SellSwapPoolData {
 	return &SellSwapPoolData{}
 }
 
-// SetCoinToSell sets ID of a coin to give
-func (d *SellSwapPoolData) SetCoinToSell(id uint32) *SellSwapPoolData {
-	d.CoinToSell = CoinID(id)
-	return d
-}
-
-// SetCoinToBuy sets ID of a coin to get
-func (d *SellSwapPoolData) SetCoinToBuy(id uint32) *SellSwapPoolData {
-	d.CoinToBuy = CoinID(id)
+// AddCoin sets ID of a coin in exchanging route.
+func (d *SellSwapPoolData) AddCoin(id uint64) *SellSwapPoolData {
+	d.Coins = append(d.Coins, CoinID(id))
 	return d
 }
 

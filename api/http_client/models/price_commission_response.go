@@ -25,8 +25,11 @@ type PriceCommissionResponse struct {
 	// buy bancor
 	BuyBancor string `json:"buy_bancor,omitempty"`
 
-	// buy pool
-	BuyPool string `json:"buy_pool,omitempty"`
+	// buy pool base
+	BuyPoolBase string `json:"buy_pool_base,omitempty"`
+
+	// buy pool delta
+	BuyPoolDelta string `json:"buy_pool_delta,omitempty"`
 
 	// coin
 	Coin *Coin `json:"coin,omitempty"`
@@ -112,14 +115,20 @@ type PriceCommissionResponse struct {
 	// sell all bancor
 	SellAllBancor string `json:"sell_all_bancor,omitempty"`
 
-	// sell all pool
-	SellAllPool string `json:"sell_all_pool,omitempty"`
+	// sell all pool base
+	SellAllPoolBase string `json:"sell_all_pool_base,omitempty"`
+
+	// sell all pool delta
+	SellAllPoolDelta string `json:"sell_all_pool_delta,omitempty"`
 
 	// sell bancor
 	SellBancor string `json:"sell_bancor,omitempty"`
 
-	// sell pool
-	SellPool string `json:"sell_pool,omitempty"`
+	// sell pool base
+	SellPoolBase string `json:"sell_pool_base,omitempty"`
+
+	// sell pool delta
+	SellPoolDelta string `json:"sell_pool_delta,omitempty"`
 
 	// send
 	Send string `json:"send,omitempty"`
