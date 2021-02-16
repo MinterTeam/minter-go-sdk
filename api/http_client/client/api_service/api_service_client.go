@@ -31,6 +31,8 @@ type ClientService interface {
 
 	Block(params *BlockParams) (*BlockOK, error)
 
+	Blocks(params *BlocksParams) (*BlocksOK, error)
+
 	Candidate(params *CandidateParams) (*CandidateOK, error)
 
 	Candidates(params *CandidatesParams) (*CandidatesOK, error)
@@ -196,6 +198,39 @@ func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*BlockDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  Blocks blocks
+*/
+func (a *Client) Blocks(params *BlocksParams) (*BlocksOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewBlocksParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "Blocks",
+		Method:             "GET",
+		PathPattern:        "/blocks",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &BlocksReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*BlocksOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*BlocksDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
