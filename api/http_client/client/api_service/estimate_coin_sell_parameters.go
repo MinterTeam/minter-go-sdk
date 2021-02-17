@@ -87,6 +87,8 @@ type EstimateCoinSellParams struct {
 	CoinToSell *string
 	/*Height*/
 	Height *uint64
+	/*Route*/
+	Route []string
 	/*SwapFrom*/
 	SwapFrom *string
 	/*ValueToSell*/
@@ -205,6 +207,17 @@ func (o *EstimateCoinSellParams) WithHeight(height *uint64) *EstimateCoinSellPar
 // SetHeight adds the height to the estimate coin sell params
 func (o *EstimateCoinSellParams) SetHeight(height *uint64) {
 	o.Height = height
+}
+
+// WithRoute adds the route to the estimate coin sell params
+func (o *EstimateCoinSellParams) WithRoute(route []string) *EstimateCoinSellParams {
+	o.SetRoute(route)
+	return o
+}
+
+// SetRoute adds the route to the estimate coin sell params
+func (o *EstimateCoinSellParams) SetRoute(route []string) {
+	o.Route = route
 }
 
 // WithSwapFrom adds the swapFrom to the estimate coin sell params
@@ -347,6 +360,14 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 			}
 		}
 
+	}
+
+	valuesRoute := o.Route
+
+	joinedRoute := swag.JoinByFormat(valuesRoute, "multi")
+	// query array param route
+	if err := r.SetQueryParam("route", joinedRoute...); err != nil {
+		return err
 	}
 
 	if o.SwapFrom != nil {
