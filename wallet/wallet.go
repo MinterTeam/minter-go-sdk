@@ -30,17 +30,19 @@ func New() (*Wallet, error) {
 	return data, nil
 }
 
-// Create returns wallet by exists seed or mnemonic. Note: pass only one value.
+// Create returns wallet by exists seed or mnemonic.
 func Create(mnemonic string, seed string) (*Wallet, error) {
 	if mnemonic != "" {
-		if len(seed) != 0 {
-			return nil, errors.New("pass only one value (seed or mnemonic")
-		}
-		var err error
-		seed, err = Seed(mnemonic)
+		seed1, err := Seed(mnemonic)
 		if err != nil {
 			return nil, err
 		}
+
+		if len(seed) != 0 && seed1 != seed {
+			return nil, errors.New("seed and mnemonic are not empty, but not equal")
+		}
+
+		seed = seed1
 	}
 
 	prKey, err := PrivateKeyBySeed(seed)
