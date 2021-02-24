@@ -42,7 +42,7 @@ func TestDecode_sellCoin(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000" {
-		t.Error("sell coin transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeSellCoin {
+		t.Error("sell coin transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

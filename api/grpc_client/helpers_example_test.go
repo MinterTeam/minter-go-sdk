@@ -18,8 +18,6 @@ func ExampleConvertStructToEvent() {
 	for _, data := range events.Events {
 		event, _ := grpc_client.ConvertStructToEvent(data)
 
-		mark(event.GetAddress(), event.GetValidatorPublicKey())
-
 		switch e := event.(type) {
 		case *api.RewardEvent:
 			doSomething1(e)
@@ -29,6 +27,8 @@ func ExampleConvertStructToEvent() {
 			doSomething3(e)
 		case *api.StakeKickEvent:
 			doSomething4(e)
+		case *api.UpdateNetworkEvent, *api.UpdateCommissionsEvent:
+			e.Type()
 		}
 
 	}

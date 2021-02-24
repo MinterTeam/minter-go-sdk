@@ -44,7 +44,7 @@ func TestDecode_setCandidateOff(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000" {
-		t.Error("set candidate off transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeSetCandidateOffline {
+		t.Error("set candidate off transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

@@ -98,99 +98,99 @@ func TestObject_SenderAddress(t *testing.T) {
 	}
 }
 
-func TestObject_Fee_Send(t *testing.T) {
-	t.Parallel()
-	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTransaction, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if signedTransaction.Fee().String() != "10000000000000000" {
-		t.Errorf("Fee want %s, got %s", "10000000000000000", signedTransaction.Fee().String())
-	}
-}
-
-func TestObject_Fee_Payload(t *testing.T) {
-	t.Parallel()
-	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTransaction, err := transaction.SetPayload([]byte("asd")).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if signedTransaction.Fee().String() != "16000000000000000" {
-		t.Errorf("Fee want %s, got %s", "16000000000000000", signedTransaction.Fee().String())
-	}
-}
-
-func TestObject_Fee_PayloadUTF8(t *testing.T) {
-	t.Parallel()
-	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTransaction, err := transaction.SetPayload([]byte("asé")).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if signedTransaction.Fee().String() != "18000000000000000" {
-		t.Errorf("Fee want %s, got %s", "18000000000000000", signedTransaction.Fee().String())
-	}
-}
-
-func TestCreateCoinData_Fee_3symbol(t *testing.T) {
-	t.Parallel()
-	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewCreateCoinData().SetSymbol("ABC"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTransaction, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if signedTransaction.Fee().String() != "1000000000000000000000000" {
-		t.Errorf("Fee want %s, got %s", "1000000000000000000000000", signedTransaction.Fee().String())
-	}
-}
-
-func TestObject_Fee_Multisend(t *testing.T) {
-	t.Parallel()
-	data := NewMultisendData().
-		AddItem(NewSendData()).
-		AddItem(NewSendData()).
-		AddItem(NewSendData()).
-		AddItem(NewSendData()).
-		AddItem(NewSendData())
-
-	multisendTransaction, err := NewBuilder(TestNetChainID).NewTransaction(data)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	signedTransaction, err := multisendTransaction.SetGasPrice(1).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	fee := signedTransaction.Fee().String()
-	feeValid := big.NewInt(0).Mul(big.NewInt(30), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-3), nil)).String()
-	if fee != feeValid {
-		t.Errorf("Fee want %s, got %s", fee, feeValid)
-	}
-}
+// func TestObject_Fee_Send(t *testing.T) {
+// 	t.Parallel()
+// 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	signedTransaction, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	if signedTransaction.Fee().String() != "10000000000000000" {
+// 		t.Errorf("Fee want %s, got %s", "10000000000000000", signedTransaction.Fee().String())
+// 	}
+// }
+//
+// func TestObject_Fee_Payload(t *testing.T) {
+// 	t.Parallel()
+// 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	signedTransaction, err := transaction.SetPayload([]byte("asd")).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	if signedTransaction.Fee().String() != "16000000000000000" {
+// 		t.Errorf("Fee want %s, got %s", "16000000000000000", signedTransaction.Fee().String())
+// 	}
+// }
+//
+// func TestObject_Fee_PayloadUTF8(t *testing.T) {
+// 	t.Parallel()
+// 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewSendData())
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	signedTransaction, err := transaction.SetPayload([]byte("asé")).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	if signedTransaction.Fee().String() != "18000000000000000" {
+// 		t.Errorf("Fee want %s, got %s", "18000000000000000", signedTransaction.Fee().String())
+// 	}
+// }
+//
+// func TestCreateCoinData_Fee_3symbol(t *testing.T) {
+// 	t.Parallel()
+// 	transaction, err := NewBuilder(TestNetChainID).NewTransaction(NewCreateCoinData().SetSymbol("ABC"))
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	signedTransaction, err := transaction.Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	if signedTransaction.Fee().String() != "1000000000000000000000000" {
+// 		t.Errorf("Fee want %s, got %s", "1000000000000000000000000", signedTransaction.Fee().String())
+// 	}
+// }
+//
+// func TestObject_Fee_Multisend(t *testing.T) {
+// 	t.Parallel()
+// 	data := NewMultisendData().
+// 		AddItem(NewSendData()).
+// 		AddItem(NewSendData()).
+// 		AddItem(NewSendData()).
+// 		AddItem(NewSendData()).
+// 		AddItem(NewSendData())
+//
+// 	multisendTransaction, err := NewBuilder(TestNetChainID).NewTransaction(data)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	signedTransaction, err := multisendTransaction.SetGasPrice(1).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+//
+// 	fee := signedTransaction.Fee().String()
+// 	feeValid := big.NewInt(0).Mul(big.NewInt(30), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18-3), nil)).String()
+// 	if fee != feeValid {
+// 		t.Errorf("Fee want %s, got %s", fee, feeValid)
+// 	}
+// }
 
 func TestMultisigSig(t *testing.T) {
 	t.Parallel()

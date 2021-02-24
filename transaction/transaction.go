@@ -140,12 +140,12 @@ func BipToPip(bip *big.Int) *big.Int {
 
 // Builder is creator of Transaction.
 type Builder struct {
-	ChainID ChainID
+	chainID ChainID
 }
 
 // NewBuilder returns new Builder for creating Transaction.
 func NewBuilder(chainID ChainID) *Builder {
-	return &Builder{ChainID: chainID}
+	return &Builder{chainID: chainID}
 }
 
 // NewTransaction returns new transaction with Data.
@@ -156,7 +156,7 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 	}
 
 	transaction := &Transaction{
-		ChainID:       b.ChainID,
+		ChainID:       b.chainID,
 		SignatureType: SignatureTypeSingle,
 		Data:          dataBytes,
 		GasPrice:      1,
@@ -177,7 +177,7 @@ type Data interface {
 	// Type returns Data type of the transaction.
 	Type() Type
 	// Fee returns commission of transaction Data
-	Fee() Fee
+	// Fee() Fee
 }
 
 type encodeInterface interface {
@@ -248,11 +248,11 @@ type object struct {
 }
 
 // Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-func (o *object) Fee() *big.Int {
-	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(1000000000000000))
-	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
-	return big.NewInt(0).Add(gasPrice, commission)
-}
+// func (o *object) Fee() *big.Int {
+// 	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(1000000000000000))
+// 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
+// 	return big.NewInt(0).Add(gasPrice, commission)
+// }
 
 // Data returns Data of Transaction.
 func (o *object) Data() Data {

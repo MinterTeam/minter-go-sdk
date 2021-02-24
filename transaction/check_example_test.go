@@ -42,7 +42,7 @@ func ExampleDecodeCheck() {
 	// Result: 480
 
 	fmt.Println(data.ChainID)
-	// Result: TestNetChainID
+	// Result: 2
 
 	fmt.Println(data.Coin.String())
 	// Result: MNT
@@ -71,7 +71,7 @@ func ExampleDecodeCheck() {
 
 	// Output:
 	// 480
-	// TestNetChainID
+	// 2
 	// 1
 	// 999999
 	// 10000000000000000000
@@ -92,7 +92,7 @@ func ExampleDecodeRawCheck() {
 	// Result: 480
 
 	fmt.Println(data.ChainID)
-	// Result: TestNetChainID
+	// Result: 2
 
 	fmt.Println(data.Coin.String())
 	// Result: MNT
@@ -121,7 +121,7 @@ func ExampleDecodeRawCheck() {
 
 	// Output:
 	// 480
-	// TestNetChainID
+	// 2
 	// 1
 	// 999999
 	// 10000000000000000000

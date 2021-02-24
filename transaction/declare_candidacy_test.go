@@ -44,7 +44,7 @@ func TestDecode_declareCandidacy(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "10000000000000000000" {
-		t.Error("declare candidacy transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeDeclareCandidacy {
+		t.Error("declare candidacy transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

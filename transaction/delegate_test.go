@@ -42,7 +42,7 @@ func TestDecode_delegate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "200000000000000000" {
-		t.Error("delegate transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeDelegate {
+		t.Error("delegate transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

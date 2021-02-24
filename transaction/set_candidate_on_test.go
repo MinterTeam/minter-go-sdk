@@ -39,7 +39,7 @@ func TestDecode_setCandidateOn(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000" {
-		t.Error("set candidate on transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeSetCandidateOnline {
+		t.Error("set candidate on transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

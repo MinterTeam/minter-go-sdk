@@ -82,7 +82,7 @@ func TestDecode_createMultisig(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000" {
-		t.Error("send transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeCreateMultisig {
+		t.Error("send transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

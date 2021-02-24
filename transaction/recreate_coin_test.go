@@ -13,7 +13,7 @@ func TestDecode_recreateCoin(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "10000000000000000000000" {
-		t.Error("recreate coin transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeRecreateCoin {
+		t.Error("recreate coin transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

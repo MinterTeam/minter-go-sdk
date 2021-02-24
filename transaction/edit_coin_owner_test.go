@@ -13,7 +13,7 @@ func TestDecode_editCoinOwner(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "10000000000000000000000" {
-		t.Error("edit coin owner transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeEditCoinOwner {
+		t.Error("edit coin owner transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

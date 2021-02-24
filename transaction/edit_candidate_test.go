@@ -42,7 +42,7 @@ func TestDecode_editCandidate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000000" {
-		t.Error("edit candidate transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeEditCandidate {
+		t.Error("edit candidate transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

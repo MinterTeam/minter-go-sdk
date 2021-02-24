@@ -49,7 +49,7 @@ func TestDecode_multisend(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "15000000000000000" {
-		t.Error("multisend transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeMultisend {
+		t.Error("multisend transaction type is invalid", decode.GetTransaction().Type)
 	}
 }
