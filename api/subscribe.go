@@ -99,9 +99,8 @@ type SubscribeNewTxResult struct {
 	} `json:"events"`
 }
 
-func FindNewBlockTags(message, tag string) (string, error) {
-	var recv SubscribeNewTxResult
-	err := json.Unmarshal([]byte(message), &recv)
+func SubscribeNewTxFindTag(message, tag string) (string, error) {
+	recv, err := SubscribeNewTxParse(message)
 	if err != nil {
 		return "", err
 	}
@@ -116,4 +115,23 @@ func FindNewBlockTags(message, tag string) (string, error) {
 	}
 
 	return "", nil
+}
+
+func SubscribeNewTxParse(message string) (*SubscribeNewTxResult, error) {
+	var recv SubscribeNewTxResult
+	err := json.Unmarshal([]byte(message), &recv)
+	if err != nil {
+		return nil, err
+	}
+
+	return &recv, nil
+}
+func SubscribeNewBlockParse(message string) (*SubscribeNewBlockResult, error) {
+	var recv SubscribeNewBlockResult
+	err := json.Unmarshal([]byte(message), &recv)
+	if err != nil {
+		return nil, err
+	}
+
+	return &recv, nil
 }
