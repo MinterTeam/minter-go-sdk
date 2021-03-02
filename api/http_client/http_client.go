@@ -220,7 +220,7 @@ func (c *Client) Nonce(address string, optionalHeight ...uint64) (uint64, error)
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Client) Address(address string, optionalHeight ...uint64) (*models.AddressResponse, error) {
-	res, err := c.AddressExtended(address, true, optionalHeight...)
+	res, err := c.AddressExtended(address, false, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +230,7 @@ func (c *Client) Address(address string, optionalHeight ...uint64) (*models.Addr
 
 // Addresses returns list of addresses.
 func (c *Client) Addresses(addresses []string, optionalHeight ...uint64) (*models.AddressesResponse, error) {
-	res, err := c.AddressesExtended(addresses, true, optionalHeight...)
+	res, err := c.AddressesExtended(addresses, false, optionalHeight...)
 	if err != nil {
 		return nil, err
 	}

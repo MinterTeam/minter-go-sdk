@@ -206,12 +206,12 @@ func (c *Client) Status() (*api_pb.StatusResponse, error) {
 
 // Address returns coins list, balance and transaction count of an address.
 func (c *Client) Address(address string, optionalHeight ...uint64) (*api_pb.AddressResponse, error) {
-	return c.AddressExtended(address, true, optionalHeight...)
+	return c.AddressExtended(address, false, optionalHeight...)
 }
 
 // Addresses returns list of addresses.
 func (c *Client) Addresses(addresses []string, optionalHeight ...uint64) (*api_pb.AddressesResponse, error) {
-	return c.AddressesExtended(addresses, true, optionalHeight...)
+	return c.AddressesExtended(addresses, false, optionalHeight...)
 }
 
 // AddressExtended returns coins list with balance, delegated and transaction count of an address.
