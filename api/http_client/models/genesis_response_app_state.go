@@ -27,6 +27,12 @@ type GenesisResponseAppState struct {
 	// coins
 	Coins []*GenesisResponseAppStateCoin `json:"coins"`
 
+	// commission
+	Commission *AppStateCommission `json:"commission,omitempty"`
+
+	// commission votes
+	CommissionVotes []*AppStateCommissionVote `json:"commission_votes"`
+
 	// frozen funds
 	FrozenFunds []*AppStateFrozenFund `json:"frozen_funds"`
 
@@ -38,6 +44,9 @@ type GenesisResponseAppState struct {
 
 	// note
 	Note string `json:"note,omitempty"`
+
+	// pools
+	Pools []*AppStatePool `json:"pools"`
 
 	// total slashed
 	TotalSlashed string `json:"total_slashed,omitempty"`
@@ -68,11 +77,23 @@ func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateCommission(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateCommissionVotes(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateFrozenFunds(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validateHaltBlocks(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validatePools(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -165,6 +186,49 @@ func (m *GenesisResponseAppState) validateCoins(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *GenesisResponseAppState) validateCommission(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Commission) { // not required
+		return nil
+	}
+
+	if m.Commission != nil {
+		if err := m.Commission.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("commission")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) validateCommissionVotes(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.CommissionVotes) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.CommissionVotes); i++ {
+		if swag.IsZero(m.CommissionVotes[i]) { // not required
+			continue
+		}
+
+		if m.CommissionVotes[i] != nil {
+			if err := m.CommissionVotes[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("commission_votes" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (m *GenesisResponseAppState) validateFrozenFunds(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.FrozenFunds) { // not required
@@ -205,6 +269,31 @@ func (m *GenesisResponseAppState) validateHaltBlocks(formats strfmt.Registry) er
 			if err := m.HaltBlocks[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("halt_blocks" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) validatePools(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Pools) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Pools); i++ {
+		if swag.IsZero(m.Pools[i]) { // not required
+			continue
+		}
+
+		if m.Pools[i] != nil {
+			if err := m.Pools[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("pools" + "." + strconv.Itoa(i))
 				}
 				return err
 			}

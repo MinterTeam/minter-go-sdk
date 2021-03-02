@@ -6,15 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
-// PriceCommissionResponse price commission response
+// AppStateCommission app state commission
 //
-// swagger:model PriceCommissionResponse
-type PriceCommissionResponse struct {
+// swagger:model AppStateCommission
+type AppStateCommission struct {
 
 	// add liquidity
 	AddLiquidity string `json:"add_liquidity,omitempty"`
@@ -32,7 +31,7 @@ type PriceCommissionResponse struct {
 	BuyPoolDelta string `json:"buy_pool_delta,omitempty"`
 
 	// coin
-	Coin *Coin `json:"coin,omitempty"`
+	Coin uint64 `json:"coin,omitempty,string"`
 
 	// create coin
 	CreateCoin string `json:"create_coin,omitempty"`
@@ -146,40 +145,13 @@ type PriceCommissionResponse struct {
 	VoteUpdate string `json:"vote_update,omitempty"`
 }
 
-// Validate validates this price commission response
-func (m *PriceCommissionResponse) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.validateCoin(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *PriceCommissionResponse) validateCoin(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Coin) { // not required
-		return nil
-	}
-
-	if m.Coin != nil {
-		if err := m.Coin.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("coin")
-			}
-			return err
-		}
-	}
-
+// Validate validates this app state commission
+func (m *AppStateCommission) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *PriceCommissionResponse) MarshalBinary() ([]byte, error) {
+func (m *AppStateCommission) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -187,8 +159,8 @@ func (m *PriceCommissionResponse) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *PriceCommissionResponse) UnmarshalBinary(b []byte) error {
-	var res PriceCommissionResponse
+func (m *AppStateCommission) UnmarshalBinary(b []byte) error {
+	var res AppStateCommission
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

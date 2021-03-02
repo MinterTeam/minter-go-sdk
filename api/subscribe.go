@@ -28,7 +28,7 @@ type SubscribeResult struct {
 	} `json:"events"`
 }
 
-func FindTags(message, tag string) (string, error) {
+func FindNewBlockTags(message, tag string) (string, error) {
 	var recv SubscribeResult
 	err := json.Unmarshal([]byte(message), &recv)
 	if err != nil {
