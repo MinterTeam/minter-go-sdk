@@ -54,6 +54,9 @@ type AppStateCommission struct {
 	// create ticker6
 	CreateTicker6 string `json:"create_ticker6,omitempty"`
 
+	// create ticker7 10
+	CreateTicker710 string `json:"create_ticker7_10,omitempty"`
+
 	// create token
 	CreateToken string `json:"create_token,omitempty"`
 
