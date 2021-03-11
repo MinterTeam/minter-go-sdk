@@ -152,8 +152,10 @@ func NewBuySwapPoolData() *BuySwapPoolData {
 }
 
 // AddCoin sets ID of a coin in exchanging route.
-func (d *BuySwapPoolData) AddCoin(id uint64) *BuySwapPoolData {
-	d.Coins = append(d.Coins, CoinID(id))
+func (d *BuySwapPoolData) AddCoin(ids ...uint64) *BuySwapPoolData {
+	for _, id := range ids {
+		d.Coins = append(d.Coins, CoinID(id))
+	}
 	return d
 }
 
@@ -194,8 +196,10 @@ func NewSellAllSwapPoolData() *SellAllSwapPoolData {
 }
 
 // AddCoin sets ID of a coin in exchanging route.
-func (d *SellAllSwapPoolData) AddCoin(id uint64) *SellAllSwapPoolData {
-	d.Coins = append(d.Coins, CoinID(id))
+func (d *SellAllSwapPoolData) AddCoin(ids ...uint64) *SellAllSwapPoolData {
+	for _, id := range ids {
+		d.Coins = append(d.Coins, CoinID(id))
+	}
 	return d
 }
 
@@ -231,8 +235,10 @@ func NewSellSwapPoolData() *SellSwapPoolData {
 }
 
 // AddCoin sets ID of a coin in exchanging route.
-func (d *SellSwapPoolData) AddCoin(id uint64) *SellSwapPoolData {
-	d.Coins = append(d.Coins, CoinID(id))
+func (d *SellSwapPoolData) AddCoin(ids ...uint64) *SellSwapPoolData {
+	for _, id := range ids {
+		d.Coins = append(d.Coins, CoinID(id))
+	}
 	return d
 }
 

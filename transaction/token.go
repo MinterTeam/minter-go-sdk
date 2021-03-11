@@ -5,7 +5,9 @@ import (
 	"math/big"
 )
 
-var MaxCoinSupply = big.NewInt(0).Exp(big.NewInt(10), big.NewInt(15+18), nil)
+func MaxCoinSupply() *big.Int {
+	return big.NewInt(0).Exp(big.NewInt(10), big.NewInt(15+18), nil)
+}
 
 type CreateTokenData struct {
 	Name          string
