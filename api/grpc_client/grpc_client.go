@@ -36,7 +36,7 @@ func New(address string, _ ...string) (*Client, error) {
 		grpc.WithInsecure(),
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor()),
-		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(200000000)))
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(500000000)))
 	if err != nil {
 		return nil, err
 	}
