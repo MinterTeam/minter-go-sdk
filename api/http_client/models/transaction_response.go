@@ -64,7 +64,7 @@ type TransactionResponse struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// type
-	Type uint64 `json:"type,omitempty,string"`
+	Type string `json:"type,omitempty"`
 }
 
 // Validate validates this transaction response
