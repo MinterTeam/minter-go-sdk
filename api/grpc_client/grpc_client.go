@@ -400,23 +400,33 @@ func (c *Client) WaitList(publicKey, address string, optionalHeight ...uint64) (
 }
 
 // SwapPool returns total supply and reserves.
-func (c *Client) SwapPool(coin0, coin1 uint64, height ...uint64) (*api_pb.SwapPoolResponse, error) {
-	return c.grpcClient.SwapPool(c.ctxFunc(), &api_pb.SwapPoolRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1}, c.opts...)
+func (c *Client) SwapPool(coin0, coin1 uint64, optionalHeight ...uint64) (*api_pb.SwapPoolResponse, error) {
+	return c.grpcClient.SwapPool(c.ctxFunc(), &api_pb.SwapPoolRequest{Height: optionalInt(optionalHeight), Coin0: coin0, Coin1: coin1}, c.opts...)
 }
 
 // SwapPoolProvider returns reserves and liquidity balance of provider.
-func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, height ...uint64) (*api_pb.SwapPoolResponse, error) {
-	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(height), Coin0: coin0, Coin1: coin1, Provider: provider}, c.opts...)
+func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, optionalHeight ...uint64) (*api_pb.SwapPoolResponse, error) {
+	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(optionalHeight), Coin0: coin0, Coin1: coin1, Provider: provider}, c.opts...)
+}
+
+// VersionNetwork returns ...
+func (c *Client) VersionNetwork(optionalHeight ...uint64) (*api_pb.VersionNetworkResponse, error) {
+	return c.grpcClient.VersionNetwork(c.ctxFunc(), &api_pb.VersionNetworkRequest{Height: optionalInt(optionalHeight)}, c.opts...)
 }
 
 // PriceCommission returns ...
-func (c *Client) PriceCommission(height ...uint64) (*api_pb.PriceCommissionResponse, error) {
-	return c.grpcClient.PriceCommission(c.ctxFunc(), &api_pb.PriceCommissionRequest{Height: optionalInt(height)}, c.opts...)
+func (c *Client) PriceCommission(optionalHeight ...uint64) (*api_pb.PriceCommissionResponse, error) {
+	return c.grpcClient.PriceCommission(c.ctxFunc(), &api_pb.PriceCommissionRequest{Height: optionalInt(optionalHeight)}, c.opts...)
 }
 
-// PriceVotes returns ...
-func (c *Client) PriceVotes(height uint64) (*api_pb.PriceVotesResponse, error) {
-	return c.grpcClient.PriceVotes(c.ctxFunc(), &api_pb.PriceVotesRequest{Height: height}, c.opts...)
+// CommissionVotes returns ...
+func (c *Client) CommissionVotes(target uint64, optionalHeight ...uint64) (*api_pb.CommissionVotesResponse, error) {
+	return c.grpcClient.CommissionVotes(c.ctxFunc(), &api_pb.CommissionVotesRequest{Height: optionalInt(optionalHeight), TargetVersion: target}, c.opts...)
+}
+
+// UpdateVotes returns ...
+func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*api_pb.UpdateVotesResponse, error) {
+	return c.grpcClient.UpdateVotes(c.ctxFunc(), &api_pb.UpdateVotesRequest{Height: optionalInt(optionalHeight), TargetVersion: target}, c.opts...)
 }
 
 // Subscribe returns a subscription for events by query.

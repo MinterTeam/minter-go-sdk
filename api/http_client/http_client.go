@@ -650,9 +650,29 @@ func (c *Client) PriceCommission(optionalHeight ...uint64) (*models.PriceCommiss
 	return res.GetPayload(), nil
 }
 
-// PriceVotes returns ...
-func (c *Client) PriceVotes(height uint64) (*models.PriceVotesResponse, error) {
-	res, err := c.ClientService.PriceVotes(api_service.NewPriceVotesParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithContext(c.ctxFunc()))
+// VersionNetwork returns ...
+func (c *Client) VersionNetwork(optionalHeight ...uint64) (*models.VersionNetworkResponse, error) {
+	res, err := c.ClientService.VersionNetwork(api_service.NewVersionNetworkParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// CommissionVotes returns ...
+func (c *Client) CommissionVotes(target uint64, optionalHeight ...uint64) (*models.CommissionVotesResponse, error) {
+	res, err := c.ClientService.CommissionVotes(api_service.NewCommissionVotesParamsWithTimeout(c.timeout).WithTargetVersion(strconv.Itoa(int(target))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// CommissionVotes returns ...
+func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*models.UpdateVotesResponse, error) {
+	res, err := c.ClientService.UpdateVotes(api_service.NewUpdateVotesParamsWithTimeout(c.timeout).WithTargetVersion(strconv.Itoa(int(target))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
