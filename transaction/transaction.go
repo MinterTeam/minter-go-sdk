@@ -18,6 +18,10 @@ import (
 // Type of transaction is determined by a single byte.
 type Type byte
 
+func (t Type) String() string {
+	return "0x" + hex.EncodeToString([]byte{byte(t)})
+}
+
 // Types of Data
 const (
 	_                           Type = iota
