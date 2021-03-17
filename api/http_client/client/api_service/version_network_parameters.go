@@ -14,13 +14,12 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
 // NewVersionNetworkParams creates a new VersionNetworkParams object
 // with the default values initialized.
 func NewVersionNetworkParams() *VersionNetworkParams {
-	var ()
+
 	return &VersionNetworkParams{
 
 		timeout: cr.DefaultTimeout,
@@ -30,7 +29,7 @@ func NewVersionNetworkParams() *VersionNetworkParams {
 // NewVersionNetworkParamsWithTimeout creates a new VersionNetworkParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewVersionNetworkParamsWithTimeout(timeout time.Duration) *VersionNetworkParams {
-	var ()
+
 	return &VersionNetworkParams{
 
 		timeout: timeout,
@@ -40,7 +39,7 @@ func NewVersionNetworkParamsWithTimeout(timeout time.Duration) *VersionNetworkPa
 // NewVersionNetworkParamsWithContext creates a new VersionNetworkParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewVersionNetworkParamsWithContext(ctx context.Context) *VersionNetworkParams {
-	var ()
+
 	return &VersionNetworkParams{
 
 		Context: ctx,
@@ -50,7 +49,7 @@ func NewVersionNetworkParamsWithContext(ctx context.Context) *VersionNetworkPara
 // NewVersionNetworkParamsWithHTTPClient creates a new VersionNetworkParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewVersionNetworkParamsWithHTTPClient(client *http.Client) *VersionNetworkParams {
-	var ()
+
 	return &VersionNetworkParams{
 		HTTPClient: client,
 	}
@@ -60,10 +59,6 @@ func NewVersionNetworkParamsWithHTTPClient(client *http.Client) *VersionNetworkP
 for the version network operation typically these are written to a http.Request
 */
 type VersionNetworkParams struct {
-
-	/*Height*/
-	Height *uint64
-
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -102,17 +97,6 @@ func (o *VersionNetworkParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithHeight adds the height to the version network params
-func (o *VersionNetworkParams) WithHeight(height *uint64) *VersionNetworkParams {
-	o.SetHeight(height)
-	return o
-}
-
-// SetHeight adds the height to the version network params
-func (o *VersionNetworkParams) SetHeight(height *uint64) {
-	o.Height = height
-}
-
 // WriteToRequest writes these params to a swagger request
 func (o *VersionNetworkParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -120,22 +104,6 @@ func (o *VersionNetworkParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		return err
 	}
 	var res []error
-
-	if o.Height != nil {
-
-		// query param height
-		var qrHeight uint64
-		if o.Height != nil {
-			qrHeight = *o.Height
-		}
-		qHeight := swag.FormatUint64(qrHeight)
-		if qHeight != "" {
-			if err := r.SetQueryParam("height", qHeight); err != nil {
-				return err
-			}
-		}
-
-	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

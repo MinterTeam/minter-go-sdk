@@ -651,8 +651,8 @@ func (c *Client) PriceCommission(optionalHeight ...uint64) (*models.PriceCommiss
 }
 
 // VersionNetwork returns ...
-func (c *Client) VersionNetwork(optionalHeight ...uint64) (*models.VersionNetworkResponse, error) {
-	res, err := c.ClientService.VersionNetwork(api_service.NewVersionNetworkParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+func (c *Client) VersionNetwork() (*models.VersionNetworkResponse, error) {
+	res, err := c.ClientService.VersionNetwork(api_service.NewVersionNetworkParamsWithTimeout(c.timeout).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}

@@ -410,8 +410,8 @@ func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, optional
 }
 
 // VersionNetwork returns ...
-func (c *Client) VersionNetwork(optionalHeight ...uint64) (*api_pb.VersionNetworkResponse, error) {
-	return c.grpcClient.VersionNetwork(c.ctxFunc(), &api_pb.VersionNetworkRequest{Height: optionalInt(optionalHeight)}, c.opts...)
+func (c *Client) VersionNetwork() (*api_pb.VersionNetworkResponse, error) {
+	return c.grpcClient.VersionNetwork(c.ctxFunc(), &api_pb.VersionNetworkRequest{}, c.opts...)
 }
 
 // PriceCommission returns ...
