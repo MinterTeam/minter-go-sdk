@@ -21,6 +21,9 @@ type GenesisResponseAppState struct {
 	// accounts
 	Accounts []*AppStateAccount `json:"accounts"`
 
+	// block list candidates
+	BlockListCandidates []string `json:"block_list_candidates"`
+
 	// candidates
 	Candidates []*AppStateCandidate `json:"candidates"`
 
