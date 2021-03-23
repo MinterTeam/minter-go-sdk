@@ -258,6 +258,7 @@ func (a *Client) Blocks(params *BlocksParams) (*BlocksOK, error) {
 | stakes | List of stakes. Note: filled in when request includes_stakes |
 | status | Candidate status. Available values: offline = 1, online = 2 |
 | validator | Is a validator at the current height |
+| jailed_until |  |
 */
 func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 	// TODO: Validate the params before sending

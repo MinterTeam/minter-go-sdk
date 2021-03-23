@@ -34,6 +34,7 @@ type EventType string
 const (
 	TypeRewardEvent            EventType = "minter/RewardEvent"
 	TypeSlashEvent             EventType = "minter/SlashEvent"
+	TypeJailEvent              EventType = "minter/JailEvent"
 	TypeUnbondEvent            EventType = "minter/UnbondEvent"
 	TypeStakeKickEvent         EventType = "minter/StakeKickEvent"
 	TypeStakeMoveEvent         EventType = "minter/StakeMoveEvent"
@@ -109,6 +110,13 @@ type UpdateNetworkEvent struct {
 }
 
 func (e *UpdateNetworkEvent) Type() EventType { return TypeUpdateNetworkEvent }
+
+type JailEvent struct {
+	Version     string `json:"validator_pub_key"`
+	JailedUntil string `json:"jailed_until"`
+}
+
+func (e *JailEvent) Type() EventType { return TypeJailEvent }
 
 // StakeMoveEvent ...
 type StakeMoveEvent struct {
@@ -212,6 +220,8 @@ func newEvent(t EventType) Event {
 		return &RewardEvent{}
 	case TypeSlashEvent:
 		return &SlashEvent{}
+	case TypeJailEvent:
+		return &JailEvent{}
 	case TypeUnbondEvent:
 		return &UnbondEvent{}
 	case TypeStakeKickEvent:
