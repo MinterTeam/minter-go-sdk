@@ -112,8 +112,8 @@ type UpdateNetworkEvent struct {
 func (e *UpdateNetworkEvent) Type() EventType { return TypeUpdateNetworkEvent }
 
 type JailEvent struct {
-	Version     string `json:"validator_pub_key"`
-	JailedUntil string `json:"jailed_until"`
+	ValidatorPubKey string `json:"validator_pub_key"`
+	JailedUntil     string `json:"jailed_until"`
 }
 
 func (e *JailEvent) Type() EventType { return TypeJailEvent }
