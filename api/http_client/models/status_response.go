@@ -18,6 +18,9 @@ type StatusResponse struct {
 	// catching up
 	CatchingUp bool `json:"catching_up,omitempty"`
 
+	// initial height
+	InitialHeight uint64 `json:"initial_height,omitempty,string"`
+
 	// keep last states
 	KeepLastStates uint64 `json:"keep_last_states,omitempty,string"`
 
