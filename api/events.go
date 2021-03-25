@@ -42,10 +42,15 @@ const (
 	TypeUpdateCommissionsEvent EventType = "minter/UpdateCommissionsEvent"
 )
 
-// Event interface
+// StakeEvent interface
 type StakeEvent interface {
 	// GetAddress return owner address
 	GetAddress() string
+	ValidatorEvent
+}
+
+// ValidatorEvent interface
+type ValidatorEvent interface {
 	// GetValidatorPublicKey return validator public key
 	GetValidatorPublicKey() string
 }
@@ -117,6 +122,10 @@ type JailEvent struct {
 }
 
 func (e *JailEvent) Type() EventType { return TypeJailEvent }
+
+func (e *JailEvent) GetValidatorPublicKey() string {
+	return e.ValidatorPubKey
+}
 
 // StakeMoveEvent ...
 type StakeMoveEvent struct {
