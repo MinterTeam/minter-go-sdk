@@ -36,6 +36,9 @@ type StatusResponse struct {
 	// latest block time
 	LatestBlockTime string `json:"latest_block_time,omitempty"`
 
+	// moniker
+	Moniker string `json:"moniker,omitempty"`
+
 	// network
 	Network string `json:"network,omitempty"`
 
