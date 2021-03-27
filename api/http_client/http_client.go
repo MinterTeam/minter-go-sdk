@@ -355,8 +355,8 @@ func (c *Client) CoinInfo(symbol string, optionalHeight ...uint64) (*models.Coin
 }
 
 // EstimateCoinSymbolBuy return estimate of buy coin transaction.
-func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy, valueToBuy string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
-	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy, valueToBuy string, coinCommission string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinCommission(&coinCommission).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -365,8 +365,8 @@ func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy, valueToBuy string,
 }
 
 // EstimateCoinSymbolSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
-	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell, valueToSell string, coinCommission string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinCommission(&coinCommission).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -385,8 +385,8 @@ func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPric
 }
 
 // EstimateCoinIDBuy return estimate of buy coin transaction.
-func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
-	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, coinCommission uint64, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinIDCommission(&coinCommission).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -395,8 +395,8 @@ func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy stri
 }
 
 // EstimateCoinIDSell return estimate of sell coin transaction.
-func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
-	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
+func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, coinCommission uint64, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinIDCommission(&coinCommission).WithCoinIDToSell(&coinToSell).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -415,12 +415,12 @@ func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell, gasPrice uint64, v
 }
 
 // EstimateCoinSymbolBuyExtended return estimate of buy coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinSymbolBuyExtended(coinToSell, coinToBuy, valueToBuy string, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+func (c *Client) EstimateCoinSymbolBuyExtended(coinToSell, coinToBuy, valueToBuy string, coinCommission string, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
 	var coinsRoute []string
 	for _, coin := range route {
 		coinsRoute = append(coinsRoute, strconv.Itoa(int(coin)))
 	}
-	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithSwapFrom(&swapFrom).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
+	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinCommission(&coinCommission).WithCoinToSell(&coinToSell).WithCoinToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithSwapFrom(&swapFrom).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -429,12 +429,12 @@ func (c *Client) EstimateCoinSymbolBuyExtended(coinToSell, coinToBuy, valueToBuy
 }
 
 // EstimateCoinSymbolSellExtended return estimate of sell coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinSymbolSellExtended(coinToBuy, coinToSell, valueToSell string, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+func (c *Client) EstimateCoinSymbolSellExtended(coinToBuy, coinToSell, valueToSell string, coinCommission string, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
 	var coinsRoute []string
 	for _, coin := range route {
 		coinsRoute = append(coinsRoute, strconv.Itoa(int(coin)))
 	}
-	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
+	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinCommission(&coinCommission).WithCoinToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -457,12 +457,12 @@ func (c *Client) EstimateCoinSymbolSellAllExtended(coinToBuy, coinToSell string,
 }
 
 // EstimateCoinIDBuyExtended return estimate of buy coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinIDBuyExtended(coinToSell, coinToBuy uint64, valueToBuy string, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
+func (c *Client) EstimateCoinIDBuyExtended(coinToSell, coinToBuy uint64, valueToBuy string, coinCommission uint64, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinBuyResponse, error) {
 	var coinsRoute []string
 	for _, coin := range route {
 		coinsRoute = append(coinsRoute, strconv.Itoa(int(coin)))
 	}
-	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
+	res, err := c.ClientService.EstimateCoinBuy(api_service.NewEstimateCoinBuyParamsWithTimeout(c.timeout).WithCoinIDCommission(&coinCommission).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToBuy(valueToBuy).WithHeight(optionalInt(optionalHeight)).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -471,12 +471,12 @@ func (c *Client) EstimateCoinIDBuyExtended(coinToSell, coinToBuy uint64, valueTo
 }
 
 // EstimateCoinIDSellExtended return estimate of sell coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinIDSellExtended(coinToBuy, coinToSell uint64, valueToSell string, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
+func (c *Client) EstimateCoinIDSellExtended(coinToBuy, coinToSell uint64, valueToSell string, coinCommission uint64, swapFrom string, route []uint64, optionalHeight ...uint64) (*models.EstimateCoinSellResponse, error) {
 	var coinsRoute []string
 	for _, coin := range route {
 		coinsRoute = append(coinsRoute, strconv.Itoa(int(coin)))
 	}
-	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
+	res, err := c.ClientService.EstimateCoinSell(api_service.NewEstimateCoinSellParamsWithTimeout(c.timeout).WithCoinIDCommission(&coinCommission).WithCoinIDToSell(&coinToSell).WithSwapFrom(&swapFrom).WithCoinIDToBuy(&coinToBuy).WithValueToSell(valueToSell).WithHeight(optionalInt(optionalHeight)).WithRoute(coinsRoute).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}

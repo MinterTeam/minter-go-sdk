@@ -278,13 +278,13 @@ func (c *Client) CoinInfo(symbol string, optionalHeight ...uint64) (*api_pb.Coin
 }
 
 // EstimateCoinSymbolBuy returns estimate of buy coin transaction.
-func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy string, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
-	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToBuy: valueToBuy}, c.opts...)
+func (c *Client) EstimateCoinSymbolBuy(coinToSell, coinToBuy string, valueToBuy string, coinCommission string, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
+	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Commission: &api_pb.EstimateCoinBuyRequest_CoinCommission{CoinCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToBuy: valueToBuy}, c.opts...)
 }
 
 // EstimateCoinSymbolSell returns estimate of sell coin transaction.
-func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToSell string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToSell}, c.opts...)
+func (c *Client) EstimateCoinSymbolSell(coinToBuy, coinToSell string, valueToSell string, coinCommission string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Commission: &api_pb.EstimateCoinSellRequest_CoinCommission{CoinCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToSell}, c.opts...)
 }
 
 // EstimateCoinSymbolSellAll returns estimate of sell all coin transaction.
@@ -293,13 +293,13 @@ func (c *Client) EstimateCoinSymbolSellAll(coinToBuy, coinToSell string, gasPric
 }
 
 // EstimateCoinIDBuy returns estimate of buy coin transaction.
-func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
-	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToBuy: valueToBuy}, c.opts...)
+func (c *Client) EstimateCoinIDBuy(coinToSell, coinToBuy uint64, valueToBuy string, coinCommission uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
+	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Commission: &api_pb.EstimateCoinBuyRequest_CoinIdCommission{CoinIdCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToBuy: valueToBuy}, c.opts...)
 }
 
 // EstimateCoinIDSell returns estimate of sell coin transaction.
-func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToSell}, c.opts...)
+func (c *Client) EstimateCoinIDSell(coinToBuy, coinToSell uint64, valueToSell string, coinCommission uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Commission: &api_pb.EstimateCoinSellRequest_CoinIdCommission{CoinIdCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToSell}, c.opts...)
 }
 
 // EstimateCoinIDSellAll returns estimate of sell all coin transaction.
@@ -308,13 +308,13 @@ func (c *Client) EstimateCoinIDSellAll(coinToBuy, coinToSell uint64, gasPrice ui
 }
 
 // EstimateCoinSymbolBuyExtended returns estimate of buy coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinSymbolBuyExtended(coinToSell, coinToBuy string, valueToBuy string, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
-	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToBuy: valueToBuy, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
+func (c *Client) EstimateCoinSymbolBuyExtended(coinToSell, coinToBuy string, valueToBuy string, coinCommission string, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
+	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Commission: &api_pb.EstimateCoinBuyRequest_CoinCommission{CoinCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToBuy: valueToBuy, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
 }
 
 // EstimateCoinSymbolSellExtended returns estimate of sell coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinSymbolSellExtended(coinToBuy, coinToSell string, valueToSell string, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToSell, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
+func (c *Client) EstimateCoinSymbolSellExtended(coinToBuy, coinToSell string, valueToSell string, coinCommission string, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Commission: &api_pb.EstimateCoinSellRequest_CoinCommission{CoinCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinToSell{CoinToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinToBuy{CoinToBuy: coinToBuy}, ValueToSell: valueToSell, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
 }
 
 // EstimateCoinSymbolSellAllExtended returns estimate of sell all coin transaction with choice of the exchange source.
@@ -323,13 +323,13 @@ func (c *Client) EstimateCoinSymbolSellAllExtended(coinToBuy, coinToSell string,
 }
 
 // EstimateCoinIDBuyExtended returns estimate of buy coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinIDBuyExtended(coinToSell, coinToBuy uint64, valueToBuy string, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
-	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToBuy: valueToBuy, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
+func (c *Client) EstimateCoinIDBuyExtended(coinToSell, coinToBuy uint64, valueToBuy string, coinCommission uint64, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinBuyResponse, error) {
+	return c.grpcClient.EstimateCoinBuy(c.ctxFunc(), &api_pb.EstimateCoinBuyRequest{Commission: &api_pb.EstimateCoinBuyRequest_CoinIdCommission{CoinIdCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinBuyRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinBuyRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToBuy: valueToBuy, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
 }
 
 // EstimateCoinIDSellExtended returns estimate of sell coin transaction with choice of the exchange source.
-func (c *Client) EstimateCoinIDSellExtended(coinToBuy, coinToSell uint64, valueToSell string, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
-	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToSell, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
+func (c *Client) EstimateCoinIDSellExtended(coinToBuy, coinToSell uint64, valueToSell string, coinCommission uint64, swapFrom string, route []uint64, optionalHeight ...uint64) (*api_pb.EstimateCoinSellResponse, error) {
+	return c.grpcClient.EstimateCoinSell(c.ctxFunc(), &api_pb.EstimateCoinSellRequest{Commission: &api_pb.EstimateCoinSellRequest_CoinIdCommission{CoinIdCommission: coinCommission}, Height: optionalInt(optionalHeight), Sell: &api_pb.EstimateCoinSellRequest_CoinIdToSell{CoinIdToSell: coinToSell}, Buy: &api_pb.EstimateCoinSellRequest_CoinIdToBuy{CoinIdToBuy: coinToBuy}, ValueToSell: valueToSell, SwapFrom: api_pb.SwapFrom(api_pb.SwapFrom_value[swapFrom]), Route: route}, c.opts...)
 }
 
 // EstimateCoinIDSellAllExtended returns estimate of sell all coin transaction with choice of the exchange source.
