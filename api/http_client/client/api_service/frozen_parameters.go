@@ -65,6 +65,8 @@ type FrozenParams struct {
 	Address string
 	/*CoinID*/
 	CoinID *uint64
+	/*Height*/
+	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -126,6 +128,17 @@ func (o *FrozenParams) SetCoinID(coinID *uint64) {
 	o.CoinID = coinID
 }
 
+// WithHeight adds the height to the frozen params
+func (o *FrozenParams) WithHeight(height *uint64) *FrozenParams {
+	o.SetHeight(height)
+	return o
+}
+
+// SetHeight adds the height to the frozen params
+func (o *FrozenParams) SetHeight(height *uint64) {
+	o.Height = height
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *FrozenParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -149,6 +162,22 @@ func (o *FrozenParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 		qCoinID := swag.FormatUint64(qrCoinID)
 		if qCoinID != "" {
 			if err := r.SetQueryParam("coin_id", qCoinID); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.Height != nil {
+
+		// query param height
+		var qrHeight uint64
+		if o.Height != nil {
+			qrHeight = *o.Height
+		}
+		qHeight := swag.FormatUint64(qrHeight)
+		if qHeight != "" {
+			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
