@@ -681,12 +681,8 @@ func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*models.U
 }
 
 // Frozen returns frozen balance.
-func (c *Client) Frozen(address string, optionalCoinID ...uint64) (*models.FrozenResponse, error) {
-	if len(optionalCoinID) > 1 {
-		return nil, errors.New("CoinID needed single value") // todo: change message
-	}
-
-	res, err := c.ClientService.Frozen(api_service.NewFrozenParamsWithTimeout(c.timeout).WithAddress(address).WithCoinID(optionalInt(optionalCoinID)).WithContext(c.ctxFunc()))
+func (c *Client) Frozen(address string, coinID *uint64, optionalHeight ...uint64) (*models.FrozenResponse, error) {
+	res, err := c.ClientService.Frozen(api_service.NewFrozenParamsWithTimeout(c.timeout).WithAddress(address).WithCoinID(coinID).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}

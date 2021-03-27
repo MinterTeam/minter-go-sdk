@@ -435,16 +435,12 @@ func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, err
 }
 
 // Frozen returns frozen balance.
-func (c *Client) Frozen(address string, optionalCoinID ...uint64) (*api_pb.FrozenResponse, error) {
-	if len(optionalCoinID) > 1 {
-		return nil, errors.New("CoinID needed single value") // todo: change message
-	}
-
+func (c *Client) Frozen(address string, coinID *uint64, optionalHeight ...uint64) (*api_pb.FrozenResponse, error) {
 	var coin *wrapperspb.UInt64Value
-	if len(optionalCoinID) == 1 {
-		coin = wrapperspb.UInt64(optionalInt(optionalCoinID))
+	if coinID != nil {
+		coin = wrapperspb.UInt64(*coinID)
 	}
-	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coin}, c.opts...)
+	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coin, Height: optionalInt(optionalHeight)}, c.opts...)
 }
 
 func optionalInt(height []uint64) uint64 {
