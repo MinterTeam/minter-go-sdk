@@ -246,6 +246,7 @@ func (a *Client) Blocks(params *BlocksParams) (*BlocksOK, error) {
 ## Fields of response
 | Name      | Description                  |
 | --------- | ---------------------------- |
+| id |  |
 | reward_address | Address where validator’s rewards go to. |
 | owner_address | Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. It also enables the owner to edit the node by sending EditCandidate. |
 | control_address | Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction. |
