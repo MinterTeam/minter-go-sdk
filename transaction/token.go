@@ -5,19 +5,22 @@ import (
 	"math/big"
 )
 
+// MaxCoinSupply returns max available coin supply
 func MaxCoinSupply() *big.Int {
 	return big.NewInt(0).Exp(big.NewInt(10), big.NewInt(15+18), nil)
 }
 
+// CreateTokenData is a Data of Transaction for creation of a token (non-reserve coin).
 type CreateTokenData struct {
 	Name          string
 	Symbol        CoinSymbol
-	InitialAmount *big.Int
-	MaxSupply     *big.Int
-	Mintable      bool
-	Burnable      bool
+	InitialAmount *big.Int // Number of tokens to be created at the start
+	MaxSupply     *big.Int // Upper limit of the total number of tokens
+	Mintable      bool     // Allow new tokens to be issued additionally
+	Burnable      bool     // Allow all tokens to be burned
 }
 
+// NewCreateTokenData creates CreateTokenData
 func NewCreateTokenData() *CreateTokenData {
 	return &CreateTokenData{}
 }
@@ -70,6 +73,7 @@ func (d *CreateTokenData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
+// RecreateTokenData is a Data of Transaction for re-creation the coins (both backed and non-reserve).
 type RecreateTokenData struct {
 	Name          string
 	Symbol        CoinSymbol
@@ -79,6 +83,7 @@ type RecreateTokenData struct {
 	Burnable      bool
 }
 
+// NewRecreateTokenData creates RecreateTokenData
 func NewRecreateTokenData() *RecreateTokenData {
 	return &RecreateTokenData{}
 }
@@ -131,11 +136,13 @@ func (d *RecreateTokenData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
+// BurnTokenData is a Data of Transaction for decreasing the token's supply. Can be applied to tokens only and is executed from the address of the user who has the necessary amount of this coin. The new supply must be more than or equal to 0.
 type BurnTokenData struct {
 	Coin  CoinID
 	Value *big.Int
 }
 
+// NewBurnTokenData creates BurnTokenData
 func NewBurnTokenData() *BurnTokenData {
 	return &BurnTokenData{}
 }
@@ -165,11 +172,13 @@ func (d *BurnTokenData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
+// MintTokenData is a Data of Transaction for increasing the token's supply. Can be applied to tokens only and is executed from the coin owner address. The new supply must not exceed the MaxSupply value.
 type MintTokenData struct {
 	Coin  CoinID
 	Value *big.Int
 }
 
+// NewMintTokenData creates MintTokenData
 func NewMintTokenData() *MintTokenData {
 	return &MintTokenData{}
 }

@@ -6,6 +6,7 @@ import (
 	"math/big"
 )
 
+// VoteCommissionData is a Data of Transaction for enabling validators to vote for the fees to be changed. The change comes into force once a two-thirds majority is reached. The vote can be sent from the validator owner address.
 type VoteCommissionData struct {
 	PubKey                  PublicKey
 	Height                  uint64
@@ -54,10 +55,12 @@ type VoteCommissionData struct {
 	_                       []*big.Int `rlp:"tail"`
 }
 
+// NewVoteCommissionData creates VoteCommissionData
 func NewVoteCommissionData() *VoteCommissionData {
 	return &VoteCommissionData{}
 }
 
+// SetCoin sets coin for calculate commission price in base coin
 func (d *VoteCommissionData) SetCoin(id uint64) *VoteCommissionData {
 	d.Coin = CoinID(id)
 	return d
