@@ -63,11 +63,6 @@ func (d *CreateTokenData) Type() Type {
 	return TypeCreateToken
 }
 
-// Fee returns commission of transaction Data
-func (d *CreateTokenData) Fee() Fee {
-	return feeTypeCreateCoin
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *CreateTokenData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
@@ -126,11 +121,6 @@ func (d *RecreateTokenData) Type() Type {
 	return TypeRecreateToken
 }
 
-// Fee returns commission of transaction Data
-func (d *RecreateTokenData) Fee() Fee {
-	return feeTypeRecreateCoin
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *RecreateTokenData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
@@ -162,11 +152,6 @@ func (d *BurnTokenData) Type() Type {
 	return TypeBurnToken
 }
 
-// Fee returns commission of transaction Data
-func (d *BurnTokenData) Fee() Fee {
-	return feeTypeEditEmissionData
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *BurnTokenData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
@@ -196,11 +181,6 @@ func (d *MintTokenData) SetValue(value *big.Int) *MintTokenData {
 // Type returns Data type of the transaction.
 func (d *MintTokenData) Type() Type {
 	return TypeMintToken
-}
-
-// Fee returns commission of transaction Data
-func (d *MintTokenData) Fee() Fee {
-	return feeTypeEditEmissionData
 }
 
 // Encode returns the byte representation of a transaction Data.

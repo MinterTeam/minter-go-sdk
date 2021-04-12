@@ -47,11 +47,6 @@ func (d *CreateSwapPoolData) Type() Type {
 	return TypeCreateSwapPool
 }
 
-// Fee returns commission of transaction Data
-func (d *CreateSwapPoolData) Fee() Fee {
-	return 0
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *CreateSwapPoolData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
@@ -97,11 +92,6 @@ func (d *AddLiquidityData) SetMaximumVolume1(maximumVolume1 *big.Int) *AddLiquid
 // Type returns Data type of the transaction.
 func (d *AddLiquidityData) Type() Type {
 	return TypeAddLiquidity
-}
-
-// Fee returns commission of transaction Data
-func (d *AddLiquidityData) Fee() Fee {
-	return feeTypeAddLiquidityData
 }
 
 // Encode returns the byte representation of a transaction Data.
@@ -158,11 +148,6 @@ func (d *RemoveLiquidityData) Type() Type {
 	return TypeRemoveLiquidity
 }
 
-// Fee returns commission of transaction Data
-func (d *RemoveLiquidityData) Fee() Fee {
-	return feeTypeRemoveLiquidity
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *RemoveLiquidityData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
@@ -205,11 +190,6 @@ func (d *BuySwapPoolData) Type() Type {
 	return TypeBuySwapPool
 }
 
-// Fee returns commission of transaction Data
-func (d *BuySwapPoolData) Fee() Fee {
-	return feeTypeBuyCoin
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *BuySwapPoolData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
@@ -244,11 +224,6 @@ func (d *SellAllSwapPoolData) SetMinimumValueToBuy(value *big.Int) *SellAllSwapP
 // Type returns Data type of the transaction.
 func (d *SellAllSwapPoolData) Type() Type {
 	return TypeSellAllSwapPool
-}
-
-// Fee returns commission of transaction Data
-func (d *SellAllSwapPoolData) Fee() Fee {
-	return feeTypeSellAllCoin
 }
 
 // Encode returns the byte representation of a transaction Data.
@@ -291,11 +266,6 @@ func (d *SellSwapPoolData) SetMinimumValueToBuy(value *big.Int) *SellSwapPoolDat
 // Type returns Data type of the transaction.
 func (d *SellSwapPoolData) Type() Type {
 	return TypeSellSwapPool
-}
-
-// Fee returns commission of transaction Data
-func (d *SellSwapPoolData) Fee() Fee {
-	return feeTypeSellCoin
 }
 
 // Encode returns the byte representation of a transaction Data.

@@ -63,11 +63,6 @@ func (d *RecreateCoinData) Type() Type {
 	return TypeRecreateCoin
 }
 
-// Fee returns commission of transaction Data
-func (d *RecreateCoinData) Fee() Fee {
-	return feeTypeRecreateCoin
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *RecreateCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

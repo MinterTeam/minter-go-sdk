@@ -61,38 +61,6 @@ const (
 	TypeCreateSwapPool               // 0x22
 )
 
-// Fee is the commission that the sender must pay for sending the transaction. Fees are measured in "units". Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-type Fee uint
-
-// Fee of Types
-const (
-	feeTypeSend                Fee = 10
-	feeTypeSellCoin            Fee = 100
-	feeTypeSellAllCoin         Fee = 100
-	feeTypeBuyCoin             Fee = 100
-	feeTypeCreateCoin          Fee = 1000
-	feeTypeDeclareCandidacy    Fee = 10000
-	feeTypeDelegate            Fee = 200
-	feeTypeUnbond              Fee = 200
-	feeTypeRedeemCheck         Fee = 30
-	feeTypeSetCandidateOnline  Fee = 100
-	feeTypeSetCandidateOffline Fee = 100
-	feeTypeCreateMultisig      Fee = 100
-	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate               Fee = 100000
-	feeTypeEditCandidatePublicKey      Fee = 100000000
-	feeTypeSetHaltBlock                Fee = 1000
-	feeTypeRecreateCoin                Fee = 10000000
-	feeTypeEditCoinOwner               Fee = 10000000
-	feeTypeEditMultisig                Fee = 1000
-	feeTypePriceVote                   Fee = 10
-	feeTypeAddLiquidityData            Fee = 100
-	feeTypeRemoveLiquidity             Fee = 100
-	feeTypeEditCandidateCommissionData Fee = 10000
-	feeTypeMoveStake                       = feeTypeDelegate * 3
-	feeTypeEditEmissionData            Fee = 100
-)
-
 // SignatureType is type of signature (1 - SignatureTypeSingle, 2 - SignatureTypeMulti)
 type SignatureType byte
 
@@ -180,8 +148,6 @@ type Data interface {
 	Encode() ([]byte, error)
 	// Type returns Data type of the transaction.
 	Type() Type
-	// Fee returns commission of transaction Data
-	// Fee() Fee
 }
 
 type encodeInterface interface {
@@ -194,10 +160,6 @@ type Signed interface {
 	encodeInterface
 	// GetTransaction returns Transaction struct
 	GetTransaction() *Transaction
-
-	// Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-	// Fee() *big.Int
-
 	// Hash returns hash of Transaction.
 	Hash() (string, error)
 	// Data returns Data of the Transaction.
@@ -250,13 +212,6 @@ type object struct {
 	*Transaction
 	data Data
 }
-
-// Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-// func (o *object) Fee() *big.Int {
-// 	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(1000000000000000))
-// 	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
-// 	return big.NewInt(0).Add(gasPrice, commission)
-// }
 
 // Data returns Data of Transaction.
 func (o *object) Data() Data {

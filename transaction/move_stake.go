@@ -72,11 +72,6 @@ func (d *MoveStakeData) Type() Type {
 	return TypeMoveStake
 }
 
-// Fee returns commission of transaction Data
-func (d *MoveStakeData) Fee() Fee {
-	return feeTypeMoveStake
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *MoveStakeData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

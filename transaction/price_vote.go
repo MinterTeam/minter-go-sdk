@@ -23,11 +23,6 @@ func (d *PriceVoteData) Type() Type {
 	return TypePriceVote
 }
 
-// Fee returns commission of transaction Data
-func (d *PriceVoteData) Fee() Fee {
-	return feeTypePriceVote
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *PriceVoteData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
