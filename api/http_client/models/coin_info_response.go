@@ -15,6 +15,9 @@ import (
 // swagger:model CoinInfoResponse
 type CoinInfoResponse struct {
 
+	// burnable
+	Burnable bool `json:"burnable,omitempty"`
+
 	// crr
 	Crr uint64 `json:"crr,omitempty,string"`
 
@@ -23,6 +26,9 @@ type CoinInfoResponse struct {
 
 	// max supply
 	MaxSupply string `json:"max_supply,omitempty"`
+
+	// mintable
+	Mintable bool `json:"mintable,omitempty"`
 
 	// name
 	Name string `json:"name,omitempty"`

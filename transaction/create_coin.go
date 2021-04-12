@@ -61,22 +61,6 @@ func (d *CreateCoinData) Type() Type {
 	return TypeCreateCoin
 }
 
-// Fee returns commission of transaction Data
-func (d *CreateCoinData) Fee() Fee {
-	switch len(d.Symbol.String()) {
-	case 0, 1, 2, 3:
-		return 1000000 * feeTypeCreateCoin
-	case 4:
-		return 100000 * feeTypeCreateCoin
-	case 5:
-		return 10000 * feeTypeCreateCoin
-	case 6:
-		return 1000 * feeTypeCreateCoin
-	default:
-		return 100 * feeTypeCreateCoin
-	}
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *CreateCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

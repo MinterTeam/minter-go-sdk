@@ -25,11 +25,6 @@ func (d *MultisendData) Type() Type {
 	return TypeMultisend
 }
 
-// Fee returns commission of transaction Data
-func (d *MultisendData) Fee() Fee {
-	return Fee(10 + (len(d.List)-1)*5)
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *MultisendData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

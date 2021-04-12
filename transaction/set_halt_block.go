@@ -47,11 +47,6 @@ func (d *SetHaltBlockData) Type() Type {
 	return TypeSetHaltBlock
 }
 
-// Fee returns commission of transaction Data
-func (d *SetHaltBlockData) Fee() Fee {
-	return feeTypeSetHaltBlock
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *SetHaltBlockData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

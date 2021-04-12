@@ -8,6 +8,7 @@ import (
 )
 
 func TestCheck_Sign(t *testing.T) {
+	t.Parallel()
 	check := NewCheck(
 		"480",
 		TestNetChainID,
@@ -34,6 +35,7 @@ func TestCheck_Sign(t *testing.T) {
 }
 
 func TestCheck_Sign1(t *testing.T) {
+	t.Parallel()
 	check := NewCheck(
 		"1",
 		MainNetChainID,
@@ -60,6 +62,7 @@ func TestCheck_Sign1(t *testing.T) {
 }
 
 func TestCheckAddress_Proof(t *testing.T) {
+	t.Parallel()
 	check, err := NewCheckAddress("Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47", "pass")
 	if err != nil {
 		t.Fatal(err)
@@ -77,6 +80,7 @@ func TestCheckAddress_Proof(t *testing.T) {
 }
 
 func TestDecodeCheck(t *testing.T) {
+	t.Parallel()
 	data, err := DecodeCheck("Mcf89a8334383002830f423f01888ac7230489e8000001b841ea3d022c8326965556f1b651b14d3124947b8683f7b3ab56fca06e0b4204757b2a11dace85d0139ce4e8fdb18369d07905e733683b8229f41bc216c784b4d714011ca017bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5a05b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6")
 	if err != nil {
 		t.Fatal(err)
@@ -112,6 +116,7 @@ func TestDecodeCheck(t *testing.T) {
 }
 
 func TestDecodeCheck_Sender(t *testing.T) {
+	t.Parallel()
 	data, err := DecodeCheck("Mcf89a8334383002830f423f01888ac7230489e8000001b841ea3d022c8326965556f1b651b14d3124947b8683f7b3ab56fca06e0b4204757b2a11dace85d0139ce4e8fdb18369d07905e733683b8229f41bc216c784b4d714011ca017bffff4b3f431dc938239cd2727f0c1dfa61ccdc98727fa8e9baf608b3755f5a05b768c53d09c5e9517487820df439f496e16e459862e7d449360ce69a2ccc4d6")
 	if err != nil {
 		t.Fatal(err)

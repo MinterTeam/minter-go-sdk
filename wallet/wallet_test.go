@@ -13,6 +13,7 @@ const (
 )
 
 func TestWallet_PrivateKey(t *testing.T) {
+	t.Parallel()
 	wallet, err := Create("", validSeed)
 	if err != nil {
 		t.Fatal(err)
@@ -25,6 +26,7 @@ func TestWallet_PrivateKey(t *testing.T) {
 }
 
 func TestWallet_PublicKey(t *testing.T) {
+	t.Parallel()
 	wallet, err := Create("", validSeed)
 	if err != nil {
 		t.Fatal(err)
@@ -37,6 +39,7 @@ func TestWallet_PublicKey(t *testing.T) {
 }
 
 func TestWallet_Address(t *testing.T) {
+	t.Parallel()
 	wallet, err := Create("", validSeed)
 	if err != nil {
 		t.Fatal(err)
@@ -49,6 +52,7 @@ func TestWallet_Address(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
+	t.Parallel()
 	data, err := New()
 	if err != nil {
 		t.Fatal(err)
@@ -77,6 +81,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestWalletBugAddress(t *testing.T) {
+	t.Parallel()
 	wallet, err := Create("real town addict extend shoot name disagree vital turn live can tip", "")
 	if err != nil {
 		t.Fatal(err)

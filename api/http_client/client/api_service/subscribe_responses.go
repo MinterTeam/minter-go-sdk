@@ -124,7 +124,7 @@ swagger:model SubscribeOKBody
 type SubscribeOKBody struct {
 
 	// error
-	Error *models.RuntimeStreamError `json:"error,omitempty"`
+	Error interface{} `json:"error,omitempty"`
 
 	// result
 	Result *models.SubscribeResponse `json:"result,omitempty"`
@@ -134,10 +134,6 @@ type SubscribeOKBody struct {
 func (o *SubscribeOKBody) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := o.validateError(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := o.validateResult(formats); err != nil {
 		res = append(res, err)
 	}
@@ -145,24 +141,6 @@ func (o *SubscribeOKBody) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (o *SubscribeOKBody) validateError(formats strfmt.Registry) error {
-
-	if swag.IsZero(o.Error) { // not required
-		return nil
-	}
-
-	if o.Error != nil {
-		if err := o.Error.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("subscribeOK" + "." + "error")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 

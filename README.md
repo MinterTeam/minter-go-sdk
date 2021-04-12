@@ -10,10 +10,10 @@ This is a pure Go SDK for working with **Minter** blockchain
 
 * [Installing](#installing)
 * [Minter API](#minter-api)
-* [Using API v2](#using-api-v2)
-* [Using gRPC](#using-grpc)
+    - [Using API v2](#using-api-v2)
+    - [Using gRPC](#using-grpc)
 * [Using Transactions](#using-transactions)
-	- [Sign transaction](#sign-transaction)
+    - [Sign transaction](#sign-transaction)
         - [Single signature](#single-signature)
         - [Multi signature](#multi-signatures)
 * [Minter Wallet](#minter-wallet)
@@ -26,18 +26,15 @@ go get github.com/MinterTeam/minter-go-sdk/v2
 
 ### Minter API
 
-* v1 - Deprecated.
-    - [SDK v1](https://github.com/MinterTeam/minter-go-sdk/tree/master#the-minter-go-sdk-v1-is-in-maintenance-mode-you-are-encouraged-to-migrate-to-v2-which-will-have-a-stable-release)
-* v2 - RESTful API and gRPC.
-    - [ReDoc](https://minterteam.github.io/node-gateway-api-v2-doc/)
-    - [Swagger UI](https://minterteam.github.io/node-grpc-gateway/)
-    - [![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https://minterteam.github.io/node-grpc-gateway/api.swagger.json)](https://minterteam.github.io/minter-api-v2-docs/)
+```go
 
-### Using API v2
+```
+
+#### Using API v2
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/http_client?tab=doc)
 
-### Using gRPC
+#### Using gRPC
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/grpc_client?tab=doc)
 
@@ -49,7 +46,8 @@ go get github.com/MinterTeam/minter-go-sdk/v2
 
 Returns a signed tx.
 
-⚠️ After sending the transaction, to make sure that the transaction was successfully committed on the blockchain, you need to find the transaction by hash and make sure that the status code is 0.
+⚠️ After sending the transaction, to make sure that the transaction was successfully committed on the blockchain, you
+need to find the transaction by hash and make sure that the status code is 0.
 
 ##### Single signature
 
@@ -95,6 +93,7 @@ encode, _ := signedTx.Encode()
 ```
 
 You can transfer the transaction to the remaining addresses
+
 ```go
 signedTx1, _ := tx.Sign(msigAddress, privateKey1)
 encode, _ := signedTx.Encode()
@@ -107,6 +106,7 @@ encode, _ := signedTx123.Encode()
 ```
 
 You can collect all signatures in one place without revealing the private key
+
 ```go
 signedTx1, _ := tx.Clone().Sign(msigAddress, "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
 signedTx2, _ := tx.Clone().Sign(msigAddress, "b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7")

@@ -7,7 +7,6 @@ import (
 )
 
 type Data interface {
-	data()
 }
 
 type SendData struct {
@@ -125,6 +124,141 @@ type EditCandidatePublicKeyData struct {
 	NewPubKey string `json:"new_pub_key,omitempty"`
 }
 
+type CreateSwapPoolData struct {
+	Coin0   *Coin  `json:"coin0,omitempty"`
+	Coin1   *Coin  `json:"coin1,omitempty"`
+	Volume0 string `json:"volume0,omitempty"`
+	Volume1 string `json:"volume1,omitempty"`
+}
+
+type AddLiquidityData struct {
+	Coin0          *Coin  `json:"coin0,omitempty"`
+	Coin1          *Coin  `json:"coin1,omitempty"`
+	Volume0        string `json:"volume0,omitempty"`
+	MaximumVolume1 string `json:"maximum_volume1,omitempty"`
+}
+
+type RemoveLiquidityData struct {
+	Coin0          *Coin  `json:"coin0,omitempty"`
+	Coin1          *Coin  `json:"coin1,omitempty"`
+	Liquidity      string `json:"liquidity,omitempty"`
+	MinimumVolume0 string `json:"minimum_volume0,omitempty"`
+	MinimumVolume1 string `json:"minimum_volume1,omitempty"`
+}
+
+type SellSwapPoolData struct {
+	Coins             []*Coin `json:"coins,omitempty"`
+	ValueToSell       string  `json:"value_to_sell,omitempty"`
+	MinimumValueToBuy string  `json:"minimum_value_to_buy,omitempty"`
+}
+
+type SellAllSwapPoolData struct {
+	Coins             []*Coin `json:"coins,omitempty"`
+	MinimumValueToBuy string  `json:"minimum_value_to_buy,omitempty"`
+}
+
+type BuySwapPoolData struct {
+	Coins              []*Coin `json:"coins,omitempty"`
+	ValueToBuy         string  `json:"value_to_buy,omitempty"`
+	MaximumValueToSell string  `json:"maximum_value_to_sell,omitempty"`
+}
+
+type EditCandidateCommission struct {
+	PubKey     string `json:"pub_key,omitempty"`
+	Commission uint64 `json:"commission,omitempty"`
+}
+
+type MoveStakeData struct {
+	From  string `json:"from,omitempty"`
+	To    string `json:"to,omitempty"`
+	Coin  *Coin  `json:"coin,omitempty"`
+	Stake string `json:"stake,omitempty"`
+}
+
+type MintTokenData struct {
+	Coin  *Coin  `json:"coin,omitempty"`
+	Value string `json:"value,omitempty"`
+}
+
+type BurnTokenData struct {
+	Coin  *Coin  `json:"coin,omitempty"`
+	Value string `json:"value,omitempty"`
+}
+
+type CreateTokenData struct {
+	Name          string `json:"name,omitempty"`
+	Symbol        string `json:"symbol,omitempty"`
+	InitialAmount string `json:"initial_amount,omitempty"`
+	MaxSupply     string `json:"max_supply,omitempty"`
+	Mintable      bool   `json:"mintable,omitempty"`
+	Burnable      bool   `json:"burnable,omitempty"`
+}
+
+type RecreateTokenData struct {
+	Name          string `json:"name,omitempty"`
+	Symbol        string `json:"symbol,omitempty"`
+	InitialAmount string `json:"initial_amount,omitempty"`
+	MaxSupply     string `json:"max_supply,omitempty"`
+	Mintable      bool   `json:"mintable,omitempty"`
+	Burnable      bool   `json:"burnable,omitempty"`
+}
+
+type VoteCommissionData struct {
+	PubKey                  string `json:"pub_key,omitempty"`
+	Height                  uint64 `json:"height,omitempty"`
+	Coin                    *Coin  `json:"coin,omitempty"`
+	PayloadByte             string `json:"payload_byte,omitempty"`
+	Send                    string `json:"send,omitempty"`
+	BuyBancor               string `json:"buy_bancor,omitempty"`
+	SellBancor              string `json:"sell_bancor,omitempty"`
+	SellAllBancor           string `json:"sell_all_bancor,omitempty"`
+	BuyPoolBase             string `json:"buy_pool_base,omitempty"`
+	BuyPoolDelta            string `json:"buy_pool_delta,omitempty"`
+	SellPoolBase            string `json:"sell_pool_base,omitempty"`
+	SellPoolDelta           string `json:"sell_pool_delta,omitempty"`
+	SellAllPoolBase         string `json:"sell_all_pool_base,omitempty"`
+	SellAllPoolDelta        string `json:"sell_all_pool_delta,omitempty"`
+	CreateTicker3           string `json:"create_ticker3,omitempty"`
+	CreateTicker4           string `json:"create_ticker4,omitempty"`
+	CreateTicker5           string `json:"create_ticker5,omitempty"`
+	CreateTicker6           string `json:"create_ticker6,omitempty"`
+	CreateTicker7_10        string `json:"create_ticker7_10,omitempty"`
+	CreateCoin              string `json:"create_coin,omitempty"`
+	CreateToken             string `json:"create_token,omitempty"`
+	RecreateCoin            string `json:"recreate_coin,omitempty"`
+	RecreateToken           string `json:"recreate_token,omitempty"`
+	DeclareCandidacy        string `json:"declare_candidacy,omitempty"`
+	Delegate                string `json:"delegate,omitempty"`
+	Unbond                  string `json:"unbond,omitempty"`
+	RedeemCheck             string `json:"redeem_check,omitempty"`
+	SetCandidateOn          string `json:"set_candidate_on,omitempty"`
+	SetCandidateOff         string `json:"set_candidate_off,omitempty"`
+	CreateMultisig          string `json:"create_multisig,omitempty"`
+	MultisendBase           string `json:"multisend_base,omitempty"`
+	MultisendDelta          string `json:"multisend_delta,omitempty"`
+	EditCandidate           string `json:"edit_candidate,omitempty"`
+	SetHaltBlock            string `json:"set_halt_block,omitempty"`
+	EditTickerOwner         string `json:"edit_ticker_owner,omitempty"`
+	EditMultisig            string `json:"edit_multisig,omitempty"`
+	PriceVote               string `json:"price_vote,omitempty"`
+	EditCandidatePublicKey  string `json:"edit_candidate_public_key,omitempty"`
+	CreateSwapPool          string `json:"create_swap_pool,omitempty"`
+	AddLiquidity            string `json:"add_liquidity,omitempty"`
+	RemoveLiquidity         string `json:"remove_liquidity,omitempty"`
+	EditCandidateCommission string `json:"edit_candidate_commission,omitempty"`
+	MoveStake               string `json:"move_stake,omitempty"`
+	MintToken               string `json:"mint_token,omitempty"`
+	BurnToken               string `json:"burn_token,omitempty"`
+	VoteCommission          string `json:"vote_commission,omitempty"`
+	VoteUpdate              string `json:"vote_update,omitempty"`
+}
+
+type VoteUpdateData struct {
+	PubKey  string `json:"pub_key,omitempty"`
+	Height  uint64 `json:"height,omitempty"`
+	Version string `json:"version,omitempty"`
+}
+
 func newData(t string) Data {
 	switch t {
 	case "type.googleapis.com/api_pb.SendData":
@@ -167,31 +301,38 @@ func newData(t string) Data {
 		return &PriceVoteData{}
 	case "type.googleapis.com/api_pb.EditCandidatePublicKeyData":
 		return &EditCandidatePublicKeyData{}
+	case "type.googleapis.com/api_pb.CreateSwapPoolData":
+		return &CreateSwapPoolData{}
+	case "type.googleapis.com/api_pb.AddLiquidityData":
+		return &AddLiquidityData{}
+	case "type.googleapis.com/api_pb.RemoveLiquidityData":
+		return &RemoveLiquidityData{}
+	case "type.googleapis.com/api_pb.CreateTokenData":
+		return &CreateTokenData{}
+	case "type.googleapis.com/api_pb.RecreateTokenData":
+		return &RecreateTokenData{}
+	case "type.googleapis.com/api_pb.MoveStakeData":
+		return &MoveStakeData{}
+	case "type.googleapis.com/api_pb.EditCandidateCommission":
+		return &EditCandidateCommission{}
+	case "type.googleapis.com/api_pb.MintTokenData":
+		return &MintTokenData{}
+	case "type.googleapis.com/api_pb.BurnTokenData":
+		return &BurnTokenData{}
+	case "type.googleapis.com/api_pb.VoteUpdateData":
+		return &VoteUpdateData{}
+	case "type.googleapis.com/api_pb.VoteCommissionData":
+		return &VoteCommissionData{}
+	case "type.googleapis.com/api_pb.BuySwapPoolData":
+		return &BuySwapPoolData{}
+	case "type.googleapis.com/api_pb.SellSwapPoolData":
+		return &SellSwapPoolData{}
+	case "type.googleapis.com/api_pb.SellAllSwapPoolData":
+		return &SellAllSwapPoolData{}
 	default:
 		return nil
 	}
 }
-
-func (e *SendData) data()                   {}
-func (e *SellCoinData) data()               {}
-func (e *SellAllCoinData) data()            {}
-func (e *BuyCoinData) data()                {}
-func (e *CreateCoinData) data()             {}
-func (e *DeclareCandidacyData) data()       {}
-func (e *DelegateData) data()               {}
-func (e *UnbondData) data()                 {}
-func (e *RedeemCheckData) data()            {}
-func (e *SetCandidateOnData) data()         {}
-func (e *SetCandidateOffData) data()        {}
-func (e *CreateMultisigData) data()         {}
-func (e *MultiSendData) data()              {}
-func (e *EditCandidateData) data()          {}
-func (e *SetHaltBlockData) data()           {}
-func (e *RecreateCoinData) data()           {}
-func (e *EditCoinOwnerData) data()          {}
-func (e *EditMultisigData) data()           {}
-func (e *PriceVoteData) data()              {}
-func (e *EditCandidatePublicKeyData) data() {}
 
 // convertToData returns Transaction Data model
 func convertToData(value *ProtobufAny) (Data, error) {

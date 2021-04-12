@@ -8,6 +8,7 @@ import (
 const txMultisend = "0xf895010201010db844f842f840df0194fe60014a6e9ac91618f5d1cab3fd58cded61ee9988016345785d8a0000df0194ddab6281766ad86497741ff91b6b48fe85012e3c8802c68af0bb140000808001b845f8431ba0718f10b4468989919adabd215f5a6e83bd70eb1358d725541c2661122f66350ba05ab9e5e28107612f89ce56f4d7846edcbf272e8929eaf0c7c945e2530f40b667"
 
 func TestTransactionMultisend_Sign(t *testing.T) {
+	t.Parallel()
 	data := NewMultisendData().AddItem(
 		NewSendData().
 			SetCoin(1).
@@ -42,12 +43,13 @@ func TestTransactionMultisend_Sign(t *testing.T) {
 }
 
 func TestDecode_multisend(t *testing.T) {
+	t.Parallel()
 	decode, err := Decode(txMultisend)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "1500000000000000000" {
-		t.Error("multisend transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeMultisend {
+		t.Error("multisend transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

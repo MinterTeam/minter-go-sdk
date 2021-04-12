@@ -18,11 +18,14 @@ import (
 // swagger:model runtimeStreamError
 type RuntimeStreamError struct {
 
+	// code
+	Code int32 `json:"code,omitempty"`
+
 	// details
 	Details []*ProtobufAny `json:"details"`
 
-	// code
-	Code int32 `json:"code,omitempty"`
+	// error
+	Error string `json:"error,omitempty"`
 
 	// message
 	Message string `json:"message,omitempty"`
