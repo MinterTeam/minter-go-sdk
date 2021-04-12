@@ -29,4 +29,4 @@ jobs:
             [github.com/MinterTeam/minter-go-sdk](https://github.com/MinterTeam/minter-go-sdk) is *released* with tag [${{ github.event.release.tag_name }}](${{ github.event.release.html_url }}).
             `go get github.com/MinterTeam/minter-go-sdk/v2@${{ github.event.release.tag_name }}`
 
-            [Changelog](https://github.com/MinterTeam/minter-go-sdk/blob/${{ github.event.release.tag_name }}/CHANGELOG.md)
+            [Changelog](https://github.com/MinterTeam/minter-go-sdk/blob/${{ github.event.release.tag_name }}/CHANGELOG.md#change-log)
