@@ -1,6 +1,6 @@
 # Change Log
 
-## [v2.2.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.2.0) (2020-04-12)
+## [v2.2.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.2.0) (2021-04-12)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.1...v2.2.0)
 
