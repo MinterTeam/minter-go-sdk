@@ -2,9 +2,8 @@ package transaction_test
 
 import (
 	"fmt"
-	"math/big"
-
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
+	"math/big"
 )
 
 func ExampleNewDeepLink() {

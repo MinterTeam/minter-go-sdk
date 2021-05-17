@@ -3,8 +3,9 @@ package transaction
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/ethereum/go-ethereum/rlp"
 	"net/url"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type DeepLink struct {
@@ -92,13 +93,13 @@ func (d *DeepLink) SetUrl(value string) (*DeepLink, error) {
 }
 
 func (d *DeepLink) MustSetUrl(value string) *DeepLink {
-	d, err := d.SetUrl(value)
+	dl, err := d.SetUrl(value)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return d
+	return dl
 }
 
 func NewDeepLink(data Data) (*DeepLink, error) {
