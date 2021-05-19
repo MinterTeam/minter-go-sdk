@@ -3,8 +3,9 @@ package transaction
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/ethereum/go-ethereum/rlp"
 	"net/url"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 type DeepLink struct {
@@ -14,6 +15,8 @@ type DeepLink struct {
 	Nonce    *uint32 `rlp:"nilList"` // optional, used for prevent transaction reply
 	GasPrice *uint32 `rlp:"nilList"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
 	GasCoin  *CoinID `rlp:"nilList"` // optional, ID of a coin to pay fee, right padded with zeros
+
+	url *url.URL
 }
 
 // Returns url link.
@@ -29,8 +32,8 @@ func (d *DeepLink) CreateLink(pass string) (string, error) {
 	}
 
 	u := &url.URL{
-		Scheme:   "https",
-		Host:     "bip.to",
+		Scheme:   d.url.Scheme,
+		Host:     d.url.Host,
 		Path:     fmt.Sprintf("/tx/%s", tx),
 		RawQuery: rawQuery,
 	}
@@ -77,6 +80,28 @@ func (d *DeepLink) SetGasCoin(id uint64) *DeepLink {
 	return d
 }
 
+func (d *DeepLink) SetUrl(value string) (*DeepLink, error) {
+	u, err := url.Parse(value)
+
+	if err != nil {
+		return d, err
+	}
+
+	d.url = u
+
+	return d, nil
+}
+
+func (d *DeepLink) MustSetUrl(value string) *DeepLink {
+	dl, err := d.SetUrl(value)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return dl
+}
+
 func NewDeepLink(data Data) (*DeepLink, error) {
 	d := new(DeepLink)
 
@@ -85,6 +110,11 @@ func NewDeepLink(data Data) (*DeepLink, error) {
 		return d, err
 	}
 	d.Data = bytes
+
+	d.url = &url.URL{
+		Scheme: "https",
+		Host:   "bip.to",
+	}
 
 	return d.setType(data.Type()), nil
 }
