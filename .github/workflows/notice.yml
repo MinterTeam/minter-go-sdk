@@ -15,7 +15,7 @@ jobs:
           go-version: '1.15'
 
       - name: Test
-        run: go test
+        run: go test ./...
 
       - name: Send Message in Telegram
         uses: appleboy/telegram-action@master
