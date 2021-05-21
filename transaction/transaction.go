@@ -6,13 +6,14 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"math/big"
+	"strconv"
+	"strings"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
-	"math/big"
-	"strconv"
-	"strings"
 )
 
 // Type of transaction is determined by a single byte.
@@ -104,11 +105,6 @@ type PublicKey [32]byte
 
 // String returns PublicKey as string.
 func (p *PublicKey) String() string { return "Mp" + hex.EncodeToString(p[:]) }
-
-// BipToPip converts BIP to PIP (multiplies input by 1e18)
-func BipToPip(bip *big.Int) *big.Int {
-	return big.NewInt(0).Mul(bip, big.NewInt(1e18))
-}
 
 // Builder is creator of Transaction.
 type Builder struct {

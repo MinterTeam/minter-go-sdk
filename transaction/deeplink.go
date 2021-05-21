@@ -67,16 +67,16 @@ func (d *DeepLink) SetNonce(nonce uint32) *DeepLink {
 	return d
 }
 
-// Set fee multiplier.
+// SetGasPrice sets fee multiplier.
 func (d *DeepLink) SetGasPrice(gasPrice uint32) *DeepLink {
 	d.GasPrice = &gasPrice
 	return d
 }
 
-// Set ID of a coin to pay fee
+// SetGasCoin sets ID of a coin to pay fee
 func (d *DeepLink) SetGasCoin(id uint64) *DeepLink {
-	coinId := CoinID(id)
-	d.GasCoin = &coinId
+	coinID := CoinID(id)
+	d.GasCoin = &coinID
 	return d
 }
 
