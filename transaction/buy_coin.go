@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // BuyCoinData is a Data of Transaction for buy a coin paying another coin (owned by sender).

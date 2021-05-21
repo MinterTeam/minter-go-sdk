@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // MaxCoinSupply returns max available coin supply

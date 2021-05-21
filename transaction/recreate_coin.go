@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // RecreateCoinData is a Data of Transaction for recreating new coin.

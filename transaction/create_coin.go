@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // CreateCoinData is a Data of Transaction for creating new coin.

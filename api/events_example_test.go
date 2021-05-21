@@ -2,6 +2,7 @@ package api_test
 
 import (
 	"fmt"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/api"
 )
 

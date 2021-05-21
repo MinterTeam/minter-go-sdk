@@ -3,8 +3,9 @@ package transaction
 import (
 	"encoding/hex"
 	"errors"
-	"github.com/ethereum/go-ethereum/rlp"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // RedeemCheckData is a Data of Transaction for redeeming a check.

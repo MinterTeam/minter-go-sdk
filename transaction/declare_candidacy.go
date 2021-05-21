@@ -1,9 +1,10 @@
 package transaction
 
 import (
+	"math/big"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"github.com/ethereum/go-ethereum/rlp"
-	"math/big"
 )
 
 // DeclareCandidacyData is a Data of Transaction for declaring new validator candidacy.

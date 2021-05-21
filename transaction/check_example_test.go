@@ -3,8 +3,9 @@ package transaction_test
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 )
 
 func ExampleNewCheck() {

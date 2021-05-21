@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // SellCoinData is Data of Transaction for selling one coin (owned by sender) in favour of another coin in a system.
