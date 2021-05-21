@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/api"
 )
 

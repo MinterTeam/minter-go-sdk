@@ -4,6 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
@@ -12,12 +19,6 @@ import (
 	"github.com/go-openapi/runtime/logger"
 	"github.com/go-openapi/strfmt"
 	"github.com/gorilla/websocket"
-	"io"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-	"time"
 )
 
 // Client http concise HTTP client, with wrapper over go-swagger SwagClient methods

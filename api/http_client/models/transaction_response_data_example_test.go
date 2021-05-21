@@ -3,6 +3,7 @@ package models_test
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
 )
 

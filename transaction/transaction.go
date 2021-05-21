@@ -6,15 +6,14 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto"
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
-	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/rlp"
-	"golang.org/x/crypto/sha3"
 	"math/big"
 	"strconv"
 	"strings"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto"
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
+	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
+	"golang.org/x/crypto/sha3"
 )
 
 // Type of transaction is determined by a single byte.

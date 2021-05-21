@@ -20,10 +20,11 @@ import (
 	"database/sql/driver"
 	"encoding/hex"
 	"fmt"
-	"golang.org/x/crypto/sha3"
 	"math/big"
 	"math/rand"
 	"reflect"
+
+	"golang.org/x/crypto/sha3"
 )
 
 // Lengths of hashes and addresses in bytes.

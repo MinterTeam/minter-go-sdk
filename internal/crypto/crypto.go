@@ -22,10 +22,11 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/common"
-	"golang.org/x/crypto/sha3"
 	"hash"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/common"
+	"golang.org/x/crypto/sha3"
 )
 
 // SignatureLength indicates the byte length required to carry a signature with recovery id.

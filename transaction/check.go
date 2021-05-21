@@ -5,12 +5,13 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
+	"math/big"
+	"strings"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto"
 	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto/secp256k1"
 	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"math/big"
-	"strings"
 )
 
 // CheckData is like an ordinary bank check.

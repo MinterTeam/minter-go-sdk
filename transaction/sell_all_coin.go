@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 // SellAllCoinData is Data of Transaction for selling one coin (owned by sender) in favour of another coin in a system.

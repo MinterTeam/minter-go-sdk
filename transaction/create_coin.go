@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 // CreateCoinData is a Data of Transaction for creating new coin.

@@ -1,9 +1,10 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"github.com/ethereum/go-ethereum/rlp"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
+	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 )
 
 // VoteCommissionData is a Data of Transaction for enabling validators to vote for the fees to be changed. The change comes into force once a two-thirds majority is reached. The vote can be sent from the validator owner address.

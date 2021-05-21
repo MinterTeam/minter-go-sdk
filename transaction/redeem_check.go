@@ -3,8 +3,9 @@ package transaction
 import (
 	"encoding/hex"
 	"errors"
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"strings"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 // RedeemCheckData is a Data of Transaction for redeeming a check.

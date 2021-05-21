@@ -1,15 +1,16 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 type MoveStakeData struct {
 	From,
 	To PublicKey
 	Coin  CoinID
-	Value *big.Int
+	Stake *big.Int
 }
 
 // Type returns Data type of the transaction.

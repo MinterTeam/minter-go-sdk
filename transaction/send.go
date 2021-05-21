@@ -1,9 +1,10 @@
 package transaction
 
 import (
+	"math/big"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
-	"math/big"
 )
 
 // SendData is a Data of Transaction for sending arbitrary coin.

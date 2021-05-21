@@ -3,8 +3,9 @@ package transaction
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"net/url"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 type DeepLink struct {

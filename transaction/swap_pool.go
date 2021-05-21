@@ -1,8 +1,9 @@
 package transaction
 
 import (
-	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"math/big"
+
+	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 )
 
 // CreateSwapPoolData is a Data of Transaction for creating a liquidity pool for two coins, in volumes specified within this transaction. The volumes will be withdrawn from your balance according to the figure you've specified in the transaction. When a pool is established, a PL-number coin (example: PL-123) is created and issued in the amount equal to the amount of pool liquidity. The calculations related to that liquidity are described below.
