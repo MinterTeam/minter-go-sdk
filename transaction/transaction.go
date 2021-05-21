@@ -9,6 +9,8 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/internal/crypto"
 	"github.com/MinterTeam/minter-go-sdk/v2/internal/rlp"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/rlp"
 	"golang.org/x/crypto/sha3"
 	"math/big"
 	"strconv"
@@ -18,69 +20,47 @@ import (
 // Type of transaction is determined by a single byte.
 type Type byte
 
+func (t Type) String() string {
+	return "0x" + hex.EncodeToString([]byte{byte(t)})
+}
+
 // Types of Data
 const (
-	_                          Type = iota
-	TypeSend                        // 0x01
-	TypeSellCoin                    // 0x02
-	TypeSellAllCoin                 // 0x03
-	TypeBuyCoin                     // 0x04
-	TypeCreateCoin                  // 0x05
-	TypeDeclareCandidacy            // 0x06
-	TypeDelegate                    // 0x07
-	TypeUnbond                      // 0x08
-	TypeRedeemCheck                 // 0x09
-	TypeSetCandidateOnline          // 0x0A
-	TypeSetCandidateOffline         // 0x0B
-	TypeCreateMultisig              // 0x0C
-	TypeMultisend                   // 0x0D
-	TypeEditCandidate               // 0x0E
-	TypeSetHaltBlock                // 0x0F
-	TypeRecreateCoin                // 0x10
-	TypeEditCoinOwner               // 0x11
-	TypeEditMultisig                // 0x12
-	TypePriceVote                   // 0x13
-	TypeEditCandidatePublicKey      // 0x14
-	TypeAddSwapPool                 // 0x15
-	TypeRemoveSwapPool              // 0x16
-	TypeSellSwapPool                // 0x17
-	TypeBuySwapPool                 // 0x18
-	TypeSellAllSwapPool             // 0x19
-	TypeEditCommission              // 0x20
-	TypeMoveStake                   // 0x21
-)
-
-//go:generate stringer -type=Type
-
-// Fee is the commission that the sender must pay for sending the transaction. Fees are measured in "units". Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-type Fee uint
-
-// Fee of Types
-const (
-	feeTypeSend                Fee = 10
-	feeTypeSellCoin            Fee = 100
-	feeTypeSellAllCoin         Fee = 100
-	feeTypeBuyCoin             Fee = 100
-	feeTypeCreateCoin          Fee = 1000
-	feeTypeDeclareCandidacy    Fee = 10000
-	feeTypeDelegate            Fee = 200
-	feeTypeUnbond              Fee = 200
-	feeTypeRedeemCheck         Fee = 30
-	feeTypeSetCandidateOnline  Fee = 100
-	feeTypeSetCandidateOffline Fee = 100
-	feeTypeCreateMultisig      Fee = 100
-	// feeMultisend Fee =  10+(n-1)*5
-	feeTypeEditCandidate          Fee = 100000
-	feeTypeEditCandidatePublicKey Fee = 100000000
-	feeTypeSetHaltBlock           Fee = 1000
-	feeTypeRecreateCoin           Fee = 10000000
-	feeTypeEditCoinOwner          Fee = 10000000
-	feeTypeEditMultisig           Fee = 1000
-	feeTypePriceVote              Fee = 10
-	feeTypeAddSwapPoolData        Fee = 100
-	feeTypeRemoveSwapPoolData     Fee = 100
-	feeTypeEditCommissionData     Fee = 10000
-	feeTypeMoveStake                  = feeTypeDelegate * 3
+	_                           Type = iota
+	TypeSend                         // 0x01
+	TypeSellCoin                     // 0x02
+	TypeSellAllCoin                  // 0x03
+	TypeBuyCoin                      // 0x04
+	TypeCreateCoin                   // 0x05
+	TypeDeclareCandidacy             // 0x06
+	TypeDelegate                     // 0x07
+	TypeUnbond                       // 0x08
+	TypeRedeemCheck                  // 0x09
+	TypeSetCandidateOnline           // 0x0A
+	TypeSetCandidateOffline          // 0x0B
+	TypeCreateMultisig               // 0x0C
+	TypeMultisend                    // 0x0D
+	TypeEditCandidate                // 0x0E
+	TypeSetHaltBlock                 // 0x0F
+	TypeRecreateCoin                 // 0x10
+	TypeEditCoinOwner                // 0x11
+	TypeEditMultisig                 // 0x12
+	TypePriceVote                    // 0x13
+	TypeEditCandidatePublicKey       // 0x14
+	TypeAddLiquidity                 // 0x15
+	TypeRemoveLiquidity              // 0x16
+	TypeSellSwapPool                 // 0x17
+	TypeBuySwapPool                  // 0x18
+	TypeSellAllSwapPool              // 0x19
+	TypeEditCommissionCandidate      // 0x1A
+	TypeMoveStake                    // 0x1B
+	TypeMintToken                    // 0x1C
+	TypeBurnToken                    // 0x1D
+	TypeCreateToken                  // 0x1E
+	TypeRecreateToken                // 0x1F
+	TypeVoteCommission               // 0x20
+	TypeVoteUpdate                   // 0x21
+	TypeCreateSwapPool               // 0x22
 )
 
 // SignatureType is type of signature (1 - SignatureTypeSingle, 2 - SignatureTypeMulti)
@@ -93,8 +73,6 @@ const (
 	SignatureTypeMulti                // 0x02
 )
 
-//go:generate stringer -type=SignatureType
-
 // ChainID is network identifier  (1 - MainNetChainID, 2 - TestNetChainID)
 type ChainID byte
 
@@ -104,8 +82,6 @@ const (
 	MainNetChainID         // 0x01
 	TestNetChainID         // 0x02
 )
-
-//go:generate stringer -type=ChainID
 
 // CoinID ID of a coin.
 type CoinID uint32
@@ -131,19 +107,14 @@ type PublicKey [32]byte
 // String returns PublicKey as string.
 func (p *PublicKey) String() string { return "Mp" + hex.EncodeToString(p[:]) }
 
-// BipToPip converts BIP to PIP (multiplies input by 1e18)
-func BipToPip(bip *big.Int) *big.Int {
-	return big.NewInt(0).Mul(bip, big.NewInt(1e18))
-}
-
 // Builder is creator of Transaction.
 type Builder struct {
-	ChainID ChainID
+	chainID ChainID
 }
 
 // NewBuilder returns new Builder for creating Transaction.
 func NewBuilder(chainID ChainID) *Builder {
-	return &Builder{ChainID: chainID}
+	return &Builder{chainID: chainID}
 }
 
 // NewTransaction returns new transaction with Data.
@@ -154,9 +125,10 @@ func (b *Builder) NewTransaction(data Data) (Interface, error) {
 	}
 
 	transaction := &Transaction{
-		ChainID:       b.ChainID,
+		ChainID:       b.chainID,
 		SignatureType: SignatureTypeSingle,
 		Data:          dataBytes,
+		GasPrice:      1,
 	}
 
 	object := &object{
@@ -173,8 +145,6 @@ type Data interface {
 	Encode() ([]byte, error)
 	// Type returns Data type of the transaction.
 	Type() Type
-	// Fee returns commission of transaction Data
-	Fee() Fee
 }
 
 type encodeInterface interface {
@@ -187,8 +157,6 @@ type Signed interface {
 	encodeInterface
 	// GetTransaction returns Transaction struct
 	GetTransaction() *Transaction
-	// Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-	Fee() *big.Int
 	// Hash returns hash of Transaction.
 	Hash() (string, error)
 	// Data returns Data of the Transaction.
@@ -240,13 +208,6 @@ type Interface interface {
 type object struct {
 	*Transaction
 	data Data
-}
-
-// Fee returns fee of transaction in PIP. Also sender should pay extra 2 units per byte in Payload and ServiceData fields.
-func (o *object) Fee() *big.Int {
-	gasPrice := big.NewInt(0).Mul(big.NewInt(int64(o.data.Fee())), big.NewInt(1000000000000000))
-	commission := big.NewInt(0).Add(big.NewInt(0).Mul(big.NewInt(int64(len(o.Payload))*2), big.NewInt(1000000000000000)), big.NewInt(0).Mul(big.NewInt(int64(len(o.ServiceData))*2), big.NewInt(1000000000000000)))
-	return big.NewInt(0).Add(gasPrice, commission)
 }
 
 // Data returns Data of Transaction.
@@ -385,10 +346,10 @@ func newData(t Type) Data {
 		return &PriceVoteData{}
 	case TypeEditCandidatePublicKey:
 		return &EditCandidatePublicKeyData{}
-	case TypeAddSwapPool:
-		return &AddSwapPoolData{}
-	case TypeRemoveSwapPool:
-		return &RemoveSwapPoolData{}
+	case TypeAddLiquidity:
+		return &AddLiquidityData{}
+	case TypeRemoveLiquidity:
+		return &RemoveLiquidityData{}
 	case TypeMoveStake:
 		return &MoveStakeData{}
 	case TypeSellSwapPool:
@@ -397,8 +358,22 @@ func newData(t Type) Data {
 		return &SellAllSwapPoolData{}
 	case TypeBuySwapPool:
 		return &BuySwapPoolData{}
-	case TypeEditCommission:
-		return &EditCommissionData{}
+	case TypeEditCommissionCandidate:
+		return &EditCandidateCommissionData{}
+	case TypeBurnToken:
+		return &BurnTokenData{}
+	case TypeMintToken:
+		return &MintTokenData{}
+	case TypeCreateToken:
+		return &CreateTokenData{}
+	case TypeRecreateToken:
+		return &RecreateTokenData{}
+	case TypeVoteUpdate:
+		return &VoteUpdateData{}
+	case TypeVoteCommission:
+		return &VoteCommissionData{}
+	case TypeCreateSwapPool:
+		return &CreateSwapPoolData{}
 	default:
 		return nil
 	}

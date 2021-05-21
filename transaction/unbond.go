@@ -54,11 +54,6 @@ func (d *UnbondData) Type() Type {
 	return TypeUnbond
 }
 
-// Fee returns commission of transaction Data
-func (d *UnbondData) Fee() Fee {
-	return feeTypeUnbond
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *UnbondData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

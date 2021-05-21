@@ -1,2 +1,2 @@
-/*Package grpc_client is the interface for uses gRPC methods.*/
+// Package grpc_client package implements the gRPC methods usage interface.
 package grpc_client

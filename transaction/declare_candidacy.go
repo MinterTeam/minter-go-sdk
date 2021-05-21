@@ -81,11 +81,6 @@ func (d *DeclareCandidacyData) Type() Type {
 	return TypeDeclareCandidacy
 }
 
-// Fee returns commission of transaction Data
-func (d *DeclareCandidacyData) Fee() Fee {
-	return feeTypeDeclareCandidacy
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *DeclareCandidacyData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

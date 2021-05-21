@@ -6,6 +6,7 @@ import (
 )
 
 func TestDeepLink_NewDeepLink(t *testing.T) {
+	t.Parallel()
 	link, err := NewDeepLink(
 		NewSendData().
 			MustSetTo("Mx18467bbb64a8edf890201d526c35957d82be3d95").
@@ -30,6 +31,7 @@ func TestDeepLink_NewDeepLink(t *testing.T) {
 }
 
 func TestDeepLink_CreateLinkSend(t *testing.T) {
+	t.Parallel()
 	link, err := NewDeepLink(
 		NewSendData().
 			MustSetTo("Mx7633980c000139dd3bd24a3f54e06474fa941e16").

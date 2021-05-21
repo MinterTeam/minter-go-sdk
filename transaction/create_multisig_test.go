@@ -7,6 +7,7 @@ import (
 const txCreateMultisig = "0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988"
 
 func TestCreateMultisigData_Sign(t *testing.T) {
+	t.Parallel()
 	data := NewCreateMultisigData().
 		MustAddSigData("Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c", 1).
 		MustAddSigData("Mx772fd5bd06356250e5efe572b6ae615860ee0c17", 3).
@@ -36,6 +37,7 @@ func TestCreateMultisigData_Sign(t *testing.T) {
 }
 
 func TestCreateMultisigData_SignGetAddress(t *testing.T) {
+	t.Parallel()
 	data := NewCreateMultisigData().
 		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
 		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
@@ -74,12 +76,13 @@ func TestCreateMultisigData_SignGetAddress(t *testing.T) {
 }
 
 func TestDecode_createMultisig(t *testing.T) {
+	t.Parallel()
 	decode, err := Decode(txCreateMultisig)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if decode.Fee().String() != "100000000000000000" {
-		t.Error("send transaction fee is invalid", decode.Fee().String())
+	if decode.GetTransaction().Type != TypeCreateMultisig {
+		t.Error("send transaction type is invalid", decode.GetTransaction().Type)
 	}
 }

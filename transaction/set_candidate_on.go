@@ -40,11 +40,6 @@ func (d *SetCandidateOnData) Type() Type {
 	return TypeSetCandidateOnline
 }
 
-// Fee returns commission of transaction Data
-func (d *SetCandidateOnData) Fee() Fee {
-	return feeTypeSetCandidateOnline
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *SetCandidateOnData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

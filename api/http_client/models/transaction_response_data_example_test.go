@@ -8,7 +8,8 @@ import (
 
 func ExampleProtobufAny_UnmarshalNew() {
 	transactionResponse := models.TransactionResponse{
-		Type: 18,
+		TypeHex: "0x12",
+		Type:    18,
 		Data: &models.ProtobufAny{
 			"@type":     "type.googleapis.com/api_pb.EditMultisigData",
 			"threshold": "5",

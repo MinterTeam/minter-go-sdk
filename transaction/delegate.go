@@ -54,11 +54,6 @@ func (d *DelegateData) Type() Type {
 	return TypeDelegate
 }
 
-// Fee returns commission of transaction Data
-func (d *DelegateData) Fee() Fee {
-	return feeTypeDelegate
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *DelegateData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

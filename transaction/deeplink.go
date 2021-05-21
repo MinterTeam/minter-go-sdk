@@ -14,6 +14,8 @@ type DeepLink struct {
 	Nonce    *uint32 `rlp:"nilList"` // optional, used for prevent transaction reply
 	GasPrice *uint32 `rlp:"nilList"` // optional, fee multiplier, should be equal or greater than current mempool min gas price
 	GasCoin  *CoinID `rlp:"nilList"` // optional, ID of a coin to pay fee, right padded with zeros
+
+	url *url.URL
 }
 
 // Returns url link.
@@ -29,8 +31,8 @@ func (d *DeepLink) CreateLink(pass string) (string, error) {
 	}
 
 	u := &url.URL{
-		Scheme:   "https",
-		Host:     "bip.to",
+		Scheme:   d.url.Scheme,
+		Host:     d.url.Host,
 		Path:     fmt.Sprintf("/tx/%s", tx),
 		RawQuery: rawQuery,
 	}
@@ -64,17 +66,39 @@ func (d *DeepLink) SetNonce(nonce uint32) *DeepLink {
 	return d
 }
 
-// Set fee multiplier.
+// SetGasPrice sets fee multiplier.
 func (d *DeepLink) SetGasPrice(gasPrice uint32) *DeepLink {
 	d.GasPrice = &gasPrice
 	return d
 }
 
-// Set ID of a coin to pay fee
+// SetGasCoin sets ID of a coin to pay fee
 func (d *DeepLink) SetGasCoin(id uint64) *DeepLink {
-	coinId := CoinID(id)
-	d.GasCoin = &coinId
+	coinID := CoinID(id)
+	d.GasCoin = &coinID
 	return d
+}
+
+func (d *DeepLink) SetUrl(value string) (*DeepLink, error) {
+	u, err := url.Parse(value)
+
+	if err != nil {
+		return d, err
+	}
+
+	d.url = u
+
+	return d, nil
+}
+
+func (d *DeepLink) MustSetUrl(value string) *DeepLink {
+	dl, err := d.SetUrl(value)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return dl
 }
 
 func NewDeepLink(data Data) (*DeepLink, error) {
@@ -85,6 +109,11 @@ func NewDeepLink(data Data) (*DeepLink, error) {
 		return d, err
 	}
 	d.Data = bytes
+
+	d.url = &url.URL{
+		Scheme: "https",
+		Host:   "bip.to",
+	}
 
 	return d.setType(data.Type()), nil
 }

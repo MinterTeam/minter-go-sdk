@@ -24,6 +24,12 @@ type CandidateResponse struct {
 	// Address that allows one to start the candidate by sending the SetCandidateOnline transaction or stop it by sending the SetCandidateOffline transaction.
 	ControlAddress string `json:"control_address,omitempty"`
 
+	// id
+	ID uint64 `json:"id,omitempty,string"`
+
+	// jailed until
+	JailedUntil uint64 `json:"jailed_until,omitempty,string"`
+
 	// Smallest steak size. Note: filled in when request includes_stakes
 	MinStake string `json:"min_stake,omitempty"`
 

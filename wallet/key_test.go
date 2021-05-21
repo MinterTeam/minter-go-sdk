@@ -5,6 +5,7 @@ import (
 )
 
 func TestMnemonicBySeed(t *testing.T) {
+	t.Parallel()
 	mnemonic := "suffer draft bacon typical start retire air sniff large biology mail diagram"
 	seed, err := Seed(mnemonic)
 	if err != nil {
@@ -17,6 +18,7 @@ func TestMnemonicBySeed(t *testing.T) {
 }
 
 func TestPrivateKeyBySeed(t *testing.T) {
+	t.Parallel()
 	prKey, err := PrivateKeyBySeed(validSeed)
 	if err != nil {
 		t.Fatal(err)
@@ -28,6 +30,7 @@ func TestPrivateKeyBySeed(t *testing.T) {
 }
 
 func TestPublicKeyByPrivateKey(t *testing.T) {
+	t.Parallel()
 	pubKey, err := PublicKeyByPrivateKey(validPrivateKey)
 	if err != nil {
 		t.Fatal(err)
@@ -39,6 +42,7 @@ func TestPublicKeyByPrivateKey(t *testing.T) {
 }
 
 func TestAddressByPublicKey(t *testing.T) {
+	t.Parallel()
 	address, err := AddressByPublicKey(validPublicKey)
 	if err != nil {
 		t.Fatal(err)
@@ -50,6 +54,7 @@ func TestAddressByPublicKey(t *testing.T) {
 }
 
 func TestBugAddress(t *testing.T) {
+	t.Parallel()
 	seed, err := Seed("real town addict extend shoot name disagree vital turn live can tip")
 	if err != nil {
 		panic(err)
@@ -83,6 +88,7 @@ func TestBugAddress(t *testing.T) {
 }
 
 func TestPrivatKeyToAddress(t *testing.T) {
+	t.Parallel()
 
 	publicKeyByPrivateKey, err := PublicKeyByPrivateKey("ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63")
 	if err != nil {

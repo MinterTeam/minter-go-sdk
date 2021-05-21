@@ -18,6 +18,9 @@ type StatusResponse struct {
 	// catching up
 	CatchingUp bool `json:"catching_up,omitempty"`
 
+	// initial height
+	InitialHeight uint64 `json:"initial_height,omitempty,string"`
+
 	// keep last states
 	KeepLastStates uint64 `json:"keep_last_states,omitempty,string"`
 
@@ -32,6 +35,9 @@ type StatusResponse struct {
 
 	// latest block time
 	LatestBlockTime string `json:"latest_block_time,omitempty"`
+
+	// moniker
+	Moniker string `json:"moniker,omitempty"`
 
 	// network
 	Network string `json:"network,omitempty"`

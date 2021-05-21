@@ -66,11 +66,6 @@ func (d *EditMultisigData) Type() Type {
 	return TypeEditMultisig
 }
 
-// Fee returns commission of transaction Data
-func (d *EditMultisigData) Fee() Fee {
-	return feeTypeEditMultisig
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *EditMultisigData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

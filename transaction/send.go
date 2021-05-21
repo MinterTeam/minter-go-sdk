@@ -54,11 +54,6 @@ func (d *SendData) Type() Type {
 	return TypeSend
 }
 
-// Fee returns commission of transaction Data
-func (d *SendData) Fee() Fee {
-	return feeTypeSend
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *SendData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

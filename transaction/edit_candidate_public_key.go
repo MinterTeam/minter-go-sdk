@@ -64,11 +64,6 @@ func (d *EditCandidatePublicKeyData) Type() Type {
 	return TypeEditCandidatePublicKey
 }
 
-// Fee returns commission of transaction Data
-func (d *EditCandidatePublicKeyData) Fee() Fee {
-	return feeTypeEditCandidatePublicKey
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *EditCandidatePublicKeyData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

@@ -64,7 +64,7 @@ type EventsParams struct {
 	/*Height*/
 	Height string
 	/*Search
-	  Array of public keys of validators and wallet addresses of validators for filtering.
+	  Array of public keys of validators and wallet addresses of delegators for filtering.
 
 	*/
 	Search []string

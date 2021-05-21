@@ -20,8 +20,11 @@ import (
 // NewEstimateCoinSellParams creates a new EstimateCoinSellParams object
 // with the default values initialized.
 func NewEstimateCoinSellParams() *EstimateCoinSellParams {
-	var ()
+	var (
+		swapFromDefault = string("optimal")
+	)
 	return &EstimateCoinSellParams{
+		SwapFrom: &swapFromDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -30,8 +33,11 @@ func NewEstimateCoinSellParams() *EstimateCoinSellParams {
 // NewEstimateCoinSellParamsWithTimeout creates a new EstimateCoinSellParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewEstimateCoinSellParamsWithTimeout(timeout time.Duration) *EstimateCoinSellParams {
-	var ()
+	var (
+		swapFromDefault = string("optimal")
+	)
 	return &EstimateCoinSellParams{
+		SwapFrom: &swapFromDefault,
 
 		timeout: timeout,
 	}
@@ -40,8 +46,11 @@ func NewEstimateCoinSellParamsWithTimeout(timeout time.Duration) *EstimateCoinSe
 // NewEstimateCoinSellParamsWithContext creates a new EstimateCoinSellParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewEstimateCoinSellParamsWithContext(ctx context.Context) *EstimateCoinSellParams {
-	var ()
+	var (
+		swapFromDefault = string("optimal")
+	)
 	return &EstimateCoinSellParams{
+		SwapFrom: &swapFromDefault,
 
 		Context: ctx,
 	}
@@ -50,8 +59,11 @@ func NewEstimateCoinSellParamsWithContext(ctx context.Context) *EstimateCoinSell
 // NewEstimateCoinSellParamsWithHTTPClient creates a new EstimateCoinSellParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewEstimateCoinSellParamsWithHTTPClient(client *http.Client) *EstimateCoinSellParams {
-	var ()
+	var (
+		swapFromDefault = string("optimal")
+	)
 	return &EstimateCoinSellParams{
+		SwapFrom:   &swapFromDefault,
 		HTTPClient: client,
 	}
 }
@@ -61,6 +73,10 @@ for the estimate coin sell operation typically these are written to a http.Reque
 */
 type EstimateCoinSellParams struct {
 
+	/*CoinCommission*/
+	CoinCommission *string
+	/*CoinIDCommission*/
+	CoinIDCommission *uint64
 	/*CoinIDToBuy*/
 	CoinIDToBuy *uint64
 	/*CoinIDToSell*/
@@ -71,6 +87,10 @@ type EstimateCoinSellParams struct {
 	CoinToSell *string
 	/*Height*/
 	Height *uint64
+	/*Route*/
+	Route []string
+	/*SwapFrom*/
+	SwapFrom *string
 	/*ValueToSell*/
 	ValueToSell string
 
@@ -110,6 +130,28 @@ func (o *EstimateCoinSellParams) WithHTTPClient(client *http.Client) *EstimateCo
 // SetHTTPClient adds the HTTPClient to the estimate coin sell params
 func (o *EstimateCoinSellParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
+}
+
+// WithCoinCommission adds the coinCommission to the estimate coin sell params
+func (o *EstimateCoinSellParams) WithCoinCommission(coinCommission *string) *EstimateCoinSellParams {
+	o.SetCoinCommission(coinCommission)
+	return o
+}
+
+// SetCoinCommission adds the coinCommission to the estimate coin sell params
+func (o *EstimateCoinSellParams) SetCoinCommission(coinCommission *string) {
+	o.CoinCommission = coinCommission
+}
+
+// WithCoinIDCommission adds the coinIDCommission to the estimate coin sell params
+func (o *EstimateCoinSellParams) WithCoinIDCommission(coinIDCommission *uint64) *EstimateCoinSellParams {
+	o.SetCoinIDCommission(coinIDCommission)
+	return o
+}
+
+// SetCoinIDCommission adds the coinIdCommission to the estimate coin sell params
+func (o *EstimateCoinSellParams) SetCoinIDCommission(coinIDCommission *uint64) {
+	o.CoinIDCommission = coinIDCommission
 }
 
 // WithCoinIDToBuy adds the coinIDToBuy to the estimate coin sell params
@@ -167,6 +209,28 @@ func (o *EstimateCoinSellParams) SetHeight(height *uint64) {
 	o.Height = height
 }
 
+// WithRoute adds the route to the estimate coin sell params
+func (o *EstimateCoinSellParams) WithRoute(route []string) *EstimateCoinSellParams {
+	o.SetRoute(route)
+	return o
+}
+
+// SetRoute adds the route to the estimate coin sell params
+func (o *EstimateCoinSellParams) SetRoute(route []string) {
+	o.Route = route
+}
+
+// WithSwapFrom adds the swapFrom to the estimate coin sell params
+func (o *EstimateCoinSellParams) WithSwapFrom(swapFrom *string) *EstimateCoinSellParams {
+	o.SetSwapFrom(swapFrom)
+	return o
+}
+
+// SetSwapFrom adds the swapFrom to the estimate coin sell params
+func (o *EstimateCoinSellParams) SetSwapFrom(swapFrom *string) {
+	o.SwapFrom = swapFrom
+}
+
 // WithValueToSell adds the valueToSell to the estimate coin sell params
 func (o *EstimateCoinSellParams) WithValueToSell(valueToSell string) *EstimateCoinSellParams {
 	o.SetValueToSell(valueToSell)
@@ -185,6 +249,38 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 		return err
 	}
 	var res []error
+
+	if o.CoinCommission != nil {
+
+		// query param coin_commission
+		var qrCoinCommission string
+		if o.CoinCommission != nil {
+			qrCoinCommission = *o.CoinCommission
+		}
+		qCoinCommission := qrCoinCommission
+		if qCoinCommission != "" {
+			if err := r.SetQueryParam("coin_commission", qCoinCommission); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.CoinIDCommission != nil {
+
+		// query param coin_id_commission
+		var qrCoinIDCommission uint64
+		if o.CoinIDCommission != nil {
+			qrCoinIDCommission = *o.CoinIDCommission
+		}
+		qCoinIDCommission := swag.FormatUint64(qrCoinIDCommission)
+		if qCoinIDCommission != "" {
+			if err := r.SetQueryParam("coin_id_commission", qCoinIDCommission); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	if o.CoinIDToBuy != nil {
 
@@ -260,6 +356,30 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
 			if err := r.SetQueryParam("height", qHeight); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	valuesRoute := o.Route
+
+	joinedRoute := swag.JoinByFormat(valuesRoute, "multi")
+	// query array param route
+	if err := r.SetQueryParam("route", joinedRoute...); err != nil {
+		return err
+	}
+
+	if o.SwapFrom != nil {
+
+		// query param swap_from
+		var qrSwapFrom string
+		if o.SwapFrom != nil {
+			qrSwapFrom = *o.SwapFrom
+		}
+		qSwapFrom := qrSwapFrom
+		if qSwapFrom != "" {
+			if err := r.SetQueryParam("swap_from", qSwapFrom); err != nil {
 				return err
 			}
 		}

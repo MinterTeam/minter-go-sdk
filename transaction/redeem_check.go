@@ -68,11 +68,6 @@ func (d *RedeemCheckData) Type() Type {
 	return TypeRedeemCheck
 }
 
-// Fee returns commission of transaction Data
-func (d *RedeemCheckData) Fee() Fee {
-	return feeTypeRedeemCheck
-}
-
 // Encode returns the byte representation of a transaction Data.
 func (d *RedeemCheckData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)

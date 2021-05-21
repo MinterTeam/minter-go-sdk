@@ -50,11 +50,6 @@ func (d *CreateMultisigData) Type() Type {
 	return TypeCreateMultisig
 }
 
-// Fee returns commission of transaction Data
-func (d *CreateMultisigData) Fee() Fee {
-	return feeTypeCreateMultisig
-}
-
 func (d *CreateMultisigData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
