@@ -273,3 +273,33 @@ func (d *SellSwapPoolData) Type() Type {
 func (d *SellSwapPoolData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+// AddOrderSwapPoolData is a Data of Transaction for setting orders for sale in liquidity pool.
+type AddOrderSwapPoolData struct {
+	CoinToSell  CoinID   // ID of a coin to sell
+	ValueToSell *big.Int // Amount of CoinToSell to sell
+	CoinToBuy   CoinID   // ID of a coin to buy
+	ValueToBuy  *big.Int // Amount of CoinToSell to buy
+}
+
+// SetValueToSell sets value to sell
+func (d *AddOrderSwapPoolData) SetValueToSell(value *big.Int) *AddOrderSwapPoolData {
+	d.ValueToSell = value
+	return d
+}
+
+// SetValueToBuy sets value to buy
+func (d *AddOrderSwapPoolData) SetValueToBuy(value *big.Int) *AddOrderSwapPoolData {
+	d.ValueToBuy = value
+	return d
+}
+
+// Type returns Data type of the transaction.
+func (d *AddOrderSwapPoolData) Type() Type {
+	return TypeAddOrderSwapPool
+}
+
+// Encode returns the byte representation of a transaction Data.
+func (d *AddOrderSwapPoolData) Encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
+}
