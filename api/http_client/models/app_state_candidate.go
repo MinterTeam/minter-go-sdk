@@ -27,6 +27,12 @@ type AppStateCandidate struct {
 	// id
 	ID uint64 `json:"id,omitempty,string"`
 
+	// jailed until
+	JailedUntil int64 `json:"jailed_until,omitempty,string"`
+
+	// last edit commission height
+	LastEditCommissionHeight int64 `json:"last_edit_commission_height,omitempty,string"`
+
 	// owner address
 	OwnerAddress string `json:"owner_address,omitempty"`
 

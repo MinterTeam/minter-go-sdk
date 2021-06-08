@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec // indirect
-	github.com/MinterTeam/node-grpc-gateway v1.2.2-0.20210405235123-df8990dd6dc2
+	github.com/MinterTeam/node-grpc-gateway v1.2.2-0.20210608112129-9189cd68b20e
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect
