@@ -81,6 +81,9 @@ type AppStateCommission struct {
 	// edit ticker owner
 	EditTickerOwner string `json:"edit_ticker_owner,omitempty"`
 
+	// failed tx
+	FailedTx string `json:"failed_tx,omitempty"`
+
 	// mint token
 	MintToken string `json:"mint_token,omitempty"`
 

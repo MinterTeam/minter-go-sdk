@@ -259,6 +259,13 @@ type VoteUpdateData struct {
 	Version string `json:"version,omitempty"`
 }
 
+type AddOrderSwapPoolData struct {
+	CoinToSell  *Coin  `json:"coin_to_sell,omitempty"`
+	ValueToSell string `json:"value_to_sell,omitempty"`
+	CoinToBuy   *Coin  `json:"coin_to_buy,omitempty"`
+	ValueToBuy  string `json:"value_to_buy,omitempty"`
+}
+
 func newData(t string) Data {
 	switch t {
 	case "type.googleapis.com/api_pb.SendData":
@@ -329,6 +336,8 @@ func newData(t string) Data {
 		return &SellSwapPoolData{}
 	case "type.googleapis.com/api_pb.SellAllSwapPoolData":
 		return &SellAllSwapPoolData{}
+	case "type.googleapis.com/api_pb.AddOrderSwapPoolData":
+		return &AddOrderSwapPoolData{}
 	default:
 		return nil
 	}
