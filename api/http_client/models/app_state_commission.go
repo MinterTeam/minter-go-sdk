@@ -15,6 +15,9 @@ import (
 // swagger:model AppStateCommission
 type AppStateCommission struct {
 
+	// add limit order
+	AddLimitOrder string `json:"add_limit_order,omitempty"`
+
 	// add liquidity
 	AddLiquidity string `json:"add_liquidity,omitempty"`
 
@@ -104,6 +107,9 @@ type AppStateCommission struct {
 
 	// redeem check
 	RedeemCheck string `json:"redeem_check,omitempty"`
+
+	// remove limit order
+	RemoveLimitOrder string `json:"remove_limit_order,omitempty"`
 
 	// remove liquidity
 	RemoveLiquidity string `json:"remove_liquidity,omitempty"`

@@ -106,6 +106,9 @@ type UpdateCommissionsEvent struct {
 	BurnToken               string `json:"burn_token"`
 	VoteCommission          string `json:"vote_commission"`
 	VoteUpdate              string `json:"vote_update"`
+	FailedTx                string `json:"failed_tx,omitempty"`
+	AddLimitOrder           string `json:"add_limit_order,omitempty"`
+	RemoveLimitOrder        string `json:"remove_limit_order,omitempty"`
 }
 
 func (e *UpdateCommissionsEvent) Type() EventType { return TypeUpdateCommissionsEvent }

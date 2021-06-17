@@ -53,7 +53,8 @@ type VoteCommissionData struct {
 	BurnToken               *big.Int
 	VoteCommission          *big.Int
 	VoteUpdate              *big.Int
-	_                       []*big.Int `rlp:"tail"`
+	FailedTx                *big.Int
+	More                    []*big.Int `rlp:"tail"`
 }
 
 // NewVoteCommissionData creates VoteCommissionData

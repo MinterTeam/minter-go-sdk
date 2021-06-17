@@ -251,6 +251,9 @@ type VoteCommissionData struct {
 	BurnToken               string `json:"burn_token,omitempty"`
 	VoteCommission          string `json:"vote_commission,omitempty"`
 	VoteUpdate              string `json:"vote_update,omitempty"`
+	FailedTx                string `json:"failed_tx,omitempty"`
+	AddLimitOrder           string `json:"add_limit_order,omitempty"`
+	RemoveLimitOrder        string `json:"remove_limit_order,omitempty"`
 }
 
 type VoteUpdateData struct {

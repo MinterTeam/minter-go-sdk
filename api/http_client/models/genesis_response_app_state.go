@@ -60,6 +60,9 @@ type GenesisResponseAppState struct {
 	// validators
 	Validators []*AppStateValidators `json:"validators"`
 
+	// version
+	Version string `json:"version,omitempty"`
+
 	// waitlist
 	Waitlist []*AppStateWaitlist `json:"waitlist"`
 }
