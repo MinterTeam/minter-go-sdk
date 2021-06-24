@@ -53,13 +53,36 @@ type VoteCommissionData struct {
 	BurnToken               *big.Int
 	VoteCommission          *big.Int
 	VoteUpdate              *big.Int
-	FailedTx                *big.Int
 	More                    []*big.Int `rlp:"tail"`
+	// FailedTX                *big.Int
+	// AddLimitOrder           *big.Int
+	// RemoveLimitOrder        *big.Int
 }
 
 // NewVoteCommissionData creates VoteCommissionData
 func NewVoteCommissionData() *VoteCommissionData {
 	return &VoteCommissionData{}
+}
+
+func (d *VoteCommissionData) FailedTxPrice() *big.Int {
+	if len(d.More) > 0 {
+		return d.More[0]
+	}
+	return big.NewInt(0)
+}
+
+func (d *VoteCommissionData) AddLimitOrderPrice() *big.Int {
+	if len(d.More) > 1 {
+		return d.More[1]
+	}
+	return big.NewInt(0)
+}
+
+func (d *VoteCommissionData) RemoveLimitOrderPrice() *big.Int {
+	if len(d.More) > 2 {
+		return d.More[2]
+	}
+	return big.NewInt(0)
 }
 
 // SetCoin sets coin for calculate commission price in base coin
