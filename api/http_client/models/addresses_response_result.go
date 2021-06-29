@@ -27,6 +27,9 @@ type AddressesResponseResult struct {
 	// Filled in when request delegated
 	Delegated []*AddressDelegatedBalance `json:"delegated"`
 
+	// multisig
+	Multisig *Multisig `json:"multisig,omitempty"`
+
 	// Sum of balance and delegated by coins. Filled in when request delegated
 	Total []*AddressBalance `json:"total"`
 
@@ -43,6 +46,10 @@ func (m *AddressesResponseResult) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateDelegated(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMultisig(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -101,6 +108,24 @@ func (m *AddressesResponseResult) validateDelegated(formats strfmt.Registry) err
 			}
 		}
 
+	}
+
+	return nil
+}
+
+func (m *AddressesResponseResult) validateMultisig(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Multisig) { // not required
+		return nil
+	}
+
+	if m.Multisig != nil {
+		if err := m.Multisig.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("multisig")
+			}
+			return err
+		}
 	}
 
 	return nil
