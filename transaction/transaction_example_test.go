@@ -37,6 +37,19 @@ func ExampleBuilder_NewTransaction_signSingleSignature_simple() {
 
 }
 
+func ExampleDecode() {
+	tx, _ := transaction.Decode("0xf8750102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a76400008548656c6c6f8001b845f8431ca0d2b9034178aa5eab45696bd25ced410dd21298e160c4a51c3fcfd85bb0f49352a006705dc04165b183a3448394fdd93a881eb60bb7881a05a528125e1d8259ac75")
+
+	fmt.Println(tx.Data().Type())
+	fmt.Println(tx.Data().(*transaction.SendData).Coin)
+	fmt.Println(string(tx.GetTransaction().Payload))
+
+	// Output:
+	// 0x01
+	// 1
+	// Hello
+}
+
 func ExampleBuilder_NewTransaction_signMultiSignature_simultaneous_adding_private_keys() {
 	data, _ := transaction.NewSendData().
 		SetCoin(1).
