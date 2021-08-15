@@ -681,6 +681,40 @@ func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*models.U
 	return res.GetPayload(), nil
 }
 
+// LimitOrder returns ...
+func (c *Client) LimitOrder(orderID uint64, optionalHeight ...uint64) (*models.LimitOrderResponse, error) {
+	res, err := c.ClientService.LimitOrder(api_service.NewLimitOrderParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithOrderID(strconv.Itoa(int(orderID))).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// LimitOrders returns ...
+func (c *Client) LimitOrders(orderIDs []uint64, optionalHeight ...uint64) (*models.LimitOrdersResponse, error) {
+	var ids []string
+	for _, id := range orderIDs {
+		ids = append(ids, strconv.Itoa(int(id)))
+	}
+	res, err := c.ClientService.LimitOrders(api_service.NewLimitOrdersParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithIds(ids).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// LimitOrdersOfPool returns ...
+func (c *Client) LimitOrdersOfPool(sellCoin, buyCoin uint64, optionalHeight ...uint64) (*models.LimitOrdersOfPoolResponse, error) {
+	res, err := c.ClientService.LimitOrdersOfPool(api_service.NewLimitOrdersOfPoolParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithSellCoin(strconv.Itoa(int(sellCoin))).WithBuyCoin(strconv.Itoa(int(buyCoin))).WithContext(c.ctxFunc()))
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
 // Frozen returns frozen balance.
 func (c *Client) Frozen(address string, coinID *uint64, optionalHeight ...uint64) (*models.FrozenResponse, error) {
 	res, err := c.ClientService.Frozen(api_service.NewFrozenParamsWithTimeout(c.timeout).WithAddress(address).WithCoinID(coinID).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()))

@@ -205,7 +205,7 @@ type RecreateTokenData struct {
 
 type VoteCommissionData struct {
 	PubKey                  string `json:"pub_key,omitempty"`
-	Height                  uint64 `json:"height,omitempty"`
+	Height                  uint64 `json:"height,string,omitempty"`
 	Coin                    *Coin  `json:"coin,omitempty"`
 	PayloadByte             string `json:"payload_byte,omitempty"`
 	Send                    string `json:"send,omitempty"`
@@ -258,15 +258,18 @@ type VoteCommissionData struct {
 
 type VoteUpdateData struct {
 	PubKey  string `json:"pub_key,omitempty"`
-	Height  uint64 `json:"height,omitempty"`
+	Height  uint64 `json:"height,string,omitempty"`
 	Version string `json:"version,omitempty"`
 }
 
-type AddOrderSwapPoolData struct {
+type AddLimitOrderData struct {
 	CoinToSell  *Coin  `json:"coin_to_sell,omitempty"`
 	ValueToSell string `json:"value_to_sell,omitempty"`
 	CoinToBuy   *Coin  `json:"coin_to_buy,omitempty"`
 	ValueToBuy  string `json:"value_to_buy,omitempty"`
+}
+type RemoveLimitOrderData struct {
+	Id uint64 `json:"id,string,omitempty"`
 }
 
 func newData(t string) Data {
@@ -339,8 +342,10 @@ func newData(t string) Data {
 		return &SellSwapPoolData{}
 	case "type.googleapis.com/api_pb.SellAllSwapPoolData":
 		return &SellAllSwapPoolData{}
-	case "type.googleapis.com/api_pb.AddOrderSwapPoolData":
-		return &AddOrderSwapPoolData{}
+	case "type.googleapis.com/api_pb.AddLimitOrderData":
+		return &AddLimitOrderData{}
+	case "type.googleapis.com/api_pb.RemoveLimitOrderData":
+		return &RemoveLimitOrderData{}
 	default:
 		return nil
 	}

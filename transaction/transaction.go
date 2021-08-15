@@ -60,7 +60,8 @@ const (
 	TypeVoteCommission               // 0x20
 	TypeVoteUpdate                   // 0x21
 	TypeCreateSwapPool               // 0x22
-	TypeAddOrderSwapPool             // 0x23
+	TypeAddLimitOrder                // 0x23
+	TypeRemoveLimitOrder             // 0x24
 )
 
 // SignatureType is type of signature (1 - SignatureTypeSingle, 2 - SignatureTypeMulti)
@@ -374,8 +375,10 @@ func newData(t Type) Data {
 		return &VoteCommissionData{}
 	case TypeCreateSwapPool:
 		return &CreateSwapPoolData{}
-	case TypeAddOrderSwapPool:
-		return &AddOrderSwapPoolData{}
+	case TypeAddLimitOrder:
+		return &AddLimitOrderData{}
+	case TypeRemoveLimitOrder:
+		return &RemoveLimitOrderData{}
 	default:
 		return nil
 	}

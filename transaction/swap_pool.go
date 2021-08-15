@@ -274,8 +274,8 @@ func (d *SellSwapPoolData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
-// AddOrderSwapPoolData is a Data of Transaction for setting orders for sale in liquidity pool.
-type AddOrderSwapPoolData struct {
+// AddLimitOrderData is a Data of Transaction for setting orders for sale in liquidity pool.
+type AddLimitOrderData struct {
 	CoinToSell  CoinID   // ID of a coin to sell
 	ValueToSell *big.Int // Amount of CoinToSell to sell
 	CoinToBuy   CoinID   // ID of a coin to buy
@@ -283,23 +283,44 @@ type AddOrderSwapPoolData struct {
 }
 
 // SetValueToSell sets value to sell
-func (d *AddOrderSwapPoolData) SetValueToSell(value *big.Int) *AddOrderSwapPoolData {
+func (d *AddLimitOrderData) SetValueToSell(value *big.Int) *AddLimitOrderData {
 	d.ValueToSell = value
 	return d
 }
 
 // SetValueToBuy sets value to buy
-func (d *AddOrderSwapPoolData) SetValueToBuy(value *big.Int) *AddOrderSwapPoolData {
+func (d *AddLimitOrderData) SetValueToBuy(value *big.Int) *AddLimitOrderData {
 	d.ValueToBuy = value
 	return d
 }
 
 // Type returns Data type of the transaction.
-func (d *AddOrderSwapPoolData) Type() Type {
-	return TypeAddOrderSwapPool
+func (d *AddLimitOrderData) Type() Type {
+	return TypeAddLimitOrder
 }
 
 // Encode returns the byte representation of a transaction Data.
-func (d *AddOrderSwapPoolData) Encode() ([]byte, error) {
+func (d *AddLimitOrderData) Encode() ([]byte, error) {
+	return rlp.EncodeToBytes(d)
+}
+
+// RemoveLimitOrderData is ...
+type RemoveLimitOrderData struct {
+	ID uint64
+}
+
+// SetID sets order ID
+func (d *RemoveLimitOrderData) SetID(id uint64) *RemoveLimitOrderData {
+	d.ID = id
+	return d
+}
+
+// Type returns Data type of the transaction.
+func (d *RemoveLimitOrderData) Type() Type {
+	return TypeRemoveLimitOrder
+}
+
+// Encode returns the byte representation of a transaction Data.
+func (d *RemoveLimitOrderData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }

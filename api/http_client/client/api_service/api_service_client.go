@@ -59,6 +59,12 @@ type ClientService interface {
 
 	Halts(params *HaltsParams) (*HaltsOK, error)
 
+	LimitOrder(params *LimitOrderParams) (*LimitOrderOK, error)
+
+	LimitOrders(params *LimitOrdersParams) (*LimitOrdersOK, error)
+
+	LimitOrdersOfPool(params *LimitOrdersOfPoolParams) (*LimitOrdersOfPoolOK, error)
+
 	MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error)
 
 	MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error)
@@ -706,6 +712,105 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*HaltsDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  LimitOrder limits order
+*/
+func (a *Client) LimitOrder(params *LimitOrderParams) (*LimitOrderOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewLimitOrderParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "LimitOrder",
+		Method:             "GET",
+		PathPattern:        "/limit_order/{order_id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &LimitOrderReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*LimitOrderOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*LimitOrderDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  LimitOrders limits orders
+*/
+func (a *Client) LimitOrders(params *LimitOrdersParams) (*LimitOrdersOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewLimitOrdersParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "LimitOrders",
+		Method:             "GET",
+		PathPattern:        "/limit_orders",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &LimitOrdersReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*LimitOrdersOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*LimitOrdersDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  LimitOrdersOfPool limits orders of pool
+*/
+func (a *Client) LimitOrdersOfPool(params *LimitOrdersOfPoolParams) (*LimitOrdersOfPoolOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewLimitOrdersOfPoolParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "LimitOrdersOfPool",
+		Method:             "GET",
+		PathPattern:        "/limit_orders/{sell_coin}/{buy_coin}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &LimitOrdersOfPoolReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*LimitOrdersOfPoolOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*LimitOrdersOfPoolDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
