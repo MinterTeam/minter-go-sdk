@@ -157,7 +157,7 @@ type RewardEvent struct {
 	Address         string `json:"address"`
 	Amount          string `json:"amount"`
 	ValidatorPubKey string `json:"validator_pub_key"`
-	Coin            string `json:"coin"`
+	ForCoin         string `json:"for_coin"`
 }
 
 // GetAddress return owner address
