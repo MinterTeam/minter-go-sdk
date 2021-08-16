@@ -268,6 +268,7 @@ type AddLimitOrderData struct {
 	CoinToBuy   *Coin  `json:"coin_to_buy,omitempty"`
 	ValueToBuy  string `json:"value_to_buy,omitempty"`
 }
+
 type RemoveLimitOrderData struct {
 	Id uint64 `json:"id,string,omitempty"`
 }

@@ -30,7 +30,7 @@ type Client struct {
 }
 
 // New returns gRPC Client
-func New(address string, _ ...string) (*Client, error) {
+func New(address string) (*Client, error) {
 	clientConn, err := grpc.Dial(address,
 		grpc.WithStreamInterceptor(grpc_retry.StreamClientInterceptor()),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor()),
@@ -231,21 +231,21 @@ func (c *Client) Block(height uint64) (*api_pb.BlockResponse, error) {
 }
 
 // Blocks ...
-func (c *Client) Blocks(from, to uint64, failedTxs bool, fieldsBlock ...string) (*api_pb.BlocksResponse, error) {
+func (c *Client) Blocks(from, to uint64, failedTxs, events bool, fieldsBlock ...string) (*api_pb.BlocksResponse, error) {
 	var fields []api_pb.BlockField
 	for _, field := range fieldsBlock {
 		fields = append(fields, api_pb.BlockField(api_pb.BlockField_value[field]))
 	}
-	return c.grpcClient.Blocks(c.ctxFunc(), &api_pb.BlocksRequest{FromHeight: from, ToHeight: to, Fields: fields, FailedTxs: failedTxs}, c.opts...)
+	return c.grpcClient.Blocks(c.ctxFunc(), &api_pb.BlocksRequest{FromHeight: from, ToHeight: to, Fields: fields, FailedTxs: failedTxs, Events: events}, c.opts...)
 }
 
 // BlockExtended returns block data at given height by filtered data.
-func (c *Client) BlockExtended(height uint64, failedTxs bool, fieldsBlock ...string) (*api_pb.BlockResponse, error) {
+func (c *Client) BlockExtended(height uint64, failedTxs, events bool, fieldsBlock ...string) (*api_pb.BlockResponse, error) {
 	var fields []api_pb.BlockField
 	for _, field := range fieldsBlock {
 		fields = append(fields, api_pb.BlockField(api_pb.BlockField_value[field]))
 	}
-	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height, FailedTxs: failedTxs, Fields: fields}, c.opts...)
+	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height, FailedTxs: failedTxs, Fields: fields, Events: events}, c.opts...)
 }
 
 // Candidate returns candidate’s info by provided public_key.

@@ -21,6 +21,9 @@ type BlockResponse struct {
 	// block reward
 	BlockReward string `json:"block_reward,omitempty"`
 
+	// events
+	Events []*ProtobufAny `json:"events"`
+
 	// evidence
 	Evidence *BlockResponseEvidence `json:"evidence,omitempty"`
 
@@ -56,6 +59,10 @@ type BlockResponse struct {
 func (m *BlockResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateEvents(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateEvidence(formats); err != nil {
 		res = append(res, err)
 	}
@@ -71,6 +78,31 @@ func (m *BlockResponse) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *BlockResponse) validateEvents(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Events) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Events); i++ {
+		if swag.IsZero(m.Events[i]) { // not required
+			continue
+		}
+
+		if m.Events[i] != nil {
+			if err := m.Events[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("events" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 

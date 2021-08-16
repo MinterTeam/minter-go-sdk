@@ -37,6 +37,7 @@ const (
 	TypeJailEvent              EventType = "minter/JailEvent"
 	TypeUnbondEvent            EventType = "minter/UnbondEvent"
 	TypeStakeKickEvent         EventType = "minter/StakeKickEvent"
+	TypeOrderExpiredEvent      EventType = "minter/OrderExpiredEvent"
 	TypeStakeMoveEvent         EventType = "minter/StakeMoveEvent"
 	TypeUpdateNetworkEvent     EventType = "minter/UpdateNetworkEvent"
 	TypeUpdateCommissionsEvent EventType = "minter/UpdateCommissionsEvent"
@@ -156,6 +157,7 @@ type RewardEvent struct {
 	Address         string `json:"address"`
 	Amount          string `json:"amount"`
 	ValidatorPubKey string `json:"validator_pub_key"`
+	Coin            string `json:"coin"`
 }
 
 // GetAddress return owner address
@@ -226,6 +228,20 @@ func (e *StakeKickEvent) GetValidatorPublicKey() string {
 }
 func (e *StakeKickEvent) Type() EventType { return TypeStakeKickEvent }
 
+type OrderExpiredEvent struct {
+	ID      uint64 `json:"id"`
+	Address string `json:"address"`
+	Coin    uint64 `json:"coin"`
+	Amount  string `json:"amount"`
+}
+
+// GetAddress return owner address
+func (e *OrderExpiredEvent) GetAddress() string {
+	return e.Address
+}
+
+func (e *OrderExpiredEvent) Type() EventType { return TypeOrderExpiredEvent }
+
 func newEvent(t EventType) Event {
 	switch t {
 	case TypeRewardEvent:
@@ -244,6 +260,8 @@ func newEvent(t EventType) Event {
 		return &UpdateCommissionsEvent{}
 	case TypeUpdateNetworkEvent:
 		return &UpdateNetworkEvent{}
+	case TypeOrderExpiredEvent:
+		return &OrderExpiredEvent{}
 	default:
 		return nil
 	}

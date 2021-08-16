@@ -21,9 +21,11 @@ import (
 // with the default values initialized.
 func NewBlockParams() *BlockParams {
 	var (
+		eventsDefault    = bool(false)
 		failedTxsDefault = bool(false)
 	)
 	return &BlockParams{
+		Events:    &eventsDefault,
 		FailedTxs: &failedTxsDefault,
 
 		timeout: cr.DefaultTimeout,
@@ -34,9 +36,11 @@ func NewBlockParams() *BlockParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewBlockParamsWithTimeout(timeout time.Duration) *BlockParams {
 	var (
+		eventsDefault    = bool(false)
 		failedTxsDefault = bool(false)
 	)
 	return &BlockParams{
+		Events:    &eventsDefault,
 		FailedTxs: &failedTxsDefault,
 
 		timeout: timeout,
@@ -47,9 +51,11 @@ func NewBlockParamsWithTimeout(timeout time.Duration) *BlockParams {
 // with the default values initialized, and the ability to set a context for a request
 func NewBlockParamsWithContext(ctx context.Context) *BlockParams {
 	var (
+		eventsDefault    = bool(false)
 		failedTxsDefault = bool(false)
 	)
 	return &BlockParams{
+		Events:    &eventsDefault,
 		FailedTxs: &failedTxsDefault,
 
 		Context: ctx,
@@ -60,9 +66,11 @@ func NewBlockParamsWithContext(ctx context.Context) *BlockParams {
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewBlockParamsWithHTTPClient(client *http.Client) *BlockParams {
 	var (
+		eventsDefault    = bool(false)
 		failedTxsDefault = bool(false)
 	)
 	return &BlockParams{
+		Events:     &eventsDefault,
 		FailedTxs:  &failedTxsDefault,
 		HTTPClient: client,
 	}
@@ -73,6 +81,8 @@ for the block operation typically these are written to a http.Request
 */
 type BlockParams struct {
 
+	/*Events*/
+	Events *bool
 	/*FailedTxs*/
 	FailedTxs *bool
 	/*Fields*/
@@ -118,6 +128,17 @@ func (o *BlockParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithEvents adds the events to the block params
+func (o *BlockParams) WithEvents(events *bool) *BlockParams {
+	o.SetEvents(events)
+	return o
+}
+
+// SetEvents adds the events to the block params
+func (o *BlockParams) SetEvents(events *bool) {
+	o.Events = events
+}
+
 // WithFailedTxs adds the failedTxs to the block params
 func (o *BlockParams) WithFailedTxs(failedTxs *bool) *BlockParams {
 	o.SetFailedTxs(failedTxs)
@@ -158,6 +179,22 @@ func (o *BlockParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registr
 		return err
 	}
 	var res []error
+
+	if o.Events != nil {
+
+		// query param events
+		var qrEvents bool
+		if o.Events != nil {
+			qrEvents = *o.Events
+		}
+		qEvents := swag.FormatBool(qrEvents)
+		if qEvents != "" {
+			if err := r.SetQueryParam("events", qEvents); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	if o.FailedTxs != nil {
 

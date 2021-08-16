@@ -270,8 +270,8 @@ func (c *Client) Block(height uint64) (*models.BlockResponse, error) {
 }
 
 // Blocks ...
-func (c *Client) Blocks(from, to uint64, failedTxs bool, fieldsBlock ...string) (*models.BlocksResponse, error) {
-	res, err := c.ClientService.Blocks(api_service.NewBlocksParamsWithTimeout(c.timeout).WithFailedTxs(&failedTxs).WithFields(fieldsBlock).WithFromHeight(from).WithToHeight(to).WithContext(c.ctxFunc()))
+func (c *Client) Blocks(from, to uint64, failedTxs, events bool, fieldsBlock ...string) (*models.BlocksResponse, error) {
+	res, err := c.ClientService.Blocks(api_service.NewBlocksParamsWithTimeout(c.timeout).WithFailedTxs(&failedTxs).WithFields(fieldsBlock).WithFromHeight(from).WithToHeight(to).WithEvents(&events).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
@@ -279,9 +279,9 @@ func (c *Client) Blocks(from, to uint64, failedTxs bool, fieldsBlock ...string) 
 	return res.GetPayload(), nil
 }
 
-// Block returns block data at given height.
-func (c *Client) BlockExtended(height uint64, failedTxs bool, fieldsBlock ...string) (*models.BlockResponse, error) {
-	res, err := c.ClientService.Block(api_service.NewBlockParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithFailedTxs(&failedTxs).WithFields(fieldsBlock).WithContext(c.ctxFunc()))
+// BlockExtended returns block data at given height by filtered data.
+func (c *Client) BlockExtended(height uint64, failedTxs, events bool, fieldsBlock ...string) (*models.BlockResponse, error) {
+	res, err := c.ClientService.Block(api_service.NewBlockParamsWithTimeout(c.timeout).WithHeight(strconv.Itoa(int(height))).WithFailedTxs(&failedTxs).WithFields(fieldsBlock).WithEvents(&events).WithContext(c.ctxFunc()))
 	if err != nil {
 		return nil, err
 	}
