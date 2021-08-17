@@ -282,6 +282,10 @@ type AddLimitOrderData struct {
 	ValueToBuy  *big.Int // Amount of CoinToSell to buy
 }
 
+func NewAddLimitOrderData() *AddLimitOrderData {
+	return &AddLimitOrderData{}
+}
+
 // SetValueToSell sets value to sell
 func (d *AddLimitOrderData) SetValueToSell(value *big.Int) *AddLimitOrderData {
 	d.ValueToSell = value
@@ -307,6 +311,10 @@ func (d *AddLimitOrderData) Encode() ([]byte, error) {
 // RemoveLimitOrderData is ...
 type RemoveLimitOrderData struct {
 	ID uint64
+}
+
+func NewRemoveLimitOrderData() *RemoveLimitOrderData {
+	return &RemoveLimitOrderData{}
 }
 
 // SetID sets order ID
