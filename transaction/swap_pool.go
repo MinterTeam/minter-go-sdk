@@ -286,6 +286,18 @@ func NewAddLimitOrderData() *AddLimitOrderData {
 	return &AddLimitOrderData{}
 }
 
+// SetCoinToSell sets ...
+func (d *AddLimitOrderData) SetCoinToSell(coin CoinID) *AddLimitOrderData {
+	d.CoinToSell = coin
+	return d
+}
+
+// SetCoinToBuy sets ...
+func (d *AddLimitOrderData) SetCoinToBuy(coin CoinID) *AddLimitOrderData {
+	d.CoinToBuy = coin
+	return d
+}
+
 // SetValueToSell sets value to sell
 func (d *AddLimitOrderData) SetValueToSell(value *big.Int) *AddLimitOrderData {
 	d.ValueToSell = value
