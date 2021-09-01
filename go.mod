@@ -8,7 +8,7 @@ require (
 	github.com/MinterTeam/node-grpc-gateway v1.4.3-0.20210825123115-444f92d56f63
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect
-	github.com/ethereum/go-ethereum v1.9.22
+	github.com/ethereum/go-ethereum v1.9.25
 	github.com/go-openapi/errors v0.20.0
 	github.com/go-openapi/runtime v0.19.30
 	github.com/go-openapi/strfmt v0.20.1
