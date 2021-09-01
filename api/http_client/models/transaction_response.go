@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -63,7 +65,7 @@ type TransactionResponse struct {
 	// tags
 	Tags map[string]string `json:"tags,omitempty"`
 
-	// type
+	// string type_name = 18;
 	Type uint64 `json:"type,omitempty,string"`
 
 	// type hex
@@ -89,7 +91,6 @@ func (m *TransactionResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *TransactionResponse) validateData(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Data) { // not required
 		return nil
 	}
@@ -107,13 +108,58 @@ func (m *TransactionResponse) validateData(formats strfmt.Registry) error {
 }
 
 func (m *TransactionResponse) validateGasCoin(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.GasCoin) { // not required
 		return nil
 	}
 
 	if m.GasCoin != nil {
 		if err := m.GasCoin.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("gas_coin")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this transaction response based on the context it is used
+func (m *TransactionResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateGasCoin(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *TransactionResponse) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Data != nil {
+		if err := m.Data.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *TransactionResponse) contextValidateGasCoin(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.GasCoin != nil {
+		if err := m.GasCoin.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("gas_coin")
 			}

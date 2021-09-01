@@ -46,7 +46,7 @@ func NewWaitListOK() *WaitListOK {
 	return &WaitListOK{}
 }
 
-/*WaitListOK handles this case with default header values.
+/* WaitListOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type WaitListOK struct {
 func (o *WaitListOK) Error() string {
 	return fmt.Sprintf("[GET /waitlist/{address}][%d] waitListOK  %+v", 200, o.Payload)
 }
-
 func (o *WaitListOK) GetPayload() *models.WaitListResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewWaitListDefault(code int) *WaitListDefault {
 	}
 }
 
-/*WaitListDefault handles this case with default header values.
+/* WaitListDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *WaitListDefault) Code() int {
 func (o *WaitListDefault) Error() string {
 	return fmt.Sprintf("[GET /waitlist/{address}][%d] WaitList default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *WaitListDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

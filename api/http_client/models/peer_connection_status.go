@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -54,7 +55,6 @@ func (m *PeerConnectionStatus) Validate(formats strfmt.Registry) error {
 }
 
 func (m *PeerConnectionStatus) validateRecvMonitor(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.RecvMonitor) { // not required
 		return nil
 	}
@@ -72,7 +72,6 @@ func (m *PeerConnectionStatus) validateRecvMonitor(formats strfmt.Registry) erro
 }
 
 func (m *PeerConnectionStatus) validateSendMonitor(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.SendMonitor) { // not required
 		return nil
 	}
@@ -90,7 +89,6 @@ func (m *PeerConnectionStatus) validateSendMonitor(formats strfmt.Registry) erro
 }
 
 func (m *PeerConnectionStatus) validateChannels(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Channels) { // not required
 		return nil
 	}
@@ -102,6 +100,74 @@ func (m *PeerConnectionStatus) validateChannels(formats strfmt.Registry) error {
 
 		if m.Channels[i] != nil {
 			if err := m.Channels[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("channels" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this peer connection status based on the context it is used
+func (m *PeerConnectionStatus) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateRecvMonitor(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateSendMonitor(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateChannels(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *PeerConnectionStatus) contextValidateRecvMonitor(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.RecvMonitor != nil {
+		if err := m.RecvMonitor.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("RecvMonitor")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *PeerConnectionStatus) contextValidateSendMonitor(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.SendMonitor != nil {
+		if err := m.SendMonitor.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("SendMonitor")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *PeerConnectionStatus) contextValidateChannels(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Channels); i++ {
+
+		if m.Channels[i] != nil {
+			if err := m.Channels[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("channels" + "." + strconv.Itoa(i))
 				}

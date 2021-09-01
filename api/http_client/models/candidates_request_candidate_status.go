@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/go-openapi/errors"
@@ -17,6 +18,11 @@ import (
 //
 // swagger:model CandidatesRequestCandidateStatus
 type CandidatesRequestCandidateStatus string
+
+func NewCandidatesRequestCandidateStatus(value CandidatesRequestCandidateStatus) *CandidatesRequestCandidateStatus {
+	v := value
+	return &v
+}
 
 const (
 
@@ -65,5 +71,10 @@ func (m CandidatesRequestCandidateStatus) Validate(formats strfmt.Registry) erro
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+// ContextValidate validates this candidates request candidate status based on context it is used
+func (m CandidatesRequestCandidateStatus) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }

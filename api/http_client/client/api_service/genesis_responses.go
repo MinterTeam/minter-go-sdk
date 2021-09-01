@@ -46,7 +46,7 @@ func NewGenesisOK() *GenesisOK {
 	return &GenesisOK{}
 }
 
-/*GenesisOK handles this case with default header values.
+/* GenesisOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type GenesisOK struct {
 func (o *GenesisOK) Error() string {
 	return fmt.Sprintf("[GET /genesis][%d] genesisOK  %+v", 200, o.Payload)
 }
-
 func (o *GenesisOK) GetPayload() *models.GenesisResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewGenesisDefault(code int) *GenesisDefault {
 	}
 }
 
-/*GenesisDefault handles this case with default header values.
+/* GenesisDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *GenesisDefault) Code() int {
 func (o *GenesisDefault) Error() string {
 	return fmt.Sprintf("[GET /genesis][%d] Genesis default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *GenesisDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

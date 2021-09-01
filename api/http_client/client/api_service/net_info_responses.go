@@ -46,7 +46,7 @@ func NewNetInfoOK() *NetInfoOK {
 	return &NetInfoOK{}
 }
 
-/*NetInfoOK handles this case with default header values.
+/* NetInfoOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type NetInfoOK struct {
 func (o *NetInfoOK) Error() string {
 	return fmt.Sprintf("[GET /net_info][%d] netInfoOK  %+v", 200, o.Payload)
 }
-
 func (o *NetInfoOK) GetPayload() *models.NetInfoResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewNetInfoDefault(code int) *NetInfoDefault {
 	}
 }
 
-/*NetInfoDefault handles this case with default header values.
+/* NetInfoDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *NetInfoDefault) Code() int {
 func (o *NetInfoDefault) Error() string {
 	return fmt.Sprintf("[GET /net_info][%d] NetInfo default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *NetInfoDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

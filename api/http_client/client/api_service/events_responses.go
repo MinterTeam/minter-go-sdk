@@ -46,7 +46,7 @@ func NewEventsOK() *EventsOK {
 	return &EventsOK{}
 }
 
-/*EventsOK handles this case with default header values.
+/* EventsOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type EventsOK struct {
 func (o *EventsOK) Error() string {
 	return fmt.Sprintf("[GET /events/{height}][%d] eventsOK  %+v", 200, o.Payload)
 }
-
 func (o *EventsOK) GetPayload() *models.EventsResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewEventsDefault(code int) *EventsDefault {
 	}
 }
 
-/*EventsDefault handles this case with default header values.
+/* EventsDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *EventsDefault) Code() int {
 func (o *EventsDefault) Error() string {
 	return fmt.Sprintf("[GET /events/{height}][%d] Events default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *EventsDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

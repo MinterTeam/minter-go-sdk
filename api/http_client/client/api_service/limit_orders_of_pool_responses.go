@@ -46,7 +46,7 @@ func NewLimitOrdersOfPoolOK() *LimitOrdersOfPoolOK {
 	return &LimitOrdersOfPoolOK{}
 }
 
-/*LimitOrdersOfPoolOK handles this case with default header values.
+/* LimitOrdersOfPoolOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type LimitOrdersOfPoolOK struct {
 func (o *LimitOrdersOfPoolOK) Error() string {
 	return fmt.Sprintf("[GET /limit_orders/{sell_coin}/{buy_coin}][%d] limitOrdersOfPoolOK  %+v", 200, o.Payload)
 }
-
 func (o *LimitOrdersOfPoolOK) GetPayload() *models.LimitOrdersOfPoolResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewLimitOrdersOfPoolDefault(code int) *LimitOrdersOfPoolDefault {
 	}
 }
 
-/*LimitOrdersOfPoolDefault handles this case with default header values.
+/* LimitOrdersOfPoolDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *LimitOrdersOfPoolDefault) Code() int {
 func (o *LimitOrdersOfPoolDefault) Error() string {
 	return fmt.Sprintf("[GET /limit_orders/{sell_coin}/{buy_coin}][%d] LimitOrdersOfPool default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *LimitOrdersOfPoolDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

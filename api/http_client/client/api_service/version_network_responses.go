@@ -46,7 +46,7 @@ func NewVersionNetworkOK() *VersionNetworkOK {
 	return &VersionNetworkOK{}
 }
 
-/*VersionNetworkOK handles this case with default header values.
+/* VersionNetworkOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type VersionNetworkOK struct {
 func (o *VersionNetworkOK) Error() string {
 	return fmt.Sprintf("[GET /version_network][%d] versionNetworkOK  %+v", 200, o.Payload)
 }
-
 func (o *VersionNetworkOK) GetPayload() *models.VersionNetworkResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewVersionNetworkDefault(code int) *VersionNetworkDefault {
 	}
 }
 
-/*VersionNetworkDefault handles this case with default header values.
+/* VersionNetworkDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *VersionNetworkDefault) Code() int {
 func (o *VersionNetworkDefault) Error() string {
 	return fmt.Sprintf("[GET /version_network][%d] VersionNetwork default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *VersionNetworkDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

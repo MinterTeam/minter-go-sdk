@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -82,7 +83,6 @@ func (m *BlockResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *BlockResponse) validateEvents(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Events) { // not required
 		return nil
 	}
@@ -107,7 +107,6 @@ func (m *BlockResponse) validateEvents(formats strfmt.Registry) error {
 }
 
 func (m *BlockResponse) validateEvidence(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Evidence) { // not required
 		return nil
 	}
@@ -125,7 +124,6 @@ func (m *BlockResponse) validateEvidence(formats strfmt.Registry) error {
 }
 
 func (m *BlockResponse) validateTransactions(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Transactions) { // not required
 		return nil
 	}
@@ -150,7 +148,6 @@ func (m *BlockResponse) validateTransactions(formats strfmt.Registry) error {
 }
 
 func (m *BlockResponse) validateValidators(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Validators) { // not required
 		return nil
 	}
@@ -162,6 +159,100 @@ func (m *BlockResponse) validateValidators(formats strfmt.Registry) error {
 
 		if m.Validators[i] != nil {
 			if err := m.Validators[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("validators" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this block response based on the context it is used
+func (m *BlockResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateEvents(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEvidence(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateTransactions(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateValidators(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *BlockResponse) contextValidateEvents(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Events); i++ {
+
+		if m.Events[i] != nil {
+			if err := m.Events[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("events" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *BlockResponse) contextValidateEvidence(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Evidence != nil {
+		if err := m.Evidence.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("evidence")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *BlockResponse) contextValidateTransactions(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Transactions); i++ {
+
+		if m.Transactions[i] != nil {
+			if err := m.Transactions[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("transactions" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *BlockResponse) contextValidateValidators(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Validators); i++ {
+
+		if m.Validators[i] != nil {
+			if err := m.Validators[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("validators" + "." + strconv.Itoa(i))
 				}

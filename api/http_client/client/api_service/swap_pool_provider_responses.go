@@ -46,7 +46,7 @@ func NewSwapPoolProviderOK() *SwapPoolProviderOK {
 	return &SwapPoolProviderOK{}
 }
 
-/*SwapPoolProviderOK handles this case with default header values.
+/* SwapPoolProviderOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type SwapPoolProviderOK struct {
 func (o *SwapPoolProviderOK) Error() string {
 	return fmt.Sprintf("[GET /swap_pool/{coin0}/{coin1}/{provider}][%d] swapPoolProviderOK  %+v", 200, o.Payload)
 }
-
 func (o *SwapPoolProviderOK) GetPayload() *models.SwapPoolResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewSwapPoolProviderDefault(code int) *SwapPoolProviderDefault {
 	}
 }
 
-/*SwapPoolProviderDefault handles this case with default header values.
+/* SwapPoolProviderDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *SwapPoolProviderDefault) Code() int {
 func (o *SwapPoolProviderDefault) Error() string {
 	return fmt.Sprintf("[GET /swap_pool/{coin0}/{coin1}/{provider}][%d] SwapPoolProvider default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *SwapPoolProviderDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

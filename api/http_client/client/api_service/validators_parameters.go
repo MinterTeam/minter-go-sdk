@@ -17,56 +17,72 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewValidatorsParams creates a new ValidatorsParams object
-// with the default values initialized.
+// NewValidatorsParams creates a new ValidatorsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewValidatorsParams() *ValidatorsParams {
-	var ()
 	return &ValidatorsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewValidatorsParamsWithTimeout creates a new ValidatorsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewValidatorsParamsWithTimeout(timeout time.Duration) *ValidatorsParams {
-	var ()
 	return &ValidatorsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewValidatorsParamsWithContext creates a new ValidatorsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewValidatorsParamsWithContext(ctx context.Context) *ValidatorsParams {
-	var ()
 	return &ValidatorsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewValidatorsParamsWithHTTPClient creates a new ValidatorsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewValidatorsParamsWithHTTPClient(client *http.Client) *ValidatorsParams {
-	var ()
 	return &ValidatorsParams{
 		HTTPClient: client,
 	}
 }
 
-/*ValidatorsParams contains all the parameters to send to the API endpoint
-for the validators operation typically these are written to a http.Request
+/* ValidatorsParams contains all the parameters to send to the API endpoint
+   for the validators operation.
+
+   Typically these are written to a http.Request.
 */
 type ValidatorsParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the validators params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ValidatorsParams) WithDefaults() *ValidatorsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the validators params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *ValidatorsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the validators params
@@ -125,16 +141,17 @@ func (o *ValidatorsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

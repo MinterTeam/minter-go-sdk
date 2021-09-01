@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -74,7 +75,6 @@ func (m *AppStateCandidate) Validate(formats strfmt.Registry) error {
 }
 
 func (m *AppStateCandidate) validateStakes(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Stakes) { // not required
 		return nil
 	}
@@ -99,7 +99,6 @@ func (m *AppStateCandidate) validateStakes(formats strfmt.Registry) error {
 }
 
 func (m *AppStateCandidate) validateUpdates(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Updates) { // not required
 		return nil
 	}
@@ -111,6 +110,60 @@ func (m *AppStateCandidate) validateUpdates(formats strfmt.Registry) error {
 
 		if m.Updates[i] != nil {
 			if err := m.Updates[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("updates" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this app state candidate based on the context it is used
+func (m *AppStateCandidate) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateStakes(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateUpdates(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *AppStateCandidate) contextValidateStakes(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Stakes); i++ {
+
+		if m.Stakes[i] != nil {
+			if err := m.Stakes[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("stakes" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *AppStateCandidate) contextValidateUpdates(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Updates); i++ {
+
+		if m.Updates[i] != nil {
+			if err := m.Updates[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("updates" + "." + strconv.Itoa(i))
 				}

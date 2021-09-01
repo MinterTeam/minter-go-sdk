@@ -17,72 +17,89 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewAddressesParams creates a new AddressesParams object
-// with the default values initialized.
+// NewAddressesParams creates a new AddressesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewAddressesParams() *AddressesParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressesParams{
-		Delegated: &delegatedDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewAddressesParamsWithTimeout creates a new AddressesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewAddressesParamsWithTimeout(timeout time.Duration) *AddressesParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressesParams{
-		Delegated: &delegatedDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewAddressesParamsWithContext creates a new AddressesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewAddressesParamsWithContext(ctx context.Context) *AddressesParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressesParams{
-		Delegated: &delegatedDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewAddressesParamsWithHTTPClient creates a new AddressesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewAddressesParamsWithHTTPClient(client *http.Client) *AddressesParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressesParams{
-		Delegated:  &delegatedDefault,
 		HTTPClient: client,
 	}
 }
 
-/*AddressesParams contains all the parameters to send to the API endpoint
-for the addresses operation typically these are written to a http.Request
+/* AddressesParams contains all the parameters to send to the API endpoint
+   for the addresses operation.
+
+   Typically these are written to a http.Request.
 */
 type AddressesParams struct {
 
-	/*Addresses*/
+	// Addresses.
 	Addresses []string
-	/*Delegated*/
+
+	// Delegated.
 	Delegated *bool
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the addresses params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *AddressesParams) WithDefaults() *AddressesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the addresses params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *AddressesParams) SetDefaults() {
+	var (
+		delegatedDefault = bool(false)
+	)
+
+	val := AddressesParams{
+		Delegated: &delegatedDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the addresses params
@@ -159,48 +176,70 @@ func (o *AddressesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 	}
 	var res []error
 
-	valuesAddresses := o.Addresses
+	if o.Addresses != nil {
 
-	joinedAddresses := swag.JoinByFormat(valuesAddresses, "multi")
-	// query array param addresses
-	if err := r.SetQueryParam("addresses", joinedAddresses...); err != nil {
-		return err
+		// binding items for addresses
+		joinedAddresses := o.bindParamAddresses(reg)
+
+		// query array param addresses
+		if err := r.SetQueryParam("addresses", joinedAddresses...); err != nil {
+			return err
+		}
 	}
 
 	if o.Delegated != nil {
 
 		// query param delegated
 		var qrDelegated bool
+
 		if o.Delegated != nil {
 			qrDelegated = *o.Delegated
 		}
 		qDelegated := swag.FormatBool(qrDelegated)
 		if qDelegated != "" {
+
 			if err := r.SetQueryParam("delegated", qDelegated); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Height != nil {
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
 	return nil
+}
+
+// bindParamAddresses binds the parameter addresses
+func (o *AddressesParams) bindParamAddresses(formats strfmt.Registry) []string {
+	addressesIR := o.Addresses
+
+	var addressesIC []string
+	for _, addressesIIR := range addressesIR { // explode []string
+
+		addressesIIV := addressesIIR // string as string
+		addressesIC = append(addressesIC, addressesIIV)
+	}
+
+	// items.CollectionFormat: "multi"
+	addressesIS := swag.JoinByFormat(addressesIC, "multi")
+
+	return addressesIS
 }

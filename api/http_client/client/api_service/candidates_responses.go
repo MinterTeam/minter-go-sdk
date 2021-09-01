@@ -46,7 +46,7 @@ func NewCandidatesOK() *CandidatesOK {
 	return &CandidatesOK{}
 }
 
-/*CandidatesOK handles this case with default header values.
+/* CandidatesOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type CandidatesOK struct {
 func (o *CandidatesOK) Error() string {
 	return fmt.Sprintf("[GET /candidates][%d] candidatesOK  %+v", 200, o.Payload)
 }
-
 func (o *CandidatesOK) GetPayload() *models.CandidatesResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewCandidatesDefault(code int) *CandidatesDefault {
 	}
 }
 
-/*CandidatesDefault handles this case with default header values.
+/* CandidatesDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *CandidatesDefault) Code() int {
 func (o *CandidatesDefault) Error() string {
 	return fmt.Sprintf("[GET /candidates][%d] Candidates default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CandidatesDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

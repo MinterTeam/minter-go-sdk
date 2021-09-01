@@ -46,7 +46,7 @@ func NewUpdateVotesOK() *UpdateVotesOK {
 	return &UpdateVotesOK{}
 }
 
-/*UpdateVotesOK handles this case with default header values.
+/* UpdateVotesOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type UpdateVotesOK struct {
 func (o *UpdateVotesOK) Error() string {
 	return fmt.Sprintf("[GET /update_votes/{target_version}][%d] updateVotesOK  %+v", 200, o.Payload)
 }
-
 func (o *UpdateVotesOK) GetPayload() *models.UpdateVotesResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewUpdateVotesDefault(code int) *UpdateVotesDefault {
 	}
 }
 
-/*UpdateVotesDefault handles this case with default header values.
+/* UpdateVotesDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *UpdateVotesDefault) Code() int {
 func (o *UpdateVotesDefault) Error() string {
 	return fmt.Sprintf("[GET /update_votes/{target_version}][%d] UpdateVotes default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *UpdateVotesDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

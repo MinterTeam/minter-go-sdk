@@ -6,6 +6,7 @@ package api_service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -48,7 +49,7 @@ func NewSubscribeOK() *SubscribeOK {
 	return &SubscribeOK{}
 }
 
-/*SubscribeOK handles this case with default header values.
+/* SubscribeOK describes a response with status code 200, with default header values.
 
 A successful response.(streaming responses)
 */
@@ -59,7 +60,6 @@ type SubscribeOK struct {
 func (o *SubscribeOK) Error() string {
 	return fmt.Sprintf("[GET /subscribe][%d] subscribeOK  %+v", 200, o.Payload)
 }
-
 func (o *SubscribeOK) GetPayload() *SubscribeOKBody {
 	return o.Payload
 }
@@ -83,7 +83,7 @@ func NewSubscribeDefault(code int) *SubscribeDefault {
 	}
 }
 
-/*SubscribeDefault handles this case with default header values.
+/* SubscribeDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -101,7 +101,6 @@ func (o *SubscribeDefault) Code() int {
 func (o *SubscribeDefault) Error() string {
 	return fmt.Sprintf("[GET /subscribe][%d] Subscribe default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *SubscribeDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }
@@ -145,13 +144,40 @@ func (o *SubscribeOKBody) Validate(formats strfmt.Registry) error {
 }
 
 func (o *SubscribeOKBody) validateResult(formats strfmt.Registry) error {
-
 	if swag.IsZero(o.Result) { // not required
 		return nil
 	}
 
 	if o.Result != nil {
 		if err := o.Result.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("subscribeOK" + "." + "result")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this subscribe o k body based on the context it is used
+func (o *SubscribeOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.contextValidateResult(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *SubscribeOKBody) contextValidateResult(ctx context.Context, formats strfmt.Registry) error {
+
+	if o.Result != nil {
+		if err := o.Result.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("subscribeOK" + "." + "result")
 			}

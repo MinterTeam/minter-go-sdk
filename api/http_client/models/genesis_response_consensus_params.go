@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -49,7 +51,6 @@ func (m *GenesisResponseConsensusParams) Validate(formats strfmt.Registry) error
 }
 
 func (m *GenesisResponseConsensusParams) validateBlock(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Block) { // not required
 		return nil
 	}
@@ -67,7 +68,6 @@ func (m *GenesisResponseConsensusParams) validateBlock(formats strfmt.Registry) 
 }
 
 func (m *GenesisResponseConsensusParams) validateEvidence(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Evidence) { // not required
 		return nil
 	}
@@ -85,13 +85,76 @@ func (m *GenesisResponseConsensusParams) validateEvidence(formats strfmt.Registr
 }
 
 func (m *GenesisResponseConsensusParams) validateValidator(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Validator) { // not required
 		return nil
 	}
 
 	if m.Validator != nil {
 		if err := m.Validator.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("validator")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this genesis response consensus params based on the context it is used
+func (m *GenesisResponseConsensusParams) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateBlock(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEvidence(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateValidator(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *GenesisResponseConsensusParams) contextValidateBlock(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Block != nil {
+		if err := m.Block.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("block")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseConsensusParams) contextValidateEvidence(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Evidence != nil {
+		if err := m.Evidence.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("evidence")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseConsensusParams) contextValidateValidator(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Validator != nil {
+		if err := m.Validator.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("validator")
 			}

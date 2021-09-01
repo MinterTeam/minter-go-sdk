@@ -17,86 +17,118 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewEstimateCoinSellParams creates a new EstimateCoinSellParams object
-// with the default values initialized.
+// NewEstimateCoinSellParams creates a new EstimateCoinSellParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewEstimateCoinSellParams() *EstimateCoinSellParams {
-	var (
-		swapFromDefault = string("optimal")
-	)
 	return &EstimateCoinSellParams{
-		SwapFrom: &swapFromDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewEstimateCoinSellParamsWithTimeout creates a new EstimateCoinSellParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewEstimateCoinSellParamsWithTimeout(timeout time.Duration) *EstimateCoinSellParams {
-	var (
-		swapFromDefault = string("optimal")
-	)
 	return &EstimateCoinSellParams{
-		SwapFrom: &swapFromDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewEstimateCoinSellParamsWithContext creates a new EstimateCoinSellParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewEstimateCoinSellParamsWithContext(ctx context.Context) *EstimateCoinSellParams {
-	var (
-		swapFromDefault = string("optimal")
-	)
 	return &EstimateCoinSellParams{
-		SwapFrom: &swapFromDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewEstimateCoinSellParamsWithHTTPClient creates a new EstimateCoinSellParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewEstimateCoinSellParamsWithHTTPClient(client *http.Client) *EstimateCoinSellParams {
-	var (
-		swapFromDefault = string("optimal")
-	)
 	return &EstimateCoinSellParams{
-		SwapFrom:   &swapFromDefault,
 		HTTPClient: client,
 	}
 }
 
-/*EstimateCoinSellParams contains all the parameters to send to the API endpoint
-for the estimate coin sell operation typically these are written to a http.Request
+/* EstimateCoinSellParams contains all the parameters to send to the API endpoint
+   for the estimate coin sell operation.
+
+   Typically these are written to a http.Request.
 */
 type EstimateCoinSellParams struct {
 
-	/*CoinCommission*/
+	// CoinCommission.
 	CoinCommission *string
-	/*CoinIDCommission*/
+
+	// CoinIDCommission.
+	//
+	// Format: uint64
 	CoinIDCommission *uint64
-	/*CoinIDToBuy*/
+
+	// CoinIDToBuy.
+	//
+	// Format: uint64
 	CoinIDToBuy *uint64
-	/*CoinIDToSell*/
+
+	// CoinIDToSell.
+	//
+	// Format: uint64
 	CoinIDToSell *uint64
-	/*CoinToBuy*/
+
+	// CoinToBuy.
 	CoinToBuy *string
-	/*CoinToSell*/
+
+	// CoinToSell.
 	CoinToSell *string
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*Route*/
+
+	// Route.
 	Route []string
-	/*SwapFrom*/
+
+	// SwapFrom.
+	//
+	// Default: "optimal"
 	SwapFrom *string
-	/*ValueToSell*/
+
+	// ValueToSell.
 	ValueToSell string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the estimate coin sell params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *EstimateCoinSellParams) WithDefaults() *EstimateCoinSellParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the estimate coin sell params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *EstimateCoinSellParams) SetDefaults() {
+	var (
+		swapFromDefault = string("optimal")
+	)
+
+	val := EstimateCoinSellParams{
+		SwapFrom: &swapFromDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the estimate coin sell params
@@ -254,142 +286,154 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 
 		// query param coin_commission
 		var qrCoinCommission string
+
 		if o.CoinCommission != nil {
 			qrCoinCommission = *o.CoinCommission
 		}
 		qCoinCommission := qrCoinCommission
 		if qCoinCommission != "" {
+
 			if err := r.SetQueryParam("coin_commission", qCoinCommission); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.CoinIDCommission != nil {
 
 		// query param coin_id_commission
 		var qrCoinIDCommission uint64
+
 		if o.CoinIDCommission != nil {
 			qrCoinIDCommission = *o.CoinIDCommission
 		}
 		qCoinIDCommission := swag.FormatUint64(qrCoinIDCommission)
 		if qCoinIDCommission != "" {
+
 			if err := r.SetQueryParam("coin_id_commission", qCoinIDCommission); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.CoinIDToBuy != nil {
 
 		// query param coin_id_to_buy
 		var qrCoinIDToBuy uint64
+
 		if o.CoinIDToBuy != nil {
 			qrCoinIDToBuy = *o.CoinIDToBuy
 		}
 		qCoinIDToBuy := swag.FormatUint64(qrCoinIDToBuy)
 		if qCoinIDToBuy != "" {
+
 			if err := r.SetQueryParam("coin_id_to_buy", qCoinIDToBuy); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.CoinIDToSell != nil {
 
 		// query param coin_id_to_sell
 		var qrCoinIDToSell uint64
+
 		if o.CoinIDToSell != nil {
 			qrCoinIDToSell = *o.CoinIDToSell
 		}
 		qCoinIDToSell := swag.FormatUint64(qrCoinIDToSell)
 		if qCoinIDToSell != "" {
+
 			if err := r.SetQueryParam("coin_id_to_sell", qCoinIDToSell); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.CoinToBuy != nil {
 
 		// query param coin_to_buy
 		var qrCoinToBuy string
+
 		if o.CoinToBuy != nil {
 			qrCoinToBuy = *o.CoinToBuy
 		}
 		qCoinToBuy := qrCoinToBuy
 		if qCoinToBuy != "" {
+
 			if err := r.SetQueryParam("coin_to_buy", qCoinToBuy); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.CoinToSell != nil {
 
 		// query param coin_to_sell
 		var qrCoinToSell string
+
 		if o.CoinToSell != nil {
 			qrCoinToSell = *o.CoinToSell
 		}
 		qCoinToSell := qrCoinToSell
 		if qCoinToSell != "" {
+
 			if err := r.SetQueryParam("coin_to_sell", qCoinToSell); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Height != nil {
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
-	valuesRoute := o.Route
+	if o.Route != nil {
 
-	joinedRoute := swag.JoinByFormat(valuesRoute, "multi")
-	// query array param route
-	if err := r.SetQueryParam("route", joinedRoute...); err != nil {
-		return err
+		// binding items for route
+		joinedRoute := o.bindParamRoute(reg)
+
+		// query array param route
+		if err := r.SetQueryParam("route", joinedRoute...); err != nil {
+			return err
+		}
 	}
 
 	if o.SwapFrom != nil {
 
 		// query param swap_from
 		var qrSwapFrom string
+
 		if o.SwapFrom != nil {
 			qrSwapFrom = *o.SwapFrom
 		}
 		qSwapFrom := qrSwapFrom
 		if qSwapFrom != "" {
+
 			if err := r.SetQueryParam("swap_from", qSwapFrom); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// query param value_to_sell
 	qrValueToSell := o.ValueToSell
 	qValueToSell := qrValueToSell
 	if qValueToSell != "" {
+
 		if err := r.SetQueryParam("value_to_sell", qValueToSell); err != nil {
 			return err
 		}
@@ -399,4 +443,21 @@ func (o *EstimateCoinSellParams) WriteToRequest(r runtime.ClientRequest, reg str
 		return errors.CompositeValidationError(res...)
 	}
 	return nil
+}
+
+// bindParamEstimateCoinSell binds the parameter route
+func (o *EstimateCoinSellParams) bindParamRoute(formats strfmt.Registry) []string {
+	routeIR := o.Route
+
+	var routeIC []string
+	for _, routeIIR := range routeIR { // explode []string
+
+		routeIIV := routeIIR // string as string
+		routeIC = append(routeIC, routeIIV)
+	}
+
+	// items.CollectionFormat: "multi"
+	routeIS := swag.JoinByFormat(routeIC, "multi")
+
+	return routeIS
 }

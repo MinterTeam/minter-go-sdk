@@ -46,7 +46,7 @@ func NewValidatorsOK() *ValidatorsOK {
 	return &ValidatorsOK{}
 }
 
-/*ValidatorsOK handles this case with default header values.
+/* ValidatorsOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type ValidatorsOK struct {
 func (o *ValidatorsOK) Error() string {
 	return fmt.Sprintf("[GET /validators][%d] validatorsOK  %+v", 200, o.Payload)
 }
-
 func (o *ValidatorsOK) GetPayload() *models.ValidatorsResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewValidatorsDefault(code int) *ValidatorsDefault {
 	}
 }
 
-/*ValidatorsDefault handles this case with default header values.
+/* ValidatorsDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *ValidatorsDefault) Code() int {
 func (o *ValidatorsDefault) Error() string {
 	return fmt.Sprintf("[GET /validators][%d] Validators default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *ValidatorsDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

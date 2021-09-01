@@ -16,56 +16,70 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewTransactionParams creates a new TransactionParams object
-// with the default values initialized.
+// NewTransactionParams creates a new TransactionParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewTransactionParams() *TransactionParams {
-	var ()
 	return &TransactionParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewTransactionParamsWithTimeout creates a new TransactionParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewTransactionParamsWithTimeout(timeout time.Duration) *TransactionParams {
-	var ()
 	return &TransactionParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewTransactionParamsWithContext creates a new TransactionParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewTransactionParamsWithContext(ctx context.Context) *TransactionParams {
-	var ()
 	return &TransactionParams{
-
 		Context: ctx,
 	}
 }
 
 // NewTransactionParamsWithHTTPClient creates a new TransactionParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewTransactionParamsWithHTTPClient(client *http.Client) *TransactionParams {
-	var ()
 	return &TransactionParams{
 		HTTPClient: client,
 	}
 }
 
-/*TransactionParams contains all the parameters to send to the API endpoint
-for the transaction operation typically these are written to a http.Request
+/* TransactionParams contains all the parameters to send to the API endpoint
+   for the transaction operation.
+
+   Typically these are written to a http.Request.
 */
 type TransactionParams struct {
 
-	/*Hash*/
+	// Hash.
 	Hash string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *TransactionParams) WithDefaults() *TransactionParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the transaction params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *TransactionParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the transaction params

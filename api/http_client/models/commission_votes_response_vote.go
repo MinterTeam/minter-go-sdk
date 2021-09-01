@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -38,13 +40,40 @@ func (m *CommissionVotesResponseVote) Validate(formats strfmt.Registry) error {
 }
 
 func (m *CommissionVotesResponseVote) validatePrice(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Price) { // not required
 		return nil
 	}
 
 	if m.Price != nil {
 		if err := m.Price.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("price")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this commission votes response vote based on the context it is used
+func (m *CommissionVotesResponseVote) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidatePrice(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *CommissionVotesResponseVote) contextValidatePrice(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Price != nil {
+		if err := m.Price.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("price")
 			}

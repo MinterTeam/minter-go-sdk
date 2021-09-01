@@ -17,60 +17,78 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewWaitListParams creates a new WaitListParams object
-// with the default values initialized.
+// NewWaitListParams creates a new WaitListParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewWaitListParams() *WaitListParams {
-	var ()
 	return &WaitListParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewWaitListParamsWithTimeout creates a new WaitListParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewWaitListParamsWithTimeout(timeout time.Duration) *WaitListParams {
-	var ()
 	return &WaitListParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewWaitListParamsWithContext creates a new WaitListParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewWaitListParamsWithContext(ctx context.Context) *WaitListParams {
-	var ()
 	return &WaitListParams{
-
 		Context: ctx,
 	}
 }
 
 // NewWaitListParamsWithHTTPClient creates a new WaitListParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewWaitListParamsWithHTTPClient(client *http.Client) *WaitListParams {
-	var ()
 	return &WaitListParams{
 		HTTPClient: client,
 	}
 }
 
-/*WaitListParams contains all the parameters to send to the API endpoint
-for the wait list operation typically these are written to a http.Request
+/* WaitListParams contains all the parameters to send to the API endpoint
+   for the wait list operation.
+
+   Typically these are written to a http.Request.
 */
 type WaitListParams struct {
 
-	/*Address*/
+	// Address.
 	Address string
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*PublicKey*/
+
+	// PublicKey.
 	PublicKey *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the wait list params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *WaitListParams) WithDefaults() *WaitListParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the wait list params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *WaitListParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the wait list params
@@ -156,32 +174,34 @@ func (o *WaitListParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.PublicKey != nil {
 
 		// query param public_key
 		var qrPublicKey string
+
 		if o.PublicKey != nil {
 			qrPublicKey = *o.PublicKey
 		}
 		qPublicKey := qrPublicKey
 		if qPublicKey != "" {
+
 			if err := r.SetQueryParam("public_key", qPublicKey); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

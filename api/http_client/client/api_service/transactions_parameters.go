@@ -17,80 +17,96 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewTransactionsParams creates a new TransactionsParams object
-// with the default values initialized.
+// NewTransactionsParams creates a new TransactionsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewTransactionsParams() *TransactionsParams {
-	var (
-		pageDefault    = int32(1)
-		perPageDefault = int32(30)
-	)
 	return &TransactionsParams{
-		Page:    &pageDefault,
-		PerPage: &perPageDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewTransactionsParamsWithTimeout creates a new TransactionsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewTransactionsParamsWithTimeout(timeout time.Duration) *TransactionsParams {
-	var (
-		pageDefault    = int32(1)
-		perPageDefault = int32(30)
-	)
 	return &TransactionsParams{
-		Page:    &pageDefault,
-		PerPage: &perPageDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewTransactionsParamsWithContext creates a new TransactionsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewTransactionsParamsWithContext(ctx context.Context) *TransactionsParams {
-	var (
-		pageDefault    = int32(1)
-		perPageDefault = int32(30)
-	)
 	return &TransactionsParams{
-		Page:    &pageDefault,
-		PerPage: &perPageDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewTransactionsParamsWithHTTPClient creates a new TransactionsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewTransactionsParamsWithHTTPClient(client *http.Client) *TransactionsParams {
-	var (
-		pageDefault    = int32(1)
-		perPageDefault = int32(30)
-	)
 	return &TransactionsParams{
-		Page:       &pageDefault,
-		PerPage:    &perPageDefault,
 		HTTPClient: client,
 	}
 }
 
-/*TransactionsParams contains all the parameters to send to the API endpoint
-for the transactions operation typically these are written to a http.Request
+/* TransactionsParams contains all the parameters to send to the API endpoint
+   for the transactions operation.
+
+   Typically these are written to a http.Request.
 */
 type TransactionsParams struct {
 
-	/*Page*/
+	// Page.
+	//
+	// Format: int32
+	// Default: 1
 	Page *int32
-	/*PerPage*/
+
+	// PerPage.
+	//
+	// Format: int32
+	// Default: 30
 	PerPage *int32
-	/*Query*/
+
+	// Query.
 	Query string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the transactions params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *TransactionsParams) WithDefaults() *TransactionsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the transactions params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *TransactionsParams) SetDefaults() {
+	var (
+		pageDefault = int32(1)
+
+		perPageDefault = int32(30)
+	)
+
+	val := TransactionsParams{
+		Page:    &pageDefault,
+		PerPage: &perPageDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the transactions params
@@ -171,38 +187,41 @@ func (o *TransactionsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 
 		// query param page
 		var qrPage int32
+
 		if o.Page != nil {
 			qrPage = *o.Page
 		}
 		qPage := swag.FormatInt32(qrPage)
 		if qPage != "" {
+
 			if err := r.SetQueryParam("page", qPage); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.PerPage != nil {
 
 		// query param per_page
 		var qrPerPage int32
+
 		if o.PerPage != nil {
 			qrPerPage = *o.PerPage
 		}
 		qPerPage := swag.FormatInt32(qrPerPage)
 		if qPerPage != "" {
+
 			if err := r.SetQueryParam("per_page", qPerPage); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// query param query
 	qrQuery := o.Query
 	qQuery := qrQuery
 	if qQuery != "" {
+
 		if err := r.SetQueryParam("query", qQuery); err != nil {
 			return err
 		}

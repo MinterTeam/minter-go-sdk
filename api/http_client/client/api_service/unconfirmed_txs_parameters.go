@@ -17,68 +17,84 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewUnconfirmedTxsParams creates a new UnconfirmedTxsParams object
-// with the default values initialized.
+// NewUnconfirmedTxsParams creates a new UnconfirmedTxsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUnconfirmedTxsParams() *UnconfirmedTxsParams {
-	var (
-		limitDefault = int32(30)
-	)
 	return &UnconfirmedTxsParams{
-		Limit: &limitDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewUnconfirmedTxsParamsWithTimeout creates a new UnconfirmedTxsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewUnconfirmedTxsParamsWithTimeout(timeout time.Duration) *UnconfirmedTxsParams {
-	var (
-		limitDefault = int32(30)
-	)
 	return &UnconfirmedTxsParams{
-		Limit: &limitDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewUnconfirmedTxsParamsWithContext creates a new UnconfirmedTxsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewUnconfirmedTxsParamsWithContext(ctx context.Context) *UnconfirmedTxsParams {
-	var (
-		limitDefault = int32(30)
-	)
 	return &UnconfirmedTxsParams{
-		Limit: &limitDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewUnconfirmedTxsParamsWithHTTPClient creates a new UnconfirmedTxsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewUnconfirmedTxsParamsWithHTTPClient(client *http.Client) *UnconfirmedTxsParams {
-	var (
-		limitDefault = int32(30)
-	)
 	return &UnconfirmedTxsParams{
-		Limit:      &limitDefault,
 		HTTPClient: client,
 	}
 }
 
-/*UnconfirmedTxsParams contains all the parameters to send to the API endpoint
-for the unconfirmed txs operation typically these are written to a http.Request
+/* UnconfirmedTxsParams contains all the parameters to send to the API endpoint
+   for the unconfirmed txs operation.
+
+   Typically these are written to a http.Request.
 */
 type UnconfirmedTxsParams struct {
 
-	/*Limit*/
+	// Limit.
+	//
+	// Format: int32
+	// Default: 30
 	Limit *int32
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the unconfirmed txs params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *UnconfirmedTxsParams) WithDefaults() *UnconfirmedTxsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the unconfirmed txs params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *UnconfirmedTxsParams) SetDefaults() {
+	var (
+		limitDefault = int32(30)
+	)
+
+	val := UnconfirmedTxsParams{
+		Limit: &limitDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the unconfirmed txs params
@@ -137,16 +153,17 @@ func (o *UnconfirmedTxsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 		// query param limit
 		var qrLimit int32
+
 		if o.Limit != nil {
 			qrLimit = *o.Limit
 		}
 		qLimit := swag.FormatInt32(qrLimit)
 		if qLimit != "" {
+
 			if err := r.SetQueryParam("limit", qLimit); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

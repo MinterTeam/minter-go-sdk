@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -51,6 +53,11 @@ type GenesisResponseAppStateCoin struct {
 
 // Validate validates this genesis response app state coin
 func (m *GenesisResponseAppStateCoin) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this genesis response app state coin based on context it is used
+func (m *GenesisResponseAppStateCoin) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

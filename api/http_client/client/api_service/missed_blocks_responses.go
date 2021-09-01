@@ -46,7 +46,7 @@ func NewMissedBlocksOK() *MissedBlocksOK {
 	return &MissedBlocksOK{}
 }
 
-/*MissedBlocksOK handles this case with default header values.
+/* MissedBlocksOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type MissedBlocksOK struct {
 func (o *MissedBlocksOK) Error() string {
 	return fmt.Sprintf("[GET /missed_blocks/{public_key}][%d] missedBlocksOK  %+v", 200, o.Payload)
 }
-
 func (o *MissedBlocksOK) GetPayload() *models.MissedBlocksResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewMissedBlocksDefault(code int) *MissedBlocksDefault {
 	}
 }
 
-/*MissedBlocksDefault handles this case with default header values.
+/* MissedBlocksDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *MissedBlocksDefault) Code() int {
 func (o *MissedBlocksDefault) Error() string {
 	return fmt.Sprintf("[GET /missed_blocks/{public_key}][%d] MissedBlocks default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *MissedBlocksDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

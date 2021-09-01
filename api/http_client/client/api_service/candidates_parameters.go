@@ -17,99 +17,109 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewCandidatesParams creates a new CandidatesParams object
-// with the default values initialized.
+// NewCandidatesParams creates a new CandidatesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCandidatesParams() *CandidatesParams {
-	var (
-		includeStakesDefault = bool(false)
-		notShowStakesDefault = bool(false)
-		statusDefault        = string("all")
-	)
 	return &CandidatesParams{
-		IncludeStakes: &includeStakesDefault,
-		NotShowStakes: &notShowStakesDefault,
-		Status:        &statusDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewCandidatesParamsWithTimeout creates a new CandidatesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewCandidatesParamsWithTimeout(timeout time.Duration) *CandidatesParams {
-	var (
-		includeStakesDefault = bool(false)
-		notShowStakesDefault = bool(false)
-		statusDefault        = string("all")
-	)
 	return &CandidatesParams{
-		IncludeStakes: &includeStakesDefault,
-		NotShowStakes: &notShowStakesDefault,
-		Status:        &statusDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewCandidatesParamsWithContext creates a new CandidatesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewCandidatesParamsWithContext(ctx context.Context) *CandidatesParams {
-	var (
-		includeStakesDefault = bool(false)
-		notShowStakesDefault = bool(false)
-		statusDefault        = string("all")
-	)
 	return &CandidatesParams{
-		IncludeStakes: &includeStakesDefault,
-		NotShowStakes: &notShowStakesDefault,
-		Status:        &statusDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewCandidatesParamsWithHTTPClient creates a new CandidatesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewCandidatesParamsWithHTTPClient(client *http.Client) *CandidatesParams {
-	var (
-		includeStakesDefault = bool(false)
-		notShowStakesDefault = bool(false)
-		statusDefault        = string("all")
-	)
 	return &CandidatesParams{
-		IncludeStakes: &includeStakesDefault,
-		NotShowStakes: &notShowStakesDefault,
-		Status:        &statusDefault,
-		HTTPClient:    client,
+		HTTPClient: client,
 	}
 }
 
-/*CandidatesParams contains all the parameters to send to the API endpoint
-for the candidates operation typically these are written to a http.Request
+/* CandidatesParams contains all the parameters to send to the API endpoint
+   for the candidates operation.
+
+   Typically these are written to a http.Request.
 */
 type CandidatesParams struct {
 
-	/*Height
-	  Blockchain state height for the current request. Optional, the last default state of the node is used.
+	/* Height.
 
+	   Blockchain state height for the current request. Optional, the last default state of the node is used.
+
+	   Format: uint64
 	*/
 	Height *uint64
-	/*IncludeStakes
-	  Calculate field values used_slots, uniq_users, min_stake.
 
+	/* IncludeStakes.
+
+	   Calculate field values used_slots, uniq_users, min_stake.
 	*/
 	IncludeStakes *bool
-	/*NotShowStakes
-	  Do not display the list of stakes, the include_stakes flag is also required to display. Note: used_slots, uniq_users, min_stake will still be filled if include_stakes flag is used.
 
+	/* NotShowStakes.
+
+	   Do not display the list of stakes, the include_stakes flag is also required to display. Note: used_slots, uniq_users, min_stake will still be filled if include_stakes flag is used.
 	*/
 	NotShowStakes *bool
-	/*Status*/
+
+	// Status.
+	//
+	// Default: "all"
 	Status *string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the candidates params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CandidatesParams) WithDefaults() *CandidatesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the candidates params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CandidatesParams) SetDefaults() {
+	var (
+		includeStakesDefault = bool(false)
+
+		notShowStakesDefault = bool(false)
+
+		statusDefault = string("all")
+	)
+
+	val := CandidatesParams{
+		IncludeStakes: &includeStakesDefault,
+		NotShowStakes: &notShowStakesDefault,
+		Status:        &statusDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the candidates params
@@ -201,64 +211,68 @@ func (o *CandidatesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.IncludeStakes != nil {
 
 		// query param include_stakes
 		var qrIncludeStakes bool
+
 		if o.IncludeStakes != nil {
 			qrIncludeStakes = *o.IncludeStakes
 		}
 		qIncludeStakes := swag.FormatBool(qrIncludeStakes)
 		if qIncludeStakes != "" {
+
 			if err := r.SetQueryParam("include_stakes", qIncludeStakes); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.NotShowStakes != nil {
 
 		// query param not_show_stakes
 		var qrNotShowStakes bool
+
 		if o.NotShowStakes != nil {
 			qrNotShowStakes = *o.NotShowStakes
 		}
 		qNotShowStakes := swag.FormatBool(qrNotShowStakes)
 		if qNotShowStakes != "" {
+
 			if err := r.SetQueryParam("not_show_stakes", qNotShowStakes); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Status != nil {
 
 		// query param status
 		var qrStatus string
+
 		if o.Status != nil {
 			qrStatus = *o.Status
 		}
 		qStatus := qrStatus
 		if qStatus != "" {
+
 			if err := r.SetQueryParam("status", qStatus); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

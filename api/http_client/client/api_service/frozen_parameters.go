@@ -17,60 +17,80 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewFrozenParams creates a new FrozenParams object
-// with the default values initialized.
+// NewFrozenParams creates a new FrozenParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewFrozenParams() *FrozenParams {
-	var ()
 	return &FrozenParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewFrozenParamsWithTimeout creates a new FrozenParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewFrozenParamsWithTimeout(timeout time.Duration) *FrozenParams {
-	var ()
 	return &FrozenParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewFrozenParamsWithContext creates a new FrozenParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewFrozenParamsWithContext(ctx context.Context) *FrozenParams {
-	var ()
 	return &FrozenParams{
-
 		Context: ctx,
 	}
 }
 
 // NewFrozenParamsWithHTTPClient creates a new FrozenParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewFrozenParamsWithHTTPClient(client *http.Client) *FrozenParams {
-	var ()
 	return &FrozenParams{
 		HTTPClient: client,
 	}
 }
 
-/*FrozenParams contains all the parameters to send to the API endpoint
-for the frozen operation typically these are written to a http.Request
+/* FrozenParams contains all the parameters to send to the API endpoint
+   for the frozen operation.
+
+   Typically these are written to a http.Request.
 */
 type FrozenParams struct {
 
-	/*Address*/
+	// Address.
 	Address string
-	/*CoinID*/
+
+	// CoinID.
+	//
+	// Format: uint64
 	CoinID *uint64
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the frozen params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *FrozenParams) WithDefaults() *FrozenParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the frozen params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *FrozenParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the frozen params
@@ -156,32 +176,34 @@ func (o *FrozenParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 
 		// query param coin_id
 		var qrCoinID uint64
+
 		if o.CoinID != nil {
 			qrCoinID = *o.CoinID
 		}
 		qCoinID := swag.FormatUint64(qrCoinID)
 		if qCoinID != "" {
+
 			if err := r.SetQueryParam("coin_id", qCoinID); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Height != nil {
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

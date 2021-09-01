@@ -46,7 +46,7 @@ func NewMaxGasPriceOK() *MaxGasPriceOK {
 	return &MaxGasPriceOK{}
 }
 
-/*MaxGasPriceOK handles this case with default header values.
+/* MaxGasPriceOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type MaxGasPriceOK struct {
 func (o *MaxGasPriceOK) Error() string {
 	return fmt.Sprintf("[GET /max_gas_price][%d] maxGasPriceOK  %+v", 200, o.Payload)
 }
-
 func (o *MaxGasPriceOK) GetPayload() *models.MaxGasPriceResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewMaxGasPriceDefault(code int) *MaxGasPriceDefault {
 	}
 }
 
-/*MaxGasPriceDefault handles this case with default header values.
+/* MaxGasPriceDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *MaxGasPriceDefault) Code() int {
 func (o *MaxGasPriceDefault) Error() string {
 	return fmt.Sprintf("[GET /max_gas_price][%d] MaxGasPrice default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *MaxGasPriceDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

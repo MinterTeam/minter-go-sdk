@@ -46,7 +46,7 @@ func NewPriceCommissionOK() *PriceCommissionOK {
 	return &PriceCommissionOK{}
 }
 
-/*PriceCommissionOK handles this case with default header values.
+/* PriceCommissionOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type PriceCommissionOK struct {
 func (o *PriceCommissionOK) Error() string {
 	return fmt.Sprintf("[GET /price_commissions][%d] priceCommissionOK  %+v", 200, o.Payload)
 }
-
 func (o *PriceCommissionOK) GetPayload() *models.PriceCommissionResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewPriceCommissionDefault(code int) *PriceCommissionDefault {
 	}
 }
 
-/*PriceCommissionDefault handles this case with default header values.
+/* PriceCommissionDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *PriceCommissionDefault) Code() int {
 func (o *PriceCommissionDefault) Error() string {
 	return fmt.Sprintf("[GET /price_commissions][%d] PriceCommission default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *PriceCommissionDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

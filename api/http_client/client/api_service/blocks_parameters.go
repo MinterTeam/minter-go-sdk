@@ -17,84 +17,100 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewBlocksParams creates a new BlocksParams object
-// with the default values initialized.
+// NewBlocksParams creates a new BlocksParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewBlocksParams() *BlocksParams {
-	var (
-		eventsDefault    = bool(false)
-		failedTxsDefault = bool(false)
-	)
 	return &BlocksParams{
-		Events:    &eventsDefault,
-		FailedTxs: &failedTxsDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewBlocksParamsWithTimeout creates a new BlocksParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewBlocksParamsWithTimeout(timeout time.Duration) *BlocksParams {
-	var (
-		eventsDefault    = bool(false)
-		failedTxsDefault = bool(false)
-	)
 	return &BlocksParams{
-		Events:    &eventsDefault,
-		FailedTxs: &failedTxsDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewBlocksParamsWithContext creates a new BlocksParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewBlocksParamsWithContext(ctx context.Context) *BlocksParams {
-	var (
-		eventsDefault    = bool(false)
-		failedTxsDefault = bool(false)
-	)
 	return &BlocksParams{
-		Events:    &eventsDefault,
-		FailedTxs: &failedTxsDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewBlocksParamsWithHTTPClient creates a new BlocksParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewBlocksParamsWithHTTPClient(client *http.Client) *BlocksParams {
-	var (
-		eventsDefault    = bool(false)
-		failedTxsDefault = bool(false)
-	)
 	return &BlocksParams{
-		Events:     &eventsDefault,
-		FailedTxs:  &failedTxsDefault,
 		HTTPClient: client,
 	}
 }
 
-/*BlocksParams contains all the parameters to send to the API endpoint
-for the blocks operation typically these are written to a http.Request
+/* BlocksParams contains all the parameters to send to the API endpoint
+   for the blocks operation.
+
+   Typically these are written to a http.Request.
 */
 type BlocksParams struct {
 
-	/*Events*/
+	// Events.
 	Events *bool
-	/*FailedTxs*/
+
+	// FailedTxs.
 	FailedTxs *bool
-	/*Fields*/
+
+	// Fields.
 	Fields []string
-	/*FromHeight*/
+
+	// FromHeight.
+	//
+	// Format: uint64
 	FromHeight uint64
-	/*ToHeight*/
+
+	// ToHeight.
+	//
+	// Format: uint64
 	ToHeight uint64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the blocks params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *BlocksParams) WithDefaults() *BlocksParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the blocks params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *BlocksParams) SetDefaults() {
+	var (
+		eventsDefault = bool(false)
+
+		failedTxsDefault = bool(false)
+	)
+
+	val := BlocksParams{
+		Events:    &eventsDefault,
+		FailedTxs: &failedTxsDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the blocks params
@@ -197,46 +213,52 @@ func (o *BlocksParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 
 		// query param events
 		var qrEvents bool
+
 		if o.Events != nil {
 			qrEvents = *o.Events
 		}
 		qEvents := swag.FormatBool(qrEvents)
 		if qEvents != "" {
+
 			if err := r.SetQueryParam("events", qEvents); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.FailedTxs != nil {
 
 		// query param failed_txs
 		var qrFailedTxs bool
+
 		if o.FailedTxs != nil {
 			qrFailedTxs = *o.FailedTxs
 		}
 		qFailedTxs := swag.FormatBool(qrFailedTxs)
 		if qFailedTxs != "" {
+
 			if err := r.SetQueryParam("failed_txs", qFailedTxs); err != nil {
 				return err
 			}
 		}
-
 	}
 
-	valuesFields := o.Fields
+	if o.Fields != nil {
 
-	joinedFields := swag.JoinByFormat(valuesFields, "multi")
-	// query array param fields
-	if err := r.SetQueryParam("fields", joinedFields...); err != nil {
-		return err
+		// binding items for fields
+		joinedFields := o.bindParamFields(reg)
+
+		// query array param fields
+		if err := r.SetQueryParam("fields", joinedFields...); err != nil {
+			return err
+		}
 	}
 
 	// query param from_height
 	qrFromHeight := o.FromHeight
 	qFromHeight := swag.FormatUint64(qrFromHeight)
 	if qFromHeight != "" {
+
 		if err := r.SetQueryParam("from_height", qFromHeight); err != nil {
 			return err
 		}
@@ -246,6 +268,7 @@ func (o *BlocksParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 	qrToHeight := o.ToHeight
 	qToHeight := swag.FormatUint64(qrToHeight)
 	if qToHeight != "" {
+
 		if err := r.SetQueryParam("to_height", qToHeight); err != nil {
 			return err
 		}
@@ -255,4 +278,21 @@ func (o *BlocksParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 		return errors.CompositeValidationError(res...)
 	}
 	return nil
+}
+
+// bindParamBlocks binds the parameter fields
+func (o *BlocksParams) bindParamFields(formats strfmt.Registry) []string {
+	fieldsIR := o.Fields
+
+	var fieldsIC []string
+	for _, fieldsIIR := range fieldsIR { // explode []string
+
+		fieldsIIV := fieldsIIR // string as string
+		fieldsIC = append(fieldsIC, fieldsIIV)
+	}
+
+	// items.CollectionFormat: "multi"
+	fieldsIS := swag.JoinByFormat(fieldsIC, "multi")
+
+	return fieldsIS
 }

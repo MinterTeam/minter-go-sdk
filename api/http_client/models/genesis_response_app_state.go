@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -118,7 +119,6 @@ func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 }
 
 func (m *GenesisResponseAppState) validateAccounts(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Accounts) { // not required
 		return nil
 	}
@@ -143,7 +143,6 @@ func (m *GenesisResponseAppState) validateAccounts(formats strfmt.Registry) erro
 }
 
 func (m *GenesisResponseAppState) validateCandidates(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Candidates) { // not required
 		return nil
 	}
@@ -168,7 +167,6 @@ func (m *GenesisResponseAppState) validateCandidates(formats strfmt.Registry) er
 }
 
 func (m *GenesisResponseAppState) validateCoins(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Coins) { // not required
 		return nil
 	}
@@ -193,7 +191,6 @@ func (m *GenesisResponseAppState) validateCoins(formats strfmt.Registry) error {
 }
 
 func (m *GenesisResponseAppState) validateCommission(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Commission) { // not required
 		return nil
 	}
@@ -211,7 +208,6 @@ func (m *GenesisResponseAppState) validateCommission(formats strfmt.Registry) er
 }
 
 func (m *GenesisResponseAppState) validateCommissionVotes(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.CommissionVotes) { // not required
 		return nil
 	}
@@ -236,7 +232,6 @@ func (m *GenesisResponseAppState) validateCommissionVotes(formats strfmt.Registr
 }
 
 func (m *GenesisResponseAppState) validateFrozenFunds(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.FrozenFunds) { // not required
 		return nil
 	}
@@ -261,7 +256,6 @@ func (m *GenesisResponseAppState) validateFrozenFunds(formats strfmt.Registry) e
 }
 
 func (m *GenesisResponseAppState) validateHaltBlocks(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.HaltBlocks) { // not required
 		return nil
 	}
@@ -286,7 +280,6 @@ func (m *GenesisResponseAppState) validateHaltBlocks(formats strfmt.Registry) er
 }
 
 func (m *GenesisResponseAppState) validatePools(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Pools) { // not required
 		return nil
 	}
@@ -311,7 +304,6 @@ func (m *GenesisResponseAppState) validatePools(formats strfmt.Registry) error {
 }
 
 func (m *GenesisResponseAppState) validateValidators(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Validators) { // not required
 		return nil
 	}
@@ -336,7 +328,6 @@ func (m *GenesisResponseAppState) validateValidators(formats strfmt.Registry) er
 }
 
 func (m *GenesisResponseAppState) validateWaitlist(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Waitlist) { // not required
 		return nil
 	}
@@ -348,6 +339,232 @@ func (m *GenesisResponseAppState) validateWaitlist(formats strfmt.Registry) erro
 
 		if m.Waitlist[i] != nil {
 			if err := m.Waitlist[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("waitlist" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this genesis response app state based on the context it is used
+func (m *GenesisResponseAppState) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateAccounts(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateCandidates(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateCoins(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateCommission(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateCommissionVotes(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateFrozenFunds(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateHaltBlocks(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidatePools(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateValidators(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateWaitlist(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateAccounts(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Accounts); i++ {
+
+		if m.Accounts[i] != nil {
+			if err := m.Accounts[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("accounts" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateCandidates(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Candidates); i++ {
+
+		if m.Candidates[i] != nil {
+			if err := m.Candidates[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("candidates" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateCoins(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Coins); i++ {
+
+		if m.Coins[i] != nil {
+			if err := m.Coins[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("coins" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateCommission(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Commission != nil {
+		if err := m.Commission.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("commission")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateCommissionVotes(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.CommissionVotes); i++ {
+
+		if m.CommissionVotes[i] != nil {
+			if err := m.CommissionVotes[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("commission_votes" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateFrozenFunds(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.FrozenFunds); i++ {
+
+		if m.FrozenFunds[i] != nil {
+			if err := m.FrozenFunds[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("frozen_funds" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateHaltBlocks(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.HaltBlocks); i++ {
+
+		if m.HaltBlocks[i] != nil {
+			if err := m.HaltBlocks[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("halt_blocks" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidatePools(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Pools); i++ {
+
+		if m.Pools[i] != nil {
+			if err := m.Pools[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("pools" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateValidators(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Validators); i++ {
+
+		if m.Validators[i] != nil {
+			if err := m.Validators[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("validators" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateWaitlist(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Waitlist); i++ {
+
+		if m.Waitlist[i] != nil {
+			if err := m.Waitlist[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("waitlist" + "." + strconv.Itoa(i))
 				}

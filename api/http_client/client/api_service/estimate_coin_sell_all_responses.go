@@ -46,7 +46,7 @@ func NewEstimateCoinSellAllOK() *EstimateCoinSellAllOK {
 	return &EstimateCoinSellAllOK{}
 }
 
-/*EstimateCoinSellAllOK handles this case with default header values.
+/* EstimateCoinSellAllOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type EstimateCoinSellAllOK struct {
 func (o *EstimateCoinSellAllOK) Error() string {
 	return fmt.Sprintf("[GET /estimate_coin_sell_all][%d] estimateCoinSellAllOK  %+v", 200, o.Payload)
 }
-
 func (o *EstimateCoinSellAllOK) GetPayload() *models.EstimateCoinSellAllResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewEstimateCoinSellAllDefault(code int) *EstimateCoinSellAllDefault {
 	}
 }
 
-/*EstimateCoinSellAllDefault handles this case with default header values.
+/* EstimateCoinSellAllDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *EstimateCoinSellAllDefault) Code() int {
 func (o *EstimateCoinSellAllDefault) Error() string {
 	return fmt.Sprintf("[GET /estimate_coin_sell_all][%d] EstimateCoinSellAll default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *EstimateCoinSellAllDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

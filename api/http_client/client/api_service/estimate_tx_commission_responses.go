@@ -46,7 +46,7 @@ func NewEstimateTxCommissionOK() *EstimateTxCommissionOK {
 	return &EstimateTxCommissionOK{}
 }
 
-/*EstimateTxCommissionOK handles this case with default header values.
+/* EstimateTxCommissionOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type EstimateTxCommissionOK struct {
 func (o *EstimateTxCommissionOK) Error() string {
 	return fmt.Sprintf("[GET /estimate_tx_commission/{tx}][%d] estimateTxCommissionOK  %+v", 200, o.Payload)
 }
-
 func (o *EstimateTxCommissionOK) GetPayload() *models.EstimateTxCommissionResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewEstimateTxCommissionDefault(code int) *EstimateTxCommissionDefault {
 	}
 }
 
-/*EstimateTxCommissionDefault handles this case with default header values.
+/* EstimateTxCommissionDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *EstimateTxCommissionDefault) Code() int {
 func (o *EstimateTxCommissionDefault) Error() string {
 	return fmt.Sprintf("[GET /estimate_tx_commission/{tx}][%d] EstimateTxCommission default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *EstimateTxCommissionDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

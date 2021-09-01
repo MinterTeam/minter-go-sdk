@@ -46,7 +46,7 @@ func NewHaltsOK() *HaltsOK {
 	return &HaltsOK{}
 }
 
-/*HaltsOK handles this case with default header values.
+/* HaltsOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type HaltsOK struct {
 func (o *HaltsOK) Error() string {
 	return fmt.Sprintf("[GET /halts/{height}][%d] haltsOK  %+v", 200, o.Payload)
 }
-
 func (o *HaltsOK) GetPayload() *models.HaltsResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewHaltsDefault(code int) *HaltsDefault {
 	}
 }
 
-/*HaltsDefault handles this case with default header values.
+/* HaltsDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *HaltsDefault) Code() int {
 func (o *HaltsDefault) Error() string {
 	return fmt.Sprintf("[GET /halts/{height}][%d] Halts default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *HaltsDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

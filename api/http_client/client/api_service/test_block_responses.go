@@ -46,7 +46,7 @@ func NewTestBlockOK() *TestBlockOK {
 	return &TestBlockOK{}
 }
 
-/*TestBlockOK handles this case with default header values.
+/* TestBlockOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type TestBlockOK struct {
 func (o *TestBlockOK) Error() string {
 	return fmt.Sprintf("[GET /test/block][%d] testBlockOK  %+v", 200, o.Payload)
 }
-
 func (o *TestBlockOK) GetPayload() *models.BlockResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewTestBlockDefault(code int) *TestBlockDefault {
 	}
 }
 
-/*TestBlockDefault handles this case with default header values.
+/* TestBlockDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *TestBlockDefault) Code() int {
 func (o *TestBlockDefault) Error() string {
 	return fmt.Sprintf("[GET /test/block][%d] TestBlock default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *TestBlockDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

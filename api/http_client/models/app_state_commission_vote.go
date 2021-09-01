@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -41,13 +43,40 @@ func (m *AppStateCommissionVote) Validate(formats strfmt.Registry) error {
 }
 
 func (m *AppStateCommissionVote) validateCommission(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Commission) { // not required
 		return nil
 	}
 
 	if m.Commission != nil {
 		if err := m.Commission.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("commission")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this app state commission vote based on the context it is used
+func (m *AppStateCommissionVote) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateCommission(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *AppStateCommissionVote) contextValidateCommission(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Commission != nil {
+		if err := m.Commission.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("commission")
 			}

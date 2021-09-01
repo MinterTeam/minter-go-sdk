@@ -23,85 +23,88 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientOption is the option for Client methods
+type ClientOption func(*runtime.ClientOperation)
+
 // ClientService is the interface for Client methods
 type ClientService interface {
-	Address(params *AddressParams) (*AddressOK, error)
+	Address(params *AddressParams, opts ...ClientOption) (*AddressOK, error)
 
-	Addresses(params *AddressesParams) (*AddressesOK, error)
+	Addresses(params *AddressesParams, opts ...ClientOption) (*AddressesOK, error)
 
-	Block(params *BlockParams) (*BlockOK, error)
+	Block(params *BlockParams, opts ...ClientOption) (*BlockOK, error)
 
-	Blocks(params *BlocksParams) (*BlocksOK, error)
+	Blocks(params *BlocksParams, opts ...ClientOption) (*BlocksOK, error)
 
-	Candidate(params *CandidateParams) (*CandidateOK, error)
+	Candidate(params *CandidateParams, opts ...ClientOption) (*CandidateOK, error)
 
-	Candidates(params *CandidatesParams) (*CandidatesOK, error)
+	Candidates(params *CandidatesParams, opts ...ClientOption) (*CandidatesOK, error)
 
-	CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error)
+	CoinInfo(params *CoinInfoParams, opts ...ClientOption) (*CoinInfoOK, error)
 
-	CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, error)
+	CoinInfoByID(params *CoinInfoByIDParams, opts ...ClientOption) (*CoinInfoByIDOK, error)
 
-	CommissionVotes(params *CommissionVotesParams) (*CommissionVotesOK, error)
+	CommissionVotes(params *CommissionVotesParams, opts ...ClientOption) (*CommissionVotesOK, error)
 
-	EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBuyOK, error)
+	EstimateCoinBuy(params *EstimateCoinBuyParams, opts ...ClientOption) (*EstimateCoinBuyOK, error)
 
-	EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoinSellOK, error)
+	EstimateCoinSell(params *EstimateCoinSellParams, opts ...ClientOption) (*EstimateCoinSellOK, error)
 
-	EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*EstimateCoinSellAllOK, error)
+	EstimateCoinSellAll(params *EstimateCoinSellAllParams, opts ...ClientOption) (*EstimateCoinSellAllOK, error)
 
-	EstimateTxCommission(params *EstimateTxCommissionParams) (*EstimateTxCommissionOK, error)
+	EstimateTxCommission(params *EstimateTxCommissionParams, opts ...ClientOption) (*EstimateTxCommissionOK, error)
 
-	Events(params *EventsParams) (*EventsOK, error)
+	Events(params *EventsParams, opts ...ClientOption) (*EventsOK, error)
 
-	Frozen(params *FrozenParams) (*FrozenOK, error)
+	Frozen(params *FrozenParams, opts ...ClientOption) (*FrozenOK, error)
 
-	Genesis(params *GenesisParams) (*GenesisOK, error)
+	Genesis(params *GenesisParams, opts ...ClientOption) (*GenesisOK, error)
 
-	Halts(params *HaltsParams) (*HaltsOK, error)
+	Halts(params *HaltsParams, opts ...ClientOption) (*HaltsOK, error)
 
-	LimitOrder(params *LimitOrderParams) (*LimitOrderOK, error)
+	LimitOrder(params *LimitOrderParams, opts ...ClientOption) (*LimitOrderOK, error)
 
-	LimitOrders(params *LimitOrdersParams) (*LimitOrdersOK, error)
+	LimitOrders(params *LimitOrdersParams, opts ...ClientOption) (*LimitOrdersOK, error)
 
-	LimitOrdersOfPool(params *LimitOrdersOfPoolParams) (*LimitOrdersOfPoolOK, error)
+	LimitOrdersOfPool(params *LimitOrdersOfPoolParams, opts ...ClientOption) (*LimitOrdersOfPoolOK, error)
 
-	MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error)
+	MaxGasPrice(params *MaxGasPriceParams, opts ...ClientOption) (*MaxGasPriceOK, error)
 
-	MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error)
+	MinGasPrice(params *MinGasPriceParams, opts ...ClientOption) (*MinGasPriceOK, error)
 
-	MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, error)
+	MissedBlocks(params *MissedBlocksParams, opts ...ClientOption) (*MissedBlocksOK, error)
 
-	NetInfo(params *NetInfoParams) (*NetInfoOK, error)
+	NetInfo(params *NetInfoParams, opts ...ClientOption) (*NetInfoOK, error)
 
-	PriceCommission(params *PriceCommissionParams) (*PriceCommissionOK, error)
+	PriceCommission(params *PriceCommissionParams, opts ...ClientOption) (*PriceCommissionOK, error)
 
-	SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error)
+	SendTransaction(params *SendTransactionParams, opts ...ClientOption) (*SendTransactionOK, error)
 
-	SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error)
+	SendTransaction2(params *SendTransaction2Params, opts ...ClientOption) (*SendTransaction2OK, error)
 
-	Status(params *StatusParams) (*StatusOK, error)
+	Status(params *StatusParams, opts ...ClientOption) (*StatusOK, error)
 
-	Subscribe(params *SubscribeParams) (*SubscribeOK, error)
+	Subscribe(params *SubscribeParams, opts ...ClientOption) (*SubscribeOK, error)
 
-	SwapPool(params *SwapPoolParams) (*SwapPoolOK, error)
+	SwapPool(params *SwapPoolParams, opts ...ClientOption) (*SwapPoolOK, error)
 
-	SwapPoolProvider(params *SwapPoolProviderParams) (*SwapPoolProviderOK, error)
+	SwapPoolProvider(params *SwapPoolProviderParams, opts ...ClientOption) (*SwapPoolProviderOK, error)
 
-	TestBlock(params *TestBlockParams) (*TestBlockOK, error)
+	TestBlock(params *TestBlockParams, opts ...ClientOption) (*TestBlockOK, error)
 
-	Transaction(params *TransactionParams) (*TransactionOK, error)
+	Transaction(params *TransactionParams, opts ...ClientOption) (*TransactionOK, error)
 
-	Transactions(params *TransactionsParams) (*TransactionsOK, error)
+	Transactions(params *TransactionsParams, opts ...ClientOption) (*TransactionsOK, error)
 
-	UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK, error)
+	UnconfirmedTxs(params *UnconfirmedTxsParams, opts ...ClientOption) (*UnconfirmedTxsOK, error)
 
-	UpdateVotes(params *UpdateVotesParams) (*UpdateVotesOK, error)
+	UpdateVotes(params *UpdateVotesParams, opts ...ClientOption) (*UpdateVotesOK, error)
 
-	Validators(params *ValidatorsParams) (*ValidatorsOK, error)
+	Validators(params *ValidatorsParams, opts ...ClientOption) (*ValidatorsOK, error)
 
-	VersionNetwork(params *VersionNetworkParams) (*VersionNetworkOK, error)
+	VersionNetwork(params *VersionNetworkParams, opts ...ClientOption) (*VersionNetworkOK, error)
 
-	WaitList(params *WaitListParams) (*WaitListOK, error)
+	WaitList(params *WaitListParams, opts ...ClientOption) (*WaitListOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -111,13 +114,12 @@ type ClientService interface {
 
   Address returns coins list, balance and transaction count of an address.
 */
-func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
+func (a *Client) Address(params *AddressParams, opts ...ClientOption) (*AddressOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewAddressParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Address",
 		Method:             "GET",
 		PathPattern:        "/address/{address}",
@@ -128,7 +130,12 @@ func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
 		Reader:             &AddressReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -146,13 +153,12 @@ func (a *Client) Address(params *AddressParams) (*AddressOK, error) {
 
   Addresses returns list of addresses.
 */
-func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
+func (a *Client) Addresses(params *AddressesParams, opts ...ClientOption) (*AddressesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewAddressesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Addresses",
 		Method:             "GET",
 		PathPattern:        "/addresses",
@@ -163,7 +169,12 @@ func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
 		Reader:             &AddressesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -181,13 +192,12 @@ func (a *Client) Addresses(params *AddressesParams) (*AddressesOK, error) {
 
   Block returns block data at given height.
 */
-func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
+func (a *Client) Block(params *BlockParams, opts ...ClientOption) (*BlockOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewBlockParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Block",
 		Method:             "GET",
 		PathPattern:        "/block/{height}",
@@ -198,7 +208,12 @@ func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 		Reader:             &BlockReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -214,13 +229,12 @@ func (a *Client) Block(params *BlockParams) (*BlockOK, error) {
 /*
   Blocks blocks
 */
-func (a *Client) Blocks(params *BlocksParams) (*BlocksOK, error) {
+func (a *Client) Blocks(params *BlocksParams, opts ...ClientOption) (*BlocksOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewBlocksParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Blocks",
 		Method:             "GET",
 		PathPattern:        "/blocks",
@@ -231,7 +245,12 @@ func (a *Client) Blocks(params *BlocksParams) (*BlocksOK, error) {
 		Reader:             &BlocksReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -267,13 +286,12 @@ func (a *Client) Blocks(params *BlocksParams) (*BlocksOK, error) {
 | validator | Is a validator at the current height |
 | jailed_until |  |
 */
-func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
+func (a *Client) Candidate(params *CandidateParams, opts ...ClientOption) (*CandidateOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCandidateParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Candidate",
 		Method:             "GET",
 		PathPattern:        "/candidate/{public_key}",
@@ -284,7 +302,12 @@ func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 		Reader:             &CandidateReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -302,13 +325,12 @@ func (a *Client) Candidate(params *CandidateParams) (*CandidateOK, error) {
 
   Candidates returns list of candidates.
 */
-func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
+func (a *Client) Candidates(params *CandidatesParams, opts ...ClientOption) (*CandidatesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCandidatesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Candidates",
 		Method:             "GET",
 		PathPattern:        "/candidates",
@@ -319,7 +341,12 @@ func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
 		Reader:             &CandidatesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -337,13 +364,12 @@ func (a *Client) Candidates(params *CandidatesParams) (*CandidatesOK, error) {
 
   CoinInfo returns information about coin symbol.
 */
-func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
+func (a *Client) CoinInfo(params *CoinInfoParams, opts ...ClientOption) (*CoinInfoOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCoinInfoParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "CoinInfo",
 		Method:             "GET",
 		PathPattern:        "/coin_info/{symbol}",
@@ -354,7 +380,12 @@ func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
 		Reader:             &CoinInfoReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -372,13 +403,12 @@ func (a *Client) CoinInfo(params *CoinInfoParams) (*CoinInfoOK, error) {
 
   CoinInfoById returns information about coin ID.
 */
-func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, error) {
+func (a *Client) CoinInfoByID(params *CoinInfoByIDParams, opts ...ClientOption) (*CoinInfoByIDOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCoinInfoByIDParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "CoinInfoById",
 		Method:             "GET",
 		PathPattern:        "/coin_info_by_id/{id}",
@@ -389,7 +419,12 @@ func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, erro
 		Reader:             &CoinInfoByIDReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -405,13 +440,12 @@ func (a *Client) CoinInfoByID(params *CoinInfoByIDParams) (*CoinInfoByIDOK, erro
 /*
   CommissionVotes commissions votes
 */
-func (a *Client) CommissionVotes(params *CommissionVotesParams) (*CommissionVotesOK, error) {
+func (a *Client) CommissionVotes(params *CommissionVotesParams, opts ...ClientOption) (*CommissionVotesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCommissionVotesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "CommissionVotes",
 		Method:             "GET",
 		PathPattern:        "/commission_votes/{target_version}",
@@ -422,7 +456,12 @@ func (a *Client) CommissionVotes(params *CommissionVotesParams) (*CommissionVote
 		Reader:             &CommissionVotesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -440,13 +479,12 @@ func (a *Client) CommissionVotes(params *CommissionVotesParams) (*CommissionVote
 
   EstimateCoinBuy returns estimate of buy coin transaction.
 */
-func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBuyOK, error) {
+func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams, opts ...ClientOption) (*EstimateCoinBuyOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewEstimateCoinBuyParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "EstimateCoinBuy",
 		Method:             "GET",
 		PathPattern:        "/estimate_coin_buy",
@@ -457,7 +495,12 @@ func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBu
 		Reader:             &EstimateCoinBuyReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -475,13 +518,12 @@ func (a *Client) EstimateCoinBuy(params *EstimateCoinBuyParams) (*EstimateCoinBu
 
   EstimateCoinSell returns estimate of sell coin transaction.
 */
-func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoinSellOK, error) {
+func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams, opts ...ClientOption) (*EstimateCoinSellOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewEstimateCoinSellParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "EstimateCoinSell",
 		Method:             "GET",
 		PathPattern:        "/estimate_coin_sell",
@@ -492,7 +534,12 @@ func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoin
 		Reader:             &EstimateCoinSellReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -510,13 +557,12 @@ func (a *Client) EstimateCoinSell(params *EstimateCoinSellParams) (*EstimateCoin
 
   EstimateCoinSellAll returns estimate of sell all coin transaction.
 */
-func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*EstimateCoinSellAllOK, error) {
+func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams, opts ...ClientOption) (*EstimateCoinSellAllOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewEstimateCoinSellAllParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "EstimateCoinSellAll",
 		Method:             "GET",
 		PathPattern:        "/estimate_coin_sell_all",
@@ -527,7 +573,12 @@ func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*Estima
 		Reader:             &EstimateCoinSellAllReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -545,13 +596,12 @@ func (a *Client) EstimateCoinSellAll(params *EstimateCoinSellAllParams) (*Estima
 
   EstimateTxCommission returns estimate of transaction.
 */
-func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*EstimateTxCommissionOK, error) {
+func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams, opts ...ClientOption) (*EstimateTxCommissionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewEstimateTxCommissionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "EstimateTxCommission",
 		Method:             "GET",
 		PathPattern:        "/estimate_tx_commission/{tx}",
@@ -562,7 +612,12 @@ func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*Esti
 		Reader:             &EstimateTxCommissionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -580,13 +635,12 @@ func (a *Client) EstimateTxCommission(params *EstimateTxCommissionParams) (*Esti
 
   Events returns events at given height.
 */
-func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
+func (a *Client) Events(params *EventsParams, opts ...ClientOption) (*EventsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewEventsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Events",
 		Method:             "GET",
 		PathPattern:        "/events/{height}",
@@ -597,7 +651,12 @@ func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
 		Reader:             &EventsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -615,13 +674,12 @@ func (a *Client) Events(params *EventsParams) (*EventsOK, error) {
 
   Frozen returns frozen balance.
 */
-func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
+func (a *Client) Frozen(params *FrozenParams, opts ...ClientOption) (*FrozenOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewFrozenParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Frozen",
 		Method:             "GET",
 		PathPattern:        "/frozen/{address}",
@@ -632,7 +690,12 @@ func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
 		Reader:             &FrozenReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -650,13 +713,12 @@ func (a *Client) Frozen(params *FrozenParams) (*FrozenOK, error) {
 
   Genesis returns genesis file.
 */
-func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
+func (a *Client) Genesis(params *GenesisParams, opts ...ClientOption) (*GenesisOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGenesisParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Genesis",
 		Method:             "GET",
 		PathPattern:        "/genesis",
@@ -667,7 +729,12 @@ func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 		Reader:             &GenesisReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -685,13 +752,12 @@ func (a *Client) Genesis(params *GenesisParams) (*GenesisOK, error) {
 
   Halts returns the candidate votes for stopping the network at block.
 */
-func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
+func (a *Client) Halts(params *HaltsParams, opts ...ClientOption) (*HaltsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewHaltsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Halts",
 		Method:             "GET",
 		PathPattern:        "/halts/{height}",
@@ -702,7 +768,12 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 		Reader:             &HaltsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -718,13 +789,12 @@ func (a *Client) Halts(params *HaltsParams) (*HaltsOK, error) {
 /*
   LimitOrder limits order
 */
-func (a *Client) LimitOrder(params *LimitOrderParams) (*LimitOrderOK, error) {
+func (a *Client) LimitOrder(params *LimitOrderParams, opts ...ClientOption) (*LimitOrderOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewLimitOrderParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "LimitOrder",
 		Method:             "GET",
 		PathPattern:        "/limit_order/{order_id}",
@@ -735,7 +805,12 @@ func (a *Client) LimitOrder(params *LimitOrderParams) (*LimitOrderOK, error) {
 		Reader:             &LimitOrderReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -751,13 +826,12 @@ func (a *Client) LimitOrder(params *LimitOrderParams) (*LimitOrderOK, error) {
 /*
   LimitOrders limits orders
 */
-func (a *Client) LimitOrders(params *LimitOrdersParams) (*LimitOrdersOK, error) {
+func (a *Client) LimitOrders(params *LimitOrdersParams, opts ...ClientOption) (*LimitOrdersOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewLimitOrdersParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "LimitOrders",
 		Method:             "GET",
 		PathPattern:        "/limit_orders",
@@ -768,7 +842,12 @@ func (a *Client) LimitOrders(params *LimitOrdersParams) (*LimitOrdersOK, error) 
 		Reader:             &LimitOrdersReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -784,13 +863,12 @@ func (a *Client) LimitOrders(params *LimitOrdersParams) (*LimitOrdersOK, error) 
 /*
   LimitOrdersOfPool limits orders of pool
 */
-func (a *Client) LimitOrdersOfPool(params *LimitOrdersOfPoolParams) (*LimitOrdersOfPoolOK, error) {
+func (a *Client) LimitOrdersOfPool(params *LimitOrdersOfPoolParams, opts ...ClientOption) (*LimitOrdersOfPoolOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewLimitOrdersOfPoolParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "LimitOrdersOfPool",
 		Method:             "GET",
 		PathPattern:        "/limit_orders/{sell_coin}/{buy_coin}",
@@ -801,7 +879,12 @@ func (a *Client) LimitOrdersOfPool(params *LimitOrdersOfPoolParams) (*LimitOrder
 		Reader:             &LimitOrdersOfPoolReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -819,13 +902,12 @@ func (a *Client) LimitOrdersOfPool(params *LimitOrdersOfPoolParams) (*LimitOrder
 
   MaxGasPrice returns current max gas.
 */
-func (a *Client) MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error) {
+func (a *Client) MaxGasPrice(params *MaxGasPriceParams, opts ...ClientOption) (*MaxGasPriceOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewMaxGasPriceParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "MaxGasPrice",
 		Method:             "GET",
 		PathPattern:        "/max_gas_price",
@@ -836,7 +918,12 @@ func (a *Client) MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error) 
 		Reader:             &MaxGasPriceReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -854,13 +941,12 @@ func (a *Client) MaxGasPrice(params *MaxGasPriceParams) (*MaxGasPriceOK, error) 
 
   MinGasPrice returns current min gas price.
 */
-func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) {
+func (a *Client) MinGasPrice(params *MinGasPriceParams, opts ...ClientOption) (*MinGasPriceOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewMinGasPriceParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "MinGasPrice",
 		Method:             "GET",
 		PathPattern:        "/min_gas_price",
@@ -871,7 +957,12 @@ func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) 
 		Reader:             &MinGasPriceReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -889,13 +980,12 @@ func (a *Client) MinGasPrice(params *MinGasPriceParams) (*MinGasPriceOK, error) 
 
   MissedBlocks returns missed blocks by validator public key.
 */
-func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, error) {
+func (a *Client) MissedBlocks(params *MissedBlocksParams, opts ...ClientOption) (*MissedBlocksOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewMissedBlocksParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "MissedBlocks",
 		Method:             "GET",
 		PathPattern:        "/missed_blocks/{public_key}",
@@ -906,7 +996,12 @@ func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, erro
 		Reader:             &MissedBlocksReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -924,13 +1019,12 @@ func (a *Client) MissedBlocks(params *MissedBlocksParams) (*MissedBlocksOK, erro
 
   NetInfo returns network info
 */
-func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
+func (a *Client) NetInfo(params *NetInfoParams, opts ...ClientOption) (*NetInfoOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewNetInfoParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "NetInfo",
 		Method:             "GET",
 		PathPattern:        "/net_info",
@@ -941,7 +1035,12 @@ func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 		Reader:             &NetInfoReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -957,13 +1056,12 @@ func (a *Client) NetInfo(params *NetInfoParams) (*NetInfoOK, error) {
 /*
   PriceCommission prices commission
 */
-func (a *Client) PriceCommission(params *PriceCommissionParams) (*PriceCommissionOK, error) {
+func (a *Client) PriceCommission(params *PriceCommissionParams, opts ...ClientOption) (*PriceCommissionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPriceCommissionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "PriceCommission",
 		Method:             "GET",
 		PathPattern:        "/price_commissions",
@@ -974,7 +1072,12 @@ func (a *Client) PriceCommission(params *PriceCommissionParams) (*PriceCommissio
 		Reader:             &PriceCommissionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -992,13 +1095,12 @@ func (a *Client) PriceCommission(params *PriceCommissionParams) (*PriceCommissio
 
   SendTransaction returns the result of sending signed tx. To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
 */
-func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactionOK, error) {
+func (a *Client) SendTransaction(params *SendTransactionParams, opts ...ClientOption) (*SendTransactionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewSendTransactionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "SendTransaction",
 		Method:             "GET",
 		PathPattern:        "/send_transaction/{tx}",
@@ -1009,7 +1111,12 @@ func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactio
 		Reader:             &SendTransactionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1027,13 +1134,12 @@ func (a *Client) SendTransaction(params *SendTransactionParams) (*SendTransactio
 
   SendTransaction returns the result of sending signed tx. To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.
 */
-func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransaction2OK, error) {
+func (a *Client) SendTransaction2(params *SendTransaction2Params, opts ...ClientOption) (*SendTransaction2OK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewSendTransaction2Params()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "SendTransaction2",
 		Method:             "POST",
 		PathPattern:        "/send_transaction",
@@ -1044,7 +1150,12 @@ func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransact
 		Reader:             &SendTransaction2Reader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1062,13 +1173,12 @@ func (a *Client) SendTransaction2(params *SendTransaction2Params) (*SendTransact
 
   Status returns node status including pubkey, latest block.
 */
-func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
+func (a *Client) Status(params *StatusParams, opts ...ClientOption) (*StatusOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewStatusParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Status",
 		Method:             "GET",
 		PathPattern:        "/status",
@@ -1079,7 +1189,12 @@ func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 		Reader:             &StatusReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1097,13 +1212,12 @@ func (a *Client) Status(params *StatusParams) (*StatusOK, error) {
 
   Subscribe returns a subscription for events by query. Only supported in WS and gRPC methods.
 */
-func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
+func (a *Client) Subscribe(params *SubscribeParams, opts ...ClientOption) (*SubscribeOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewSubscribeParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Subscribe",
 		Method:             "GET",
 		PathPattern:        "/subscribe",
@@ -1114,7 +1228,12 @@ func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 		Reader:             &SubscribeReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1130,13 +1249,12 @@ func (a *Client) Subscribe(params *SubscribeParams) (*SubscribeOK, error) {
 /*
   SwapPool swaps pool
 */
-func (a *Client) SwapPool(params *SwapPoolParams) (*SwapPoolOK, error) {
+func (a *Client) SwapPool(params *SwapPoolParams, opts ...ClientOption) (*SwapPoolOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewSwapPoolParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "SwapPool",
 		Method:             "GET",
 		PathPattern:        "/swap_pool/{coin0}/{coin1}",
@@ -1147,7 +1265,12 @@ func (a *Client) SwapPool(params *SwapPoolParams) (*SwapPoolOK, error) {
 		Reader:             &SwapPoolReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1163,13 +1286,12 @@ func (a *Client) SwapPool(params *SwapPoolParams) (*SwapPoolOK, error) {
 /*
   SwapPoolProvider swaps pool provider
 */
-func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams) (*SwapPoolProviderOK, error) {
+func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams, opts ...ClientOption) (*SwapPoolProviderOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewSwapPoolProviderParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "SwapPoolProvider",
 		Method:             "GET",
 		PathPattern:        "/swap_pool/{coin0}/{coin1}/{provider}",
@@ -1180,7 +1302,12 @@ func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams) (*SwapPoolProv
 		Reader:             &SwapPoolProviderReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1198,13 +1325,12 @@ func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams) (*SwapPoolProv
 
   TestBlock returns the list of example transactions in block. Available only testnet mode.
 */
-func (a *Client) TestBlock(params *TestBlockParams) (*TestBlockOK, error) {
+func (a *Client) TestBlock(params *TestBlockParams, opts ...ClientOption) (*TestBlockOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewTestBlockParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "TestBlock",
 		Method:             "GET",
 		PathPattern:        "/test/block",
@@ -1215,7 +1341,12 @@ func (a *Client) TestBlock(params *TestBlockParams) (*TestBlockOK, error) {
 		Reader:             &TestBlockReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1233,13 +1364,12 @@ func (a *Client) TestBlock(params *TestBlockParams) (*TestBlockOK, error) {
 
   Transaction returns transaction info.
 */
-func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) {
+func (a *Client) Transaction(params *TransactionParams, opts ...ClientOption) (*TransactionOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewTransactionParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Transaction",
 		Method:             "GET",
 		PathPattern:        "/transaction/{hash}",
@@ -1250,7 +1380,12 @@ func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) 
 		Reader:             &TransactionReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1268,13 +1403,12 @@ func (a *Client) Transaction(params *TransactionParams) (*TransactionOK, error) 
 
   Transactions returns transactions by query.
 */
-func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, error) {
+func (a *Client) Transactions(params *TransactionsParams, opts ...ClientOption) (*TransactionsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewTransactionsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Transactions",
 		Method:             "GET",
 		PathPattern:        "/transactions",
@@ -1285,7 +1419,12 @@ func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, erro
 		Reader:             &TransactionsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1303,13 +1442,12 @@ func (a *Client) Transactions(params *TransactionsParams) (*TransactionsOK, erro
 
   UnconfirmedTxs returns unconfirmed transactions.
 */
-func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK, error) {
+func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams, opts ...ClientOption) (*UnconfirmedTxsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewUnconfirmedTxsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "UnconfirmedTxs",
 		Method:             "GET",
 		PathPattern:        "/unconfirmed_txs",
@@ -1320,7 +1458,12 @@ func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK
 		Reader:             &UnconfirmedTxsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1336,13 +1479,12 @@ func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams) (*UnconfirmedTxsOK
 /*
   UpdateVotes updates votes
 */
-func (a *Client) UpdateVotes(params *UpdateVotesParams) (*UpdateVotesOK, error) {
+func (a *Client) UpdateVotes(params *UpdateVotesParams, opts ...ClientOption) (*UpdateVotesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewUpdateVotesParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "UpdateVotes",
 		Method:             "GET",
 		PathPattern:        "/update_votes/{target_version}",
@@ -1353,7 +1495,12 @@ func (a *Client) UpdateVotes(params *UpdateVotesParams) (*UpdateVotesOK, error) 
 		Reader:             &UpdateVotesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1371,13 +1518,12 @@ func (a *Client) UpdateVotes(params *UpdateVotesParams) (*UpdateVotesOK, error) 
 
   Validators returns list of active validators.
 */
-func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
+func (a *Client) Validators(params *ValidatorsParams, opts ...ClientOption) (*ValidatorsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewValidatorsParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "Validators",
 		Method:             "GET",
 		PathPattern:        "/validators",
@@ -1388,7 +1534,12 @@ func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
 		Reader:             &ValidatorsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1404,13 +1555,12 @@ func (a *Client) Validators(params *ValidatorsParams) (*ValidatorsOK, error) {
 /*
   VersionNetwork versions network
 */
-func (a *Client) VersionNetwork(params *VersionNetworkParams) (*VersionNetworkOK, error) {
+func (a *Client) VersionNetwork(params *VersionNetworkParams, opts ...ClientOption) (*VersionNetworkOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewVersionNetworkParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "VersionNetwork",
 		Method:             "GET",
 		PathPattern:        "/version_network",
@@ -1421,7 +1571,12 @@ func (a *Client) VersionNetwork(params *VersionNetworkParams) (*VersionNetworkOK
 		Reader:             &VersionNetworkReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}
@@ -1439,13 +1594,12 @@ func (a *Client) VersionNetwork(params *VersionNetworkParams) (*VersionNetworkOK
 
   WaitList returns the list of address stakes in waitlist.
 */
-func (a *Client) WaitList(params *WaitListParams) (*WaitListOK, error) {
+func (a *Client) WaitList(params *WaitListParams, opts ...ClientOption) (*WaitListOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewWaitListParams()
 	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
+	op := &runtime.ClientOperation{
 		ID:                 "WaitList",
 		Method:             "GET",
 		PathPattern:        "/waitlist/{address}",
@@ -1456,7 +1610,12 @@ func (a *Client) WaitList(params *WaitListParams) (*WaitListOK, error) {
 		Reader:             &WaitListReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
-	})
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
 	if err != nil {
 		return nil, err
 	}

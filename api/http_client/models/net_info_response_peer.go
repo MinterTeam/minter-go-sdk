@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -51,7 +53,6 @@ func (m *NetInfoResponsePeer) Validate(formats strfmt.Registry) error {
 }
 
 func (m *NetInfoResponsePeer) validateConnectionStatus(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.ConnectionStatus) { // not required
 		return nil
 	}
@@ -69,13 +70,58 @@ func (m *NetInfoResponsePeer) validateConnectionStatus(formats strfmt.Registry) 
 }
 
 func (m *NetInfoResponsePeer) validateNodeInfo(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.NodeInfo) { // not required
 		return nil
 	}
 
 	if m.NodeInfo != nil {
 		if err := m.NodeInfo.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("node_info")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this net info response peer based on the context it is used
+func (m *NetInfoResponsePeer) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateConnectionStatus(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateNodeInfo(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *NetInfoResponsePeer) contextValidateConnectionStatus(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.ConnectionStatus != nil {
+		if err := m.ConnectionStatus.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("connection_status")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *NetInfoResponsePeer) contextValidateNodeInfo(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.NodeInfo != nil {
+		if err := m.NodeInfo.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("node_info")
 			}

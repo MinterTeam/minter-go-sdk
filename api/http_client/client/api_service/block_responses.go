@@ -46,7 +46,7 @@ func NewBlockOK() *BlockOK {
 	return &BlockOK{}
 }
 
-/*BlockOK handles this case with default header values.
+/* BlockOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type BlockOK struct {
 func (o *BlockOK) Error() string {
 	return fmt.Sprintf("[GET /block/{height}][%d] blockOK  %+v", 200, o.Payload)
 }
-
 func (o *BlockOK) GetPayload() *models.BlockResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewBlockDefault(code int) *BlockDefault {
 	}
 }
 
-/*BlockDefault handles this case with default header values.
+/* BlockDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *BlockDefault) Code() int {
 func (o *BlockDefault) Error() string {
 	return fmt.Sprintf("[GET /block/{height}][%d] Block default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *BlockDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

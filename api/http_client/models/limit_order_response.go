@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -30,6 +32,9 @@ type LimitOrderResponse struct {
 
 	// owner
 	Owner string `json:"owner,omitempty"`
+
+	// price
+	Price string `json:"price,omitempty"`
 
 	// want buy
 	WantBuy string `json:"want_buy,omitempty"`
@@ -57,7 +62,6 @@ func (m *LimitOrderResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *LimitOrderResponse) validateCoinBuy(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.CoinBuy) { // not required
 		return nil
 	}
@@ -75,13 +79,58 @@ func (m *LimitOrderResponse) validateCoinBuy(formats strfmt.Registry) error {
 }
 
 func (m *LimitOrderResponse) validateCoinSell(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.CoinSell) { // not required
 		return nil
 	}
 
 	if m.CoinSell != nil {
 		if err := m.CoinSell.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("coin_sell")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this limit order response based on the context it is used
+func (m *LimitOrderResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateCoinBuy(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateCoinSell(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *LimitOrderResponse) contextValidateCoinBuy(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.CoinBuy != nil {
+		if err := m.CoinBuy.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("coin_buy")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *LimitOrderResponse) contextValidateCoinSell(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.CoinSell != nil {
+		if err := m.CoinSell.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("coin_sell")
 			}

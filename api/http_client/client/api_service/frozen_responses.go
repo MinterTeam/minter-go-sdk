@@ -46,7 +46,7 @@ func NewFrozenOK() *FrozenOK {
 	return &FrozenOK{}
 }
 
-/*FrozenOK handles this case with default header values.
+/* FrozenOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type FrozenOK struct {
 func (o *FrozenOK) Error() string {
 	return fmt.Sprintf("[GET /frozen/{address}][%d] frozenOK  %+v", 200, o.Payload)
 }
-
 func (o *FrozenOK) GetPayload() *models.FrozenResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewFrozenDefault(code int) *FrozenDefault {
 	}
 }
 
-/*FrozenDefault handles this case with default header values.
+/* FrozenDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *FrozenDefault) Code() int {
 func (o *FrozenDefault) Error() string {
 	return fmt.Sprintf("[GET /frozen/{address}][%d] Frozen default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *FrozenDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

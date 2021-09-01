@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -64,7 +65,6 @@ func (m *AddressesResponseResult) Validate(formats strfmt.Registry) error {
 }
 
 func (m *AddressesResponseResult) validateBalance(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Balance) { // not required
 		return nil
 	}
@@ -89,7 +89,6 @@ func (m *AddressesResponseResult) validateBalance(formats strfmt.Registry) error
 }
 
 func (m *AddressesResponseResult) validateDelegated(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Delegated) { // not required
 		return nil
 	}
@@ -114,7 +113,6 @@ func (m *AddressesResponseResult) validateDelegated(formats strfmt.Registry) err
 }
 
 func (m *AddressesResponseResult) validateMultisig(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Multisig) { // not required
 		return nil
 	}
@@ -132,7 +130,6 @@ func (m *AddressesResponseResult) validateMultisig(formats strfmt.Registry) erro
 }
 
 func (m *AddressesResponseResult) validateTotal(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Total) { // not required
 		return nil
 	}
@@ -144,6 +141,100 @@ func (m *AddressesResponseResult) validateTotal(formats strfmt.Registry) error {
 
 		if m.Total[i] != nil {
 			if err := m.Total[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("total" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this addresses response result based on the context it is used
+func (m *AddressesResponseResult) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateBalance(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateDelegated(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateMultisig(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateTotal(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *AddressesResponseResult) contextValidateBalance(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Balance); i++ {
+
+		if m.Balance[i] != nil {
+			if err := m.Balance[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("balance" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *AddressesResponseResult) contextValidateDelegated(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Delegated); i++ {
+
+		if m.Delegated[i] != nil {
+			if err := m.Delegated[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("delegated" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *AddressesResponseResult) contextValidateMultisig(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Multisig != nil {
+		if err := m.Multisig.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("multisig")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *AddressesResponseResult) contextValidateTotal(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Total); i++ {
+
+		if m.Total[i] != nil {
+			if err := m.Total[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("total" + "." + strconv.Itoa(i))
 				}

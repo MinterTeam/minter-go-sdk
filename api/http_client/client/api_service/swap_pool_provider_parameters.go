@@ -17,62 +17,85 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewSwapPoolProviderParams creates a new SwapPoolProviderParams object
-// with the default values initialized.
+// NewSwapPoolProviderParams creates a new SwapPoolProviderParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewSwapPoolProviderParams() *SwapPoolProviderParams {
-	var ()
 	return &SwapPoolProviderParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewSwapPoolProviderParamsWithTimeout creates a new SwapPoolProviderParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewSwapPoolProviderParamsWithTimeout(timeout time.Duration) *SwapPoolProviderParams {
-	var ()
 	return &SwapPoolProviderParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewSwapPoolProviderParamsWithContext creates a new SwapPoolProviderParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewSwapPoolProviderParamsWithContext(ctx context.Context) *SwapPoolProviderParams {
-	var ()
 	return &SwapPoolProviderParams{
-
 		Context: ctx,
 	}
 }
 
 // NewSwapPoolProviderParamsWithHTTPClient creates a new SwapPoolProviderParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewSwapPoolProviderParamsWithHTTPClient(client *http.Client) *SwapPoolProviderParams {
-	var ()
 	return &SwapPoolProviderParams{
 		HTTPClient: client,
 	}
 }
 
-/*SwapPoolProviderParams contains all the parameters to send to the API endpoint
-for the swap pool provider operation typically these are written to a http.Request
+/* SwapPoolProviderParams contains all the parameters to send to the API endpoint
+   for the swap pool provider operation.
+
+   Typically these are written to a http.Request.
 */
 type SwapPoolProviderParams struct {
 
-	/*Coin0*/
+	// Coin0.
+	//
+	// Format: uint64
 	Coin0 string
-	/*Coin1*/
+
+	// Coin1.
+	//
+	// Format: uint64
 	Coin1 string
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*Provider*/
+
+	// Provider.
 	Provider string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the swap pool provider params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *SwapPoolProviderParams) WithDefaults() *SwapPoolProviderParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the swap pool provider params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *SwapPoolProviderParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the swap pool provider params
@@ -174,16 +197,17 @@ func (o *SwapPoolProviderParams) WriteToRequest(r runtime.ClientRequest, reg str
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param provider

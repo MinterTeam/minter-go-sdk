@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -37,7 +38,6 @@ func (m *FrozenResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *FrozenResponse) validateFrozen(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Frozen) { // not required
 		return nil
 	}
@@ -49,6 +49,38 @@ func (m *FrozenResponse) validateFrozen(formats strfmt.Registry) error {
 
 		if m.Frozen[i] != nil {
 			if err := m.Frozen[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("frozen" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this frozen response based on the context it is used
+func (m *FrozenResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateFrozen(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *FrozenResponse) contextValidateFrozen(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Frozen); i++ {
+
+		if m.Frozen[i] != nil {
+			if err := m.Frozen[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("frozen" + "." + strconv.Itoa(i))
 				}

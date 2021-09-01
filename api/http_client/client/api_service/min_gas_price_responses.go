@@ -46,7 +46,7 @@ func NewMinGasPriceOK() *MinGasPriceOK {
 	return &MinGasPriceOK{}
 }
 
-/*MinGasPriceOK handles this case with default header values.
+/* MinGasPriceOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type MinGasPriceOK struct {
 func (o *MinGasPriceOK) Error() string {
 	return fmt.Sprintf("[GET /min_gas_price][%d] minGasPriceOK  %+v", 200, o.Payload)
 }
-
 func (o *MinGasPriceOK) GetPayload() *models.MinGasPriceResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewMinGasPriceDefault(code int) *MinGasPriceDefault {
 	}
 }
 
-/*MinGasPriceDefault handles this case with default header values.
+/* MinGasPriceDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *MinGasPriceDefault) Code() int {
 func (o *MinGasPriceDefault) Error() string {
 	return fmt.Sprintf("[GET /min_gas_price][%d] MinGasPrice default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *MinGasPriceDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

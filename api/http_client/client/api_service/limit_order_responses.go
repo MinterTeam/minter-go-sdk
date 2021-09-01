@@ -46,7 +46,7 @@ func NewLimitOrderOK() *LimitOrderOK {
 	return &LimitOrderOK{}
 }
 
-/*LimitOrderOK handles this case with default header values.
+/* LimitOrderOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type LimitOrderOK struct {
 func (o *LimitOrderOK) Error() string {
 	return fmt.Sprintf("[GET /limit_order/{order_id}][%d] limitOrderOK  %+v", 200, o.Payload)
 }
-
 func (o *LimitOrderOK) GetPayload() *models.LimitOrderResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewLimitOrderDefault(code int) *LimitOrderDefault {
 	}
 }
 
-/*LimitOrderDefault handles this case with default header values.
+/* LimitOrderDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *LimitOrderDefault) Code() int {
 func (o *LimitOrderDefault) Error() string {
 	return fmt.Sprintf("[GET /limit_order/{order_id}][%d] LimitOrder default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *LimitOrderDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

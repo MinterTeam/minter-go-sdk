@@ -46,7 +46,7 @@ func NewTransactionOK() *TransactionOK {
 	return &TransactionOK{}
 }
 
-/*TransactionOK handles this case with default header values.
+/* TransactionOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type TransactionOK struct {
 func (o *TransactionOK) Error() string {
 	return fmt.Sprintf("[GET /transaction/{hash}][%d] transactionOK  %+v", 200, o.Payload)
 }
-
 func (o *TransactionOK) GetPayload() *models.TransactionResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewTransactionDefault(code int) *TransactionDefault {
 	}
 }
 
-/*TransactionDefault handles this case with default header values.
+/* TransactionDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *TransactionDefault) Code() int {
 func (o *TransactionDefault) Error() string {
 	return fmt.Sprintf("[GET /transaction/{hash}][%d] Transaction default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *TransactionDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

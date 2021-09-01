@@ -16,52 +16,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewVersionNetworkParams creates a new VersionNetworkParams object
-// with the default values initialized.
+// NewVersionNetworkParams creates a new VersionNetworkParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewVersionNetworkParams() *VersionNetworkParams {
-
 	return &VersionNetworkParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewVersionNetworkParamsWithTimeout creates a new VersionNetworkParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewVersionNetworkParamsWithTimeout(timeout time.Duration) *VersionNetworkParams {
-
 	return &VersionNetworkParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewVersionNetworkParamsWithContext creates a new VersionNetworkParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewVersionNetworkParamsWithContext(ctx context.Context) *VersionNetworkParams {
-
 	return &VersionNetworkParams{
-
 		Context: ctx,
 	}
 }
 
 // NewVersionNetworkParamsWithHTTPClient creates a new VersionNetworkParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewVersionNetworkParamsWithHTTPClient(client *http.Client) *VersionNetworkParams {
-
 	return &VersionNetworkParams{
 		HTTPClient: client,
 	}
 }
 
-/*VersionNetworkParams contains all the parameters to send to the API endpoint
-for the version network operation typically these are written to a http.Request
+/* VersionNetworkParams contains all the parameters to send to the API endpoint
+   for the version network operation.
+
+   Typically these are written to a http.Request.
 */
 type VersionNetworkParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the version network params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *VersionNetworkParams) WithDefaults() *VersionNetworkParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the version network params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *VersionNetworkParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the version network params

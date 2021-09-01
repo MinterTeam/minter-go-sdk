@@ -17,58 +17,77 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewLimitOrderParams creates a new LimitOrderParams object
-// with the default values initialized.
+// NewLimitOrderParams creates a new LimitOrderParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewLimitOrderParams() *LimitOrderParams {
-	var ()
 	return &LimitOrderParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewLimitOrderParamsWithTimeout creates a new LimitOrderParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewLimitOrderParamsWithTimeout(timeout time.Duration) *LimitOrderParams {
-	var ()
 	return &LimitOrderParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewLimitOrderParamsWithContext creates a new LimitOrderParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewLimitOrderParamsWithContext(ctx context.Context) *LimitOrderParams {
-	var ()
 	return &LimitOrderParams{
-
 		Context: ctx,
 	}
 }
 
 // NewLimitOrderParamsWithHTTPClient creates a new LimitOrderParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewLimitOrderParamsWithHTTPClient(client *http.Client) *LimitOrderParams {
-	var ()
 	return &LimitOrderParams{
 		HTTPClient: client,
 	}
 }
 
-/*LimitOrderParams contains all the parameters to send to the API endpoint
-for the limit order operation typically these are written to a http.Request
+/* LimitOrderParams contains all the parameters to send to the API endpoint
+   for the limit order operation.
+
+   Typically these are written to a http.Request.
 */
 type LimitOrderParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*OrderID*/
+
+	// OrderID.
+	//
+	// Format: uint64
 	OrderID string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the limit order params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *LimitOrderParams) WithDefaults() *LimitOrderParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the limit order params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *LimitOrderParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the limit order params
@@ -138,16 +157,17 @@ func (o *LimitOrderParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param order_id

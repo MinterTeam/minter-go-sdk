@@ -6,11 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // Coin coin
+// Example: {"id":"0","symbol":"BIP"}
 //
 // swagger:model Coin
 type Coin struct {
@@ -24,6 +27,11 @@ type Coin struct {
 
 // Validate validates this coin
 func (m *Coin) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this coin based on context it is used
+func (m *Coin) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

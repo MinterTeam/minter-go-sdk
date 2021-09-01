@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -54,7 +56,6 @@ func (m *GenesisResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *GenesisResponse) validateAppState(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.AppState) { // not required
 		return nil
 	}
@@ -72,13 +73,58 @@ func (m *GenesisResponse) validateAppState(formats strfmt.Registry) error {
 }
 
 func (m *GenesisResponse) validateConsensusParams(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.ConsensusParams) { // not required
 		return nil
 	}
 
 	if m.ConsensusParams != nil {
 		if err := m.ConsensusParams.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("consensus_params")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this genesis response based on the context it is used
+func (m *GenesisResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateAppState(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateConsensusParams(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *GenesisResponse) contextValidateAppState(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.AppState != nil {
+		if err := m.AppState.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("app_state")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *GenesisResponse) contextValidateConsensusParams(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.ConsensusParams != nil {
+		if err := m.ConsensusParams.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("consensus_params")
 			}

@@ -46,7 +46,7 @@ func NewCommissionVotesOK() *CommissionVotesOK {
 	return &CommissionVotesOK{}
 }
 
-/*CommissionVotesOK handles this case with default header values.
+/* CommissionVotesOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type CommissionVotesOK struct {
 func (o *CommissionVotesOK) Error() string {
 	return fmt.Sprintf("[GET /commission_votes/{target_version}][%d] commissionVotesOK  %+v", 200, o.Payload)
 }
-
 func (o *CommissionVotesOK) GetPayload() *models.CommissionVotesResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewCommissionVotesDefault(code int) *CommissionVotesDefault {
 	}
 }
 
-/*CommissionVotesDefault handles this case with default header values.
+/* CommissionVotesDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *CommissionVotesDefault) Code() int {
 func (o *CommissionVotesDefault) Error() string {
 	return fmt.Sprintf("[GET /commission_votes/{target_version}][%d] CommissionVotes default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CommissionVotesDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

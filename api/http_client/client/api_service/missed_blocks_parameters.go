@@ -17,58 +17,75 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewMissedBlocksParams creates a new MissedBlocksParams object
-// with the default values initialized.
+// NewMissedBlocksParams creates a new MissedBlocksParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewMissedBlocksParams() *MissedBlocksParams {
-	var ()
 	return &MissedBlocksParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewMissedBlocksParamsWithTimeout creates a new MissedBlocksParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewMissedBlocksParamsWithTimeout(timeout time.Duration) *MissedBlocksParams {
-	var ()
 	return &MissedBlocksParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewMissedBlocksParamsWithContext creates a new MissedBlocksParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewMissedBlocksParamsWithContext(ctx context.Context) *MissedBlocksParams {
-	var ()
 	return &MissedBlocksParams{
-
 		Context: ctx,
 	}
 }
 
 // NewMissedBlocksParamsWithHTTPClient creates a new MissedBlocksParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewMissedBlocksParamsWithHTTPClient(client *http.Client) *MissedBlocksParams {
-	var ()
 	return &MissedBlocksParams{
 		HTTPClient: client,
 	}
 }
 
-/*MissedBlocksParams contains all the parameters to send to the API endpoint
-for the missed blocks operation typically these are written to a http.Request
+/* MissedBlocksParams contains all the parameters to send to the API endpoint
+   for the missed blocks operation.
+
+   Typically these are written to a http.Request.
 */
 type MissedBlocksParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*PublicKey*/
+
+	// PublicKey.
 	PublicKey string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the missed blocks params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *MissedBlocksParams) WithDefaults() *MissedBlocksParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the missed blocks params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *MissedBlocksParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the missed blocks params
@@ -138,16 +155,17 @@ func (o *MissedBlocksParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param public_key

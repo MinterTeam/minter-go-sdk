@@ -17,60 +17,82 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewSwapPoolParams creates a new SwapPoolParams object
-// with the default values initialized.
+// NewSwapPoolParams creates a new SwapPoolParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewSwapPoolParams() *SwapPoolParams {
-	var ()
 	return &SwapPoolParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewSwapPoolParamsWithTimeout creates a new SwapPoolParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewSwapPoolParamsWithTimeout(timeout time.Duration) *SwapPoolParams {
-	var ()
 	return &SwapPoolParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewSwapPoolParamsWithContext creates a new SwapPoolParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewSwapPoolParamsWithContext(ctx context.Context) *SwapPoolParams {
-	var ()
 	return &SwapPoolParams{
-
 		Context: ctx,
 	}
 }
 
 // NewSwapPoolParamsWithHTTPClient creates a new SwapPoolParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewSwapPoolParamsWithHTTPClient(client *http.Client) *SwapPoolParams {
-	var ()
 	return &SwapPoolParams{
 		HTTPClient: client,
 	}
 }
 
-/*SwapPoolParams contains all the parameters to send to the API endpoint
-for the swap pool operation typically these are written to a http.Request
+/* SwapPoolParams contains all the parameters to send to the API endpoint
+   for the swap pool operation.
+
+   Typically these are written to a http.Request.
 */
 type SwapPoolParams struct {
 
-	/*Coin0*/
+	// Coin0.
+	//
+	// Format: uint64
 	Coin0 string
-	/*Coin1*/
+
+	// Coin1.
+	//
+	// Format: uint64
 	Coin1 string
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the swap pool params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *SwapPoolParams) WithDefaults() *SwapPoolParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the swap pool params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *SwapPoolParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the swap pool params
@@ -161,16 +183,17 @@ func (o *SwapPoolParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

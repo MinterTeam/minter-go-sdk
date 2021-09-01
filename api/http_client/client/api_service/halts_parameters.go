@@ -16,56 +16,72 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewHaltsParams creates a new HaltsParams object
-// with the default values initialized.
+// NewHaltsParams creates a new HaltsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewHaltsParams() *HaltsParams {
-	var ()
 	return &HaltsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewHaltsParamsWithTimeout creates a new HaltsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewHaltsParamsWithTimeout(timeout time.Duration) *HaltsParams {
-	var ()
 	return &HaltsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewHaltsParamsWithContext creates a new HaltsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewHaltsParamsWithContext(ctx context.Context) *HaltsParams {
-	var ()
 	return &HaltsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewHaltsParamsWithHTTPClient creates a new HaltsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewHaltsParamsWithHTTPClient(client *http.Client) *HaltsParams {
-	var ()
 	return &HaltsParams{
 		HTTPClient: client,
 	}
 }
 
-/*HaltsParams contains all the parameters to send to the API endpoint
-for the halts operation typically these are written to a http.Request
+/* HaltsParams contains all the parameters to send to the API endpoint
+   for the halts operation.
+
+   Typically these are written to a http.Request.
 */
 type HaltsParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the halts params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *HaltsParams) WithDefaults() *HaltsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the halts params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *HaltsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the halts params

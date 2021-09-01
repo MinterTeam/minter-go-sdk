@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -60,7 +62,6 @@ func (m *NodeInfo) Validate(formats strfmt.Registry) error {
 }
 
 func (m *NodeInfo) validateOther(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Other) { // not required
 		return nil
 	}
@@ -78,13 +79,58 @@ func (m *NodeInfo) validateOther(formats strfmt.Registry) error {
 }
 
 func (m *NodeInfo) validateProtocolVersion(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.ProtocolVersion) { // not required
 		return nil
 	}
 
 	if m.ProtocolVersion != nil {
 		if err := m.ProtocolVersion.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("protocol_version")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this node info based on the context it is used
+func (m *NodeInfo) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateOther(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateProtocolVersion(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *NodeInfo) contextValidateOther(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Other != nil {
+		if err := m.Other.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("other")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *NodeInfo) contextValidateProtocolVersion(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.ProtocolVersion != nil {
+		if err := m.ProtocolVersion.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("protocol_version")
 			}

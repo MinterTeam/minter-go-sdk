@@ -46,7 +46,7 @@ func NewUnconfirmedTxsOK() *UnconfirmedTxsOK {
 	return &UnconfirmedTxsOK{}
 }
 
-/*UnconfirmedTxsOK handles this case with default header values.
+/* UnconfirmedTxsOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type UnconfirmedTxsOK struct {
 func (o *UnconfirmedTxsOK) Error() string {
 	return fmt.Sprintf("[GET /unconfirmed_txs][%d] unconfirmedTxsOK  %+v", 200, o.Payload)
 }
-
 func (o *UnconfirmedTxsOK) GetPayload() *models.UnconfirmedTxsResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewUnconfirmedTxsDefault(code int) *UnconfirmedTxsDefault {
 	}
 }
 
-/*UnconfirmedTxsDefault handles this case with default header values.
+/* UnconfirmedTxsDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *UnconfirmedTxsDefault) Code() int {
 func (o *UnconfirmedTxsDefault) Error() string {
 	return fmt.Sprintf("[GET /unconfirmed_txs][%d] UnconfirmedTxs default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *UnconfirmedTxsDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

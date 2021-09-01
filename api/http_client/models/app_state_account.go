@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -50,7 +51,6 @@ func (m *AppStateAccount) Validate(formats strfmt.Registry) error {
 }
 
 func (m *AppStateAccount) validateBalance(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Balance) { // not required
 		return nil
 	}
@@ -75,13 +75,62 @@ func (m *AppStateAccount) validateBalance(formats strfmt.Registry) error {
 }
 
 func (m *AppStateAccount) validateMultisigData(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.MultisigData) { // not required
 		return nil
 	}
 
 	if m.MultisigData != nil {
 		if err := m.MultisigData.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("multisig_data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this app state account based on the context it is used
+func (m *AppStateAccount) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateBalance(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateMultisigData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *AppStateAccount) contextValidateBalance(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Balance); i++ {
+
+		if m.Balance[i] != nil {
+			if err := m.Balance[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("balance" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *AppStateAccount) contextValidateMultisigData(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.MultisigData != nil {
+		if err := m.MultisigData.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("multisig_data")
 			}

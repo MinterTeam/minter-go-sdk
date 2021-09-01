@@ -16,52 +16,66 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewMinGasPriceParams creates a new MinGasPriceParams object
-// with the default values initialized.
+// NewMinGasPriceParams creates a new MinGasPriceParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewMinGasPriceParams() *MinGasPriceParams {
-
 	return &MinGasPriceParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewMinGasPriceParamsWithTimeout creates a new MinGasPriceParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewMinGasPriceParamsWithTimeout(timeout time.Duration) *MinGasPriceParams {
-
 	return &MinGasPriceParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewMinGasPriceParamsWithContext creates a new MinGasPriceParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewMinGasPriceParamsWithContext(ctx context.Context) *MinGasPriceParams {
-
 	return &MinGasPriceParams{
-
 		Context: ctx,
 	}
 }
 
 // NewMinGasPriceParamsWithHTTPClient creates a new MinGasPriceParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewMinGasPriceParamsWithHTTPClient(client *http.Client) *MinGasPriceParams {
-
 	return &MinGasPriceParams{
 		HTTPClient: client,
 	}
 }
 
-/*MinGasPriceParams contains all the parameters to send to the API endpoint
-for the min gas price operation typically these are written to a http.Request
+/* MinGasPriceParams contains all the parameters to send to the API endpoint
+   for the min gas price operation.
+
+   Typically these are written to a http.Request.
 */
 type MinGasPriceParams struct {
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the min gas price params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *MinGasPriceParams) WithDefaults() *MinGasPriceParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the min gas price params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *MinGasPriceParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the min gas price params

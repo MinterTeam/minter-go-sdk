@@ -6,11 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // SendTransactionResponse send transaction response
+// Example: {"code":"0","hash":"Mt6019f740983dc43b53ea9c37891af0c9ce7251399ebaafc4ea56d68d665adfcb","log":""}
 //
 // swagger:model SendTransactionResponse
 type SendTransactionResponse struct {
@@ -27,6 +30,11 @@ type SendTransactionResponse struct {
 
 // Validate validates this send transaction response
 func (m *SendTransactionResponse) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this send transaction response based on context it is used
+func (m *SendTransactionResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

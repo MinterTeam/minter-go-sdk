@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/FactomProject/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/FactomProject/btcutilecc v0.0.0-20130527213604-d3a63a5752ec // indirect
-	github.com/MinterTeam/node-grpc-gateway v1.4.3-0.20210816133405-812d8dad9376
+	github.com/MinterTeam/node-grpc-gateway v1.4.3-0.20210825123115-444f92d56f63
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/cmars/basen v0.0.0-20150613233007-fe3947df716e // indirect
 	github.com/ethereum/go-ethereum v1.9.22

@@ -17,72 +17,89 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewAddressParams creates a new AddressParams object
-// with the default values initialized.
+// NewAddressParams creates a new AddressParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewAddressParams() *AddressParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressParams{
-		Delegated: &delegatedDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewAddressParamsWithTimeout creates a new AddressParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewAddressParamsWithTimeout(timeout time.Duration) *AddressParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressParams{
-		Delegated: &delegatedDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewAddressParamsWithContext creates a new AddressParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewAddressParamsWithContext(ctx context.Context) *AddressParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressParams{
-		Delegated: &delegatedDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewAddressParamsWithHTTPClient creates a new AddressParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewAddressParamsWithHTTPClient(client *http.Client) *AddressParams {
-	var (
-		delegatedDefault = bool(false)
-	)
 	return &AddressParams{
-		Delegated:  &delegatedDefault,
 		HTTPClient: client,
 	}
 }
 
-/*AddressParams contains all the parameters to send to the API endpoint
-for the address operation typically these are written to a http.Request
+/* AddressParams contains all the parameters to send to the API endpoint
+   for the address operation.
+
+   Typically these are written to a http.Request.
 */
 type AddressParams struct {
 
-	/*Address*/
+	// Address.
 	Address string
-	/*Delegated*/
+
+	// Delegated.
 	Delegated *bool
-	/*Height*/
+
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the address params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *AddressParams) WithDefaults() *AddressParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the address params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *AddressParams) SetDefaults() {
+	var (
+		delegatedDefault = bool(false)
+	)
+
+	val := AddressParams{
+		Delegated: &delegatedDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the address params
@@ -168,32 +185,34 @@ func (o *AddressParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regis
 
 		// query param delegated
 		var qrDelegated bool
+
 		if o.Delegated != nil {
 			qrDelegated = *o.Delegated
 		}
 		qDelegated := swag.FormatBool(qrDelegated)
 		if qDelegated != "" {
+
 			if err := r.SetQueryParam("delegated", qDelegated); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.Height != nil {
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if len(res) > 0 {

@@ -17,58 +17,75 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewCoinInfoParams creates a new CoinInfoParams object
-// with the default values initialized.
+// NewCoinInfoParams creates a new CoinInfoParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCoinInfoParams() *CoinInfoParams {
-	var ()
 	return &CoinInfoParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewCoinInfoParamsWithTimeout creates a new CoinInfoParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewCoinInfoParamsWithTimeout(timeout time.Duration) *CoinInfoParams {
-	var ()
 	return &CoinInfoParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewCoinInfoParamsWithContext creates a new CoinInfoParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewCoinInfoParamsWithContext(ctx context.Context) *CoinInfoParams {
-	var ()
 	return &CoinInfoParams{
-
 		Context: ctx,
 	}
 }
 
 // NewCoinInfoParamsWithHTTPClient creates a new CoinInfoParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewCoinInfoParamsWithHTTPClient(client *http.Client) *CoinInfoParams {
-	var ()
 	return &CoinInfoParams{
 		HTTPClient: client,
 	}
 }
 
-/*CoinInfoParams contains all the parameters to send to the API endpoint
-for the coin info operation typically these are written to a http.Request
+/* CoinInfoParams contains all the parameters to send to the API endpoint
+   for the coin info operation.
+
+   Typically these are written to a http.Request.
 */
 type CoinInfoParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*Symbol*/
+
+	// Symbol.
 	Symbol string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the coin info params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CoinInfoParams) WithDefaults() *CoinInfoParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the coin info params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CoinInfoParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the coin info params
@@ -138,16 +155,17 @@ func (o *CoinInfoParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param symbol

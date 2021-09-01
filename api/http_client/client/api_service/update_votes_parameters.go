@@ -17,58 +17,77 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewUpdateVotesParams creates a new UpdateVotesParams object
-// with the default values initialized.
+// NewUpdateVotesParams creates a new UpdateVotesParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUpdateVotesParams() *UpdateVotesParams {
-	var ()
 	return &UpdateVotesParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewUpdateVotesParamsWithTimeout creates a new UpdateVotesParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewUpdateVotesParamsWithTimeout(timeout time.Duration) *UpdateVotesParams {
-	var ()
 	return &UpdateVotesParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewUpdateVotesParamsWithContext creates a new UpdateVotesParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewUpdateVotesParamsWithContext(ctx context.Context) *UpdateVotesParams {
-	var ()
 	return &UpdateVotesParams{
-
 		Context: ctx,
 	}
 }
 
 // NewUpdateVotesParamsWithHTTPClient creates a new UpdateVotesParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewUpdateVotesParamsWithHTTPClient(client *http.Client) *UpdateVotesParams {
-	var ()
 	return &UpdateVotesParams{
 		HTTPClient: client,
 	}
 }
 
-/*UpdateVotesParams contains all the parameters to send to the API endpoint
-for the update votes operation typically these are written to a http.Request
+/* UpdateVotesParams contains all the parameters to send to the API endpoint
+   for the update votes operation.
+
+   Typically these are written to a http.Request.
 */
 type UpdateVotesParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height *uint64
-	/*TargetVersion*/
+
+	// TargetVersion.
+	//
+	// Format: uint64
 	TargetVersion string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the update votes params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *UpdateVotesParams) WithDefaults() *UpdateVotesParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the update votes params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *UpdateVotesParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the update votes params
@@ -138,16 +157,17 @@ func (o *UpdateVotesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param target_version

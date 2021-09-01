@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -20,7 +22,7 @@ type EstimateCoinSellResponse struct {
 	Commission string `json:"commission,omitempty"`
 
 	// swap from
-	SwapFrom SwapFrom `json:"swap_from,omitempty"`
+	SwapFrom *SwapFrom `json:"swap_from,omitempty"`
 
 	// will get
 	WillGet string `json:"will_get,omitempty"`
@@ -41,16 +43,45 @@ func (m *EstimateCoinSellResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *EstimateCoinSellResponse) validateSwapFrom(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.SwapFrom) { // not required
 		return nil
 	}
 
-	if err := m.SwapFrom.Validate(formats); err != nil {
-		if ve, ok := err.(*errors.Validation); ok {
-			return ve.ValidateName("swap_from")
+	if m.SwapFrom != nil {
+		if err := m.SwapFrom.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("swap_from")
+			}
+			return err
 		}
-		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this estimate coin sell response based on the context it is used
+func (m *EstimateCoinSellResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateSwapFrom(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *EstimateCoinSellResponse) contextValidateSwapFrom(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.SwapFrom != nil {
+		if err := m.SwapFrom.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("swap_from")
+			}
+			return err
+		}
 	}
 
 	return nil

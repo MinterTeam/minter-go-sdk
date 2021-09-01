@@ -6,11 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // CoinInfoResponse coin info response
+// Example: {"crr":"0","id":"0","max_supply":"10000000000000000000000000000","name":"","owner_address":null,"reserve_balance":"0","symbol":"BIP","volume":"0"}
 //
 // swagger:model CoinInfoResponse
 type CoinInfoResponse struct {
@@ -48,6 +51,11 @@ type CoinInfoResponse struct {
 
 // Validate validates this coin info response
 func (m *CoinInfoResponse) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this coin info response based on context it is used
+func (m *CoinInfoResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

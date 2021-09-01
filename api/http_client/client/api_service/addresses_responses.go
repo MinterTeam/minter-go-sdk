@@ -46,7 +46,7 @@ func NewAddressesOK() *AddressesOK {
 	return &AddressesOK{}
 }
 
-/*AddressesOK handles this case with default header values.
+/* AddressesOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type AddressesOK struct {
 func (o *AddressesOK) Error() string {
 	return fmt.Sprintf("[GET /addresses][%d] addressesOK  %+v", 200, o.Payload)
 }
-
 func (o *AddressesOK) GetPayload() *models.AddressesResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewAddressesDefault(code int) *AddressesDefault {
 	}
 }
 
-/*AddressesDefault handles this case with default header values.
+/* AddressesDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *AddressesDefault) Code() int {
 func (o *AddressesDefault) Error() string {
 	return fmt.Sprintf("[GET /addresses][%d] Addresses default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *AddressesDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }

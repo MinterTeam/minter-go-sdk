@@ -17,61 +17,78 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewEventsParams creates a new EventsParams object
-// with the default values initialized.
+// NewEventsParams creates a new EventsParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewEventsParams() *EventsParams {
-	var ()
 	return &EventsParams{
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewEventsParamsWithTimeout creates a new EventsParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewEventsParamsWithTimeout(timeout time.Duration) *EventsParams {
-	var ()
 	return &EventsParams{
-
 		timeout: timeout,
 	}
 }
 
 // NewEventsParamsWithContext creates a new EventsParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewEventsParamsWithContext(ctx context.Context) *EventsParams {
-	var ()
 	return &EventsParams{
-
 		Context: ctx,
 	}
 }
 
 // NewEventsParamsWithHTTPClient creates a new EventsParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewEventsParamsWithHTTPClient(client *http.Client) *EventsParams {
-	var ()
 	return &EventsParams{
 		HTTPClient: client,
 	}
 }
 
-/*EventsParams contains all the parameters to send to the API endpoint
-for the events operation typically these are written to a http.Request
+/* EventsParams contains all the parameters to send to the API endpoint
+   for the events operation.
+
+   Typically these are written to a http.Request.
 */
 type EventsParams struct {
 
-	/*Height*/
+	// Height.
+	//
+	// Format: uint64
 	Height string
-	/*Search
-	  Array of public keys of validators and wallet addresses of delegators for filtering.
 
+	/* Search.
+
+	   Array of public keys of validators and wallet addresses of delegators for filtering.
 	*/
 	Search []string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the events params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *EventsParams) WithDefaults() *EventsParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the events params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *EventsParams) SetDefaults() {
+	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the events params
@@ -142,16 +159,36 @@ func (o *EventsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regist
 		return err
 	}
 
-	valuesSearch := o.Search
+	if o.Search != nil {
 
-	joinedSearch := swag.JoinByFormat(valuesSearch, "multi")
-	// query array param search
-	if err := r.SetQueryParam("search", joinedSearch...); err != nil {
-		return err
+		// binding items for search
+		joinedSearch := o.bindParamSearch(reg)
+
+		// query array param search
+		if err := r.SetQueryParam("search", joinedSearch...); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
 	return nil
+}
+
+// bindParamEvents binds the parameter search
+func (o *EventsParams) bindParamSearch(formats strfmt.Registry) []string {
+	searchIR := o.Search
+
+	var searchIC []string
+	for _, searchIIR := range searchIR { // explode []string
+
+		searchIIV := searchIIR // string as string
+		searchIC = append(searchIC, searchIIV)
+	}
+
+	// items.CollectionFormat: "multi"
+	searchIS := swag.JoinByFormat(searchIC, "multi")
+
+	return searchIS
 }

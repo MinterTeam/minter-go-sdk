@@ -17,81 +17,98 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewCandidateParams creates a new CandidateParams object
-// with the default values initialized.
+// NewCandidateParams creates a new CandidateParams object,
+// with the default timeout for this client.
+//
+// Default values are not hydrated, since defaults are normally applied by the API server side.
+//
+// To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCandidateParams() *CandidateParams {
-	var (
-		notShowStakesDefault = bool(false)
-	)
 	return &CandidateParams{
-		NotShowStakes: &notShowStakesDefault,
-
 		timeout: cr.DefaultTimeout,
 	}
 }
 
 // NewCandidateParamsWithTimeout creates a new CandidateParams object
-// with the default values initialized, and the ability to set a timeout on a request
+// with the ability to set a timeout on a request.
 func NewCandidateParamsWithTimeout(timeout time.Duration) *CandidateParams {
-	var (
-		notShowStakesDefault = bool(false)
-	)
 	return &CandidateParams{
-		NotShowStakes: &notShowStakesDefault,
-
 		timeout: timeout,
 	}
 }
 
 // NewCandidateParamsWithContext creates a new CandidateParams object
-// with the default values initialized, and the ability to set a context for a request
+// with the ability to set a context for a request.
 func NewCandidateParamsWithContext(ctx context.Context) *CandidateParams {
-	var (
-		notShowStakesDefault = bool(false)
-	)
 	return &CandidateParams{
-		NotShowStakes: &notShowStakesDefault,
-
 		Context: ctx,
 	}
 }
 
 // NewCandidateParamsWithHTTPClient creates a new CandidateParams object
-// with the default values initialized, and the ability to set a custom HTTPClient for a request
+// with the ability to set a custom HTTPClient for a request.
 func NewCandidateParamsWithHTTPClient(client *http.Client) *CandidateParams {
-	var (
-		notShowStakesDefault = bool(false)
-	)
 	return &CandidateParams{
-		NotShowStakes: &notShowStakesDefault,
-		HTTPClient:    client,
+		HTTPClient: client,
 	}
 }
 
-/*CandidateParams contains all the parameters to send to the API endpoint
-for the candidate operation typically these are written to a http.Request
+/* CandidateParams contains all the parameters to send to the API endpoint
+   for the candidate operation.
+
+   Typically these are written to a http.Request.
 */
 type CandidateParams struct {
 
-	/*Height
-	  Blockchain state height for the current request. Optional, the last default state of the node is used.
+	/* Height.
 
+	   Blockchain state height for the current request. Optional, the last default state of the node is used.
+
+	   Format: uint64
 	*/
 	Height *uint64
-	/*NotShowStakes
-	  Do not display a list of steaks. Note: used_slots, uniq_users, min_stake will be filled.
 
+	/* NotShowStakes.
+
+	   Do not display a list of steaks. Note: used_slots, uniq_users, min_stake will be filled.
 	*/
 	NotShowStakes *bool
-	/*PublicKey
-	  Public key of a candidate
 
+	/* PublicKey.
+
+	   Public key of a candidate
 	*/
 	PublicKey string
 
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
+}
+
+// WithDefaults hydrates default values in the candidate params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CandidateParams) WithDefaults() *CandidateParams {
+	o.SetDefaults()
+	return o
+}
+
+// SetDefaults hydrates default values in the candidate params (not the query body).
+//
+// All values with no default are reset to their zero value.
+func (o *CandidateParams) SetDefaults() {
+	var (
+		notShowStakesDefault = bool(false)
+	)
+
+	val := CandidateParams{
+		NotShowStakes: &notShowStakesDefault,
+	}
+
+	val.timeout = o.timeout
+	val.Context = o.Context
+	val.HTTPClient = o.HTTPClient
+	*o = val
 }
 
 // WithTimeout adds the timeout to the candidate params
@@ -172,32 +189,34 @@ func (o *CandidateParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 
 		// query param height
 		var qrHeight uint64
+
 		if o.Height != nil {
 			qrHeight = *o.Height
 		}
 		qHeight := swag.FormatUint64(qrHeight)
 		if qHeight != "" {
+
 			if err := r.SetQueryParam("height", qHeight); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	if o.NotShowStakes != nil {
 
 		// query param not_show_stakes
 		var qrNotShowStakes bool
+
 		if o.NotShowStakes != nil {
 			qrNotShowStakes = *o.NotShowStakes
 		}
 		qNotShowStakes := swag.FormatBool(qrNotShowStakes)
 		if qNotShowStakes != "" {
+
 			if err := r.SetQueryParam("not_show_stakes", qNotShowStakes); err != nil {
 				return err
 			}
 		}
-
 	}
 
 	// path param public_key

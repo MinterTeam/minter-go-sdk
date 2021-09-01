@@ -46,7 +46,7 @@ func NewCoinInfoOK() *CoinInfoOK {
 	return &CoinInfoOK{}
 }
 
-/*CoinInfoOK handles this case with default header values.
+/* CoinInfoOK describes a response with status code 200, with default header values.
 
 A successful response.
 */
@@ -57,7 +57,6 @@ type CoinInfoOK struct {
 func (o *CoinInfoOK) Error() string {
 	return fmt.Sprintf("[GET /coin_info/{symbol}][%d] coinInfoOK  %+v", 200, o.Payload)
 }
-
 func (o *CoinInfoOK) GetPayload() *models.CoinInfoResponse {
 	return o.Payload
 }
@@ -81,7 +80,7 @@ func NewCoinInfoDefault(code int) *CoinInfoDefault {
 	}
 }
 
-/*CoinInfoDefault handles this case with default header values.
+/* CoinInfoDefault describes a response with status code -1, with default header values.
 
 An unexpected error response.
 */
@@ -99,7 +98,6 @@ func (o *CoinInfoDefault) Code() int {
 func (o *CoinInfoDefault) Error() string {
 	return fmt.Sprintf("[GET /coin_info/{symbol}][%d] CoinInfo default  %+v", o._statusCode, o.Payload)
 }
-
 func (o *CoinInfoDefault) GetPayload() *models.ErrorBody {
 	return o.Payload
 }
