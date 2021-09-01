@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -10,6 +11,11 @@ type ProtobufAny map[string]interface{}
 
 // Validate validates this protobuf any
 func (m *ProtobufAny) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this protobuf any based on context it is used
+func (m *ProtobufAny) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
