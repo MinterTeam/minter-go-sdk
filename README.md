@@ -61,15 +61,13 @@ need to find the transaction by hash and make sure that the status code is 0.
 
 ```go
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
-transaction.NewSendData().
-SetCoin(0).
-SetValue(transaction.BipToPip(big.NewInt(1))).
-MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
+  transaction.NewSendData().
+    SetCoin(0).
+    SetValue(transaction.BipToPip(big.NewInt(1))).
+    MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
 )
 
-signedTransaction, _ := tx.
-SetNonce(1).
-Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
+signedTransaction, _ := tx.SetNonce(1).Sign("07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142")
 
 encode, _ := signedTransaction.Encode()
 ```
@@ -80,17 +78,17 @@ encode, _ := signedTransaction.Encode()
 
 ```go
 tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
-transaction.NewSendData().
-SetCoin(0).
-SetValue(transaction.BipToPip(big.NewInt(1))).
-MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
+  transaction.NewSendData().
+  SetCoin(0).
+  SetValue(transaction.BipToPip(big.NewInt(1))).
+  MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483")
 )
 
 signedTx, _ := tx.SetNonce(1).SetMultiSignatureType().Sign(
-multisigAddress,
-"ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63",
-"b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7",
-"4c8dbfb3258f383adf656c2131e5ed77ec482a36125db71fb49d29e0528ff2ba",
+  multisigAddress,
+  "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63",
+  "b0a65cd84d57189b70d80fe0b3d5fa3ea6e02fa48041314a587a1f8fdba703d7",
+  "4c8dbfb3258f383adf656c2131e5ed77ec482a36125db71fb49d29e0528ff2ba",
 )
 
 encode, _ := signedTx.Encode()
