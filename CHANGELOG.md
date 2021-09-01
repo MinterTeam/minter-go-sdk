@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.3.0...v2)
+
 ## [v2.3.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.3.0) (2021-05-20)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.2.0...v2.3.0)
