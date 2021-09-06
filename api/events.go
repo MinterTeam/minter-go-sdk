@@ -229,9 +229,9 @@ func (e *StakeKickEvent) GetValidatorPublicKey() string {
 func (e *StakeKickEvent) Type() EventType { return TypeStakeKickEvent }
 
 type OrderExpiredEvent struct {
-	ID      uint64 `json:"id"`
+	ID      string `json:"id"`
 	Address string `json:"address"`
-	Coin    uint64 `json:"coin"`
+	Coin    string `json:"coin"`
 	Amount  string `json:"amount"`
 }
 
