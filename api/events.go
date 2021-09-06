@@ -271,7 +271,7 @@ func newEvent(t EventType) Event {
 func ConvertToEvent(typeName EventType, value []byte) (Event, error) {
 	eventStruct := newEvent(typeName)
 	if eventStruct == nil {
-		return nil, fmt.Errorf("Type type unknown: %s", typeName)
+		return nil, fmt.Errorf("type unknown: %s", typeName)
 	}
 
 	err := json.Unmarshal(value, eventStruct)
