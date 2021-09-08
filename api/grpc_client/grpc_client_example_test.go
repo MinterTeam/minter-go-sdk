@@ -1,10 +1,9 @@
 package grpc_client_test
 
 import (
-	"fmt"
+	"github.com/MinterTeam/minter-go-sdk/v2/api"
 	"io"
 	"math/big"
-	"strings"
 	"time"
 
 	"github.com/MinterTeam/minter-go-sdk/v2/api/grpc_client"
@@ -27,7 +26,7 @@ func Example() {
 	sign, _ := tx.SetNonce(1).Sign(w.PrivateKey)
 	encode, _ := sign.Encode()
 	hash, _ := sign.Hash()
-	subscribeClient, _ := client.Subscribe(fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
+	subscribeClient, _ := client.Subscribe(api.QueryHash(hash))
 	defer subscribeClient.CloseSend()
 
 	res, err := client.WithCallOption(

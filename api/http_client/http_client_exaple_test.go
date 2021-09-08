@@ -2,15 +2,13 @@ package http_client_test
 
 import (
 	"context"
-	"fmt"
-	"io"
-	"math/big"
-	"strings"
-
+	"github.com/MinterTeam/minter-go-sdk/v2/api"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/models"
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
+	"io"
+	"math/big"
 )
 
 func Example() {
@@ -24,7 +22,7 @@ func Example() {
 	sign, _ := tx.SetNonce(1).Sign(w.PrivateKey)
 	encode, _ := sign.Encode()
 	hash, _ := sign.Hash()
-	subscribeClient, _ := client.Subscribe(fmt.Sprintf("tx.hash = '%s'", strings.ToUpper(hash[2:])))
+	subscribeClient, _ := client.Subscribe(api.QueryHash(hash))
 	defer subscribeClient.CloseSend()
 
 	res, err := client.SendTransaction(encode)

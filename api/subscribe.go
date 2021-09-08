@@ -1,9 +1,108 @@
 package api
 
 import (
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"strconv"
+	"strings"
 	"time"
 )
+
+const (
+	// EventTypeKey is a reserved composite key for event name.
+	eventTypeKey = "tm.event"
+	// TxHashKey is a reserved key, used to specify transaction's hash.
+	// see EventBus#PublishEventTx
+	txHashKey = "tx.hash"
+	// TxHeightKey is a reserved key, used to specify transaction block's height.
+	// see EventBus#PublishEventTx
+	txHeightKey = "tx.height"
+
+	// BlockHeightKey is a reserved key used for indexing BeginBlock and Endblock
+	// events.
+	blockHeightKey = "block.height"
+)
+
+type SubscribeEventType string
+
+// Reserved event types.
+// Block level events for mass consumption by users.
+// These events are triggered from the state package,
+// after a block has been committed.
+// These are also used by the tx indexer for async indexing.
+const (
+	EventNewBlock            SubscribeEventType = "NewBlock"
+	EventNewBlockHeader      SubscribeEventType = "NewBlockHeader"
+	EventNewEvidence         SubscribeEventType = "NewEvidence"
+	EventTx                  SubscribeEventType = "Tx"
+	EventValidatorSetUpdates SubscribeEventType = "ValidatorSetUpdates"
+)
+
+func QueryFrom(address string) string {
+	if strings.HasPrefix(address, "Mx") {
+		address = address[:2]
+	}
+	return QueryTag("from", address)
+}
+
+func QueryTo(address string) string {
+	if strings.HasPrefix(address, "Mx") {
+		address = address[:2]
+	}
+	return QueryTag("to", address)
+}
+
+func QueryType(t byte) string {
+	return QueryTag("type", hex.EncodeToString([]byte{t}))
+}
+
+func QueryTag(tag, param string) string {
+	return fmt.Sprintf("tags.tx.%s = '%s'", tag, param)
+}
+
+func QueryHash(hash string) string {
+	if strings.HasPrefix(hash, "Mt") {
+		hash = hash[:2]
+	}
+	return fmt.Sprintf("%s = '%s'", txHashKey, strings.ToUpper(hash))
+}
+
+func QueryFail() string {
+	return QueryTag("fail", "1")
+}
+
+func QueryCommissionCoin(coinID uint64) string {
+	return QueryTag("commission_coin", strconv.Itoa(int(coinID)))
+}
+func QueryCoinID(coinID uint64) string {
+	return QueryTag("coin_id", strconv.Itoa(int(coinID)))
+}
+func QueryCoinSymbol(symbol string) string {
+	return QueryTag("coin_symbol", symbol)
+}
+func QueryPublicKey(publicKey string) string {
+	return QueryTag("public_key", publicKey)
+}
+func QueryCommissionConversion(isPool bool) string {
+	conv := "bancor"
+	if isPool {
+		conv = "pool"
+	}
+	return QueryTag("commission_conversion", conv)
+}
+
+func QueryEvent(event SubscribeEventType) string {
+	return fmt.Sprintf("%s = '%s'", eventTypeKey, event)
+}
+
+func QueryTxHeight(height uint64) string {
+	return fmt.Sprintf("%s = '%d'", txHeightKey, height)
+}
+
+func QueryBlockHeight(height uint64) string {
+	return fmt.Sprintf("%s = '%d'", blockHeightKey, height)
+}
 
 type SubscribeNewBlockResult struct {
 	Query string `json:"query"`
