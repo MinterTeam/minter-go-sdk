@@ -59,6 +59,7 @@ func ExampleClient_SendTransaction() {
 	}
 	// or
 	{
+		time.Sleep(5 * time.Second)
 		response, _ := client.Transaction(hash)
 		_, _ = client.Marshal(response)
 		sendData := new(api_pb.SendData)
