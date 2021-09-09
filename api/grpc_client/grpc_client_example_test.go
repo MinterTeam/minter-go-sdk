@@ -2,17 +2,16 @@ package grpc_client_test
 
 import (
 	"github.com/MinterTeam/minter-go-sdk/v2/api"
-	"github.com/MinterTeam/node-grpc-gateway/api_pb"
-	"io"
-	"math/big"
-	"time"
-
 	"github.com/MinterTeam/minter-go-sdk/v2/api/grpc_client"
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
+	"github.com/MinterTeam/node-grpc-gateway/api_pb"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"io"
+	"math/big"
+	"time"
 )
 
 func ExampleClient_SendTransaction() {
