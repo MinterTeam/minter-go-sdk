@@ -19,10 +19,11 @@ func ExampleClient_SendTransaction() {
 	client, _ := grpc_client.New("localhost:8842")
 	coinID, _ := client.CoinID("SYMBOL")
 	w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
+	nonce, _ := client.Nonce(w.Address)
 	data := transaction.NewSendData().SetCoin(coinID).SetValue(transaction.BipToPip(big.NewInt(1))).MustSetTo(w.Address)
 	transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
 	tx, _ := transactionsBuilder.NewTransaction(data)
-	sign, _ := tx.SetNonce(1).Sign(w.PrivateKey)
+	sign, _ := tx.SetNonce(nonce).Sign(w.PrivateKey)
 	encode, _ := sign.Encode()
 	hash, _ := sign.Hash()
 
