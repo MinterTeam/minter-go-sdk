@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/go-openapi/swag"
 	"io"
 	"net/http"
 	"net/url"
@@ -835,7 +836,25 @@ func (c *Client) CheckVersion(version string, isTestnet bool) error {
 }
 
 // Marshal returns model in JSON format
-func Marshal(m interface{ MarshalBinary() ([]byte, error) }) (json string, err error) {
+func (c *Client) Marshal(i interface{}) (json string, err error) {
+	return Marshal(i)
+}
+
+// Marshal returns model in JSON format
+func Marshal(i interface{}) (json string, err error) {
+	if i == nil {
+		return "", nil
+	}
+
+	m, ok := i.(interface{ MarshalBinary() ([]byte, error) })
+	if !ok {
+		marshal, err := swag.WriteJSON(m)
+		if err != nil {
+			return "", err
+		}
+
+		return string(marshal), nil
+	}
 	marshal, err := m.MarshalBinary()
 	if err != nil {
 		return "", err
@@ -847,6 +866,11 @@ func Marshal(m interface{ MarshalBinary() ([]byte, error) }) (json string, err e
 type defaultError interface {
 	Code() int
 	GetPayload() *models.ErrorBody
+}
+
+// ErrorBody returns error as API model
+func (c *Client) ErrorBody(err error) (int, *models.ErrorBody, error) {
+	return ErrorBody(err)
 }
 
 // ErrorBody returns error as API model

@@ -1,9 +1,11 @@
 package api
 
 import (
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"strconv"
 	"strings"
 	"time"
@@ -41,14 +43,14 @@ const (
 
 func QueryFrom(address string) string {
 	if strings.HasPrefix(address, "Mx") {
-		address = address[:2]
+		address = address[2:]
 	}
 	return QueryTag("from", address)
 }
 
 func QueryTo(address string) string {
 	if strings.HasPrefix(address, "Mx") {
-		address = address[:2]
+		address = address[2:]
 	}
 	return QueryTag("to", address)
 }
@@ -63,7 +65,7 @@ func QueryTag(tag, param string) string {
 
 func QueryHash(hash string) string {
 	if strings.HasPrefix(hash, "Mt") {
-		hash = hash[:2]
+		hash = hash[2:]
 	}
 	return fmt.Sprintf("%s = '%s'", txHashKey, strings.ToUpper(hash))
 }
@@ -224,6 +226,25 @@ func SubscribeNewTxParse(message string) (*SubscribeNewTxResult, error) {
 	}
 
 	return &recv, nil
+}
+
+func SubscribeNewTxToTx(message string) (transaction.Signed, error) {
+	recv, err := SubscribeNewTxParse(message)
+	if err != nil {
+		return nil, err
+	}
+
+	decodeString, err := base64.StdEncoding.DecodeString(recv.Data.Tx)
+	if err != nil {
+		return nil, err
+	}
+
+	signed, err := transaction.Decode("0x" + hex.EncodeToString(decodeString))
+	if err != nil {
+		return nil, err
+	}
+
+	return signed, nil
 }
 func SubscribeNewBlockParse(message string) (*SubscribeNewBlockResult, error) {
 	var recv SubscribeNewBlockResult

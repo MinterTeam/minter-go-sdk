@@ -35,12 +35,115 @@ Package _http_client_ package implements the API v2 methods usage interface.
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/http_client?tab=doc)
 
+```go
+func ExampleClient_SendTransaction() {
+client, _ := http_client.New("http://localhost:8843/v2")
+coinID, _ := client.CoinID("SYMBOL")
+w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
+data := transaction.NewSendData().SetCoin(coinID).SetValue(transaction.BipToPip(big.NewInt(1))).MustSetTo(w.Address)
+transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
+tx, _ := transactionsBuilder.NewTransaction(data)
+sign, _ := tx.SetNonce(1).Sign(w.PrivateKey)
+encode, _ := sign.Encode()
+hash, _ := sign.Hash()
+
+subscribeClient, _ := client.Subscribe(api.QueryHash(hash))
+defer subscribeClient.CloseSend()
+
+res, err := client.SendTransaction(encode)
+if err != nil {
+_, _, _ = client.ErrorBody(err)
+}
+if res.Code != 0 {
+panic(res.Log)
+}
+
+{
+recv, err := subscribeClient.Recv()
+if err == io.EOF {
+return
+}
+if err == context.Canceled || err == context.DeadlineExceeded {
+return
+}
+if err != nil {
+panic(err)
+}
+
+marshal, _ := client.Marshal(recv)
+findedTx, _ := api.SubscribeNewTxToTx(marshal)
+_, _ = findedTx.GetTransaction(), findedTx.Data().(*transaction.SendData)
+}
+// or
+{
+response, _ := client.Transaction(hash)
+_, _ = client.Marshal(response)
+sendData := new(models.SendData)
+_ = response.Data.UnmarshalTo(sendData)
+_, _ = client.Marshal(sendData)
+}
+}
+```
+
 #### Using gRPC
 
 Package _grpc_client_ package implements the gRPC methods usage interface.
 
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/MinterTeam/minter-go-sdk/v2/api/grpc_client?tab=doc)
 
+```go
+func ExampleClient_SendTransaction() {
+client, _ := grpc_client.New("localhost:8842")
+coinID, _ := client.CoinID("SYMBOL")
+w, _ := wallet.Create("1 2 3 4 5 6 7 8 9 10 11 12", "")
+data := transaction.NewSendData().SetCoin(coinID).SetValue(transaction.BipToPip(big.NewInt(1))).MustSetTo(w.Address)
+transactionsBuilder := transaction.NewBuilder(transaction.TestNetChainID)
+tx, _ := transactionsBuilder.NewTransaction(data)
+sign, _ := tx.SetNonce(1).Sign(w.PrivateKey)
+encode, _ := sign.Encode()
+hash, _ := sign.Hash()
+
+subscribeClient, _ := client.Subscribe(api.QueryHash(hash))
+defer subscribeClient.CloseSend()
+
+res, err := client.WithCallOption(
+grpc_retry.WithCodes(codes.FailedPrecondition),
+grpc_retry.WithBackoff(grpc_retry.BackoffLinear(1*time.Second)),
+grpc_retry.WithMax(4),
+).SendTransaction(encode)
+if err != nil {
+_, _, _ = client.ErrorBody(err)
+}
+if res.Code != 0 {
+panic(res.Log)
+}
+
+{
+recv, err := subscribeClient.Recv()
+if err == io.EOF {
+return
+}
+if code := status.Code(err); code != codes.OK {
+if code == codes.DeadlineExceeded || code == codes.Canceled {
+return
+}
+panic(err)
+}
+
+marshal, _ := client.Marshal(recv)
+findedTx, _ := api.SubscribeNewTxToTx(marshal)
+_, _ = findedTx.GetTransaction(), findedTx.Data().(*transaction.SendData)
+}
+// or
+{
+response, _ := client.Transaction(hash)
+_, _ = client.Marshal(response)
+sendData := new(api_pb.SendData)
+_ = response.Data.UnmarshalTo(sendData)
+_, _ = client.Marshal(sendData)
+}
+}
+```
 ### Using Transactions
 
 Package _transaction_ is a guide and assistant in working with fields and types of transactions, creating signatures,
