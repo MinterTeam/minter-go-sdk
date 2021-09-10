@@ -111,7 +111,7 @@ type SubscribeNewBlockResult struct {
 	Data  struct {
 		Block struct {
 			Data struct {
-				Txs []interface{} `json:"txs"`
+				Txs []string `json:"txs"`
 			} `json:"data"`
 			Evidence struct {
 				Evidence []interface{} `json:"evidence"`
