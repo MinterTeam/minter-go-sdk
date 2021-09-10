@@ -234,11 +234,11 @@ func SubscribeNewTxToTx(message string) (transaction.Signed, error) {
 		return nil, err
 	}
 
-	return ConvertBase64ToTx(err, recv)
+	return ConvertBase64ToTx(recv.Data.Tx)
 }
 
-func ConvertBase64ToTx(err error, recv *SubscribeNewTxResult) (transaction.Signed, error) {
-	decodeString, err := base64.StdEncoding.DecodeString(recv.Data.Tx)
+func ConvertBase64ToTx(tx string) (transaction.Signed, error) {
+	decodeString, err := base64.StdEncoding.DecodeString(tx)
 	if err != nil {
 		return nil, err
 	}
