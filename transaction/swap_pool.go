@@ -232,6 +232,13 @@ func (d *SellAllSwapPoolData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
 
+func (d *SellAllSwapPoolData) commissionCoin() CoinID {
+	if len(d.Coins) == 0 {
+		return 0
+	}
+	return d.Coins[0]
+}
+
 // SellSwapPoolData is a Data of Transaction for selling from the swap pool of the pair.
 type SellSwapPoolData struct {
 	Coins             []CoinID // List of coin IDs from given to received.

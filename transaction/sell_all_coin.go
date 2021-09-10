@@ -45,3 +45,7 @@ func (d *SellAllCoinData) Type() Type {
 func (d *SellAllCoinData) Encode() ([]byte, error) {
 	return rlp.EncodeToBytes(d)
 }
+
+func (d *SellAllCoinData) commissionCoin() CoinID {
+	return d.CoinToSell
+}

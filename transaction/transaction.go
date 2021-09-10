@@ -148,6 +148,10 @@ type Data interface {
 	Type() Type
 }
 
+type commissionCoiner interface {
+	commissionCoin() CoinID
+}
+
 type encodeInterface interface {
 	// Encode returns string representation of a transaction.
 	Encode() (string, error)
@@ -162,6 +166,9 @@ type Signed interface {
 	Hash() (string, error)
 	// Data returns Data of the Transaction.
 	Data() Data
+
+	CommissionCoin() CoinID
+
 	// Signature returns Signature interface.
 	Signature() (Signature, error)
 	// AddSignature adds signature from hex strings.
@@ -209,6 +216,13 @@ type Interface interface {
 type object struct {
 	*Transaction
 	data Data
+}
+
+func (o *object) CommissionCoin() CoinID {
+	if o.Type == TypeSellAllSwapPool || o.Type == TypeSellAllCoin {
+		return o.data.(commissionCoiner).commissionCoin()
+	}
+	return o.GasCoin
 }
 
 // Data returns Data of Transaction.
