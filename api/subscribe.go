@@ -122,12 +122,12 @@ type SubscribeNewBlockResult struct {
 				ConsensusHash string `json:"consensus_hash"`
 				DataHash      string `json:"data_hash"`
 				EvidenceHash  string `json:"evidence_hash"`
-				Height        int    `json:"height"`
+				Height        uint64 `json:"height"`
 				LastBlockID   struct {
 					Hash  string `json:"hash"`
 					Parts struct {
 						Hash  string `json:"hash"`
-						Total int    `json:"total"`
+						Total uint64 `json:"total"`
 					} `json:"parts"`
 				} `json:"last_block_id"`
 				LastCommitHash     string    `json:"last_commit_hash"`
@@ -137,7 +137,7 @@ type SubscribeNewBlockResult struct {
 				Time               time.Time `json:"time"`
 				ValidatorsHash     string    `json:"validators_hash"`
 				Version            struct {
-					Block int `json:"block"`
+					Block uint64 `json:"block"`
 				} `json:"version"`
 			} `json:"header"`
 			LastCommit struct {
@@ -145,13 +145,13 @@ type SubscribeNewBlockResult struct {
 					Hash  string `json:"hash"`
 					Parts struct {
 						Hash  string `json:"hash"`
-						Total int    `json:"total"`
+						Total uint64 `json:"total"`
 					} `json:"parts"`
 				} `json:"block_id"`
-				Height     int `json:"height"`
-				Round      int `json:"round"`
+				Height     uint64 `json:"height"`
+				Round      uint64 `json:"round"`
 				Signatures []struct {
-					BlockIDFlag      int       `json:"block_id_flag"`
+					BlockIDFlag      uint64    `json:"block_id_flag"`
 					Signature        string    `json:"signature"`
 					Timestamp        time.Time `json:"timestamp"`
 					ValidatorAddress string    `json:"validator_address"`
@@ -163,8 +163,8 @@ type SubscribeNewBlockResult struct {
 		ResultEndBlock struct {
 			ConsensusParamUpdates struct {
 				Block struct {
-					MaxBytes int `json:"max_bytes"`
-					MaxGas   int `json:"max_gas"`
+					MaxBytes uint64 `json:"max_bytes"`
+					MaxGas   uint64 `json:"max_gas"`
 				} `json:"block"`
 			} `json:"consensus_param_updates"`
 			ValidatorUpdates interface{} `json:"validator_updates"`
@@ -179,7 +179,7 @@ type SubscribeNewBlockResult struct {
 type SubscribeNewTxResult struct {
 	Query string `json:"query"`
 	Data  struct {
-		Height int `json:"height"`
+		Height uint64 `json:"height"`
 		Result struct {
 			Events []struct {
 				Attributes []struct {
@@ -189,8 +189,8 @@ type SubscribeNewTxResult struct {
 				} `json:"attributes"`
 				Type string `json:"type"`
 			} `json:"events"`
-			GasUsed   int `json:"gas_used"`
-			GasWanted int `json:"gas_wanted"`
+			GasUsed   uint64 `json:"gas_used"`
+			GasWanted uint64 `json:"gas_wanted"`
 		} `json:"result"`
 		Tx string `json:"tx"`
 	} `json:"data"`
