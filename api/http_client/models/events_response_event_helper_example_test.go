@@ -20,6 +20,6 @@ func ExampleConvertStructToEvent() {
 	}
 	event, _ := models.ConvertStructToEvent(data)
 	stakeEvent := event.(api.StakeEvent)
-	mark(stakeEvent.GetAddress(), stakeEvent.GetValidatorPublicKey())
+	mark(stakeEvent.GetAddress(), stakeEvent.GetPublicKey())
 	doSomething(event.(*api.StakeKickEvent))
 }

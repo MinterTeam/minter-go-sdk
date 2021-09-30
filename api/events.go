@@ -41,6 +41,7 @@ const (
 	TypeStakeMoveEvent         EventType = "minter/StakeMoveEvent"
 	TypeUpdateNetworkEvent     EventType = "minter/UpdateNetworkEvent"
 	TypeUpdateCommissionsEvent EventType = "minter/UpdateCommissionsEvent"
+	TypeRemoveCandidateEvent   EventType = "minter/RemoveCandidateEvent"
 )
 
 // StakeEvent interface
@@ -52,8 +53,8 @@ type StakeEvent interface {
 
 // ValidatorEvent interface
 type ValidatorEvent interface {
-	// GetValidatorPublicKey return validator public key
-	GetValidatorPublicKey() string
+	// GetPublicKey return validator public key
+	GetPublicKey() string
 }
 
 // Event interface
@@ -127,8 +128,18 @@ type JailEvent struct {
 
 func (e *JailEvent) Type() EventType { return TypeJailEvent }
 
-func (e *JailEvent) GetValidatorPublicKey() string {
+func (e *JailEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
+}
+
+type RemoveCandidateEvent struct {
+	CandidatePubKey string `json:"candidate_pub_key"`
+}
+
+func (e *RemoveCandidateEvent) Type() EventType { return TypeRemoveCandidateEvent }
+
+func (e *RemoveCandidateEvent) GetPublicKey() string {
+	return e.CandidatePubKey
 }
 
 // StakeMoveEvent ...
@@ -146,7 +157,7 @@ func (e *StakeMoveEvent) GetAddress() string {
 }
 
 // GetValidatorPublicKey return validator public key
-func (e *StakeMoveEvent) GetValidatorPublicKey() string {
+func (e *StakeMoveEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
 func (e *StakeMoveEvent) Type() EventType { return TypeStakeMoveEvent }
@@ -166,7 +177,7 @@ func (e *RewardEvent) GetAddress() string {
 }
 
 // GetValidatorPublicKey return validator public key
-func (e *RewardEvent) GetValidatorPublicKey() string {
+func (e *RewardEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
 func (e *RewardEvent) Type() EventType { return TypeRewardEvent }
@@ -185,7 +196,7 @@ func (e *SlashEvent) GetAddress() string {
 }
 
 // GetValidatorPublicKey return validator public key
-func (e *SlashEvent) GetValidatorPublicKey() string {
+func (e *SlashEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
 func (e *SlashEvent) Type() EventType { return TypeSlashEvent }
@@ -204,7 +215,7 @@ func (e *UnbondEvent) GetAddress() string {
 }
 
 // GetValidatorPublicKey return validator public key
-func (e *UnbondEvent) GetValidatorPublicKey() string {
+func (e *UnbondEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
 func (e *UnbondEvent) Type() EventType { return TypeUnbondEvent }
@@ -223,7 +234,7 @@ func (e *StakeKickEvent) GetAddress() string {
 }
 
 // GetValidatorPublicKey return validator public key
-func (e *StakeKickEvent) GetValidatorPublicKey() string {
+func (e *StakeKickEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
 func (e *StakeKickEvent) Type() EventType { return TypeStakeKickEvent }
@@ -262,6 +273,8 @@ func newEvent(t EventType) Event {
 		return &UpdateNetworkEvent{}
 	case TypeOrderExpiredEvent:
 		return &OrderExpiredEvent{}
+	case TypeRemoveCandidateEvent:
+		return &RemoveCandidateEvent{}
 	default:
 		return nil
 	}
