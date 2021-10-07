@@ -125,11 +125,17 @@ type JailEvent struct {
 	JailedUntil     string `json:"jailed_until"`
 }
 
-func (e *JailEvent) Type() EventType { return TypeJailEvent }
-
 func (e *JailEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
+
+// GetValidatorPublicKey return validator public key
+// Deprecated: Use GetPublicKey
+func (e *JailEvent) GetValidatorPublicKey() string {
+	return e.ValidatorPubKey
+}
+
+func (e *JailEvent) Type() EventType { return TypeJailEvent }
 
 type RemoveCandidateEvent struct {
 	CandidatePubKey string `json:"candidate_pub_key"`
@@ -159,6 +165,12 @@ func (e *RewardEvent) GetAddress() string {
 func (e *RewardEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
+
+// GetValidatorPublicKey return validator public key
+// Deprecated: Use GetPublicKey
+func (e *RewardEvent) GetValidatorPublicKey() string {
+	return e.ValidatorPubKey
+}
 func (e *RewardEvent) Type() EventType { return TypeRewardEvent }
 
 // SlashEvent is the payment of the validator's penalty by this stake
@@ -176,6 +188,12 @@ func (e *SlashEvent) GetAddress() string {
 
 // GetPublicKey return validator public key
 func (e *SlashEvent) GetPublicKey() string {
+	return e.ValidatorPubKey
+}
+
+// GetValidatorPublicKey return validator public key
+// Deprecated: Use GetPublicKey
+func (e *SlashEvent) GetValidatorPublicKey() string {
 	return e.ValidatorPubKey
 }
 func (e *SlashEvent) Type() EventType { return TypeSlashEvent }
@@ -197,6 +215,12 @@ func (e *UnbondEvent) GetAddress() string {
 func (e *UnbondEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
+
+// GetValidatorPublicKey return validator public key
+// Deprecated: Use GetPublicKey
+func (e *UnbondEvent) GetValidatorPublicKey() string {
+	return e.ValidatorPubKey
+}
 func (e *UnbondEvent) Type() EventType { return TypeUnbondEvent }
 
 // StakeKickEvent is the knocking out a stake to the waiting list
@@ -216,6 +240,13 @@ func (e *StakeKickEvent) GetAddress() string {
 func (e *StakeKickEvent) GetPublicKey() string {
 	return e.ValidatorPubKey
 }
+
+// GetValidatorPublicKey return validator public key
+// Deprecated: Use GetPublicKey
+func (e *StakeKickEvent) GetValidatorPublicKey() string {
+	return e.ValidatorPubKey
+}
+
 func (e *StakeKickEvent) Type() EventType { return TypeStakeKickEvent }
 
 type OrderExpiredEvent struct {
