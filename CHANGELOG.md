@@ -4,7 +4,7 @@
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.3.0...v2)
 
-<!-- ## [v2.4.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.4.0) (2021-11-01)
+<!-- ## [v2.4.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.4.0) (2021-12-01)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.3.0...v2.4.0)
 
