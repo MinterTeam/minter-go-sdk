@@ -7,6 +7,9 @@
 <!-- ## [v2.4.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.4.0) (2021-11-01)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.3.0...v2.4.0)
+
+- Added support for limit orders for AMM
+- Fixed getting the sender of the transaction
  -->
  
 ## [v2.3.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.3.0) (2021-05-20)
