@@ -2,6 +2,7 @@ package transaction_test
 
 import (
 	"fmt"
+	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"math/big"
 
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
@@ -31,23 +32,45 @@ func ExampleBuilder_NewTransaction_signSingleSignature_simple() {
 	fmt.Println(encode)
 
 	// Output:
-	// Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de
+	// Mx31e61a05adbd13c6b625262704bc305bf7725026
 	// Mtec2166cced36276426360a79934fbf49f29f9e48e9d1f06ef4afc4f557aa3767
 	// 0xf8700102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ba0fffc3f503ace8a5d0c87efe50cf33ad41e3475459120d9c6fd75bd796b192313a0243d643a799e844ad82382d41cee98137a1d0c5888ff13951919e5e241ab89e0
 
 }
 
 func ExampleDecode() {
-	tx, _ := transaction.Decode("0xf8750102010101a0df01941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a76400008548656c6c6f8001b845f8431ca0d2b9034178aa5eab45696bd25ced410dd21298e160c4a51c3fcfd85bb0f49352a006705dc04165b183a3448394fdd93a881eb60bb7881a05a528125e1d8259ac75")
+	var encode string
+	{
+		tx, _ := transaction.NewBuilder(transaction.TestNetChainID).NewTransaction(
+			transaction.NewSendData().
+				SetCoin(1).
+				SetValue(transaction.BipToPip(big.NewInt(1))).
+				MustSetTo("Mx1b685a7c1e78726c48f619c497a07ed75fe00483"),
+		)
+		w, _ := wallet.Create("suffer draft bacon typical start retire air sniff large biology mail diagram", "")
+		fmt.Println(w.Address)
+		signedTransaction, _ := tx.
+			SetGasPrice(1).
+			SetGasCoin(1).
+			SetNonce(1).
+			SetPayload([]byte("Hello")).
+			Sign(w.PrivateKey)
+		encode, _ = signedTransaction.Encode()
+	}
+	tx, _ := transaction.Decode(encode)
 
 	fmt.Println(tx.Data().Type())
 	fmt.Println(tx.Data().(*transaction.SendData).Coin)
 	fmt.Println(string(tx.GetTransaction().Payload))
+	address, _ := tx.SenderAddress()
+	fmt.Println(address)
 
 	// Output:
+	// Mx48f502a9fc324f2c707edc3a2595e72f00c3190c
 	// 0x01
 	// 1
 	// Hello
+	// Mx48f502a9fc324f2c707edc3a2595e72f00c3190c
 }
 
 func ExampleBuilder_NewTransaction_signMultiSignature_simultaneous_adding_private_keys() {
@@ -159,6 +182,6 @@ func ExampleDecode_signersOfSingleSignature() {
 	fmt.Println(address)
 
 	// Output:
-	// Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de
-	// Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de
+	// Mx31e61a05adbd13c6b625262704bc305bf7725026
+	// Mx31e61a05adbd13c6b625262704bc305bf7725026
 }

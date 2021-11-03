@@ -56,7 +56,7 @@ func TestTransaction_Hash2(t *testing.T) {
 
 func TestTransaction_Encode(t *testing.T) {
 	t.Parallel()
-	decode, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
+	decode, err := Decode(txBuyCoin)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -83,7 +83,7 @@ func TestTransaction_Encode(t *testing.T) {
 
 func TestObject_SenderAddress(t *testing.T) {
 	t.Parallel()
-	transaction, err := Decode("0xf865010201010495d402880de0b6b3a764000001880de0b6b3a7640000808001b845f8431ca0ad334ececd68741f1f9b96e15a2b5d6a7fe6c378cdaab6c6e8947541e1af74dda038c829477eb261948598fd3dd039aba41aa5691f50d3ee2bb4125bc38b294725")
+	transaction, err := Decode(txBuyCoin)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,8 +93,8 @@ func TestObject_SenderAddress(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if senderAddress != "Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de" {
-		t.Errorf("SenderAddress want %s,\ngot %s", "Mx622e1e0e788f4b1258f7e2a196f738c6a360c3de", senderAddress)
+	if senderAddress != "Mx31e61a05adbd13c6b625262704bc305bf7725026" {
+		t.Errorf("SenderAddress want %s,\ngot %s", "Mx31e61a05adbd13c6b625262704bc305bf7725026", senderAddress)
 	}
 }
 
@@ -323,16 +323,26 @@ func TestMultisigAddSignatures2(t *testing.T) {
 
 func TestDecodeMulti(t *testing.T) {
 	t.Parallel()
-	decode, err := Decode("0xf899010201010cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca0224c6166a1f4667cb0bee9ce7ed88879285b8ffc9b4eac3f03faa1797d1f8684a0276dc68fc640924e970c3607af33988a0955e7c2dff78a16ba795da9ddffe988")
+	decode, err := Decode("0xf901130102010101a0df0194d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454")
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	signature, err := decode.Signature()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if signature.Type() != SignatureTypeMulti {
+		t.Fatal(signature.Type())
+	}
+
 	senderAddress, err := decode.SenderAddress()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	validSenderAddress := "Mxb43154a0bc801c4b7361bf1a535b5e08e34e401c"
+	validSenderAddress := "Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2"
 	if senderAddress != validSenderAddress {
 		t.Fatalf("SenderAddress got %s, want %s", senderAddress, validSenderAddress)
 	}

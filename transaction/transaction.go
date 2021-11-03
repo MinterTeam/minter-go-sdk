@@ -421,7 +421,7 @@ func (o *object) SenderAddress() (string, error) {
 			return "", err
 		}
 
-		return single.signer(hash, SignatureTypeSingle)
+		return single.signer(hash)
 	}
 
 	if multi, ok := signature.(*SignatureMulti); o.SignatureType == SignatureTypeMulti && ok {
@@ -477,13 +477,13 @@ func (s *SignatureSingle) Single() ([]byte, error) {
 	return s.Encode()
 }
 
-func (s *SignatureSingle) signer(hash PublicKey, t SignatureType) (string, error) {
+func (s *SignatureSingle) signer(hash PublicKey) (string, error) {
 	publicKey, err := crypto.Ecrecover(hash[:], s.toBytes())
 	if err != nil {
 		return "", err
 	}
 
-	address, err := wallet.AddressByPublicKey("Mp" + hex.EncodeToString(publicKey[t-1:]))
+	address, err := wallet.AddressByPublicKey("Mp" + hex.EncodeToString(publicKey[1:]))
 	if err != nil {
 		return "", err
 	}
@@ -575,7 +575,7 @@ func (o *object) Signers() ([]string, error) {
 
 		signers := make([]string, 0, len(multi.Signatures))
 		for _, signature := range multi.Signatures {
-			address, err := signature.signer(hash, SignatureTypeMulti)
+			address, err := signature.signer(hash)
 			if err != nil {
 				return nil, err
 			}
