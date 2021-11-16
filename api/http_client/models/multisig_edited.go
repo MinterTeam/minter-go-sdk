@@ -24,7 +24,7 @@ type Multisig struct {
 	Threshold uint64 `json:"threshold,omitempty,string"`
 
 	// weights
-	Weights []uint64 `json:"weights"`
+	Weights intsAsStrings `json:"weights"`
 }
 
 // Validate validates this multisig
