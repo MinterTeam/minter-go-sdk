@@ -7,7 +7,9 @@ package models
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -26,6 +28,9 @@ type AppStatePool struct {
 	// id
 	ID uint64 `json:"id,omitempty,string"`
 
+	// orders
+	Orders []*PoolOrder `json:"orders"`
+
 	// reserve0
 	Reserve0 string `json:"reserve0,omitempty"`
 
@@ -35,11 +40,71 @@ type AppStatePool struct {
 
 // Validate validates this app state pool
 func (m *AppStatePool) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateOrders(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
-// ContextValidate validates this app state pool based on context it is used
+func (m *AppStatePool) validateOrders(formats strfmt.Registry) error {
+	if swag.IsZero(m.Orders) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Orders); i++ {
+		if swag.IsZero(m.Orders[i]) { // not required
+			continue
+		}
+
+		if m.Orders[i] != nil {
+			if err := m.Orders[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("orders" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ContextValidate validate this app state pool based on the context it is used
 func (m *AppStatePool) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateOrders(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *AppStatePool) contextValidateOrders(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Orders); i++ {
+
+		if m.Orders[i] != nil {
+			if err := m.Orders[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("orders" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 
