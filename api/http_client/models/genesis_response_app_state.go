@@ -37,6 +37,9 @@ type GenesisResponseAppState struct {
 	// commission votes
 	CommissionVotes []*AppStateCommissionVote `json:"commission_votes"`
 
+	// deleted candidates
+	DeletedCandidates []*AppStateDeletedCandidate `json:"deleted_candidates"`
+
 	// frozen funds
 	FrozenFunds []*AppStateFrozenFund `json:"frozen_funds"`
 
@@ -45,6 +48,9 @@ type GenesisResponseAppState struct {
 
 	// max gas
 	MaxGas uint64 `json:"max_gas,omitempty,string"`
+
+	// next order id
+	NextOrderID uint64 `json:"next_order_id,omitempty,string"`
 
 	// note
 	Note string `json:"note,omitempty"`
@@ -89,6 +95,10 @@ func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateCommissionVotes(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDeletedCandidates(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -221,6 +231,30 @@ func (m *GenesisResponseAppState) validateCommissionVotes(formats strfmt.Registr
 			if err := m.CommissionVotes[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("commission_votes" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) validateDeletedCandidates(formats strfmt.Registry) error {
+	if swag.IsZero(m.DeletedCandidates) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.DeletedCandidates); i++ {
+		if swag.IsZero(m.DeletedCandidates[i]) { // not required
+			continue
+		}
+
+		if m.DeletedCandidates[i] != nil {
+			if err := m.DeletedCandidates[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("deleted_candidates" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -375,6 +409,10 @@ func (m *GenesisResponseAppState) ContextValidate(ctx context.Context, formats s
 		res = append(res, err)
 	}
 
+	if err := m.contextValidateDeletedCandidates(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateFrozenFunds(ctx, formats); err != nil {
 		res = append(res, err)
 	}
@@ -477,6 +515,24 @@ func (m *GenesisResponseAppState) contextValidateCommissionVotes(ctx context.Con
 			if err := m.CommissionVotes[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("commission_votes" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateDeletedCandidates(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.DeletedCandidates); i++ {
+
+		if m.DeletedCandidates[i] != nil {
+			if err := m.DeletedCandidates[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("deleted_candidates" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
