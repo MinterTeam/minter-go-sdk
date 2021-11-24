@@ -2,27 +2,34 @@
 
 ## Unreleased
 
-[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.3.0...v2)
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.4.0...v2)
 
-<!-- ## [v2.4.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.4.0) (2021-12-01)
+## [v2.4.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.4.0)
+
+(2021-11-24)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.3.0...v2.4.0)
 
 - Added support for limit orders for AMM
 - Fixed getting the sender of the transaction
- -->
- 
-## [v2.3.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.3.0) (2021-05-20)
+
+## [v2.3.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.3.0)
+
+(2021-05-20)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.2.0...v2.3.0)
 
 - DeepLink: Allow to set custom URL [#11](https://github.com/MinterTeam/minter-go-sdk/pull/11)
 
-## [v2.2.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.2.0) (2021-04-12)
+## [v2.2.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.2.0)
+
+(2021-04-12)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.1...v2.2.0)
 
-## [v2.1.1](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.1) (2020-12-24)
+## [v2.1.1](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.1)
+
+(2020-12-24)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.1.0...v2.1.1)
 
@@ -30,7 +37,9 @@
 
 - Calculate commissions
 
-## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0) (2020-12-23)
+## [v2.1.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.1.0)
+
+(2020-12-23)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.0.3...v2.1.0)
 
