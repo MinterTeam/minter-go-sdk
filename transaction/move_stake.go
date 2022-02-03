@@ -8,10 +8,10 @@ import (
 )
 
 type MoveStakeData struct {
-	From,
-	To PublicKey
+	FromPubKey,
+	ToPubKey PublicKey
 	Coin  CoinID
-	Stake *big.Int
+	Value *big.Int
 }
 
 func NewMoveStakeData() *MoveStakeData {
@@ -24,7 +24,7 @@ func (d *MoveStakeData) SetFrom(key string) (*MoveStakeData, error) {
 	if err != nil {
 		return d, err
 	}
-	copy(d.From[:], pubKey)
+	copy(d.FromPubKey[:], pubKey)
 	return d, nil
 }
 
@@ -43,7 +43,7 @@ func (d *MoveStakeData) SetTo(key string) (*MoveStakeData, error) {
 	if err != nil {
 		return d, err
 	}
-	copy(d.To[:], pubKey)
+	copy(d.ToPubKey[:], pubKey)
 	return d, nil
 }
 
@@ -62,9 +62,9 @@ func (d *MoveStakeData) SetCoin(id uint64) *MoveStakeData {
 	return d
 }
 
-// SetStake sets amount of coins to stake
-func (d *MoveStakeData) SetStake(value *big.Int) *MoveStakeData {
-	d.Stake = value
+// SetValue sets amount of coins to stake
+func (d *MoveStakeData) SetValue(value *big.Int) *MoveStakeData {
+	d.Value = value
 	return d
 }
 

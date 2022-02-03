@@ -54,9 +54,12 @@ type VoteCommissionData struct {
 	VoteCommission          *big.Int
 	VoteUpdate              *big.Int
 	More                    []*big.Int `rlp:"tail"`
-	// FailedTX                *big.Int
-	// AddLimitOrder           *big.Int
-	// RemoveLimitOrder        *big.Int
+	//FailedTX         *big.Int
+	//AddLimitOrder    *big.Int
+	//RemoveLimitOrder *big.Int
+	//MoveStake        *big.Int
+	//LockStake        *big.Int
+	//Lock             *big.Int
 }
 
 // NewVoteCommissionData creates VoteCommissionData
@@ -81,6 +84,25 @@ func (d *VoteCommissionData) AddLimitOrderPrice() *big.Int {
 func (d *VoteCommissionData) RemoveLimitOrderPrice() *big.Int {
 	if len(d.More) > 2 {
 		return d.More[2]
+	}
+	return big.NewInt(0)
+}
+
+func (d *VoteCommissionData) MoveStakePrice() *big.Int {
+	if len(d.More) > 3 {
+		return d.More[3]
+	}
+	return big.NewInt(0)
+}
+func (d *VoteCommissionData) LockStakePrice() *big.Int {
+	if len(d.More) > 4 {
+		return d.More[4]
+	}
+	return big.NewInt(0)
+}
+func (d *VoteCommissionData) LockPrice() *big.Int {
+	if len(d.More) > 5 {
+		return d.More[5]
 	}
 	return big.NewInt(0)
 }

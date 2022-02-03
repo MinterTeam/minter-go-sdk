@@ -62,6 +62,8 @@ const (
 	TypeCreateSwapPool               // 0x22
 	TypeAddLimitOrder                // 0x23
 	TypeRemoveLimitOrder             // 0x24
+	TypeLockStake                    // 0x25
+	TypeLock                         // 0x26
 )
 
 // SignatureType is type of signature (1 - SignatureTypeSingle, 2 - SignatureTypeMulti)
@@ -393,6 +395,10 @@ func newData(t Type) Data {
 		return &AddLimitOrderData{}
 	case TypeRemoveLimitOrder:
 		return &RemoveLimitOrderData{}
+	case TypeLockStake:
+		return &LockStakeData{}
+	case TypeLock:
+		return &LockData{}
 	default:
 		return nil
 	}
