@@ -17,8 +17,14 @@ import (
 // swagger:model StatusResponse
 type StatusResponse struct {
 
+	// block reward
+	BlockReward string `json:"block_reward,omitempty"`
+
 	// catching up
 	CatchingUp bool `json:"catching_up,omitempty"`
+
+	// current emission
+	CurrentEmission string `json:"current_emission,omitempty"`
 
 	// initial height
 	InitialHeight uint64 `json:"initial_height,omitempty,string"`

@@ -32,6 +32,9 @@ type AppStateFrozenFund struct {
 	// height
 	Height uint64 `json:"height,omitempty,string"`
 
+	// to candidate key
+	ToCandidateKey string `json:"to_candidate_key,omitempty"`
+
 	// value
 	Value string `json:"value,omitempty"`
 }

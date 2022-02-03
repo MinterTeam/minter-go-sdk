@@ -89,8 +89,17 @@ type AppStateCommission struct {
 	// failed tx
 	FailedTx string `json:"failed_tx,omitempty"`
 
+	// lock
+	Lock string `json:"lock,omitempty"`
+
+	// lock stake
+	LockStake string `json:"lock_stake,omitempty"`
+
 	// mint token
 	MintToken string `json:"mint_token,omitempty"`
+
+	// move stake
+	MoveStake string `json:"move_stake,omitempty"`
 
 	// multisend base
 	MultisendBase string `json:"multisend_base,omitempty"`
