@@ -23,254 +23,263 @@ type SellCoinData struct {
 }
 
 type SellAllCoinData struct {
-	CoinToSell        *Coin  `json:"coin_to_sell,omitempty"`
-	CoinToBuy         *Coin  `json:"coin_to_buy,omitempty"`
-	MinimumValueToBuy string `json:"minimum_value_to_buy,omitempty"`
+	CoinToSell        *Coin  `json:"coin_to_sell"`
+	CoinToBuy         *Coin  `json:"coin_to_buy"`
+	MinimumValueToBuy string `json:"minimum_value_to_buy"`
 }
 
 type BuyCoinData struct {
-	CoinToBuy          *Coin  `json:"coin_to_buy,omitempty"`
-	ValueToBuy         string `json:"value_to_buy,omitempty"`
-	CoinToSell         *Coin  `json:"coin_to_sell,omitempty"`
-	MaximumValueToSell string `json:"maximum_value_to_sell,omitempty"`
+	CoinToBuy          *Coin  `json:"coin_to_buy"`
+	ValueToBuy         string `json:"value_to_buy"`
+	CoinToSell         *Coin  `json:"coin_to_sell"`
+	MaximumValueToSell string `json:"maximum_value_to_sell"`
 }
 
 type CreateCoinData struct {
-	Name                 string `json:"name,omitempty"`
-	Symbol               string `json:"symbol,omitempty"`
-	InitialAmount        string `json:"initial_amount,omitempty"`
-	InitialReserve       string `json:"initial_reserve,omitempty"`
-	ConstantReserveRatio uint64 `json:"constant_reserve_ratio,string,omitempty"`
-	MaxSupply            string `json:"max_supply,omitempty"`
+	Name                 string `json:"name"`
+	Symbol               string `json:"symbol"`
+	InitialAmount        string `json:"initial_amount"`
+	InitialReserve       string `json:"initial_reserve"`
+	ConstantReserveRatio uint64 `json:"constant_reserve_ratio,string"`
+	MaxSupply            string `json:"max_supply"`
 }
 
 type DeclareCandidacyData struct {
-	Address    string `json:"address,omitempty"`
-	PubKey     string `json:"pub_key,omitempty"`
-	Commission uint64 `json:"commission,string,omitempty"`
-	Coin       *Coin  `json:"coin,omitempty"`
-	Stake      string `json:"stake,omitempty"`
+	Address    string `json:"address"`
+	PubKey     string `json:"pub_key"`
+	Commission uint64 `json:"commission,string"`
+	Coin       *Coin  `json:"coin"`
+	Stake      string `json:"stake"`
 }
 
 type DelegateData struct {
-	PubKey string `json:"pub_key,omitempty"`
-	Coin   *Coin  `json:"coin,omitempty"`
-	Value  string `json:"value,omitempty"`
+	PubKey string `json:"pub_key"`
+	Coin   *Coin  `json:"coin"`
+	Value  string `json:"value"`
 }
 
 type UnbondData struct {
-	PubKey string `json:"pub_key,omitempty"`
-	Coin   *Coin  `json:"coin,omitempty"`
-	Value  string `json:"value,omitempty"`
+	PubKey string `json:"pub_key"`
+	Coin   *Coin  `json:"coin"`
+	Value  string `json:"value"`
 }
 
 type RedeemCheckData struct {
-	RawCheck string `json:"raw_check,omitempty"`
-	Proof    string `json:"proof,omitempty"`
+	RawCheck string `json:"raw_check"`
+	Proof    string `json:"proof"`
 }
 
 type SetCandidateOnData struct {
-	PubKey string `json:"pub_key,omitempty"`
+	PubKey string `json:"pub_key"`
 }
 
 type SetCandidateOffData struct {
-	PubKey string `json:"pub_key,omitempty"`
+	PubKey string `json:"pub_key"`
 }
 
 type CreateMultisigData struct {
-	Threshold uint64        `json:"threshold,string,omitempty"`
-	Weights   intsAsStrings `json:"weights,omitempty"`
-	Addresses []string      `json:"addresses,omitempty"`
+	Threshold uint64        `json:"threshold,string"`
+	Weights   intsAsStrings `json:"weights"`
+	Addresses []string      `json:"addresses"`
 }
 
 type MultiSendData struct {
-	List []*SendData `json:"list,omitempty"`
+	List []*SendData `json:"list"`
 }
 
 type EditCandidateData struct {
-	PubKey         string `json:"pub_key,omitempty"`
-	RewardAddress  string `json:"reward_address,omitempty"`
-	OwnerAddress   string `json:"owner_address,omitempty"`
-	ControlAddress string `json:"control_address,omitempty"`
+	PubKey         string `json:"pub_key"`
+	RewardAddress  string `json:"reward_address"`
+	OwnerAddress   string `json:"owner_address"`
+	ControlAddress string `json:"control_address"`
 }
 
 type SetHaltBlockData struct {
-	PubKey string `json:"pub_key,omitempty"`
-	Height uint64 `json:"height,string,omitempty"`
+	PubKey string `json:"pub_key"`
+	Height uint64 `json:"height,string"`
 }
 
 type RecreateCoinData struct {
-	Name                 string `json:"name,omitempty"`
-	Symbol               string `json:"symbol,omitempty"`
-	InitialAmount        string `json:"initial_amount,omitempty"`
-	InitialReserve       string `json:"initial_reserve,omitempty"`
-	ConstantReserveRatio uint64 `json:"constant_reserve_ratio,string,omitempty"`
-	MaxSupply            string `json:"max_supply,omitempty"`
+	Name                 string `json:"name"`
+	Symbol               string `json:"symbol"`
+	InitialAmount        string `json:"initial_amount"`
+	InitialReserve       string `json:"initial_reserve"`
+	ConstantReserveRatio uint64 `json:"constant_reserve_ratio,string"`
+	MaxSupply            string `json:"max_supply"`
 }
 
 type EditCoinOwnerData struct {
-	Symbol   string `json:"symbol,omitempty"`
-	NewOwner string `json:"new_owner,omitempty"`
+	Symbol   string `json:"symbol"`
+	NewOwner string `json:"new_owner"`
 }
 
 type EditMultisigData CreateMultisigData
 
 type PriceVoteData struct {
-	Price string `json:"price,omitempty"`
+	Price string `json:"price"`
 }
 
 type EditCandidatePublicKeyData struct {
-	PubKey    string `json:"pub_key,omitempty"`
-	NewPubKey string `json:"new_pub_key,omitempty"`
+	PubKey    string `json:"pub_key"`
+	NewPubKey string `json:"new_pub_key"`
 }
 
 type CreateSwapPoolData struct {
-	Coin0   *Coin  `json:"coin0,omitempty"`
-	Coin1   *Coin  `json:"coin1,omitempty"`
-	Volume0 string `json:"volume0,omitempty"`
-	Volume1 string `json:"volume1,omitempty"`
+	Coin0   *Coin  `json:"coin0"`
+	Coin1   *Coin  `json:"coin1"`
+	Volume0 string `json:"volume0"`
+	Volume1 string `json:"volume1"`
 }
 
 type AddLiquidityData struct {
-	Coin0          *Coin  `json:"coin0,omitempty"`
-	Coin1          *Coin  `json:"coin1,omitempty"`
-	Volume0        string `json:"volume0,omitempty"`
-	MaximumVolume1 string `json:"maximum_volume1,omitempty"`
+	Coin0          *Coin  `json:"coin0"`
+	Coin1          *Coin  `json:"coin1"`
+	Volume0        string `json:"volume0"`
+	MaximumVolume1 string `json:"maximum_volume1"`
 }
 
 type RemoveLiquidityData struct {
-	Coin0          *Coin  `json:"coin0,omitempty"`
-	Coin1          *Coin  `json:"coin1,omitempty"`
-	Liquidity      string `json:"liquidity,omitempty"`
-	MinimumVolume0 string `json:"minimum_volume0,omitempty"`
-	MinimumVolume1 string `json:"minimum_volume1,omitempty"`
+	Coin0          *Coin  `json:"coin0"`
+	Coin1          *Coin  `json:"coin1"`
+	Liquidity      string `json:"liquidity"`
+	MinimumVolume0 string `json:"minimum_volume0"`
+	MinimumVolume1 string `json:"minimum_volume1"`
 }
 
 type SellSwapPoolData struct {
-	Coins             []*Coin `json:"coins,omitempty"`
-	ValueToSell       string  `json:"value_to_sell,omitempty"`
-	MinimumValueToBuy string  `json:"minimum_value_to_buy,omitempty"`
+	Coins             []*Coin `json:"coins"`
+	ValueToSell       string  `json:"value_to_sell"`
+	MinimumValueToBuy string  `json:"minimum_value_to_buy"`
 }
 
 type SellAllSwapPoolData struct {
-	Coins             []*Coin `json:"coins,omitempty"`
-	MinimumValueToBuy string  `json:"minimum_value_to_buy,omitempty"`
+	Coins             []*Coin `json:"coins"`
+	MinimumValueToBuy string  `json:"minimum_value_to_buy"`
 }
 
 type BuySwapPoolData struct {
-	Coins              []*Coin `json:"coins,omitempty"`
-	ValueToBuy         string  `json:"value_to_buy,omitempty"`
-	MaximumValueToSell string  `json:"maximum_value_to_sell,omitempty"`
+	Coins              []*Coin `json:"coins"`
+	ValueToBuy         string  `json:"value_to_buy"`
+	MaximumValueToSell string  `json:"maximum_value_to_sell"`
 }
 
 type EditCandidateCommission struct {
-	PubKey     string `json:"pub_key,omitempty"`
-	Commission uint64 `json:"commission,omitempty"`
+	PubKey     string `json:"pub_key"`
+	Commission uint64 `json:"commission"`
 }
 
 type MoveStakeData struct {
-	From  string `json:"from,omitempty"`
-	To    string `json:"to,omitempty"`
-	Coin  *Coin  `json:"coin,omitempty"`
-	Stake string `json:"stake,omitempty"`
+	FromPubKey string `json:"from_pub_key"`
+	ToPubKey   string `json:"to_pub_key"`
+	Coin       *Coin  `json:"coin"`
+	Value      string `json:"value"`
 }
 
 type MintTokenData struct {
-	Coin  *Coin  `json:"coin,omitempty"`
-	Value string `json:"value,omitempty"`
+	Coin  *Coin  `json:"coin"`
+	Value string `json:"value"`
 }
 
 type BurnTokenData struct {
-	Coin  *Coin  `json:"coin,omitempty"`
-	Value string `json:"value,omitempty"`
+	Coin  *Coin  `json:"coin"`
+	Value string `json:"value"`
 }
 
 type CreateTokenData struct {
-	Name          string `json:"name,omitempty"`
-	Symbol        string `json:"symbol,omitempty"`
-	InitialAmount string `json:"initial_amount,omitempty"`
-	MaxSupply     string `json:"max_supply,omitempty"`
-	Mintable      bool   `json:"mintable,omitempty"`
-	Burnable      bool   `json:"burnable,omitempty"`
+	Name          string `json:"name"`
+	Symbol        string `json:"symbol"`
+	InitialAmount string `json:"initial_amount"`
+	MaxSupply     string `json:"max_supply"`
+	Mintable      bool   `json:"mintable"`
+	Burnable      bool   `json:"burnable"`
 }
 
 type RecreateTokenData struct {
-	Name          string `json:"name,omitempty"`
-	Symbol        string `json:"symbol,omitempty"`
-	InitialAmount string `json:"initial_amount,omitempty"`
-	MaxSupply     string `json:"max_supply,omitempty"`
-	Mintable      bool   `json:"mintable,omitempty"`
-	Burnable      bool   `json:"burnable,omitempty"`
+	Name          string `json:"name"`
+	Symbol        string `json:"symbol"`
+	InitialAmount string `json:"initial_amount"`
+	MaxSupply     string `json:"max_supply"`
+	Mintable      bool   `json:"mintable"`
+	Burnable      bool   `json:"burnable"`
 }
 
 type VoteCommissionData struct {
-	PubKey                  string `json:"pub_key,omitempty"`
-	Height                  uint64 `json:"height,string,omitempty"`
-	Coin                    *Coin  `json:"coin,omitempty"`
-	PayloadByte             string `json:"payload_byte,omitempty"`
-	Send                    string `json:"send,omitempty"`
-	BuyBancor               string `json:"buy_bancor,omitempty"`
-	SellBancor              string `json:"sell_bancor,omitempty"`
-	SellAllBancor           string `json:"sell_all_bancor,omitempty"`
-	BuyPoolBase             string `json:"buy_pool_base,omitempty"`
-	BuyPoolDelta            string `json:"buy_pool_delta,omitempty"`
-	SellPoolBase            string `json:"sell_pool_base,omitempty"`
-	SellPoolDelta           string `json:"sell_pool_delta,omitempty"`
-	SellAllPoolBase         string `json:"sell_all_pool_base,omitempty"`
-	SellAllPoolDelta        string `json:"sell_all_pool_delta,omitempty"`
-	CreateTicker3           string `json:"create_ticker3,omitempty"`
-	CreateTicker4           string `json:"create_ticker4,omitempty"`
-	CreateTicker5           string `json:"create_ticker5,omitempty"`
-	CreateTicker6           string `json:"create_ticker6,omitempty"`
-	CreateTicker7_10        string `json:"create_ticker7_10,omitempty"`
-	CreateCoin              string `json:"create_coin,omitempty"`
-	CreateToken             string `json:"create_token,omitempty"`
-	RecreateCoin            string `json:"recreate_coin,omitempty"`
-	RecreateToken           string `json:"recreate_token,omitempty"`
-	DeclareCandidacy        string `json:"declare_candidacy,omitempty"`
-	Delegate                string `json:"delegate,omitempty"`
-	Unbond                  string `json:"unbond,omitempty"`
-	RedeemCheck             string `json:"redeem_check,omitempty"`
-	SetCandidateOn          string `json:"set_candidate_on,omitempty"`
-	SetCandidateOff         string `json:"set_candidate_off,omitempty"`
-	CreateMultisig          string `json:"create_multisig,omitempty"`
-	MultisendBase           string `json:"multisend_base,omitempty"`
-	MultisendDelta          string `json:"multisend_delta,omitempty"`
-	EditCandidate           string `json:"edit_candidate,omitempty"`
-	SetHaltBlock            string `json:"set_halt_block,omitempty"`
-	EditTickerOwner         string `json:"edit_ticker_owner,omitempty"`
-	EditMultisig            string `json:"edit_multisig,omitempty"`
-	PriceVote               string `json:"price_vote,omitempty"`
-	EditCandidatePublicKey  string `json:"edit_candidate_public_key,omitempty"`
-	CreateSwapPool          string `json:"create_swap_pool,omitempty"`
-	AddLiquidity            string `json:"add_liquidity,omitempty"`
-	RemoveLiquidity         string `json:"remove_liquidity,omitempty"`
-	EditCandidateCommission string `json:"edit_candidate_commission,omitempty"`
-	MoveStake               string `json:"move_stake,omitempty"`
-	MintToken               string `json:"mint_token,omitempty"`
-	BurnToken               string `json:"burn_token,omitempty"`
-	VoteCommission          string `json:"vote_commission,omitempty"`
-	VoteUpdate              string `json:"vote_update,omitempty"`
-	FailedTx                string `json:"failed_tx,omitempty"`
-	AddLimitOrder           string `json:"add_limit_order,omitempty"`
-	RemoveLimitOrder        string `json:"remove_limit_order,omitempty"`
+	PubKey                  string `json:"pub_key"`
+	Height                  uint64 `json:"height,string"`
+	Coin                    *Coin  `json:"coin"`
+	PayloadByte             string `json:"payload_byte"`
+	Send                    string `json:"send"`
+	BuyBancor               string `json:"buy_bancor"`
+	SellBancor              string `json:"sell_bancor"`
+	SellAllBancor           string `json:"sell_all_bancor"`
+	BuyPoolBase             string `json:"buy_pool_base"`
+	BuyPoolDelta            string `json:"buy_pool_delta"`
+	SellPoolBase            string `json:"sell_pool_base"`
+	SellPoolDelta           string `json:"sell_pool_delta"`
+	SellAllPoolBase         string `json:"sell_all_pool_base"`
+	SellAllPoolDelta        string `json:"sell_all_pool_delta"`
+	CreateTicker3           string `json:"create_ticker3"`
+	CreateTicker4           string `json:"create_ticker4"`
+	CreateTicker5           string `json:"create_ticker5"`
+	CreateTicker6           string `json:"create_ticker6"`
+	CreateTicker7_10        string `json:"create_ticker7_10"`
+	CreateCoin              string `json:"create_coin"`
+	CreateToken             string `json:"create_token"`
+	RecreateCoin            string `json:"recreate_coin"`
+	RecreateToken           string `json:"recreate_token"`
+	DeclareCandidacy        string `json:"declare_candidacy"`
+	Delegate                string `json:"delegate"`
+	Unbond                  string `json:"unbond"`
+	RedeemCheck             string `json:"redeem_check"`
+	SetCandidateOn          string `json:"set_candidate_on"`
+	SetCandidateOff         string `json:"set_candidate_off"`
+	CreateMultisig          string `json:"create_multisig"`
+	MultisendBase           string `json:"multisend_base"`
+	MultisendDelta          string `json:"multisend_delta"`
+	EditCandidate           string `json:"edit_candidate"`
+	SetHaltBlock            string `json:"set_halt_block"`
+	EditTickerOwner         string `json:"edit_ticker_owner"`
+	EditMultisig            string `json:"edit_multisig"`
+	PriceVote               string `json:"price_vote"`
+	EditCandidatePublicKey  string `json:"edit_candidate_public_key"`
+	CreateSwapPool          string `json:"create_swap_pool"`
+	AddLiquidity            string `json:"add_liquidity"`
+	RemoveLiquidity         string `json:"remove_liquidity"`
+	EditCandidateCommission string `json:"edit_candidate_commission"`
+	MoveStake               string `json:"move_stake"`
+	MintToken               string `json:"mint_token"`
+	BurnToken               string `json:"burn_token"`
+	VoteCommission          string `json:"vote_commission"`
+	VoteUpdate              string `json:"vote_update"`
+	FailedTx                string `json:"failed_tx"`
+	AddLimitOrder           string `json:"add_limit_order"`
+	RemoveLimitOrder        string `json:"remove_limit_order"`
 }
 
 type VoteUpdateData struct {
-	PubKey  string `json:"pub_key,omitempty"`
-	Height  uint64 `json:"height,string,omitempty"`
-	Version string `json:"version,omitempty"`
+	PubKey  string `json:"pub_key"`
+	Height  uint64 `json:"height,string"`
+	Version string `json:"version"`
 }
 
 type AddLimitOrderData struct {
-	CoinToSell  *Coin  `json:"coin_to_sell,omitempty"`
-	ValueToSell string `json:"value_to_sell,omitempty"`
-	CoinToBuy   *Coin  `json:"coin_to_buy,omitempty"`
-	ValueToBuy  string `json:"value_to_buy,omitempty"`
+	CoinToSell  *Coin  `json:"coin_to_sell"`
+	ValueToSell string `json:"value_to_sell"`
+	CoinToBuy   *Coin  `json:"coin_to_buy"`
+	ValueToBuy  string `json:"value_to_buy"`
 }
 
 type RemoveLimitOrderData struct {
-	Id uint64 `json:"id,string,omitempty"`
+	Id uint64 `json:"id,string"`
+}
+
+type LockData struct {
+	DueBlock uint64 `json:"due_block,string"`
+	Coin     *Coin  `json:"coin"`
+	Value    string `json:"value"`
+}
+
+type LockStakeData struct {
 }
 
 func newData(t string) Data {
@@ -347,6 +356,10 @@ func newData(t string) Data {
 		return &AddLimitOrderData{}
 	case "type.googleapis.com/api_pb.RemoveLimitOrderData":
 		return &RemoveLimitOrderData{}
+	case "type.googleapis.com/api_pb.LockStakeData":
+		return &LockStakeData{}
+	case "type.googleapis.com/api_pb.LockData":
+		return &LockData{}
 	default:
 		return nil
 	}

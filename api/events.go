@@ -32,15 +32,17 @@ type EventType string
 
 // Event type names
 const (
-	TypeRewardEvent            EventType = "minter/RewardEvent"
-	TypeSlashEvent             EventType = "minter/SlashEvent"
-	TypeJailEvent              EventType = "minter/JailEvent"
-	TypeUnbondEvent            EventType = "minter/UnbondEvent"
-	TypeStakeKickEvent         EventType = "minter/StakeKickEvent"
-	TypeOrderExpiredEvent      EventType = "minter/OrderExpiredEvent"
-	TypeUpdateNetworkEvent     EventType = "minter/UpdateNetworkEvent"
-	TypeUpdateCommissionsEvent EventType = "minter/UpdateCommissionsEvent"
-	TypeRemoveCandidateEvent   EventType = "minter/RemoveCandidateEvent"
+	TypeRewardEvent             EventType = "minter/RewardEvent"
+	TypeSlashEvent              EventType = "minter/SlashEvent"
+	TypeJailEvent               EventType = "minter/JailEvent"
+	TypeUnbondEvent             EventType = "minter/UnbondEvent"
+	TypeStakeKickEvent          EventType = "minter/StakeKickEvent"
+	TypeOrderExpiredEvent       EventType = "minter/OrderExpiredEvent"
+	TypeUpdateNetworkEvent      EventType = "minter/UpdateNetworkEvent"
+	TypeUpdateCommissionsEvent  EventType = "minter/UpdateCommissionsEvent"
+	TypeRemoveCandidateEvent    EventType = "minter/RemoveCandidateEvent"
+	TypeStakeMoveEvent                    = "minter/StakeMoveEvent"
+	TypeUpdatedBlockRewardEvent           = "minter/UpdatedBlockRewardEvent"
 )
 
 // StakeEvent interface
@@ -146,6 +148,26 @@ func (e *RemoveCandidateEvent) Type() EventType { return TypeRemoveCandidateEven
 func (e *RemoveCandidateEvent) GetPublicKey() string {
 	return e.CandidatePubKey
 }
+
+type StakeMoveEvent struct {
+	Address           string `json:"address"`
+	Amount            string `json:"amount"`
+	Coin              string `json:"coin"`
+	CandidatePubKey   string `json:"candidate_pub_key"`
+	ToCandidatePubKey string `json:"to_candidate_pub_key"`
+}
+
+func (e *StakeMoveEvent) Type() EventType { return TypeStakeMoveEvent }
+
+func (e *StakeMoveEvent) GetPublicKey() string {
+	return e.ToCandidatePubKey
+}
+
+type UpdatedBlockRewardEvent struct {
+	Value string `json:"value"`
+}
+
+func (e *UpdatedBlockRewardEvent) Type() EventType { return TypeUpdatedBlockRewardEvent }
 
 // RewardEvent is the payment of rewards
 type RewardEvent struct {
@@ -283,6 +305,10 @@ func newEvent(t EventType) Event {
 		return &OrderExpiredEvent{}
 	case TypeRemoveCandidateEvent:
 		return &RemoveCandidateEvent{}
+	case TypeStakeMoveEvent:
+		return &StakeMoveEvent{}
+	case TypeUpdatedBlockRewardEvent:
+		return &UpdatedBlockRewardEvent{}
 	default:
 		return nil
 	}
