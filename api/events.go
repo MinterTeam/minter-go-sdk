@@ -41,8 +41,9 @@ const (
 	TypeUpdateNetworkEvent      EventType = "minter/UpdateNetworkEvent"
 	TypeUpdateCommissionsEvent  EventType = "minter/UpdateCommissionsEvent"
 	TypeRemoveCandidateEvent    EventType = "minter/RemoveCandidateEvent"
-	TypeStakeMoveEvent                    = "minter/StakeMoveEvent"
-	TypeUpdatedBlockRewardEvent           = "minter/UpdatedBlockRewardEvent"
+	TypeStakeMoveEvent          EventType = "minter/StakeMoveEvent"
+	TypeUpdatedBlockRewardEvent EventType = "minter/UpdatedBlockRewardEvent"
+	TypeUnlockEvent             EventType = "minter/UnlockEvent"
 )
 
 // StakeEvent interface
@@ -104,7 +105,6 @@ type UpdateCommissionsEvent struct {
 	AddLiquidity            string `json:"add_liquidity"`
 	RemoveLiquidity         string `json:"remove_liquidity"`
 	EditCandidateCommission string `json:"edit_candidate_commission"`
-	MoveStake               string `json:"move_stake"`
 	MintToken               string `json:"mint_token"`
 	BurnToken               string `json:"burn_token"`
 	VoteCommission          string `json:"vote_commission"`
@@ -112,6 +112,9 @@ type UpdateCommissionsEvent struct {
 	FailedTx                string `json:"failed_tx,omitempty"`
 	AddLimitOrder           string `json:"add_limit_order,omitempty"`
 	RemoveLimitOrder        string `json:"remove_limit_order,omitempty"`
+	MoveStake               string `json:"move_stake,omitempty"`
+	LockStake               string `json:"lock_stake,omitempty"`
+	Lock                    string `json:"lock,omitempty"`
 }
 
 func (e *UpdateCommissionsEvent) Type() EventType { return TypeUpdateCommissionsEvent }
@@ -168,6 +171,20 @@ type UpdatedBlockRewardEvent struct {
 }
 
 func (e *UpdatedBlockRewardEvent) Type() EventType { return TypeUpdatedBlockRewardEvent }
+
+// UnlockEvent is ...
+type UnlockEvent struct {
+	Address string `json:"address"`
+	Amount  string `json:"amount"`
+	Coin    string `json:"coin"`
+}
+
+func (e *UnlockEvent) Type() EventType { return TypeUnlockEvent }
+
+// GetAddress return owner address
+func (e *UnlockEvent) GetAddress() string {
+	return e.Address
+}
 
 // RewardEvent is the payment of rewards
 type RewardEvent struct {
@@ -309,6 +326,8 @@ func newEvent(t EventType) Event {
 		return &StakeMoveEvent{}
 	case TypeUpdatedBlockRewardEvent:
 		return &UpdatedBlockRewardEvent{}
+	case TypeUnlockEvent:
+		return &UnlockEvent{}
 	default:
 		return nil
 	}
