@@ -61,6 +61,9 @@ type GenesisResponseAppState struct {
 	// total slashed
 	TotalSlashed string `json:"total_slashed,omitempty"`
 
+	// update votes
+	UpdateVotes []*AppStateUpdateVote `json:"update_votes"`
+
 	// used checks
 	UsedChecks []string `json:"used_checks"`
 
@@ -111,6 +114,10 @@ func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validatePools(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateUpdateVotes(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -337,6 +344,30 @@ func (m *GenesisResponseAppState) validatePools(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *GenesisResponseAppState) validateUpdateVotes(formats strfmt.Registry) error {
+	if swag.IsZero(m.UpdateVotes) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.UpdateVotes); i++ {
+		if swag.IsZero(m.UpdateVotes[i]) { // not required
+			continue
+		}
+
+		if m.UpdateVotes[i] != nil {
+			if err := m.UpdateVotes[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("update_votes" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (m *GenesisResponseAppState) validateValidators(formats strfmt.Registry) error {
 	if swag.IsZero(m.Validators) { // not required
 		return nil
@@ -422,6 +453,10 @@ func (m *GenesisResponseAppState) ContextValidate(ctx context.Context, formats s
 	}
 
 	if err := m.contextValidatePools(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateUpdateVotes(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -587,6 +622,24 @@ func (m *GenesisResponseAppState) contextValidatePools(ctx context.Context, form
 			if err := m.Pools[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("pools" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateUpdateVotes(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.UpdateVotes); i++ {
+
+		if m.UpdateVotes[i] != nil {
+			if err := m.UpdateVotes[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("update_votes" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
