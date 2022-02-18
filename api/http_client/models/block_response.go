@@ -22,6 +22,9 @@ type BlockResponse struct {
 	// block reward
 	BlockReward string `json:"block_reward,omitempty"`
 
+	// block reward with lock
+	BlockRewardWithLock string `json:"block_reward_with_lock,omitempty"`
+
 	// events
 	Events []*ProtobufAny `json:"events"`
 
