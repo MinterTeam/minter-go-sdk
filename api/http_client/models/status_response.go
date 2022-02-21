@@ -17,9 +17,6 @@ import (
 // swagger:model StatusResponse
 type StatusResponse struct {
 
-	// block reward
-	BlockReward string `json:"block_reward,omitempty"`
-
 	// catching up
 	CatchingUp bool `json:"catching_up,omitempty"`
 
