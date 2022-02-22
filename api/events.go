@@ -167,8 +167,8 @@ func (e *StakeMoveEvent) GetPublicKey() string {
 }
 
 type UpdatedBlockRewardEvent struct {
-	Value               string `json:"value"`
-	ValueForLockedStake string `json:"value_for_locked_stake"`
+	Value                   string `json:"value"`
+	ValueLockedStakeRewards string `json:"value_locked_stake_rewards"`
 }
 
 func (e *UpdatedBlockRewardEvent) Type() EventType { return TypeUpdatedBlockRewardEvent }

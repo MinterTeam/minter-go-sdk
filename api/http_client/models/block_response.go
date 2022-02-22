@@ -22,9 +22,6 @@ type BlockResponse struct {
 	// block reward
 	BlockReward string `json:"block_reward,omitempty"`
 
-	// block reward with lock
-	BlockRewardWithLock string `json:"block_reward_with_lock,omitempty"`
-
 	// events
 	Events []*ProtobufAny `json:"events"`
 
@@ -36,6 +33,9 @@ type BlockResponse struct {
 
 	// height
 	Height uint64 `json:"height,omitempty,string"`
+
+	// locked stake rewards
+	LockedStakeRewards string `json:"locked_stake_rewards,omitempty"`
 
 	// missed
 	Missed []string `json:"missed"`
