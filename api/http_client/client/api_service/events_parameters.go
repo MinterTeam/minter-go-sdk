@@ -67,7 +67,7 @@ type EventsParams struct {
 
 	/* Search.
 
-	   Array of public keys of validators and wallet addresses of delegators for filtering.
+	   Array of public keys of validators and wallet addresses of delegators for filtering
 	*/
 	Search []string
 

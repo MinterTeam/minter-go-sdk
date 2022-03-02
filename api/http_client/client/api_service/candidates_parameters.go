@@ -62,7 +62,7 @@ type CandidatesParams struct {
 
 	/* Height.
 
-	   Blockchain state height for the current request. Optional, the last default state of the node is used.
+	   Blockchain state height for the current request. Optional, the last default state of the node is used
 
 	   Format: uint64
 	*/
@@ -70,13 +70,13 @@ type CandidatesParams struct {
 
 	/* IncludeStakes.
 
-	   Calculate field values used_slots, uniq_users, min_stake.
+	   Calculate field values used_slots, uniq_users, min_stake
 	*/
 	IncludeStakes *bool
 
 	/* NotShowStakes.
 
-	   Do not display the list of stakes, the include_stakes flag is also required to display. Note: used_slots, uniq_users, min_stake will still be filled if include_stakes flag is used.
+	   Do not display the list of stakes, the include_stakes flag is also required to display. Note: used_slots, uniq_users, min_stake will still be filled if include_stakes flag is used
 	*/
 	NotShowStakes *bool
 

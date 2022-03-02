@@ -62,7 +62,7 @@ type CandidateParams struct {
 
 	/* Height.
 
-	   Blockchain state height for the current request. Optional, the last default state of the node is used.
+	   Blockchain state height for the current request. Optional, the last default state of the node is used
 
 	   Format: uint64
 	*/
@@ -70,7 +70,7 @@ type CandidateParams struct {
 
 	/* NotShowStakes.
 
-	   Do not display a list of steaks. Note: used_slots, uniq_users, min_stake will be filled.
+	   Do not display a list of steaks. Note: used_slots, uniq_users, min_stake will be filled
 	*/
 	NotShowStakes *bool
 
