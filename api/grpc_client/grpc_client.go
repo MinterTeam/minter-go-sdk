@@ -451,12 +451,19 @@ func (c *Client) Subscribe(query string) (api_pb.ApiService_SubscribeClient, err
 }
 
 // Frozen returns frozen balance.
+// Deprecated: Use FrozenAll instead.
 func (c *Client) Frozen(address string, coinID *uint64, optionalHeight ...uint64) (*api_pb.FrozenResponse, error) {
 	var coin *wrapperspb.UInt64Value
 	if coinID != nil {
 		coin = wrapperspb.UInt64(*coinID)
 	}
 	return c.grpcClient.Frozen(c.ctxFunc(), &api_pb.FrozenRequest{Address: address, CoinId: coin, Height: optionalInt(optionalHeight)}, c.opts...)
+}
+
+// FrozenAll returns frozen balance.
+func (c *Client) FrozenAll(addresses []string, coinIDs []uint64, startHeight, endHeight uint64, optionalHeight ...uint64) (*api_pb.FrozenResponse, error) {
+
+	return c.grpcClient.FrozenAll(c.ctxFunc(), &api_pb.FrozenAllRequest{Addresses: addresses, CoinIds: coinIDs, StartHeight: startHeight, EndHeight: endHeight, Height: optionalInt(optionalHeight)}, c.opts...)
 }
 
 func optionalInt(height []uint64) uint64 {

@@ -58,6 +58,8 @@ type ClientService interface {
 
 	Frozen(params *FrozenParams, opts ...ClientOption) (*FrozenOK, error)
 
+	FrozenAll(params *FrozenAllParams, opts ...ClientOption) (*FrozenAllOK, error)
+
 	Genesis(params *GenesisParams, opts ...ClientOption) (*GenesisOK, error)
 
 	Halts(params *HaltsParams, opts ...ClientOption) (*HaltsOK, error)
@@ -673,6 +675,7 @@ func (a *Client) Events(params *EventsParams, opts ...ClientOption) (*EventsOK, 
   Frozen frozens
 
   Frozen returns frozen balance.
+Deprecated: Use FrozenAll instead.
 */
 func (a *Client) Frozen(params *FrozenParams, opts ...ClientOption) (*FrozenOK, error) {
 	// TODO: Validate the params before sending
@@ -705,6 +708,45 @@ func (a *Client) Frozen(params *FrozenParams, opts ...ClientOption) (*FrozenOK, 
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*FrozenDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  FrozenAll frozens all
+
+  FrozenAll returns frozen balance.
+*/
+func (a *Client) FrozenAll(params *FrozenAllParams, opts ...ClientOption) (*FrozenAllOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewFrozenAllParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "FrozenAll",
+		Method:             "GET",
+		PathPattern:        "/frozen_all",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &FrozenAllReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*FrozenAllOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*FrozenAllDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

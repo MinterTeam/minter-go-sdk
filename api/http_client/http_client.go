@@ -687,7 +687,7 @@ func (c *Client) CommissionVotes(target uint64, optionalHeight ...uint64) (*mode
 	return res.GetPayload(), nil
 }
 
-// CommissionVotes returns ...
+// UpdateVotes returns ...
 func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*models.UpdateVotesResponse, error) {
 	res, err := c.ClientService.UpdateVotes(api_service.NewUpdateVotesParamsWithTimeout(c.timeout).WithTargetVersion(strconv.Itoa(int(target))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -732,8 +732,23 @@ func (c *Client) LimitOrdersOfPool(sellCoin, buyCoin uint64, optionalHeight ...u
 }
 
 // Frozen returns frozen balance.
+// Deprecated: Use FrozenAll instead.
 func (c *Client) Frozen(address string, coinID *uint64, optionalHeight ...uint64) (*models.FrozenResponse, error) {
 	res, err := c.ClientService.Frozen(api_service.NewFrozenParamsWithTimeout(c.timeout).WithAddress(address).WithCoinID(coinID).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// FrozenAll returns frozen balance.
+func (c *Client) FrozenAll(addresses []string, coinIDs []uint64, startHeight, endHeight uint64, optionalHeight ...uint64) (*models.FrozenResponse, error) {
+	var coinIds []string
+	for _, id := range coinIDs {
+		coinIds = append(coinIds, strconv.Itoa(int(id)))
+	}
+	res, err := c.ClientService.FrozenAll(api_service.NewFrozenAllParamsWithTimeout(c.timeout).WithAddresses(addresses).WithCoinIds(coinIds).WithStartHeight(&startHeight).WithEndHeight(&endHeight).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
 		return nil, err
 	}

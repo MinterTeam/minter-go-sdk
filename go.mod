@@ -3,7 +3,7 @@ module github.com/MinterTeam/minter-go-sdk/v2
 go 1.16
 
 require (
-	github.com/MinterTeam/node-grpc-gateway v1.5.2-0.20220302184501-0ae77691c6c4
+	github.com/MinterTeam/node-grpc-gateway v1.5.2-0.20220318141256-10b031f590f6
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/btcsuite/btcd v0.22.0-beta // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
@@ -19,7 +19,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.9.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
@@ -28,6 +28,6 @@ require (
 	github.com/urfave/cli/v2 v2.3.0
 	go.mongodb.org/mongo-driver v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
-	google.golang.org/grpc v1.44.0
+	google.golang.org/grpc v1.45.0
 	google.golang.org/protobuf v1.27.1
 )
