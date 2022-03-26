@@ -40,6 +40,9 @@ type GenesisResponseAppState struct {
 	// deleted candidates
 	DeletedCandidates []*AppStateDeletedCandidate `json:"deleted_candidates"`
 
+	// emission
+	Emission string `json:"emission,omitempty"`
+
 	// frozen funds
 	FrozenFunds []*AppStateFrozenFund `json:"frozen_funds"`
 
@@ -58,6 +61,9 @@ type GenesisResponseAppState struct {
 	// pools
 	Pools []*AppStatePool `json:"pools"`
 
+	// prev reward
+	PrevReward *AppStateRewardPrice `json:"prev_reward,omitempty"`
+
 	// total slashed
 	TotalSlashed string `json:"total_slashed,omitempty"`
 
@@ -72,6 +78,9 @@ type GenesisResponseAppState struct {
 
 	// version
 	Version string `json:"version,omitempty"`
+
+	// versions
+	Versions []*GenesisResponseAppStateVersion `json:"versions"`
 
 	// waitlist
 	Waitlist []*AppStateWaitlist `json:"waitlist"`
@@ -117,11 +126,19 @@ func (m *GenesisResponseAppState) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validatePrevReward(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateUpdateVotes(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validateValidators(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateVersions(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -344,6 +361,23 @@ func (m *GenesisResponseAppState) validatePools(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *GenesisResponseAppState) validatePrevReward(formats strfmt.Registry) error {
+	if swag.IsZero(m.PrevReward) { // not required
+		return nil
+	}
+
+	if m.PrevReward != nil {
+		if err := m.PrevReward.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("prev_reward")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *GenesisResponseAppState) validateUpdateVotes(formats strfmt.Registry) error {
 	if swag.IsZero(m.UpdateVotes) { // not required
 		return nil
@@ -382,6 +416,30 @@ func (m *GenesisResponseAppState) validateValidators(formats strfmt.Registry) er
 			if err := m.Validators[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("validators" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) validateVersions(formats strfmt.Registry) error {
+	if swag.IsZero(m.Versions) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Versions); i++ {
+		if swag.IsZero(m.Versions[i]) { // not required
+			continue
+		}
+
+		if m.Versions[i] != nil {
+			if err := m.Versions[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("versions" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -456,11 +514,19 @@ func (m *GenesisResponseAppState) ContextValidate(ctx context.Context, formats s
 		res = append(res, err)
 	}
 
+	if err := m.contextValidatePrevReward(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateUpdateVotes(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.contextValidateValidators(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateVersions(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -632,6 +698,20 @@ func (m *GenesisResponseAppState) contextValidatePools(ctx context.Context, form
 	return nil
 }
 
+func (m *GenesisResponseAppState) contextValidatePrevReward(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.PrevReward != nil {
+		if err := m.PrevReward.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("prev_reward")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *GenesisResponseAppState) contextValidateUpdateVotes(ctx context.Context, formats strfmt.Registry) error {
 
 	for i := 0; i < len(m.UpdateVotes); i++ {
@@ -658,6 +738,24 @@ func (m *GenesisResponseAppState) contextValidateValidators(ctx context.Context,
 			if err := m.Validators[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("validators" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseAppState) contextValidateVersions(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Versions); i++ {
+
+		if m.Versions[i] != nil {
+			if err := m.Versions[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("versions" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
