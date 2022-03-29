@@ -2,7 +2,16 @@
 
 ## Unreleased
 
-[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.4.0...v2)
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.5.0...v2)
+
+## [v2.5.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.5.0)
+
+(2022-03-29)
+
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.4.0...v2.5.0)
+
+- Add new txs for Minter3 update
+- Update API clients
 
 ## [v2.4.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.4.0)
 
