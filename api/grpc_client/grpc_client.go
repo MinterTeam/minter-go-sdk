@@ -462,8 +462,27 @@ func (c *Client) Frozen(address string, coinID *uint64, optionalHeight ...uint64
 
 // FrozenAll returns frozen balance.
 func (c *Client) FrozenAll(addresses []string, coinIDs []uint64, startHeight, endHeight uint64, optionalHeight ...uint64) (*api_pb.FrozenResponse, error) {
-
 	return c.grpcClient.FrozenAll(c.ctxFunc(), &api_pb.FrozenAllRequest{Addresses: addresses, CoinIds: coinIDs, StartHeight: startHeight, EndHeight: endHeight, Height: optionalInt(optionalHeight)}, c.opts...)
+}
+
+// SwapPools returns list of all pools.
+func (c *Client) SwapPools(orders bool, optionalHeight ...uint64) (*api_pb.SwapPoolsResponse, error) {
+	return c.grpcClient.SwapPools(c.ctxFunc(), &api_pb.SwapPoolsRequest{
+		Height: optionalInt(optionalHeight),
+		Orders: orders,
+	}, c.opts...)
+}
+
+// BestTrade returns optimal exchange route.
+func (c *Client) BestTrade(sellCoinID, buyCoinID uint64, t api_pb.BestTradeRequest_Type, amount string, maxDepth int32, optionalHeight ...uint64) (*api_pb.BestTradeResponse, error) {
+	return c.grpcClient.BestTrade(c.ctxFunc(), &api_pb.BestTradeRequest{
+		SellCoin: sellCoinID,
+		BuyCoin:  buyCoinID,
+		Amount:   amount,
+		Type:     t,
+		Height:   optionalInt(optionalHeight),
+		MaxDepth: maxDepth,
+	}, c.opts...)
 }
 
 func optionalInt(height []uint64) uint64 {

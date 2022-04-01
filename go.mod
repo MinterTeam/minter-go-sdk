@@ -1,9 +1,9 @@
 module github.com/MinterTeam/minter-go-sdk/v2
 
-go 1.16
+go 1.17
 
 require (
-	github.com/MinterTeam/node-grpc-gateway v1.5.2-0.20220326102633-8d17189b77b1
+	github.com/MinterTeam/node-grpc-gateway v1.6.1-0.20220401095340-3dbcc3aea06b
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/btcsuite/btcd v0.22.0-beta // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect

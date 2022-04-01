@@ -32,6 +32,8 @@ type ClientService interface {
 
 	Addresses(params *AddressesParams, opts ...ClientOption) (*AddressesOK, error)
 
+	BestTrade(params *BestTradeParams, opts ...ClientOption) (*BestTradeOK, error)
+
 	Block(params *BlockParams, opts ...ClientOption) (*BlockOK, error)
 
 	Blocks(params *BlocksParams, opts ...ClientOption) (*BlocksOK, error)
@@ -91,6 +93,8 @@ type ClientService interface {
 	SwapPool(params *SwapPoolParams, opts ...ClientOption) (*SwapPoolOK, error)
 
 	SwapPoolProvider(params *SwapPoolProviderParams, opts ...ClientOption) (*SwapPoolProviderOK, error)
+
+	SwapPools(params *SwapPoolsParams, opts ...ClientOption) (*SwapPoolsOK, error)
 
 	TestBlock(params *TestBlockParams, opts ...ClientOption) (*TestBlockOK, error)
 
@@ -186,6 +190,45 @@ func (a *Client) Addresses(params *AddressesParams, opts ...ClientOption) (*Addr
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*AddressesDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  BestTrade bests trade
+
+  BestTrade returns optimal exchange route.
+*/
+func (a *Client) BestTrade(params *BestTradeParams, opts ...ClientOption) (*BestTradeOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewBestTradeParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "BestTrade",
+		Method:             "GET",
+		PathPattern:        "/best_trade/{sell_coin}/{buy_coin}/{type}/{amount}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &BestTradeReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*BestTradeOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*BestTradeDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
@@ -1359,6 +1402,45 @@ func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams, opts ...Client
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*SwapPoolProviderDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  SwapPools swaps pools
+
+  SwapPools returns list of all pools.
+*/
+func (a *Client) SwapPools(params *SwapPoolsParams, opts ...ClientOption) (*SwapPoolsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSwapPoolsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "SwapPools",
+		Method:             "GET",
+		PathPattern:        "/swap_pools",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &SwapPoolsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SwapPoolsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*SwapPoolsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

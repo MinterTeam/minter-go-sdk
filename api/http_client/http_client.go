@@ -756,6 +756,26 @@ func (c *Client) FrozenAll(addresses []string, coinIDs []uint64, startHeight, en
 	return res.GetPayload(), nil
 }
 
+// SwapPools returns list of all pools.
+func (c *Client) SwapPools(orders bool, optionalHeight ...uint64) (*models.SwapPoolsResponse, error) {
+	res, err := c.ClientService.SwapPools(api_service.NewSwapPoolsParamsWithTimeout(c.timeout).WithOrders(&orders).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// BestTrade returns optimal exchange route.
+func (c *Client) BestTrade(sellCoinID, buyCoinID uint64, t string, amount string, maxDepth int32, optionalHeight ...uint64) (*models.BestTradeResponse, error) {
+	res, err := c.ClientService.BestTrade(api_service.NewBestTradeParamsWithTimeout(c.timeout).WithSellCoin(strconv.Itoa(int(sellCoinID))).WithBuyCoin(strconv.Itoa(int(buyCoinID))).WithAmount(amount).WithType(t).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
 // SubscriberClient is subscriber
 type SubscriberClient struct {
 	ctx    context.Context

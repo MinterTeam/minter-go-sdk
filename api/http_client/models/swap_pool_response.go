@@ -23,6 +23,9 @@ type SwapPoolResponse struct {
 	// amount1
 	Amount1 string `json:"amount1,omitempty"`
 
+	// id
+	ID uint64 `json:"id,omitempty,string"`
+
 	// liquidity
 	Liquidity string `json:"liquidity,omitempty"`
 
