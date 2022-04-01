@@ -37,6 +37,22 @@ func ExampleDeepLink_CreateLink() {
 	// https://bip.to/tx/9AGg3wGUdjOYDAABOd070ko_VOBkdPqUHhaIiscjBInoAACOY3VzdG9tIG1lc3NhZ2XAwAM?p=cGFzcw
 }
 
+func ExampleDeepLink_CreateLink_swap() {
+	link, _ := transaction.NewDeepLink(
+		transaction.NewSellSwapPoolData().
+			SetValueToSell(transaction.BipToPip(big.NewInt(10))).
+			AddCoin(0, 2137, 905, 1994, 1993).SetMinimumValueToBuy(transaction.StringToBigInt("100000000000000")),
+	)
+
+	link.SetGasCoin(0)
+	link.MustSetUrl("https://wallet.toronet.bip.to")
+
+	data, _ := link.CreateLink("klim0v")
+	fmt.Println(data)
+	// Output:
+	// https://wallet.toronet.bip.to/tx/5Ref3s2AgghZggOJggfKggfJiIrHIwSJ6AAAhlrzEHpAAIDAwIA?p=a2xpbTB2
+}
+
 func ExampleDeepLink_CreateLink_customHost() {
 	link, _ := transaction.NewDeepLink(
 		transaction.NewSendData().
