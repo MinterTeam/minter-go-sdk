@@ -28,6 +28,9 @@ type AddressesResponseResult struct {
 	// Filled in when request delegated
 	Delegated []*AddressDelegatedBalance `json:"delegated"`
 
+	// locked stake until block
+	LockedStakeUntilBlock uint64 `json:"locked_stake_until_block,omitempty,string"`
+
 	// multisig
 	Multisig *Multisig `json:"multisig,omitempty"`
 
