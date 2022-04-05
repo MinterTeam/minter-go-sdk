@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// MoveStakeData is a Data of Transaction for move stake to another candidate.
 type MoveStakeData struct {
 	FromPubKey,
 	ToPubKey PublicKey
@@ -14,6 +15,7 @@ type MoveStakeData struct {
 	Value *big.Int
 }
 
+// NewMoveStakeData returns new MoveStakeData of Transaction for move stake to another candidate.
 func NewMoveStakeData() *MoveStakeData {
 	return &MoveStakeData{}
 }

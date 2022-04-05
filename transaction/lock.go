@@ -5,12 +5,14 @@ import (
 	"math/big"
 )
 
+// LockData is a Data of Transaction for lock coins.
 type LockData struct {
 	DueBlock uint64
 	Coin     CoinID
 	Value    *big.Int
 }
 
+// NewLockData returns new LockData of Transaction for lock coins.
 func NewLockData() *LockData {
 	return &LockData{}
 }

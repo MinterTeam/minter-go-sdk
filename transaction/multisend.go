@@ -9,7 +9,7 @@ type MultisendData struct {
 	List []*SendData // List of SendData
 }
 
-// NewMultisendData returns new MultisendData of Transaction for sending coins to multiple addresses
+// NewMultisendData returns new MultisendData of Transaction for sending coins to multiple addresses.
 func NewMultisendData() *MultisendData {
 	return &MultisendData{}
 }

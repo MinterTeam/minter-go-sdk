@@ -230,7 +230,7 @@ func (c *Client) Block(height uint64) (*api_pb.BlockResponse, error) {
 	return c.grpcClient.Block(c.ctxFunc(), &api_pb.BlockRequest{Height: height}, c.opts...)
 }
 
-// Blocks ...
+// Blocks returns blocks at given interval.
 func (c *Client) Blocks(from, to uint64, failedTxs, events bool, fieldsBlock ...string) (*api_pb.BlocksResponse, error) {
 	var fields []api_pb.BlockField
 	for _, field := range fieldsBlock {
@@ -410,37 +410,37 @@ func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, optional
 	return c.grpcClient.SwapPoolProvider(c.ctxFunc(), &api_pb.SwapPoolProviderRequest{Height: optionalInt(optionalHeight), Coin0: coin0, Coin1: coin1, Provider: provider}, c.opts...)
 }
 
-// VersionNetwork returns ...
+// VersionNetwork returns versions network.
 func (c *Client) VersionNetwork() (*api_pb.VersionNetworkResponse, error) {
 	return c.grpcClient.VersionNetwork(c.ctxFunc(), &api_pb.VersionNetworkRequest{}, c.opts...)
 }
 
-// PriceCommission returns ...
+// PriceCommission returns commissions.
 func (c *Client) PriceCommission(optionalHeight ...uint64) (*api_pb.PriceCommissionResponse, error) {
 	return c.grpcClient.PriceCommission(c.ctxFunc(), &api_pb.PriceCommissionRequest{Height: optionalInt(optionalHeight)}, c.opts...)
 }
 
-// CommissionVotes returns ...
+// CommissionVotes returns votes for update commissions.
 func (c *Client) CommissionVotes(target uint64, optionalHeight ...uint64) (*api_pb.CommissionVotesResponse, error) {
 	return c.grpcClient.CommissionVotes(c.ctxFunc(), &api_pb.CommissionVotesRequest{Height: optionalInt(optionalHeight), TargetVersion: target}, c.opts...)
 }
 
-// UpdateVotes returns ...
+// UpdateVotes returns votes for update network.
 func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*api_pb.UpdateVotesResponse, error) {
 	return c.grpcClient.UpdateVotes(c.ctxFunc(), &api_pb.UpdateVotesRequest{Height: optionalInt(optionalHeight), TargetVersion: target}, c.opts...)
 }
 
-// LimitOrder returns ...
+// LimitOrder returns order by ID.
 func (c *Client) LimitOrder(orderID uint64, optionalHeight ...uint64) (*api_pb.LimitOrderResponse, error) {
 	return c.grpcClient.LimitOrder(c.ctxFunc(), &api_pb.LimitOrderRequest{Height: optionalInt(optionalHeight), OrderId: orderID}, c.opts...)
 }
 
-// LimitOrders returns ...
+// LimitOrders returns orders by IDs.
 func (c *Client) LimitOrders(orderIDs []uint64, optionalHeight ...uint64) (*api_pb.LimitOrdersResponse, error) {
 	return c.grpcClient.LimitOrders(c.ctxFunc(), &api_pb.LimitOrdersRequest{Height: optionalInt(optionalHeight), Ids: orderIDs}, c.opts...)
 }
 
-// LimitOrdersOfPool returns ...
+// LimitOrdersOfPool returns sell orders for a pair of coins.
 func (c *Client) LimitOrdersOfPool(sellCoin, buyCoin uint64, optionalHeight ...uint64) (*api_pb.LimitOrdersOfPoolResponse, error) {
 	return c.grpcClient.LimitOrdersOfPool(c.ctxFunc(), &api_pb.LimitOrdersOfPoolRequest{Height: optionalInt(optionalHeight), SellCoin: sellCoin, BuyCoin: buyCoin}, c.opts...)
 }

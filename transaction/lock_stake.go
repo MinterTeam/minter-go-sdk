@@ -4,9 +4,11 @@ import (
 	"github.com/ethereum/go-ethereum/rlp"
 )
 
+// LockStakeData is a Data of Transaction for lock stake.
 type LockStakeData struct {
 }
 
+// NewLockStakeData returns new LockStakeData of Transaction for lock stake.
 func NewLockStakeData() *LockStakeData {
 	return &LockStakeData{}
 }

@@ -273,6 +273,8 @@ func (a *Client) Block(params *BlockParams, opts ...ClientOption) (*BlockOK, err
 
 /*
   Blocks blocks
+
+  Blocks returns blocks at given interval.
 */
 func (a *Client) Blocks(params *BlocksParams, opts ...ClientOption) (*BlocksOK, error) {
 	// TODO: Validate the params before sending
@@ -484,6 +486,8 @@ func (a *Client) CoinInfoByID(params *CoinInfoByIDParams, opts ...ClientOption) 
 
 /*
   CommissionVotes commissions votes
+
+  CommissionVotes returns votes for update commissions.
 */
 func (a *Client) CommissionVotes(params *CommissionVotesParams, opts ...ClientOption) (*CommissionVotesOK, error) {
 	// TODO: Validate the params before sending
@@ -873,6 +877,8 @@ func (a *Client) Halts(params *HaltsParams, opts ...ClientOption) (*HaltsOK, err
 
 /*
   LimitOrder limits order
+
+  LimitOrder returns order by ID.
 */
 func (a *Client) LimitOrder(params *LimitOrderParams, opts ...ClientOption) (*LimitOrderOK, error) {
 	// TODO: Validate the params before sending
@@ -910,6 +916,8 @@ func (a *Client) LimitOrder(params *LimitOrderParams, opts ...ClientOption) (*Li
 
 /*
   LimitOrders limits orders
+
+  LimitOrders returns orders by IDs.
 */
 func (a *Client) LimitOrders(params *LimitOrdersParams, opts ...ClientOption) (*LimitOrdersOK, error) {
 	// TODO: Validate the params before sending
@@ -947,6 +955,8 @@ func (a *Client) LimitOrders(params *LimitOrdersParams, opts ...ClientOption) (*
 
 /*
   LimitOrdersOfPool limits orders of pool
+
+  LimitOrdersOfPool returns sell orders for a pair of coins.
 */
 func (a *Client) LimitOrdersOfPool(params *LimitOrdersOfPoolParams, opts ...ClientOption) (*LimitOrdersOfPoolOK, error) {
 	// TODO: Validate the params before sending
@@ -1140,6 +1150,8 @@ func (a *Client) NetInfo(params *NetInfoParams, opts ...ClientOption) (*NetInfoO
 
 /*
   PriceCommission prices commission
+
+  PriceCommission returns commissions.
 */
 func (a *Client) PriceCommission(params *PriceCommissionParams, opts ...ClientOption) (*PriceCommissionOK, error) {
 	// TODO: Validate the params before sending
@@ -1333,6 +1345,8 @@ func (a *Client) Subscribe(params *SubscribeParams, opts ...ClientOption) (*Subs
 
 /*
   SwapPool swaps pool
+
+  SwapPool returns total supply and reserves.
 */
 func (a *Client) SwapPool(params *SwapPoolParams, opts ...ClientOption) (*SwapPoolOK, error) {
 	// TODO: Validate the params before sending
@@ -1370,6 +1384,8 @@ func (a *Client) SwapPool(params *SwapPoolParams, opts ...ClientOption) (*SwapPo
 
 /*
   SwapPoolProvider swaps pool provider
+
+  SwapPoolProvider returns reserves and liquidity balance of provider.
 */
 func (a *Client) SwapPoolProvider(params *SwapPoolProviderParams, opts ...ClientOption) (*SwapPoolProviderOK, error) {
 	// TODO: Validate the params before sending
@@ -1602,6 +1618,8 @@ func (a *Client) UnconfirmedTxs(params *UnconfirmedTxsParams, opts ...ClientOpti
 
 /*
   UpdateVotes updates votes
+
+  UpdateVotes returns votes for update network.
 */
 func (a *Client) UpdateVotes(params *UpdateVotesParams, opts ...ClientOption) (*UpdateVotesOK, error) {
 	// TODO: Validate the params before sending
@@ -1678,6 +1696,8 @@ func (a *Client) Validators(params *ValidatorsParams, opts ...ClientOption) (*Va
 
 /*
   VersionNetwork versions network
+
+  VersionNetwork returns versions network.
 */
 func (a *Client) VersionNetwork(params *VersionNetworkParams, opts ...ClientOption) (*VersionNetworkOK, error) {
 	// TODO: Validate the params before sending

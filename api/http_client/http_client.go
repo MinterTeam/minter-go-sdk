@@ -285,7 +285,7 @@ func (c *Client) Block(height uint64) (*models.BlockResponse, error) {
 	return res.GetPayload(), nil
 }
 
-// Blocks ...
+// Blocks returns blocks at given interval.
 func (c *Client) Blocks(from, to uint64, failedTxs, events bool, fieldsBlock ...string) (*models.BlocksResponse, error) {
 	res, err := c.ClientService.Blocks(api_service.NewBlocksParamsWithTimeout(c.timeout).WithFailedTxs(&failedTxs).WithFields(fieldsBlock).WithFromHeight(from).WithToHeight(to).WithEvents(&events).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -657,7 +657,7 @@ func (c *Client) SwapPoolProvider(coin0, coin1 uint64, provider string, optional
 	return res.GetPayload(), nil
 }
 
-// PriceCommission returns ...
+// PriceCommission returns commissions.
 func (c *Client) PriceCommission(optionalHeight ...uint64) (*models.PriceCommissionResponse, error) {
 	res, err := c.ClientService.PriceCommission(api_service.NewPriceCommissionParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -667,7 +667,7 @@ func (c *Client) PriceCommission(optionalHeight ...uint64) (*models.PriceCommiss
 	return res.GetPayload(), nil
 }
 
-// VersionNetwork returns ...
+// VersionNetwork returns versions network.
 func (c *Client) VersionNetwork() (*models.VersionNetworkResponse, error) {
 	res, err := c.ClientService.VersionNetwork(api_service.NewVersionNetworkParamsWithTimeout(c.timeout).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -677,7 +677,7 @@ func (c *Client) VersionNetwork() (*models.VersionNetworkResponse, error) {
 	return res.GetPayload(), nil
 }
 
-// CommissionVotes returns ...
+// CommissionVotes returns votes for update commissions.
 func (c *Client) CommissionVotes(target uint64, optionalHeight ...uint64) (*models.CommissionVotesResponse, error) {
 	res, err := c.ClientService.CommissionVotes(api_service.NewCommissionVotesParamsWithTimeout(c.timeout).WithTargetVersion(strconv.Itoa(int(target))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -687,7 +687,7 @@ func (c *Client) CommissionVotes(target uint64, optionalHeight ...uint64) (*mode
 	return res.GetPayload(), nil
 }
 
-// UpdateVotes returns ...
+// UpdateVotes returns votes for update network.
 func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*models.UpdateVotesResponse, error) {
 	res, err := c.ClientService.UpdateVotes(api_service.NewUpdateVotesParamsWithTimeout(c.timeout).WithTargetVersion(strconv.Itoa(int(target))).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -697,7 +697,7 @@ func (c *Client) UpdateVotes(target uint64, optionalHeight ...uint64) (*models.U
 	return res.GetPayload(), nil
 }
 
-// LimitOrder returns ...
+// LimitOrder returns order by ID.
 func (c *Client) LimitOrder(orderID uint64, optionalHeight ...uint64) (*models.LimitOrderResponse, error) {
 	res, err := c.ClientService.LimitOrder(api_service.NewLimitOrderParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithOrderID(strconv.Itoa(int(orderID))).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
@@ -707,7 +707,7 @@ func (c *Client) LimitOrder(orderID uint64, optionalHeight ...uint64) (*models.L
 	return res.GetPayload(), nil
 }
 
-// LimitOrders returns ...
+// LimitOrders returns orders by IDs.
 func (c *Client) LimitOrders(orderIDs []uint64, optionalHeight ...uint64) (*models.LimitOrdersResponse, error) {
 	var ids []string
 	for _, id := range orderIDs {
@@ -721,7 +721,7 @@ func (c *Client) LimitOrders(orderIDs []uint64, optionalHeight ...uint64) (*mode
 	return res.GetPayload(), nil
 }
 
-// LimitOrdersOfPool returns ...
+// LimitOrdersOfPool returns sell orders for a pair of coins.
 func (c *Client) LimitOrdersOfPool(sellCoin, buyCoin uint64, optionalHeight ...uint64) (*models.LimitOrdersOfPoolResponse, error) {
 	res, err := c.ClientService.LimitOrdersOfPool(api_service.NewLimitOrdersOfPoolParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithSellCoin(strconv.Itoa(int(sellCoin))).WithBuyCoin(strconv.Itoa(int(buyCoin))).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
