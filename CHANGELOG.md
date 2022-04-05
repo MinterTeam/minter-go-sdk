@@ -6,7 +6,7 @@
 
 ## [v2.5.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.5.0)
 
-(2022-03-29)
+(2022-04-05)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.4.0...v2.5.0)
 
