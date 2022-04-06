@@ -766,9 +766,16 @@ func (c *Client) SwapPools(orders bool, optionalHeight ...uint64) (*models.SwapP
 	return res.GetPayload(), nil
 }
 
+type BestTradeRequest_Type string
+
+const (
+	BestTradeRequest_input  BestTradeRequest_Type = "input"
+	BestTradeRequest_output BestTradeRequest_Type = "output"
+)
+
 // BestTrade returns optimal exchange route.
-func (c *Client) BestTrade(sellCoinID, buyCoinID uint64, t string, amount string, maxDepth int32, optionalHeight ...uint64) (*models.BestTradeResponse, error) {
-	res, err := c.ClientService.BestTrade(api_service.NewBestTradeParamsWithTimeout(c.timeout).WithSellCoin(strconv.Itoa(int(sellCoinID))).WithBuyCoin(strconv.Itoa(int(buyCoinID))).WithAmount(amount).WithType(t).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
+func (c *Client) BestTrade(sellCoinID, buyCoinID uint64, t BestTradeRequest_Type, amount string, maxDepth int32, optionalHeight ...uint64) (*models.BestTradeResponse, error) {
+	res, err := c.ClientService.BestTrade(api_service.NewBestTradeParamsWithTimeout(c.timeout).WithSellCoin(strconv.Itoa(int(sellCoinID))).WithBuyCoin(strconv.Itoa(int(buyCoinID))).WithAmount(amount).WithMaxDepth(&maxDepth).WithType(string(t)).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
 		return nil, err
 	}
