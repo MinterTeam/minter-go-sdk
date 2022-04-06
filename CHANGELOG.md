@@ -2,11 +2,11 @@
 
 ## Unreleased
 
-[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.5.0...v2)
+[Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.5.2...v2)
 
-## [v2.5.0](https://github.com/MinterTeam/minter-go-sdk/tree/v2.5.0)
+## [v2.5.2](https://github.com/MinterTeam/minter-go-sdk/tree/v2.5.2)
 
-(2022-04-05)
+(2022-04-06)
 
 [Full Changelog](https://github.com/MinterTeam/minter-go-sdk/compare/v2.4.0...v2.5.0)
 
