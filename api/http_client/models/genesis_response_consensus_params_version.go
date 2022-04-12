@@ -18,7 +18,7 @@ import (
 type GenesisResponseConsensusParamsVersion struct {
 
 	// app version
-	AppVersion int64 `json:"app_version,omitempty,string"`
+	AppVersion uint64 `json:"app_version,omitempty,string"`
 }
 
 // Validate validates this genesis response consensus params version
