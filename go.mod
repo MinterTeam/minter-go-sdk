@@ -3,7 +3,7 @@ module github.com/MinterTeam/minter-go-sdk/v2
 go 1.17
 
 require (
-	github.com/MinterTeam/node-grpc-gateway v1.6.2-0.20220412152138-e23185c48da2
+	github.com/MinterTeam/node-grpc-gateway v1.6.2-0.20220412153609-a955eb410641
 	github.com/ethereum/go-ethereum v1.10.13
 	github.com/go-openapi/errors v0.20.1
 	github.com/go-openapi/runtime v0.21.0

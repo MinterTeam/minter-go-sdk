@@ -26,6 +26,9 @@ type GenesisResponseConsensusParams struct {
 
 	// validator
 	Validator *GenesisResponseConsensusParamsValidator `json:"validator,omitempty"`
+
+	// version
+	Version *GenesisResponseConsensusParamsVersion `json:"version,omitempty"`
 }
 
 // Validate validates this genesis response consensus params
@@ -41,6 +44,10 @@ func (m *GenesisResponseConsensusParams) Validate(formats strfmt.Registry) error
 	}
 
 	if err := m.validateValidator(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateVersion(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -101,6 +108,23 @@ func (m *GenesisResponseConsensusParams) validateValidator(formats strfmt.Regist
 	return nil
 }
 
+func (m *GenesisResponseConsensusParams) validateVersion(formats strfmt.Registry) error {
+	if swag.IsZero(m.Version) { // not required
+		return nil
+	}
+
+	if m.Version != nil {
+		if err := m.Version.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("version")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this genesis response consensus params based on the context it is used
 func (m *GenesisResponseConsensusParams) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
@@ -114,6 +138,10 @@ func (m *GenesisResponseConsensusParams) ContextValidate(ctx context.Context, fo
 	}
 
 	if err := m.contextValidateValidator(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateVersion(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -157,6 +185,20 @@ func (m *GenesisResponseConsensusParams) contextValidateValidator(ctx context.Co
 		if err := m.Validator.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("validator")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *GenesisResponseConsensusParams) contextValidateVersion(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Version != nil {
+		if err := m.Version.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("version")
 			}
 			return err
 		}
