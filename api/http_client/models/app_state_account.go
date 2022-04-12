@@ -25,6 +25,9 @@ type AppStateAccount struct {
 	// balance
 	Balance []*AccountBalance `json:"balance"`
 
+	// lock stake until block
+	LockStakeUntilBlock uint64 `json:"lock_stake_until_block,omitempty,string"`
+
 	// multisig data
 	MultisigData *AccountMultisigData `json:"multisig_data,omitempty"`
 
