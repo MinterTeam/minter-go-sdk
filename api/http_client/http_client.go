@@ -822,6 +822,10 @@ func (s *SubscriberClient) Recv() (*api_service.SubscribeOKBody, error) {
 			_ = s.CloseSend()
 			err = context.Canceled
 		}
+		//if recv.Error != nil {
+		//	return nil, errors.New(fmt.Sprintf("%v",recv.Error))
+		//} todo
+		//return recv.Result, err
 
 		return &recv, err
 	}
