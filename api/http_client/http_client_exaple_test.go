@@ -8,9 +8,58 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"io"
+	"log"
 	"math/big"
 	"time"
 )
+
+func ExampleClient_Subscribe_newBlock() {
+	client, _ := http_client.New("http://localhost:8842/v2")
+
+	subscribeClient, err := client.Subscribe(api.QueryEvent(api.EventNewBlock))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer subscribeClient.CloseSend()
+
+	for {
+		recv, err := subscribeClient.Recv()
+		if err == io.EOF {
+			log.Fatal(err)
+		}
+		if err == io.EOF {
+			return
+		}
+		if err == context.Canceled || err == context.DeadlineExceeded {
+			return
+		}
+		if err != nil {
+			panic(err)
+		}
+
+		marshal, err := client.Marshal(recv)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		parse, err := api.SubscribeNewBlockParse(marshal)
+
+		block, err := client.
+			//WithCallOption().
+			BlockExtended(parse.Data.Block.Header.Height, true, false)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, tx := range block.Transactions {
+			txDecode, err := transaction.Decode(tx.RawTx)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Printf("%#v", txDecode.Data())
+		}
+	}
+}
 
 func ExampleClient_SendTransaction() {
 	client, _ := http_client.New("http://localhost:8843/v2")

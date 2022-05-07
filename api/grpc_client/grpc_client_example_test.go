@@ -7,12 +7,61 @@ import (
 	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
 	"github.com/MinterTeam/node-grpc-gateway/api_pb"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io"
+	"log"
 	"math/big"
 	"time"
 )
+
+func ExampleClient_Subscribe_newBlock() {
+	client, _ := grpc_client.New("localhost:8842")
+
+	subscribeClient, err := client.Subscribe(api.QueryEvent(api.EventNewBlock))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer subscribeClient.CloseSend()
+
+	for {
+		recv, err := subscribeClient.Recv()
+		if err == io.EOF {
+			log.Fatal(err)
+		}
+		if code := status.Code(err); code != codes.OK {
+			if code == codes.DeadlineExceeded || code == codes.Canceled {
+				log.Fatal(errors.Wrap(err, "event subscription error in node configuration"))
+			}
+			log.Fatal(err)
+		}
+
+		marshal, err := client.Marshal(recv)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		parse, err := api.SubscribeNewBlockParse(marshal)
+
+		block, err := client.WithCallOption(
+			grpc_retry.WithCodes(codes.NotFound),
+			grpc_retry.WithBackoff(grpc_retry.BackoffExponential(time.Second)),
+			grpc_retry.WithMax(5),
+		).BlockExtended(parse.Data.Block.Header.Height, true, false)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, tx := range block.Transactions {
+			txDecode, err := transaction.Decode(tx.RawTx)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Printf("%#v", txDecode.Data())
+		}
+	}
+}
 
 func ExampleClient_SendTransaction() {
 	client, _ := grpc_client.New("localhost:8842")
