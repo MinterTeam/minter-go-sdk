@@ -400,6 +400,11 @@ func (c *Client) WaitList(publicKey, address string, optionalHeight ...uint64) (
 	return c.grpcClient.WaitList(c.ctxFunc(), &api_pb.WaitListRequest{Height: optionalInt(optionalHeight), PublicKey: publicKey, Address: address}, c.opts...)
 }
 
+// WaitLists returns the list addresses and stakes in waitlist.
+func (c *Client) WaitLists(optionalHeight ...uint64) (*api_pb.WaitListsResponse, error) {
+	return c.grpcClient.WaitLists(c.ctxFunc(), &api_pb.WaitListsRequest{Height: optionalInt(optionalHeight)}, c.opts...)
+}
+
 // SwapPool returns total supply and reserves.
 func (c *Client) SwapPool(coin0, coin1 uint64, optionalHeight ...uint64) (*api_pb.SwapPoolResponse, error) {
 	return c.grpcClient.SwapPool(c.ctxFunc(), &api_pb.SwapPoolRequest{Height: optionalInt(optionalHeight), Coin0: coin0, Coin1: coin1}, c.opts...)

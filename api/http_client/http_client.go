@@ -637,6 +637,16 @@ func (c *Client) WaitList(publicKey, address string, optionalHeight ...uint64) (
 	return res.GetPayload(), nil
 }
 
+// WaitLists returns the list addresses and stakes in waitlist.
+func (c *Client) WaitLists(optionalHeight ...uint64) (*models.WaitListsResponse, error) {
+	res, err := c.ClientService.WaitLists(api_service.NewWaitListsParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithContext(c.ctxFunc()), c.opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
 // SwapPool returns total supply and reserves.
 func (c *Client) SwapPool(coin0, coin1 uint64, optionalHeight ...uint64) (*models.SwapPoolResponse, error) {
 	res, err := c.ClientService.SwapPool(api_service.NewSwapPoolParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithCoin0(strconv.Itoa(int(coin0))).WithCoin1(strconv.Itoa(int(coin1))).WithContext(c.ctxFunc()), c.opts...)

@@ -112,6 +112,8 @@ type ClientService interface {
 
 	WaitList(params *WaitListParams, opts ...ClientOption) (*WaitListOK, error)
 
+	WaitLists(params *WaitListsParams, opts ...ClientOption) (*WaitListsOK, error)
+
 	SetTransport(transport runtime.ClientTransport)
 }
 
@@ -1769,6 +1771,45 @@ func (a *Client) WaitList(params *WaitListParams, opts ...ClientOption) (*WaitLi
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*WaitListDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  WaitLists waits lists
+
+  WaitLists returns the list stakes in waitlist.
+*/
+func (a *Client) WaitLists(params *WaitListsParams, opts ...ClientOption) (*WaitListsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewWaitListsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "WaitLists",
+		Method:             "GET",
+		PathPattern:        "/waitlists",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &WaitListsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*WaitListsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*WaitListsDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 
