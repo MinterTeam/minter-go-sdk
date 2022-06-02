@@ -37,6 +37,9 @@ const (
 
 	// CandidatesRequestCandidateStatusValidator captures enum value "validator"
 	CandidatesRequestCandidateStatusValidator CandidatesRequestCandidateStatus = "validator"
+
+	// CandidatesRequestCandidateStatusDeleted captures enum value "deleted"
+	CandidatesRequestCandidateStatusDeleted CandidatesRequestCandidateStatus = "deleted"
 )
 
 // for schema
@@ -44,7 +47,7 @@ var candidatesRequestCandidateStatusEnum []interface{}
 
 func init() {
 	var res []CandidatesRequestCandidateStatus
-	if err := json.Unmarshal([]byte(`["all","off","on","validator"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["all","off","on","validator","deleted"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {

@@ -21,6 +21,9 @@ type CandidatesResponse struct {
 
 	// candidates
 	Candidates []*CandidateResponse `json:"candidates"`
+
+	// deleted
+	Deleted []*CandidatesResponseDeleted `json:"deleted"`
 }
 
 // Validate validates this candidates response
@@ -28,6 +31,10 @@ func (m *CandidatesResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCandidates(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDeleted(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -61,11 +68,39 @@ func (m *CandidatesResponse) validateCandidates(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *CandidatesResponse) validateDeleted(formats strfmt.Registry) error {
+	if swag.IsZero(m.Deleted) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Deleted); i++ {
+		if swag.IsZero(m.Deleted[i]) { // not required
+			continue
+		}
+
+		if m.Deleted[i] != nil {
+			if err := m.Deleted[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("deleted" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 // ContextValidate validate this candidates response based on the context it is used
 func (m *CandidatesResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidateCandidates(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateDeleted(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -83,6 +118,24 @@ func (m *CandidatesResponse) contextValidateCandidates(ctx context.Context, form
 			if err := m.Candidates[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("candidates" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *CandidatesResponse) contextValidateDeleted(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Deleted); i++ {
+
+		if m.Deleted[i] != nil {
+			if err := m.Deleted[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("deleted" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
