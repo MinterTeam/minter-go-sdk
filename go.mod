@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/MinterTeam/node-grpc-gateway v1.7.0
-	github.com/ethereum/go-ethereum v1.10.13
+	github.com/ethereum/go-ethereum v1.10.17
 	github.com/go-openapi/errors v0.20.1
 	github.com/go-openapi/runtime v0.21.0
 	github.com/go-openapi/strfmt v0.21.1
@@ -30,7 +30,9 @@ require (
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/btcsuite/btcd v0.22.0-beta // indirect
+	github.com/btcsuite/btcd/btcec/v2 v2.1.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/go-openapi/analysis v0.21.1 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
