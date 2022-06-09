@@ -1777,7 +1777,7 @@ func (a *Client) WaitList(params *WaitListParams, opts ...ClientOption) (*WaitLi
 /*
   WaitLists waits lists
 
-  WaitLists returns the list stakes in waitlist.
+  WaitLists returns the list addresses and stakes in waitlist.
 */
 func (a *Client) WaitLists(params *WaitListsParams, opts ...ClientOption) (*WaitListsOK, error) {
 	// TODO: Validate the params before sending
