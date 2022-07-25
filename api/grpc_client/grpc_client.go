@@ -344,6 +344,7 @@ func (c *Client) EstimateTxCommission(tx string, optionalHeight ...uint64) (*api
 }
 
 // Events returns events at given height.
+// Deprecated: Use BlockExtended with flag `events=true`
 func (c *Client) Events(height uint64, search ...string) (*api_pb.EventsResponse, error) {
 	return c.grpcClient.Events(c.ctxFunc(), &api_pb.EventsRequest{Height: height, Search: search}, c.opts...)
 }

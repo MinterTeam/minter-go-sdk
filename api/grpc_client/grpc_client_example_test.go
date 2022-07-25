@@ -1,6 +1,11 @@
 package grpc_client_test
 
 import (
+	"io"
+	"log"
+	"math/big"
+	"time"
+
 	"github.com/MinterTeam/minter-go-sdk/v2/api"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/grpc_client"
 	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
@@ -10,10 +15,6 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"io"
-	"log"
-	"math/big"
-	"time"
 )
 
 func ExampleClient_Subscribe_newBlock() {
@@ -47,7 +48,7 @@ func ExampleClient_Subscribe_newBlock() {
 
 		block, err := client.WithCallOption(
 			grpc_retry.WithCodes(codes.NotFound),
-			grpc_retry.WithBackoff(grpc_retry.BackoffExponential(time.Second)),
+			grpc_retry.WithBackoff(grpc_retry.BackoffExponential(time.Second/2)),
 			grpc_retry.WithMax(5),
 		).BlockExtended(parse.Data.Block.Header.Height, true, false)
 		if err != nil {
@@ -80,8 +81,8 @@ func ExampleClient_SendTransaction() {
 
 	res, err := client.WithCallOption(
 		grpc_retry.WithCodes(codes.FailedPrecondition),
-		grpc_retry.WithBackoff(grpc_retry.BackoffLinear(1*time.Second)),
-		grpc_retry.WithMax(4),
+		grpc_retry.WithBackoff(grpc_retry.BackoffExponential(time.Second/2)),
+		grpc_retry.WithMax(5),
 	).SendTransaction(encode)
 	if err != nil {
 		_, _, _ = client.ErrorBody(err)
@@ -108,8 +109,11 @@ func ExampleClient_SendTransaction() {
 	}
 	// or
 	{
-		time.Sleep(5 * time.Second)
-		response, _ := client.Transaction(hash)
+		response, _ := client.WithCallOption(
+			grpc_retry.WithCodes(codes.NotFound),
+			grpc_retry.WithBackoff(grpc_retry.BackoffExponential(time.Second/2)),
+			grpc_retry.WithMax(5),
+		).Transaction(hash)
 		_, _ = client.Marshal(response)
 		sendData := new(api_pb.SendData)
 		_ = response.Data.UnmarshalTo(sendData)

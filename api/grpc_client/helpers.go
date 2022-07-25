@@ -6,6 +6,7 @@ import (
 )
 
 // ConvertStructToEvent returns Event model
+// Deprecated
 func ConvertStructToEvent(str *_struct.Struct) (api.Event, error) {
 	value, err := str.Fields["value"].GetStructValue().MarshalJSON()
 	if err != nil {
