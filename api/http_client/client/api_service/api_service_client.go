@@ -70,6 +70,8 @@ type ClientService interface {
 
 	LimitOrders(params *LimitOrdersParams, opts ...ClientOption) (*LimitOrdersOK, error)
 
+	LimitOrdersByOwner(params *LimitOrdersByOwnerParams, opts ...ClientOption) (*LimitOrdersByOwnerOK, error)
+
 	LimitOrdersOfPool(params *LimitOrdersOfPoolParams, opts ...ClientOption) (*LimitOrdersOfPoolOK, error)
 
 	MaxGasPrice(params *MaxGasPriceParams, opts ...ClientOption) (*MaxGasPriceOK, error)
@@ -952,6 +954,45 @@ func (a *Client) LimitOrders(params *LimitOrdersParams, opts ...ClientOption) (*
 	}
 	// unexpected success response
 	unexpectedSuccess := result.(*LimitOrdersDefault)
+	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
+}
+
+/*
+  LimitOrdersByOwner limits orders by owner
+
+  LimitOrdersByOwner returns orders by owner.
+*/
+func (a *Client) LimitOrdersByOwner(params *LimitOrdersByOwnerParams, opts ...ClientOption) (*LimitOrdersByOwnerOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewLimitOrdersByOwnerParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "LimitOrdersByOwner",
+		Method:             "GET",
+		PathPattern:        "/limit_orders_by_owner/{address}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &LimitOrdersByOwnerReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*LimitOrdersByOwnerOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	unexpectedSuccess := result.(*LimitOrdersByOwnerDefault)
 	return nil, runtime.NewAPIError("unexpected success response: content available as default response in error", unexpectedSuccess, unexpectedSuccess.Code())
 }
 

@@ -445,6 +445,11 @@ func (c *Client) LimitOrders(orderIDs []uint64, optionalHeight ...uint64) (*api_
 	return c.grpcClient.LimitOrders(c.ctxFunc(), &api_pb.LimitOrdersRequest{Height: optionalInt(optionalHeight), Ids: orderIDs}, c.opts...)
 }
 
+// LimitOrdersByOwner returns orders by owner.
+func (c *Client) LimitOrdersByOwner(owner string, optionalHeight ...uint64) (*api_pb.LimitOrdersResponse, error) {
+	return c.grpcClient.LimitOrdersByOwner(c.ctxFunc(), &api_pb.LimitOrdersByOwnerRequest{Height: optionalInt(optionalHeight), Address: owner}, c.opts...)
+}
+
 // LimitOrdersOfPool returns sell orders for a pair of coins.
 func (c *Client) LimitOrdersOfPool(sellCoin, buyCoin uint64, optionalHeight ...uint64) (*api_pb.LimitOrdersOfPoolResponse, error) {
 	return c.grpcClient.LimitOrdersOfPool(c.ctxFunc(), &api_pb.LimitOrdersOfPoolRequest{Height: optionalInt(optionalHeight), SellCoin: sellCoin, BuyCoin: buyCoin}, c.opts...)

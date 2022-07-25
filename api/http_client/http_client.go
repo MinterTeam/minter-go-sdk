@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/go-openapi/swag"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/go-openapi/swag"
 
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client"
 	"github.com/MinterTeam/minter-go-sdk/v2/api/http_client/client/api_service"
@@ -724,6 +725,16 @@ func (c *Client) LimitOrders(orderIDs []uint64, optionalHeight ...uint64) (*mode
 		ids = append(ids, strconv.Itoa(int(id)))
 	}
 	res, err := c.ClientService.LimitOrders(api_service.NewLimitOrdersParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithIds(ids).WithContext(c.ctxFunc()), c.opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetPayload(), nil
+}
+
+// LimitOrdersByOwner returns orders by owner.
+func (c *Client) LimitOrdersByOwner(owner string, optionalHeight ...uint64) (*models.LimitOrdersResponse, error) {
+	res, err := c.ClientService.LimitOrdersByOwner(api_service.NewLimitOrdersByOwnerParamsWithTimeout(c.timeout).WithHeight(optionalInt(optionalHeight)).WithAddress(owner).WithContext(c.ctxFunc()), c.opts...)
 	if err != nil {
 		return nil, err
 	}
