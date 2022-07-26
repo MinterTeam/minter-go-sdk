@@ -64,12 +64,12 @@ func New(address string) (*Client, error) {
 //			}
 //		}
 func (c *Client) WithContextFunc(contextFunc func(context.Context) func() context.Context) *Client {
-	return &Client{grpcClient: c.grpcClient, ctxFunc: contextFunc(c.ctxFunc()), opts: c.opts}
+	return &Client{grpcClient: c.grpcClient, ctxFunc: contextFunc(c.ctxFunc()), opts: c.opts, marshaler: c.marshaler}
 }
 
 // WithCallOption returns new Client with additional grpc.CallOption
 func (c *Client) WithCallOption(opts ...grpc.CallOption) *Client {
-	return &Client{grpcClient: c.grpcClient, ctxFunc: c.ctxFunc, opts: append(c.opts, opts...)}
+	return &Client{grpcClient: c.grpcClient, ctxFunc: c.ctxFunc, opts: append(c.opts, opts...), marshaler: c.marshaler}
 }
 
 // GRPCClient returns gRPC client api_pb.ApiServiceClient
