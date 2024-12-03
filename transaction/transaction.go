@@ -776,7 +776,7 @@ func (o *object) Sign(key string, prKeys ...string) (Signed, error) {
 	if wallet.IsValidAddress(key) {
 		o.SignatureType = SignatureTypeMulti
 	} else if len(prKeys) != 0 {
-		panic(errors.New("invalid multy-signature address"))
+		return nil, errors.New("invalid multy-signature address")
 	}
 
 	switch o.SignatureType {
